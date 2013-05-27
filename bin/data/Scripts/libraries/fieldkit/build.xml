@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="FieldKit" basedir="." default="dist">
+	<taskdef name="jsmin"
+	        classname="net.matthaynes.jsmin.JSMin_Task"
+	        classpath="res/ant/jsmin.0.2.3.jar"/>
+	
+	<property name="version" value="03" />
+	
+	<property name="build" location="build" />
+	<property name="dist" location="${build}/FieldKit.js-${version}" />
+	
+	<target name="init">
+		<mkdir dir="${build}" />
+		<delete file="${build}/*"/>
+		
+		<delete dir="${dist}" />
+		<mkdir dir="${dist}" />
+	</target>
+	
+	<target name="compile" depends="init">		
+		<!-- create temp file -->
+		<property name="name" value="${ant.project.name}" />
+		<property name="file" location="${build}/${name}.js"/>
+		<property name="file.min" location="${build}/${name}.min.js"/>
+		
+		<concat destfile="${file}" fixlastline="yes">
+			<filelist dir="src" files="Header.js" />
+			<filelist dir="src" files="Class.js "/>
+			<filelist dir="src/math" files="Math.js Vec2.js Vec3.js"/>
+			<filelist dir="src/math" files="Polyline.js Spline.js"/>
+			<filelist dir="src/math" files="Rect.js"/>
+		</concat>
+	</target>
+
+	<target name="dist" depends="compile">
+		
+		<!-- minify javascript -->
+		<jsmin srcfile="${file}" suffix="true" copyright="(c) 2010 FIELD.IO"/>
+		
+		<copy todir="${dist}">
+			<fileset dir="./" includes="*.txt" />
+			<fileset dir="${build}" includes="*.js" />	
+		</copy>
+		
+		<!-- correct minified name -->
+		<!-- <move file="${file}.min.js" tofile="${file.min}" />
+		<echo>done</echo> -->		
+	</target>
+</project>
