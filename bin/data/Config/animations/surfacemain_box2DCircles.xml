@@ -1,0 +1,25 @@
+<Widget>
+    <Kind>4</Kind>
+    <Name>gravity</Name>
+    <Value>0.199999809</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>vol. trigger</Name>
+    <Value>0.169642851</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>obj. size min</Name>
+    <Value>10.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>obj. size max</Name>
+    <Value>25.952381134</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>obj. number</Name>
+    <Value>180.952392578</Value>
+</Widget>

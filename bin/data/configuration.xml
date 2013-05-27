@@ -1,0 +1,16 @@
+<murmur>
+	<simulator>
+        <enable>1</enable>
+        
+        <device>
+        	<nbLEDs>158</nbLEDs>
+        	<length>4.0</length>
+        </device>
+        
+        <soundInput>
+            <device>1</device>
+            <nbChannels>1</nbChannels>
+        </soundInput>
+    </simulator>
+    
+</murmur>
