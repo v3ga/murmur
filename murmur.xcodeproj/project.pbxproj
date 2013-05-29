@@ -25,6 +25,7 @@
 		E4C2424910CC5A17004149E2 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C2424610CC5A17004149E2 /* IOKit.framework */; };
 		E4EB6799138ADC1D00A09F29 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		F90A221E174FA39A005DE613 /* animationTunnel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F90A221C174FA39A005DE613 /* animationTunnel.cpp */; };
+		F90A222A1755683E005DE613 /* murmurIcons.icns in CopyFiles */ = {isa = PBXBuildFile; fileRef = F90A2228175567A4005DE613 /* murmurIcons.icns */; };
 		F969FB2217160CF700F3F410 /* device.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F969FB2117160CF700F3F410 /* device.cpp */; };
 		F969FB2517160E8600F3F410 /* surface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F969FB2417160E8600F3F410 /* surface.cpp */; };
 		F96B924A172EB518007B1CFF /* surfaceNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F96B9248172EB518007B1CFF /* surfaceNode.cpp */; };
@@ -184,6 +185,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F90A222917556838005DE613 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+				F90A222A1755683E005DE613 /* murmurIcons.icns in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F987129216C058EB0069F12A /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -228,6 +239,7 @@
 		F90A221C174FA39A005DE613 /* animationTunnel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animationTunnel.cpp; sourceTree = "<group>"; };
 		F90A221D174FA39A005DE613 /* animationTunnel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = animationTunnel.h; sourceTree = "<group>"; };
 		F90A2220174FE92B005DE613 /* Wave.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Wave.js; sourceTree = "<group>"; };
+		F90A2228175567A4005DE613 /* murmurIcons.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = murmurIcons.icns; sourceTree = "<group>"; };
 		F90AB6A8172EAF4300B79E39 /* MSAPhysics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAPhysics.h; sourceTree = "<group>"; };
 		F90AB6A9172EAF4300B79E39 /* MSAPhysics2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAPhysics2D.h; sourceTree = "<group>"; };
 		F90AB6AA172EAF4300B79E39 /* MSAPhysics3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAPhysics3D.h; sourceTree = "<group>"; };
@@ -764,6 +776,7 @@
 		E4B69B4A0A3A1720003C02F2 = {
 			isa = PBXGroup;
 			children = (
+				F90A2228175567A4005DE613 /* murmurIcons.icns */,
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
 				E4B69E1C0A3A1BDC003C02F2 /* src */,
@@ -1894,6 +1907,7 @@
 				E4B6FFFD0C3F9AB9008CF71C /* ShellScript */,
 				E4C2427710CC5ABF004149E2 /* CopyFiles */,
 				F987129216C058EB0069F12A /* CopyFiles */,
+				F90A222917556838005DE613 /* CopyFiles */,
 			);
 			buildRules = (
 			);
