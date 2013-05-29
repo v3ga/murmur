@@ -9,7 +9,7 @@
     <nbLEDsStandby>55</nbLEDsStandby>
     <speedStandby>156.190475464</speedStandby>
     <surface id="main">
-        <xNorm>0.480468750</xNorm>
-        <yNorm>0.492187500</yNorm>
+        <xNorm>0.459960938</xNorm>
+        <yNorm>0.388020843</yNorm>
     </surface>
 </device>
