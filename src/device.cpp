@@ -166,6 +166,15 @@ void Device::setSoundInputVolHistoryThOSC(float th)
 }
 
 //--------------------------------------------------------------
+void Device::turnoff()
+{
+    ofxOscMessage m;
+    m.setAddress( OSC_ADDRESS_TURN_OFF );
+    m.addStringArg(m_id);
+    m_oscSender.sendMessage(m);
+}
+
+//--------------------------------------------------------------
 void Device::setEnableStandbyMode(bool is)
 {
     ofxOscMessage m;
@@ -292,12 +301,25 @@ void Device::startSoundInput(int deviceId, int nbChannels)
     }
 }
 
+//--------------------------------------------------------------
+void Device::startSoundInput(int nbChannels)
+{
+    if (mp_soundInput==0)
+    {
+        // Create sound input
+        mp_soundInput = new SoundInput();
+        mp_soundInput->setup(nbChannels);
+    }
+}
+
+
 
 //--------------------------------------------------------------
 void Device::audioIn(float * input, int bufferSize, int nChannels)
 {
-    if (mp_soundInput)
-        mp_soundInput->audioIn(input, bufferSize, nChannels);
+    if (mp_soundInput){
+		mp_soundInput->audioIn(input, bufferSize, nChannels);
+	}
 }
 
 //--------------------------------------------------------------
@@ -515,7 +537,7 @@ void Device::loadXML(string dir)
         printf("    - enableStandby=%s\n", settings.getValue("device:enableStandby",1) ? "true" : "false");
         printf("    - timeStandby=%.2f\n", settings.getValue("device:timeStandby",10.0f) );
         printf("    - nbLEDsStandby=%d\n", settings.getValue("device:nbLEDsStandby",50) );
-        printf("    - speedStandby=%d\n", settings.getValue("device:speedStandby",70.0) );
+        printf("    - speedStandby=%.2f\n", settings.getValue("device:speedStandby",70.0f) );
         printf("    - surface=%s (xNorm=%.2f,yNorm=%.2f)\n",surfaceId.c_str(), xNorm, yNorm);
         
         setSoundInputVolumeMax( settings.getValue("device:soundInput:volMax",0.05f) );
@@ -645,6 +667,12 @@ void DeviceManager::saveDevicesXML(string dir)
         (*itDevices)->saveXML(dir);
 }
 
+//--------------------------------------------------------------
+void DeviceManager::turnoffDevices()
+{
+	for (itDevices = m_listDevices.begin(); itDevices != m_listDevices.end(); ++itDevices)
+        (*itDevices)->turnoff();
+}
 
 
 

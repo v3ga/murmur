@@ -17,7 +17,9 @@ function Wave(x,y, nbPoints)
 	for (var i=0;i<nbPoints;i++)
 		this.points.push( new fk.Vec2(0,0) );
 
-    
+	//--------------------------------------------------------------
+    this.setLoc = function(x, y){this.loc.set2(x,y);}
+ 
 	//--------------------------------------------------------------
     this.setDir = function(dirx, diry){this.dir.set2(dirx,diry);}
     
@@ -56,6 +58,7 @@ function Wave(x,y, nbPoints)
 		{
 			p = this.points[i];
 			p.set2(this.loc.x+this.radius*Math.cos(this.phase+angle), this.loc.y+this.radius*Math.sin(this.phase+angle));
+			//println(i+"/angle="+this.phase+"/x="+p.x+";y="+p.y);
 			angle+=this.step;
 		}
 	}

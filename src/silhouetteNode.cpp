@@ -27,7 +27,7 @@ void SilhouetteNode::customDraw()
         float w = ratio*m_height;
         ofPushMatrix();
         ofScale(1.0f, -1.0f);
-        ofSetColor(0,0,0,255);
+        ofSetColor(220,220,220,255);
         tex.draw(-w/2.0f,-m_height,w,m_height);
         ofPopMatrix();
     }

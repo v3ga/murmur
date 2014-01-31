@@ -37,6 +37,49 @@ SceneVisualisation::~SceneVisualisation()
 }
 
 //--------------------------------------------------------------
+void SceneVisualisation::loadSettings()
+{
+	m_settings.loadFile("Config/scene.xml");
+}
+
+//--------------------------------------------------------------
+ofVec3f SceneVisualisation::getPositionForSilhouette(string deviceId_)
+{
+	m_settings.pushTag("scene");
+		m_settings.pushTag("silhouettes");
+		int nbSilhouettes = m_settings.getNumTags("silhouette");
+		bool isFound = false;
+		float x=0.0f, y=0.0f, z=0.0f;
+		for (int i=0 ; i<nbSilhouettes; i++)
+		{
+			//m_settings.pushTag("silhouette", i)
+			string deviceId = m_settings.getAttribute("silhouette", "device", "unknow", i);
+			if (deviceId == deviceId_)
+			{
+				m_settings.pushTag("silhouette", i);
+					x = m_settings.getAttribute("position", "x", 0.0f);
+					y = m_settings.getAttribute("position", "y", 0.0f);
+					z = m_settings.getAttribute("position", "z", 4.0f);
+				m_settings.popTag();
+			
+				isFound = true;
+			}
+			if(isFound)
+				break;
+		}
+	
+	
+		m_settings.popTag();
+	m_settings.popTag();
+
+	if (isFound){
+		return ofVec3f(x,y,z);
+	}
+
+	return ofVec3f(0.0f,0.0f,4.0f);
+}
+
+//--------------------------------------------------------------
 void SceneVisualisation::createDeviceNode( Device* pDevice, SurfaceNode* pSurface)
 {
     DeviceNode* pDeviceNode = new DeviceNode( pDevice );
@@ -50,7 +93,8 @@ void SceneVisualisation::addDeviceNode(DeviceNode* pDeviceNode, SurfaceNode* pSu
     
     // Add a new silhouette
     SilhouetteNode* pSilhouette = new SilhouetteNode( &Data::instance()->m_imgSilhouette );
-    pSilhouette->setPosition(0,0,4.0f);
+//    pSilhouette->setPosition(-2.0f,0,4.0f);
+	pSilhouette->setPosition( getPositionForSilhouette(pDeviceNode->getDeviceId()) );
     m_listSilhouetteNodes.push_back(pSilhouette);
     
     // Create chain
@@ -97,7 +141,7 @@ void SceneVisualisation::setup()
 {
     m_cam.setNearClip(0.01f);
     m_cam.setFarClip(20.0f);
-    m_camRadiusTarget = m_camRadius = 10.0f;
+    m_camRadiusTarget = m_camRadius = 25.0f;
     m_camAngleTarget = m_camAngle = 45.0f;
     updateCamPosition();
 }
@@ -122,10 +166,14 @@ void SceneVisualisation::draw()
     
 	m_cam.setPosition( m_camPosition );
     SurfaceNode* pSurfaceNodeMain = m_listSurfaceNodes[0];
-    if (pSurfaceNodeMain)
+    if (pSurfaceNodeMain){
+//		printf("%.2f %.2f %.2f\n",pSurfaceNodeMain->getPositionCenter().x, pSurfaceNodeMain->getPositionCenter().y, pSurfaceNodeMain->getPositionCenter().z);
         m_cam.lookAt(pSurfaceNodeMain->getPositionCenter());
-    else
+	}
+    else{
+//		printf("*");
         m_cam.lookAt(ofVec3f(0,0,0));
+	}
 	m_cam.begin();
     
     ofEnableBlendMode(OF_BLENDMODE_ALPHA);
@@ -169,7 +217,7 @@ void SceneVisualisation::draw()
 void SceneVisualisation::updateCamPosition()
 {
     m_camAngleTarget = min( max(30.0f,m_camAngleTarget), 150.0f);
-    m_camRadiusTarget = min( max(0.75f,m_camRadiusTarget), 10.0f);
+    m_camRadiusTarget = min( max(1.75f,m_camRadiusTarget), 15.0f);
 
     m_camPosition.set( m_camRadius*cos( ofDegToRad(m_camAngle) ), 6.0f, m_camRadius*sin( ofDegToRad(m_camAngle) ));
     // printf("m_camPosition = %.2f,%.2f,%.2f", m_camPosition.x,m_camPosition.y,m_camPosition.z);

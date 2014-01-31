@@ -87,7 +87,7 @@ void oscReceiver::update()
                             
                             DeviceEcho* pDeviceEcho = new DeviceEcho(deviceId, nbLEDs, 4.0f/float(nbLEDs-1));
                             pDeviceEcho->setupSenderOSC(m_oscMessage.getRemoteIp(), 1235);
-                            pDeviceEcho->loadXML("Config/");
+                            pDeviceEcho->loadXML("Config/devices/");
 
                             // Add device to list
                             pDeviceManager->addDevice(pDeviceEcho);
@@ -100,8 +100,9 @@ void oscReceiver::update()
                             Globals::instance()->mp_app->createDeviceNodeInScene(pDeviceEcho);
 
                             // Update interface
-                            
-                            Globals::instance()->mp_app->guiUpdateListDevices();
+                         
+							//Globals::instance()->mp_app->guiMarkUpdateLayout();
+                            Globals::instance()->mp_app->guiUpdateListDevices(320);
                             Globals::instance()->mp_app->selectDevice(pDeviceEcho->m_id);
                         
                             // TODO : Send configuration parameters to it (if any)

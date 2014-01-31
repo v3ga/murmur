@@ -84,6 +84,7 @@ Animation::Animation(string name_,string pathAbsScript_)
     
     
     ofxJSDefineFunctionObject(mp_obj, "newSlider", Animation::jsNewSlider, 4);
+    ofxJSDefineFunctionObject(mp_obj, "newToggle", Animation::jsNewToggle, 4);
 
 
     sm_mapJSObj_Anim[mp_obj] = this;
@@ -207,6 +208,20 @@ void Animation::guiEvent(ofxUIEventArgs &e)
 			ofxJSCallFunctionNameObject_IfExists(mp_obj,"eventUI", args,2,retVal);
 		}
     }
+	else
+	if (kind == OFX_UI_WIDGET_TOGGLE)
+	{
+		if (mp_obj)
+        {
+			bool valToggle = ((ofxUIToggle*) e.widget)->getValue() ;
+			
+            ofxJSValue args[2];
+            args[0] = string_TO_ofxJSValue( name );
+            args[1] = int_TO_ofxJSValue( valToggle ? 1 : 0 );
+			ofxJSCallFunctionNameObject_IfExists(mp_obj,"eventUI", args,2,retVal);
+		}
+	
+	}
 }
 
 //--------------------------------------------------------------
@@ -254,6 +269,28 @@ ofxJSBOOL Animation::jsNewSlider(ofxJSContext* cx, ofxJSObject* obj, uintN argc,
         
             return JS_TRUE;
             
+        }
+    }
+    
+    return JS_FALSE;
+}
+
+//--------------------------------------------------------------
+ofxJSBOOL Animation::jsNewToggle(ofxJSContext* cx, ofxJSObject* obj, uintN argc, ofxJSValue* argv, ofxJSValue* retVal)
+{
+    
+    Animation* pThis = sm_mapJSObj_Anim[obj];
+//    printf(">>> obj=%p, pThis=%p, from the map %p\n", obj, pThis, sm_mapJSObj_Anim[obj]);
+    if (pThis && pThis->mp_UIcanvas)
+    {
+        if (argc == 2)
+        {
+            string name = ofxJSValue_TO_string(argv[0]);
+            int val = ofxJSValue_TO_int(argv[1]);
+            
+            pThis->mp_UIcanvas->addWidgetDown( new ofxUIToggle(ANIM_UI_HEIGHT_DEFAULT,ANIM_UI_HEIGHT_DEFAULT, val == 0 ? false : true,name) );
+        
+            return JS_TRUE;
         }
     }
     

@@ -5,6 +5,7 @@
 #include "ofxUI.h"
 #include "oscReceiver.h"
 #include "oscSender.h"
+#include "threadRasp.h"
 
 class Scene;
 class SceneVisualisation;
@@ -40,14 +41,17 @@ class testApp : public ofBaseApp
 
         // UI
         bool                m_isUserControls;
+		bool				m_isUpdateLayout;
         void                initControls();
+		void				updateControls();
         void                showControls(bool is=true);
         void                guiEvent(ofxUIEventArgs &e);
-        void                guiUpdateListDevices();
+        void                guiUpdateListDevices(int widthDefault);
         void                guiUpdateDeviceAnimationTitle();
         void                guiUpdateDevice(Device*);
         void                guiUpdateViewSimulation();
         void                guiShowAnimationPropsAll(bool is=true);
+		void				guiMarkUpdateLayout(){m_isUpdateLayout=true;}
     
         map<Animation*, ofxUICanvas*> m_mapAnimationUI;
 
@@ -60,6 +64,8 @@ class testApp : public ofBaseApp
         ofxUILabel*         mp_lblDeviceTitle;
         ofxUISlider         *mp_sliderDeviceVolMax,*mp_sliderDeviceVolHistorySize,*mp_sliderDeviceVolHistoryTh,*mp_sliderDeviceTimeStandby,*mp_sliderDeviceNbLEDsStandby,*mp_sliderDeviceSpeedStandby;
         ofxUIToggle*        mp_toggleDeviceEnableStandby;
+	
+		ofxUILabel*		mp_lblSurfaceActivity;
     
         // Application settings
         ofxXmlSettings      m_settings;
@@ -73,6 +79,14 @@ class testApp : public ofBaseApp
         bool                m_isViewAnimProperties;
 
         void                toggleView();
+	
+		// @ launch
+		void				launchMurmurRaspberry();
+		bool				m_isLaunchMurmurRaspberry;
+		threadRasp			m_threadRasp;
+	
+		void				launchMadMapper();
+		bool				m_isLaunchMadMapper;
     
         // OSC
         oscReceiver         m_oscReceiver;
@@ -84,14 +98,25 @@ class testApp : public ofBaseApp
         DeviceEchoSimulator*mp_deviceSimulator;
         DeviceNode*         mp_deviceNodeSim;
         void                initDevices();
+		void				initSimulators();
+		void				selectDeviceWithIndex(int index);
         void                selectDevice(string id);
-    
+	
+		vector<DeviceEchoSimulator*>	m_listDeviceSimulator;
+//		vector<DeviceNode*>				m_listDeviceSimNode;
+
+		// Sound (simulation only)
+		ofSoundStream		m_soundStreamInput;
+ 
         // Surfaces
         Surface*             mp_surfaceMain;
         SurfaceNode*         mp_surfaceNodeMain;
         void                 initSurfaces();
         float                m_diamCacheLEDs;
-    
+		SurfaceNode*		 getSurfaceNode(Surface*);
+		void				 onSurfaceModified(Surface*);
+		ofRectangle			 m_rectSurfaceOff;
+	
         // Devices <> Surfaces
         DeviceInfoManager*  mp_deviceInfoManager; // DEPRECATED
         void                attachDevicesToSurfaces();

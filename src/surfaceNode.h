@@ -18,11 +18,14 @@ class SurfaceNode : public ofNode
 
     
         void                    customDraw        ();
-        float                   getWidth(){return m_width;}
+ 		void					setWidth(float w){m_width = w;}
+ 		void					setHeight(float h){m_height = h;}
+		float                   getWidth(){return m_width;}
         float                   getHeight(){return m_height;}
         ofVec3f                 getPositionCenter();
         ofVec3f                 getGlobalPositionDevicePointSurface(Device*);
         Surface*                getSurface(){return mp_surface;}
+	
     
     protected:
         Surface*               mp_surface;

@@ -1,16 +1,36 @@
 <murmur>
 	<simulator>
+        <!-- Activate or not simulation -->
         <enable>1</enable>
-        
-        <device>
-        	<nbLEDs>158</nbLEDs>
-        	<length>4.0</length>
-        </device>
-        
+
+        <!-- Sound input for simulators -->
         <soundInput>
-            <device>1</device>
+            <device>0</device>
             <nbChannels>1</nbChannels>
         </soundInput>
+        
+        <!-- Devices -->
+        <devices>
+            <device>
+                <id>deviceEchoSimulator01</id>
+                <nbLEDs>158</nbLEDs>
+                <length>4.0</length>
+            </device>
+<!--
+            <device>
+                <id>deviceEchoSimulator02</id>
+                <nbLEDs>158</nbLEDs>
+                <length>2.0</length>
+            </device>
+-->
+        </devices>
     </simulator>
-    
+
+    <!-- MadMapper -->
+    <madmapper>stereolux.mad</madmapper>
+
+    <!-- Raspberry -->
+    <raspberry>
+        <ip>192.168.1.101</ip>
+    </raspberry>
 </murmur>

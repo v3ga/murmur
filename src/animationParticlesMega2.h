@@ -79,6 +79,7 @@ protected:
 	vector<Particle> particles;
 	vector< vector<Particle*> > bins;
 	int width, height, k, xBins, yBins, binSize;
+	float particleSize = 2.0f;
     
 public:
 	ParticleSystem();
@@ -101,6 +102,8 @@ public:
 	void addForce(const Particle& particle, float radius, float scale);
 	void addForce(float x, float y, float radius, float scale);
 	void update();
+	
+	void setParticleSize(float s_){particleSize = s_;}
     
 	void draw();
 };
@@ -114,13 +117,25 @@ inline float InvSqrt(float x){
 	return x;
 }
 
+class ParticleForce
+{
+	public:
+		ParticleForce		(float anchorx, float anchory);
+
+	    ofVec2f             m_anchor;
+		float				m_volume, m_volumeTarget;
+	
+		void				update					(float dt);
+};
+
 
 class AnimationParticlesMega2 : public Animation
 {
 public:
     
     AnimationParticlesMega2(string name);
-    
+	~AnimationParticlesMega2();
+ 
     virtual	void			VM_enter				();
     virtual void			VM_update				(float dt);
     virtual void			VM_draw					(float w, float h);
@@ -153,4 +168,8 @@ private:
     float                   m_repulsionRadius;
     float                   m_ampRepulsion;
     float                   m_ampAttraction;
+	float					m_particlesSize;
+	
+	map<string, ParticleForce*>	m_mapParticleForce;
+
 };

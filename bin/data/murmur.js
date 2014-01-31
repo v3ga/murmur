@@ -127,6 +127,9 @@ function SoundPlayer(soundsName)
     {
         if (soundsName.length>=2)
         {
+		println( soundsName[0] );
+            playSound( soundsName[0] );
+/*
             var rndIndex = -1;
             do{
                 rndIndex = Math.floor(Math.random() * soundsName.length);
@@ -136,7 +139,8 @@ function SoundPlayer(soundsName)
             playSound( soundsName[rndIndex],a,b );
         }
         else
-            playSound( soundsName[0] );
+*/
+		}
     }
 }
 
@@ -145,6 +149,17 @@ function shuffleArray(a)
 {
 	a.sort( function(){return Math.random()-0.5} );
 }
+
+// --------------------------------------------------------
+ function size(arr) 
+ {
+    var size = 0;
+    for (var key in arr) 
+    {
+        if (arr.hasOwnProperty(key)) size++;
+    }
+    return size;
+ }; 
 
 
 

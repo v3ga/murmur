@@ -10,3 +10,5 @@
 
 #define OSC_ADDRESS_SEND_PACKETS        "device/send/packets"
 #define OSC_ADDRESS_SET_DEVICE_PROP     "device/set/property"
+#define OSC_ADDRESS_TURN_OFF			"device/turnoff"
+

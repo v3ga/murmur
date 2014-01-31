@@ -9,20 +9,27 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxXmlSettings.h"
 #include "data.h"
 #include "scene.h"
 #include "deviceNode.h"
 #include "surfaceNode.h"
 #include "silhouetteNode.h"
 
+
 class SceneVisualisation : public Scene
 {
     public:
         ~SceneVisualisation             ();
     
+		void		loadSettings		();
+
         void        createDeviceNode    ( Device* pDevice, SurfaceNode* );
         void        addDeviceNode       ( DeviceNode*, SurfaceNode* pSurfaceNode);
         void        addSurfaceNode      ( SurfaceNode* );
+		
+		ofVec3f		getPositionForSilhouette(string deviceId);
+
     
         SurfaceNode*   getSurfaceNode   ( Surface* );
         DeviceNode*    getDeviceNode    ( Device* );
@@ -34,9 +41,12 @@ class SceneVisualisation : public Scene
         void        mousePressed        (int x, int y);
         void        mouseDragged        (int x, int y);
         void        mouseReleased       (int x, int y);
-    
+	
+ 
     
     protected:
+		ofxXmlSettings					m_settings;
+
         ofCamera                        m_cam;
         float                           m_camRadius,m_camRadiusTarget,m_camRadiusTargetDragStart;
         float                           m_camAngle,m_camAngleTarget,m_camAngleTargetDragStart;

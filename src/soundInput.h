@@ -7,7 +7,7 @@
 //
 
 #pragma once
-#define SOUNDINPUT_USE_FFT 1
+#define SOUNDINPUT_USE_FFT 0
 
 #include "ofMain.h"
 
@@ -19,12 +19,18 @@
 class SoundInput
 {
     public:
-    
+ 
+	
+		~SoundInput							();
+	
         virtual void        setup           (int deviceId, int nChannels);
+		virtual	void		setup			(int nChannels); // only for simulators
         virtual void        update          ();
         virtual void        audioIn         (float * input, int bufferSize, int nChannels);
     
         virtual void        drawVolume      (float x, float y);
+	
+		void				mute			(bool is=true){m_isMute=is;}
     
         vector <float>&     getVolHistory   (){return m_volHistory;}
         float               getHeightDraw   (){return m_heightDraw;}
@@ -40,10 +46,12 @@ class SoundInput
         float               getVolHistoryMeanFiltered();
     
     private:
-        ofSoundStream       m_soundStreamInput;
+        ofSoundStream*       mp_soundStreamInput;
 #if SOUNDINPUT_USE_FFT
         ofxFFTLive          m_fft;
 #endif
+
+		bool				m_isMute;
 
         vector <float>      m_mono;
         vector <float>      m_left;
