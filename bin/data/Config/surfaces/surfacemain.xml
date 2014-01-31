@@ -1,0 +1,22 @@
+<surface id="main">
+    <animations type="cpp">
+        <animation>shaderWave</animation>
+        <!--
+        <animation>particlesMega2</animation>
+        <animation>box2DCircles</animation>
+        <animation>tunnel</animation>
+        -->
+    </animations>
+
+    <timeline>
+        <!--
+        <animation>tunnel</animation>
+        <animation>particlesMega2</animation>
+        <animation>box2DCircles</animation>
+        -->
+        <animation>shaderWave</animation>
+        <animation>waves2.js</animation>
+    </timeline>
+    
+</surface>
+

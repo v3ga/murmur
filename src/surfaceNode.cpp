@@ -22,7 +22,8 @@ ofNode()
 //--------------------------------------------------------------
 ofVec3f SurfaceNode::getPositionCenter()
 {
-    return getGlobalTransformMatrix() * ofVec3f(0.5f*getWidth(),0.5f*getHeight(),0.0f);
+//    return getGlobalTransformMatrix() * ofVec3f(0.5f*getWidth(),0.5f*getHeight(),0.0f);
+    return getGlobalPosition()+ofVec3f(0.5f*getWidth(),0.5f*getHeight(),0.0f); // TODO : check this ? 
 }
 
 //--------------------------------------------------------------

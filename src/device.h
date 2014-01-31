@@ -73,7 +73,8 @@ class Device
         float               m_stateStandbyDuration;
         string              m_stateStandbyStr;
         float               m_timeStandby;
-    
+ 
+		void				turnoff();
     
         void                enableStandbyMode(bool is=true);
         void                checkForActivity(float dt);
@@ -106,6 +107,8 @@ class Device
     
         virtual void        sampleStandbyInput();
         virtual void        generateSampleStandBy(float dt);
+	
+		virtual	void		mute(bool is=true){if(mp_soundInput) mp_soundInput->mute(is);}
     
         
 
@@ -137,6 +140,7 @@ class Device
     
         // Sound input
         SoundInput*         mp_soundInput;
+		virtual	void		startSoundInput(int nbChannels);
         virtual void        startSoundInput (int deviceId, int nbChannels);
         virtual void        audioIn         (float * input, int bufferSize, int nChannels);
         virtual float       getWidthSoundInputVolume();
@@ -172,6 +176,7 @@ class DeviceManager
         Device*             setDeviceCurrent    (string deviceId);
         Device*             getDeviceCurrent    (){return mp_deviceCurrent;}
         void                saveDevicesXML      (string dir);
+		void				turnoffDevices		();
     
         vector<Device*>     m_listDevices;
     

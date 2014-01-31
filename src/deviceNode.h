@@ -22,6 +22,7 @@ class DeviceNode : public ofNode
         void                        setPositionNodeSurface      (ofVec3f newPosition);
         void                        customDraw                  ();
         Device*                     getDevice                   (){return mp_device;}
+		string						getDeviceId					(){if (mp_device) return mp_device->m_id; return "???";}
     
     protected:
         Device*                     mp_device;

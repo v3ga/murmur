@@ -17,6 +17,8 @@ void testApp::setup()
 {
 
     // Zero all
+	m_isUpdateLayout = false;
+	
 	mp_gui1 = 0;
     mp_gui2 = 0;
     mp_gui3 = 0;
@@ -33,6 +35,7 @@ void testApp::setup()
     mp_sliderDeviceTimeStandby = 0;
     mp_sliderDeviceNbLEDsStandby = 0;
     mp_sliderDeviceSpeedStandby = 0;
+	mp_lblSurfaceActivity = 0;
     
     // Settings
     m_settings.loadFile("configuration.xml");
@@ -49,6 +52,8 @@ void testApp::setup()
     isSimulation =  simulator == 1 ? true : false;
     m_oscReceiverIP = "127.0.0.1";
     m_oscReceiverPort = 1234;
+	m_isLaunchMadMapper = false;
+	m_isLaunchMurmurRaspberry = false;
     
     // Globals
     Globals::instance()->mp_app = this;
@@ -82,30 +87,66 @@ void testApp::setup()
     // Run
     m_oscReceiver.setup(m_oscReceiverPort);
     printf("Starting oscReceiver @port %d\n", m_oscReceiverPort);
-    if (isSimulation && mp_deviceSimulator)
-    {
-        int deviceSoundInputId = m_settings.getValue("murmur:simulator:soundInput:device", -1);
-        int nbChannels = m_settings.getValue("murmur:simulator:soundInput:nbChannels", 2);
-        printf("deviceSoundInputId=%d\n",deviceSoundInputId);
-        printf("nbChannels=%d\n",nbChannels);
+	
+	// Simulators
+	initSimulators();
 
-        mp_deviceSimulator->startSoundInput(deviceSoundInputId,nbChannels);
-        mp_deviceSimulator->loadXML("Config/");
-        if (mp_deviceNodeSim)
-            mp_deviceNodeSim->setPositionNodeSurface( mp_surfaceNodeMain->getGlobalPositionDevicePointSurface( mp_deviceSimulator ) );
-        selectDevice("deviceEchoSimulator");
-
-    
-    }
-
+	// Launch MadMapper
+	if (m_isLaunchMadMapper && !isSimulation)
+	{
+		launchMadMapper();
+	}
+	
+	// Launch Murmur on Raspberry
+	if (m_isLaunchMurmurRaspberry && !isSimulation)
+	{
+		launchMurmurRaspberry();
+	}
+	
+	// GO
 	ofSetVerticalSync(true);
+}
+
+//--------------------------------------------------------------
+void testApp::launchMurmurRaspberry()
+{
+	string strIPMurmur = m_settings.getValue("murmur:raspberry:ip", "10.23.108.114");
+	string strRun = "ssh pi@" + strIPMurmur + " /home/pi/Dev/C/openFrameworks/examples/myapps/murmurRaspberry/bin/run_murmur.sh";
+
+	m_threadRasp.setCommand(strRun);
+	m_threadRasp.startThread();
+}
+
+//--------------------------------------------------------------
+void testApp::launchMadMapper()
+{
+
+	string pathFileMM = m_settings.getValue("murmur:madmapper", "default.map");
+	ofFile file(ofToDataPath("Config/madmapper/"+pathFileMM));
+	if (file.exists())
+	{
+		string command = "open "+file.getAbsolutePath();
+		system(command.c_str());
+	   printf("Launching MadMapper with %s\n", file.getAbsolutePath().c_str());
+	}
+	else{
+	   printf("Error launching MadMapper with %s\n", file.getAbsolutePath().c_str());
+	}
 }
 
 //--------------------------------------------------------------
 void testApp::exit()
 {
+	printf("[testApp::exit()]\n");
+	
+	
+	m_soundStreamInput.stop();
+
     if (mp_deviceManager)
-        mp_deviceManager->saveDevicesXML("Config/");
+	{
+        mp_deviceManager->saveDevicesXML("Config/devices/");
+		mp_deviceManager->turnoffDevices();
+	}
 
     if (mp_surfaceMain)
         mp_surfaceMain->saveAnimationsProperties();
@@ -126,21 +167,83 @@ void testApp::exit()
 	delete mp_gui2;
 	delete mp_gui3;
 	delete mp_gui4;
+
+	printf("[testApp::exit()] end\n");
 }
 
 //--------------------------------------------------------------
 void testApp::initDevices()
 {
+	printf("[testApp::initDevices]\n");
     if (isSimulation)
     {
-        int nbLEDs = m_settings.getValue("murmur:simulator:device:nbLEDs", 129);
-        float length = m_settings.getValue("murmur:simulator:device:length", 4.0f);
+		m_settings.pushTag("murmur");
+		m_settings.pushTag("simulator");
+		m_settings.pushTag("devices");
+		
+		int nbDevicesSimulator = m_settings.getNumTags("device");
+		printf("  - nbDevicesSimulator=%d\n", nbDevicesSimulator);
+		for (int i=0; i<nbDevicesSimulator ; i++)
+		{
+			m_settings.pushTag("device", i);
+		
+	        int nbLEDs = m_settings.getValue("nbLEDs", 129);
+    	    float length = m_settings.getValue("length", 4.0f);
+			string id = m_settings.getValue("id", "deviceEchoSimulator");
 
-        
-        mp_deviceSimulator = new DeviceEchoSimulator("deviceEchoSimulator", nbLEDs, length/float(nbLEDs-1));
-    
-        mp_deviceManager->addDevice(mp_deviceSimulator);
+			DeviceEchoSimulator* pDeviceSimulator = new DeviceEchoSimulator(id, nbLEDs, length/float(nbLEDs-1));
+			m_listDeviceSimulator.push_back(pDeviceSimulator);
+	        mp_deviceManager->addDevice(pDeviceSimulator);
+
+			m_settings.popTag();
+
+		}
+		m_settings.popTag();
+		m_settings.popTag();
+		m_settings.popTag();
+	
     }
+}
+
+
+//--------------------------------------------------------------
+void testApp::initSimulators()
+{
+    if (isSimulation && m_listDeviceSimulator.size()>0 /* && mp_deviceSimulator*/)
+    {
+        int deviceSoundInputId = m_settings.getValue("murmur:simulator:soundInput:device", -1);
+        int nbChannels = m_settings.getValue("murmur:simulator:soundInput:nbChannels", 2);
+        printf("deviceSoundInputId=%d\n",deviceSoundInputId);
+        printf("nbChannels=%d\n",nbChannels);
+
+		m_soundStreamInput.listDevices();
+	    if (deviceSoundInputId>=0)
+		{
+    	    m_soundStreamInput.setDeviceID(deviceSoundInputId);
+			m_soundStreamInput.setup(ofGetAppPtr(), 0, nbChannels, 44100, 256, 4);
+			m_soundStreamInput.start();
+		}
+
+		vector<DeviceEchoSimulator*>::iterator it = m_listDeviceSimulator.begin();
+		for ( ; it != m_listDeviceSimulator.end() ; ++it)
+		{
+			DeviceEchoSimulator* pDeviceSim = *it;
+			if (pDeviceSim){
+//		        pDeviceSim->startSoundInput(deviceSoundInputId,nbChannels);
+		        pDeviceSim->startSoundInput(nbChannels);
+        		pDeviceSim->loadXML("Config/devices/");
+				
+				DeviceNode* pDeviceSimNode = mp_sceneVisualisation->getDeviceNode(pDeviceSim);
+				if (pDeviceSimNode)
+            		pDeviceSimNode->setPositionNodeSurface( mp_surfaceNodeMain->getGlobalPositionDevicePointSurface( pDeviceSim ) );
+			}
+		}
+
+		// Select default
+		selectDevice(m_listDeviceSimulator[0]->m_id);
+		    
+    }
+
 }
 
 //--------------------------------------------------------------
@@ -155,11 +258,32 @@ void testApp::initSurfaces()
 void testApp::attachDevicesToSurfaces()
 {
     // TEMP, should be somewhere in a config file
-    if (mp_surfaceMain){
-        if (isSimulation){
-            mp_surfaceMain->addDevice(mp_deviceSimulator);
-        }
+    if (mp_surfaceMain)
+	{
+        if (isSimulation)
+		{
+            //mp_surfaceMain->addDevice(mp_deviceSimulator);
+			
+        	vector<DeviceEchoSimulator*>::iterator it = m_listDeviceSimulator.begin();
+	        for ( ; it != m_listDeviceSimulator.end() ; ++it)
+        	{
+            	DeviceEchoSimulator* pDeviceSim = *it;
+				if (pDeviceSim)
+				{
+					mp_surfaceMain->addDevice(pDeviceSim);
+				}
+			}
+		}
     }
+}
+
+
+//--------------------------------------------------------------
+SurfaceNode* testApp::getSurfaceNode(Surface* pSurface)
+{
+	if (mp_sceneVisualisation)
+		return mp_sceneVisualisation->getSurfaceNode(pSurface);
+	return 0;
 }
 
 //--------------------------------------------------------------
@@ -182,19 +306,30 @@ void testApp::initScenes()
     // Surface
     mp_surfaceNodeMain = new SurfaceNode( mp_surfaceMain,4.0,3.0 );
     mp_surfaceNodeMain->setPosition(-0.5f*mp_surfaceNodeMain->getWidth(),0,0);
-    
-    // Devices nodes
-    if (isSimulation)
-        mp_deviceNodeSim = new DeviceNode( mp_deviceSimulator );
-    
+ 
     // Construct the scene
     mp_sceneVisualisation = new SceneVisualisation();
+	mp_sceneVisualisation->loadSettings();
     mp_sceneVisualisation->setup();
     mp_sceneVisualisation->addSurfaceNode(mp_surfaceNodeMain);
 
     if (isSimulation)
-        mp_sceneVisualisation->addDeviceNode(mp_deviceNodeSim, mp_surfaceNodeMain);
-    
+	{
+        // mp_sceneVisualisation->addDeviceNode(mp_deviceNodeSim, mp_surfaceNodeMain);
+		vector<DeviceEchoSimulator*>::iterator it = m_listDeviceSimulator.begin();
+		for ( ; it != m_listDeviceSimulator.end() ; ++it)
+		{
+			DeviceEchoSimulator* pDeviceSim = *it;
+			if (pDeviceSim)
+			{
+				DeviceNode* pDeviceSimNode = new DeviceNode(pDeviceSim);
+				//m_listDeviceSimNode.push_back( pDeviceSimNode );
+	        	mp_sceneVisualisation->addDeviceNode(pDeviceSimNode, mp_surfaceNodeMain);
+			}
+		}
+	
+	}
+	
     // Add to a list
     m_listScenes.push_back(mp_sceneVisualisation);
 }
@@ -261,14 +396,13 @@ void testApp::initControls()
     
     //--------------------------------------------------------------
     //--------------------------------------------------------------
-	mp_gui2 = new ofxUICanvas(mp_gui1->getRect()->getWidth()+10,h,widthDefault+10,200);
-    vector<string> listDeviceIds;
-	mp_ddlDevices = new ofxUIDropDownList(widthDefault, "Devices", listDeviceIds, OFX_UI_FONT_LARGE);
-	mp_ddlDevices->setAutoClose(false);
-    guiUpdateListDevices();
-    mp_gui2->addWidgetDown(mp_ddlDevices);
-    mp_gui2->setVisible(true);
-    
+	mp_gui2 = new ofxUICanvas(mp_gui1->getRect()->getWidth()+10,h,widthDefault+10,400);
+    vector<string> listDevicesIds;
+	mp_ddlDevices = new ofxUIDropDownList(widthDefault, "Devices", listDevicesIds, OFX_UI_FONT_LARGE);
+    guiUpdateListDevices(widthDefault);
+	mp_gui2->setVisible(true);
+	mp_gui2->addWidgetDown(mp_ddlDevices);
+ 
     
     //--------------------------------------------------------------
     //--------------------------------------------------------------
@@ -277,6 +411,12 @@ void testApp::initControls()
 	mp_gui3 = new ofxUICanvas(xGui3,h,wGui3+10,300);
 	mp_lblDeviceTitle = new ofxUILabel("Device", OFX_UI_FONT_LARGE);
     mp_gui3->addWidgetDown(mp_lblDeviceTitle);
+	
+	if (isSimulation)
+	{
+		mp_gui3->addWidgetDown( new ofxUIToggle(dim, dim, false, "mute sound input") );
+	}
+	
     
     mp_sliderDeviceVolMax = new ofxUISlider( wGui3-10, dim, 0.005f, 0.25f, 0.10f, "Vol. max" );
     mp_sliderDeviceVolHistorySize = new ofxUISlider( wGui3-10, dim, 50, 500, 400, "Vol. history size" );
@@ -285,7 +425,7 @@ void testApp::initControls()
     mp_sliderDeviceTimeStandby = new ofxUISlider( wGui3-10, dim, 5.0f, 20.0f, 10.0f, "Time standby" );
     mp_sliderDeviceNbLEDsStandby = new ofxUISlider( wGui3-10, dim, 10, 100, 50.0f, "Nb LEDs standby" );
     mp_sliderDeviceSpeedStandby = new ofxUISlider( wGui3-10, dim, 40, 360, 70.0f, "Speed standby" );
-    
+ 
 	mp_gui3->addWidgetDown(mp_sliderDeviceVolMax);
 	mp_gui3->addWidgetDown(mp_sliderDeviceVolHistorySize);
 
@@ -295,18 +435,49 @@ void testApp::initControls()
 	mp_gui3->addWidgetDown(mp_sliderDeviceTimeStandby);
 	mp_gui3->addWidgetDown(mp_sliderDeviceNbLEDsStandby);
 	mp_gui3->addWidgetDown(mp_sliderDeviceSpeedStandby);
+
     
     mp_gui3->autoSizeToFitWidgets();
     
     
     ofxUIRectangle* pGui3Rect = mp_gui3->getRect();
     mp_gui4 = new ofxUICanvas(pGui3Rect->getX(), pGui3Rect->getY()+pGui3Rect->getHeight() ,pGui3Rect->getWidth(),300);
-    
-    mp_gui4->addWidgetDown( new ofxUILabel("SURFACE", OFX_UI_FONT_MEDIUM) );
-    mp_gui4->addWidgetDown(new ofxUISpacer(widthDefault, 2));
+
+
+ 
+    mp_gui4->addWidgetDown	( new ofxUILabel("SURFACE", OFX_UI_FONT_MEDIUM) );
+    mp_gui4->addWidgetDown	( new ofxUISpacer(widthDefault, 2));
+
+    mp_gui4->addWidgetDown	( new ofxUIToggle( dim, dim, false, "surf. enable standby") );
+    mp_gui4->addWidgetRight	( new ofxUILabel("| state", OFX_UI_FONT_SMALL) );
+	mp_lblSurfaceActivity = new ofxUILabel("1234", "4",OFX_UI_FONT_SMALL);
+    mp_gui4->addWidgetRight ( mp_lblSurfaceActivity );
+    mp_gui4->addWidgetDown(new ofxUISlider( wGui3-10, dim, 0.01f, 0.1f, 0.02f, "th. go standby" ));
+    mp_gui4->addWidgetDown(new ofxUISlider( wGui3-10, dim, 0.01f, 0.1f, 0.02f, "th. go active" ));
+    mp_gui4->addWidgetDown(new ofxUISlider( wGui3-10, dim, 10.0f, 60.0f, 20.0f, "dur. pre-standby" ));
+
+
+    mp_gui4->addWidgetDown	( new ofxUILabel("Dimensions", OFX_UI_FONT_SMALL) );
+    mp_gui4->addWidgetRight ( new ofxUITextInput("wSurface", "4" , 40, dim,0,0,OFX_UI_FONT_SMALL));
+    mp_gui4->addWidgetRight	( new ofxUILabel("x", OFX_UI_FONT_SMALL) );
+    mp_gui4->addWidgetRight	( new ofxUITextInput("hSurface", "3" , 40, dim,0,0,OFX_UI_FONT_SMALL));
+
+    mp_gui4->addWidgetDown	( new ofxUILabel("FBO", OFX_UI_FONT_SMALL) );
+    mp_gui4->addWidgetRight ( new ofxUITextInput("wFboSurface", "1000" , 40, dim,0,0,OFX_UI_FONT_SMALL));
+    mp_gui4->addWidgetRight	( new ofxUILabel("x", OFX_UI_FONT_SMALL) );
+    mp_gui4->addWidgetRight	( new ofxUITextInput("hFboSurface", "1000" , 40, dim,0,0,OFX_UI_FONT_SMALL));
+
+
+    mp_gui4->addWidgetDown(new ofxUIToggle( dim, dim, false, "syphon"));
+    mp_gui4->addWidgetRight(new ofxUIToggle( dim, dim, false, "target"));
+    mp_gui4->addWidgetRight(new ofxUISlider( 100, dim, 1.0f, 8.0f, 2.0f, "target line w" ));
+    mp_gui4->addWidgetDown(new ofxUIToggle( dim, dim, false, "launch madmapper @ start"));
+    mp_gui4->addWidgetDown(new ofxUIToggle( dim, dim, false, "launch murmur @ rasp"));
+
     mp_gui4->addWidgetDown(new ofxUIToggle( dim, dim, isAnimationSequence, "activate sequence"));
 	mp_gui4->addWidgetDown(new ofxUISlider( wGui3-10, dim, 0.5f, 2.0f, 0.75f, "transition duration (s)" ));
 	mp_gui4->addWidgetDown(new ofxUISlider( wGui3-10, dim, 30.0f, 180.0f, 120.0f, "animation duration (s)" ));
+
 
     mp_lblAnimTitle = new ofxUILabel("> playing animation.js", OFX_UI_FONT_SMALL);
 	mp_gui4->addWidgetDown(mp_lblAnimTitle);
@@ -329,7 +500,8 @@ void testApp::initControls()
     //--------------------------------------------------------------
     //--------------------------------------------------------------
     // TODO : iterate through the list of surfaces here
-    if (mp_surfaceMain){
+    if (mp_surfaceMain)
+	{
         AnimationManager& animManager = mp_surfaceMain->getAnimationManager();
         vector<Animation*>& listAnimations = animManager.m_listAnimations;
         vector<Animation*>::iterator it = listAnimations.begin();
@@ -353,6 +525,17 @@ void testApp::initControls()
 }
 
 //--------------------------------------------------------------
+void testApp::updateControls()
+{
+	if (mp_lblSurfaceActivity)
+	{
+	    Surface* pSurfaceCurrent = getSurfaceForDeviceCurrent();
+		if (pSurfaceCurrent)
+			mp_lblSurfaceActivity->setLabel(pSurfaceCurrent->getStateActivity() + " - " + ofToString( pSurfaceCurrent->getVolumePacketsHistoryMean() ));
+	}
+}
+
+//--------------------------------------------------------------
 void testApp::initJS()
 {
 	int err = ofxJSInitialize();
@@ -373,41 +556,45 @@ void testApp::update()
     SoundManager::instance()->update();
     
     // Surfaces update & render offscreen
-    if (mp_surfaceMain){
+    if (mp_surfaceMain)
+	{
         mp_surfaceMain->update(dt);
-        mp_surfaceMain->renderOffscreen();
+        mp_surfaceMain->renderOffscreen(isShowDevicePointSurfaces);
+		mp_surfaceMain->publishSyphon();
     }
     
     // Devices
-    if (mp_deviceSimulator){
-        mp_deviceSimulator->update(dt);
-    }
-    
+	if (isSimulation)
+	{
+	   vector<DeviceEchoSimulator*>::iterator it = m_listDeviceSimulator.begin();
+	   for ( ; it != m_listDeviceSimulator.end() ; ++it)
+	   {
+		   DeviceEchoSimulator* pDeviceSim = *it;
+		   if (pDeviceSim)
+			   pDeviceSim->update(dt);
+	   }
+	}
+ 
     // Scenes
     if (mp_sceneVisualisation)
         mp_sceneVisualisation->update(dt);
+	
+	updateControls();
 }
+
+
+//--------------------------------------------------------------
+
 
 //--------------------------------------------------------------
 void testApp::draw()
 {
-    if (!isViewSimulation)
-    {
-        if (mp_surfaceMain){
-            ofSetColor(255,255,255,255);
-            mp_surfaceMain->getOffscreen().draw(0,0,ofGetWidth(),ofGetHeight());
-            mp_surfaceMain->drawCacheLEDs(m_diamCacheLEDs);
-            if (isShowDevicePointSurfaces){
-                mp_surfaceMain->drawDevicePointSurface();
-            }
-        }
-    }
-    else
+    if (isViewSimulation)
     {
         // Draw Scene
         if (mp_sceneVisualisation)
             mp_sceneVisualisation->draw();
-        
+
         // Draw sound input data
         Device* pDeviceCurrent = mp_deviceManager->getDeviceCurrent();
         if (pDeviceCurrent && mp_gui2->isVisible()){
@@ -415,10 +602,39 @@ void testApp::draw()
             pDeviceCurrent->drawSoundInputVolume( 0.5f*(ofGetWidth()) ,ofGetHeight()-pDeviceCurrent->getHeightSoundInputVolume());
         }
         
-        
+		if (m_isUpdateLayout)
+		{
+			guiUpdateListDevices(320);
+		
+			m_isUpdateLayout = false;
+		}
+
+     
 /*        if (mp_gui1)
             mp_gui1->draw();
 */
+    }
+	else
+    {
+        if (mp_surfaceMain)
+		{
+			ofFbo& offSurface = mp_surfaceMain->getOffscreen();
+
+			ofRectangle rectScreen(0,0,ofGetWidth(),ofGetHeight());
+			m_rectSurfaceOff.set(0,0,offSurface.getWidth(),offSurface.getHeight());
+			m_rectSurfaceOff.scaleTo(rectScreen);
+			m_rectSurfaceOff.alignTo(rectScreen);
+
+
+			ofClear(70,70,70);
+            ofSetColor(255,255,255,255);
+            mp_surfaceMain->getOffscreen().draw(m_rectSurfaceOff.getX(),m_rectSurfaceOff.getY(),m_rectSurfaceOff.getWidth(),m_rectSurfaceOff.getHeight());
+//            mp_surfaceMain->drawCacheLEDs(m_diamCacheLEDs);
+            if (isShowDevicePointSurfaces)
+			{
+                mp_surfaceMain->drawDevicePointSurface(m_rectSurfaceOff);
+            }
+        }
     }
 }
 
@@ -428,7 +644,64 @@ void testApp::guiEvent(ofxUIEventArgs &e)
     string name = e.widget->getName();
     Device* pDeviceCurrent = mp_deviceManager->getDeviceCurrent();
     Surface* pSurfaceCurrent = getSurfaceForDeviceCurrent();
-    
+
+	if (name == "surf. enable standby")
+	{
+		if (pSurfaceCurrent)
+			pSurfaceCurrent->setEnableStandby( ((ofxUIToggle *) e.widget)->getValue() );
+	}
+	else
+	if (name == "th. go standby")
+	{
+		if (pSurfaceCurrent)
+			pSurfaceCurrent->setGoStandbyTh( ((ofxUISlider *) e.widget)->getScaledValue() );
+	}
+	else
+	if (name == "th. go active")
+	{
+		if (pSurfaceCurrent)
+			pSurfaceCurrent->setGoActiveTh( ((ofxUISlider *) e.widget)->getScaledValue() );
+	}
+	else if (name == "dur. pre-standby")
+	{
+		if (pSurfaceCurrent)
+			pSurfaceCurrent->setDurationPreStandby( ((ofxUISlider *) e.widget)->getScaledValue() );
+	}
+	else
+	if (name == "mute sound input")
+	{
+		if (pDeviceCurrent)
+			pDeviceCurrent->mute( ((ofxUIToggle *) e.widget)->getValue() );
+	}
+	else
+	if (name == "launch madmapper @ start")
+	{
+		m_isLaunchMadMapper = ((ofxUIToggle *) e.widget)->getValue();
+	}
+	else
+	if (name == "launch murmur @ rasp")
+	{
+		m_isLaunchMurmurRaspberry = ((ofxUIToggle *) e.widget)->getValue();
+	}
+	else
+    if (name == "syphon")
+	{
+        if (pSurfaceCurrent)
+            pSurfaceCurrent->setPublishSyphon( ((ofxUIToggle *) e.widget)->getValue() );
+	}
+	else
+    if (name == "target")
+	{
+        if (pSurfaceCurrent)
+            pSurfaceCurrent->setRenderTarget( ((ofxUIToggle *) e.widget)->getValue() );
+	}
+	else
+	if (name == "target line w")
+	{
+        if (pSurfaceCurrent)
+            pSurfaceCurrent->setRenderTargetLineWidth( ((ofxUISlider *) e.widget)->getScaledValue() );
+	}
+	else
     if (name == "activate sequence")
     {
         if (pSurfaceCurrent)
@@ -473,6 +746,46 @@ void testApp::guiEvent(ofxUIEventArgs &e)
         if (pSurfaceCurrent)
             pSurfaceCurrent->getAnimationManager().M_editScript();
     }
+    else if (name == "wSurface")
+    {
+        if (pSurfaceCurrent)
+		{
+			SurfaceNode * pSurfaceNodeCurrent = this->getSurfaceNode(pSurfaceCurrent);
+			float wSurface = atof( ((ofxUITextInput *) e.widget)->getTextString().c_str() );
+	    	pSurfaceNodeCurrent->setWidth(wSurface);
+			pSurfaceNodeCurrent->setPosition(-0.5f*wSurface, pSurfaceNodeCurrent->getPosition().y, pSurfaceNodeCurrent->getPosition().z);
+		
+			onSurfaceModified(pSurfaceCurrent);
+		}
+	}
+    else if (name == "hSurface")
+    {
+        if (pSurfaceCurrent)
+		{
+			SurfaceNode * pSurfaceNodeCurrent = this->getSurfaceNode(pSurfaceCurrent);
+	    	pSurfaceNodeCurrent->setHeight( atof( ((ofxUITextInput *) e.widget)->getTextString().c_str() ) );
+		
+			onSurfaceModified(pSurfaceCurrent);
+		}
+	}
+    else if (name == "wFboSurface")
+    {
+        if (pSurfaceCurrent)
+		{
+			int wPixels = atoi( ((ofxUITextInput *) e.widget)->getTextString().c_str() );;
+			int hPixels = pSurfaceCurrent->getHeightPixels();
+			pSurfaceCurrent->setDimensions(wPixels,hPixels);
+		}
+	}
+    else if (name == "hFboSurface")
+    {
+        if (pSurfaceCurrent)
+		{
+			int wPixels = pSurfaceCurrent->getWidthPixels();
+			int hPixels = atoi( ((ofxUITextInput *) e.widget)->getTextString().c_str() );;
+			pSurfaceCurrent->setDimensions(wPixels,hPixels);
+		}
+	}
     else if (name == "View simulation")
     {
         isViewSimulation = ((ofxUIToggle *) e.widget)->getValue();
@@ -540,6 +853,13 @@ void testApp::guiEvent(ofxUIEventArgs &e)
 }
 
 //--------------------------------------------------------------
+void testApp::selectDeviceWithIndex(int index)
+{
+    if (mp_deviceManager && index>=0 && index < mp_deviceManager->m_listDevices.size())
+		selectDevice(mp_deviceManager->m_listDevices[index]->m_id);
+}
+
+//--------------------------------------------------------------
 void testApp::selectDevice(string id)
 {
     if (mp_deviceManager)
@@ -563,15 +883,17 @@ void testApp::selectDevice(string id)
 }
 
 //--------------------------------------------------------------
-void testApp::guiUpdateListDevices()
+void testApp::guiUpdateListDevices(int widthDefault)
 {
     if (mp_deviceManager && mp_ddlDevices)
     {
-        mp_ddlDevices->clearToggles();
+//        mp_ddlDevices->clearToggles();
         vector<string> listDevicesId;
         mp_deviceManager->getDevicesListId(listDevicesId);
-//        printf("%d devices\n", (int)listDevicesId.size());
-        
+
+        printf("[testApp::guiUpdateListDevices]\n  - %d devices\n", (int)listDevicesId.size());
+     
+		mp_ddlDevices->setAutoClose(false);
         mp_ddlDevices->initToggles(listDevicesId, OFX_UI_FONT_SMALL);
     }
 }
@@ -628,8 +950,13 @@ void testApp::guiShowAnimationPropsAll(bool is)
 //--------------------------------------------------------------
 void testApp::audioIn(float * input, int bufferSize, int nChannels)
 {
-    if (mp_deviceSimulator)
-        mp_deviceSimulator->audioIn(input, bufferSize, nChannels);
+   vector<DeviceEchoSimulator*>::iterator it = m_listDeviceSimulator.begin();
+   for ( ; it != m_listDeviceSimulator.end() ; ++it)
+   {
+	   DeviceEchoSimulator* pDeviceSim = *it;
+	   if (pDeviceSim)
+		   pDeviceSim->audioIn(input, bufferSize, nChannels);
+   }
 }
 
 //--------------------------------------------------------------
@@ -704,6 +1031,10 @@ void testApp::keyPressed(int key)
         
         }
     }
+	else if ( key >= '1' && key <='9')
+	{
+		Globals::instance()->mp_app->selectDeviceWithIndex((int)(key-'1'));
+	}
     else
     {
         if (mp_sceneVisualisation)
@@ -737,16 +1068,47 @@ void testApp::mouseDragged(int x, int y, int button)
     }
 }
 
+
+//--------------------------------------------------------------
+void testApp::onSurfaceModified(Surface* pSurface)
+{
+	if(mp_sceneVisualisation && pSurface)
+    {
+
+   		vector<Device*>& listDevices = pSurface->getListDevices();
+   		vector<Device*>::iterator it = listDevices.begin();
+   		for ( ; it != listDevices.end() ; ++it)
+   		{
+			DeviceNode* pDeviceNode = mp_sceneVisualisation->getDeviceNode(*it);
+            SurfaceNode* pSurfaceNode = mp_sceneVisualisation->getSurfaceNode(pSurface);
+			if (pDeviceNode && pSurfaceNode)
+            	pDeviceNode->setPositionNodeSurface( pSurfaceNode->getGlobalPositionDevicePointSurface(pDeviceNode->getDevice()) );
+   		}
+	}
+}
+
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button)
 {
-    if (!isViewSimulation)
+    if (isViewSimulation)
+    {
+        m_isUserControls =
+        mp_gui1->isHit(x,y) ||
+        mp_gui2->isHit(x,y) ||
+        mp_gui3->isHit(x,y) ||
+        mp_gui4->isHit(x,y) ||
+        (mp_guiAnimProps && mp_guiAnimProps->isHit(x,y));
+
+        if (m_isUserControls) return;
+        
+        if (mp_sceneVisualisation)
+            mp_sceneVisualisation->mousePressed(x, y);
+    }
+    else
     {
         if (mp_guiAnimProps && mp_guiAnimProps->isHit(x,y))
             return;
-
-        
-        
+     
         Device* pDeviceCurrent = mp_deviceManager->getDeviceCurrent();
         
         if (pDeviceCurrent)
@@ -754,7 +1116,17 @@ void testApp::mousePressed(int x, int y, int button)
             Surface* pSurfaceCurrent = getSurfaceForDevice(pDeviceCurrent);
             if (pSurfaceCurrent)
             {
-                pDeviceCurrent->setPointSurface(float(x)/pSurfaceCurrent->getWidthPixels(), float(y)/pSurfaceCurrent->getHeightPixels());
+				float dx = x - m_rectSurfaceOff.getX();
+				float dy = y - m_rectSurfaceOff.getY();
+				
+				  
+
+				float xNorm = ofClamp(dx / m_rectSurfaceOff.getWidth(),0.0f,1.0f);
+				float yNorm = ofClamp(dy / m_rectSurfaceOff.getHeight(),0.0f,1.0f);
+
+			
+                pDeviceCurrent->setPointSurface(xNorm, yNorm);
+//                pDeviceCurrent->setPointSurface(float(x)/pSurfaceCurrent->getWidthPixels(), float(y)/pSurfaceCurrent->getHeightPixels());
             
             
                  //printf("%.3f,%.3f\n",float(x)/pSurfaceCurrent->getWidthPixels(),float(y)/pSurfaceCurrent->getHeightPixels());
@@ -771,31 +1143,13 @@ void testApp::mousePressed(int x, int y, int button)
             }
         }
     }
-    else
-    {
-        m_isUserControls =
-        mp_gui1->isHit(x,y) ||
-        mp_gui2->isHit(x,y) ||
-        mp_gui3->isHit(x,y) ||
-        mp_gui4->isHit(x,y) ||
-        (mp_guiAnimProps && mp_guiAnimProps->isHit(x,y));
-
-        if (m_isUserControls) return;
-        
-        if (mp_sceneVisualisation)
-            mp_sceneVisualisation->mousePressed(x, y);
-    }
-    
+ 
 }
 
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button)
 {
-    if (!isViewSimulation)
-    {
-        
-    }
-    else
+	if (isViewSimulation)
     {
         if (!m_isUserControls)
         {

@@ -90,7 +90,9 @@ class Animation
         static std::map<JSObject*, Animation*> sm_mapJSObj_Anim;
 
         static ofxJSBOOL        jsNewSlider             (ofxJSContext* cx, ofxJSObject* obj, uintN argc, ofxJSValue* argv, ofxJSValue* retVal);
-        
+        static ofxJSBOOL        jsNewToggle             (ofxJSContext* cx, ofxJSObject* obj, uintN argc, ofxJSValue* argv, ofxJSValue* retVal);
+
+ 
 		// Shader
 		void					M_beginShader			();
 		void					M_endShader				();

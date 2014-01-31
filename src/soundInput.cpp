@@ -8,6 +8,13 @@
 
 #include "soundInput.h"
 
+
+//--------------------------------------------------------------
+SoundInput::~SoundInput()
+{
+	delete mp_soundStreamInput;
+}
+
 //--------------------------------------------------------------
 void SoundInput::setup(int deviceId, int nChannels)
 {
@@ -16,23 +23,25 @@ void SoundInput::setup(int deviceId, int nChannels)
     m_volHistoryNb = 400;
     m_heightDraw = 70.0f;
     m_volEmpiricalMax = 0.10f;
-    
-	m_soundStreamInput.listDevices();
+	
+ 
+	mp_soundStreamInput = new ofSoundStream();
+	mp_soundStreamInput->listDevices();
     
 	//if you want to set a different device id
     //bear in mind the device id corresponds to all audio devices, including  input-only and output-only devices.
     if (deviceId>=0)
-        m_soundStreamInput.setDeviceID(deviceId);
+        mp_soundStreamInput->setDeviceID(deviceId);
 
     m_bufferSize = 256; // 256 to be compliant with FFT
     m_nbChannels = nChannels;
 
-	m_soundStreamInput.setup(ofGetAppPtr(), 0, m_nbChannels, 44100, m_bufferSize, 4);
+	mp_soundStreamInput->setup(ofGetAppPtr(), 0, m_nbChannels, 44100, m_bufferSize, 4);
 #if SOUNDINPUT_USE_FFT
     if (nChannels==1 /*&& m_bufferSize == m_fft.getNoOfBands()*/){
 //        m_fft.setNoOfBands(20);
 //        m_fft.setThreshold(0.8);
-        m_fft.setup(&m_soundStreamInput);
+        m_fft.setup(mp_soundStreamInput);
     }
     else
         printf(">>> FFT, nChannels should be 1 & m_bufferSize should be %d\n", m_fft.getNoOfBands());
@@ -41,8 +50,37 @@ void SoundInput::setup(int deviceId, int nChannels)
     initAudioBuffers();
     setVolHistorySize(400);
 
-    m_soundStreamInput.start();
+    mp_soundStreamInput->start();
+	mute(false);
 }
+
+//--------------------------------------------------------------
+void SoundInput::setup(int nChannels)
+{
+    m_smoothedVol = 0.0f;
+    m_scaledVol = 0.0f;
+    m_volHistoryNb = 400;
+    m_heightDraw = 70.0f;
+    m_volEmpiricalMax = 0.10f;
+ 
+    m_bufferSize = 256; // 256 to be compliant with FFT
+    m_nbChannels = nChannels;
+
+#if SOUNDINPUT_USE_FFT
+    if (nChannels==1 /*&& m_bufferSize == m_fft.getNoOfBands()*/){
+//        m_fft.setNoOfBands(20);
+//        m_fft.setThreshold(0.8);
+//        m_fft.setup(&m_soundStreamInput);
+    }
+    else
+        printf(">>> FFT, nChannels should be 1 & m_bufferSize should be %d\n", m_fft.getNoOfBands());
+#endif
+    
+    initAudioBuffers();
+    setVolHistorySize(400);
+	mute(false);
+}
+
 
 //--------------------------------------------------------------
 void SoundInput::setVolHistorySize(int nb)
@@ -89,9 +127,15 @@ void SoundInput::updateVolHistoryMean()
 //--------------------------------------------------------------
 void SoundInput::update()
 {
-//    printf("SoundInput::update-");
 	//lets scale the vol up to a 0-1 range
 	m_scaledVol = ofMap(m_smoothedVol, 0.0, m_volEmpiricalMax, 0.0, 1.0, true); // TODO : adjust ?
+	
+	if (m_isMute)
+	{
+		m_scaledVol = 0.0f;
+	}
+
+   // printf("SoundInput::update vol=%.2f-", m_scaledVol);
 	
 	//if we are bigger the the size we want to record - lets drop the oldest value
 	if( m_volHistory.size() >= m_volHistoryNb ){
@@ -201,8 +245,7 @@ void SoundInput::audioIn(float * input, int bufferSize, int nChannels)
         
         m_smoothedVol *= 0.93;
         m_smoothedVol += 0.07 * curVol;
-
-        
+		   
 #if SOUNDINPUT_USE_FFT
         m_fft.audioIn(input, bufferSize, nChannels);
 #endif
@@ -231,7 +274,7 @@ void SoundInput::audioIn(float * input, int bufferSize, int nChannels)
         
         m_smoothedVol *= 0.93;
         m_smoothedVol += 0.07 * curVol;
-        
+     
         //bufferCounter++;
     }
     

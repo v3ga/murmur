@@ -18,6 +18,61 @@ TunnelElement::TunnelElement()
 
 
 //--------------------------------------------------------------
+Tunnel::Tunnel(AnimationTunnel* pAnimation)
+{
+	mp_animation = pAnimation;
+}
+
+
+//--------------------------------------------------------------
+void Tunnel::VM_update(float dt)
+{
+    vector<TunnelElement*>::iterator it = m_listTunnelElement.begin();
+    TunnelElement* pTunnelElement;
+    for ( ; it!=m_listTunnelElement.end() ; )
+    {
+        pTunnelElement = *it;
+        pTunnelElement->m_t += mp_animation->m_speedWave*dt;
+
+        if (pTunnelElement->m_t >= 1.0f) {
+            it = m_listTunnelElement.erase(it);
+            delete pTunnelElement;
+        } else {
+            ++it;
+        }
+    }
+}
+
+
+//--------------------------------------------------------------
+void Tunnel::VM_draw()
+{
+    ofTranslate(m_posAnchor.x,m_posAnchor.y,0);
+    
+    vector<TunnelElement*>::iterator it = m_listTunnelElement.begin();
+    TunnelElement* pTunnelElement;
+    ofVec2f posTunnel;
+    for ( ; it!=m_listTunnelElement.end() ; ++it)
+    {
+        pTunnelElement = *it;
+
+        glPushMatrix();
+        float s = ofMap(pTunnelElement->m_t, 0,1,1,0.05);
+        float f = 1.25f;
+        ofRotateZ( pTunnelElement->m_t*mp_animation->m_ampRotation*sin( pTunnelElement->m_t*3.14*2 ) );
+
+        ofNoFill();
+        ofSetColor(255,(1.0-pTunnelElement->m_t)*255);
+
+//        ofRect(-s*(w)/2,-s*(f*h)/2,s*(w),s*(f*h));
+        
+        glPopMatrix();
+    }
+	
+}
+
+
+//--------------------------------------------------------------
 AnimationTunnel::AnimationTunnel(string name) : Animation(name)
 {
     m_isCreateSpline = false;
@@ -85,21 +140,6 @@ void AnimationTunnel::VM_update(float dt)
 {
     m_t+=0.1*dt;
     if (m_t>=1.0f) m_t=0.0f;
-
-    vector<TunnelElement*>::iterator it = m_listTunnelElement.begin();
-    TunnelElement* pTunnelElement;
-    for ( ; it!=m_listTunnelElement.end() ; )
-    {
-        pTunnelElement = *it;
-        pTunnelElement->m_t += m_speedWave*dt;
-
-        if (pTunnelElement->m_t >= 1.0f) {
-            it = m_listTunnelElement.erase(it);
-            delete pTunnelElement;
-        } else {
-            ++it;
-        }
-    }
 }
 
 //--------------------------------------------------------------
@@ -140,32 +180,24 @@ void AnimationTunnel::computeBasisAt(float* result, float t)
 //--------------------------------------------------------------
 void AnimationTunnel::VM_draw(float w, float h)
 {
-    createSpline(w,h);
+    //createSpline(w,h);
     glEnable(GL_DEPTH_TEST);
     
 
     ofBackground(0,0,0,255);
     ofTranslate(m_posAnchor.x,m_posAnchor.y,0);
     
-    //ofSetColor(255,0,0,255);
-    //ofEllipse(0,0,20,20);
-
     vector<TunnelElement*>::iterator it = m_listTunnelElement.begin();
     TunnelElement* pTunnelElement;
     ofVec2f posTunnel;
     for ( ; it!=m_listTunnelElement.end() ; ++it)
     {
         pTunnelElement = *it;
-//        pTunnelElement->m_pos = m_spline.sampleAt(pTunnelElement->m_t);
-//        computeBasisAt(pTunnelElement->m_rot, pTunnelElement->m_t);
 
         glPushMatrix();
-    //    glTranslatef(pTunnelElement->m_pos.x, pTunnelElement->m_pos.y, pTunnelElement->m_pos.z);
         float s = ofMap(pTunnelElement->m_t, 0,1,1,0.05);
         float f = 1.25f;
         ofRotateZ( pTunnelElement->m_t*m_ampRotation*sin( pTunnelElement->m_t*3.14*2 ) );
-  //      glTranslatef(-m_posAnchor.x, h-m_posAnchor.y, 0);
-//        glMultMatrixf(pTunnelElement->m_rot);
 
         ofNoFill();
         ofSetColor(255,(1.0-pTunnelElement->m_t)*255);
@@ -182,23 +214,7 @@ void AnimationTunnel::onNewPacket(DevicePacket* pDevicePacket, string deviceId, 
 {
     if (pDevicePacket==0) return;
     m_posAnchor.set(x,y);
-    
     m_volAccum.add(pDevicePacket->m_volume);
-    /*
-	if (pDevicePacket->m_volume>m_volAccumTh)
-	{
-		m_volumeAccumTarget += pDevicePacket->m_volume;
-	}
-	else
-	{
-		// Enough accumulation
-		if (m_volumeAccumTarget>=m_volAccumTrigger)
-		{
-            m_listTunnelElement.push_back( new TunnelElement() );
-		}
-		m_volumeAccumTarget = 0;
-	}
-*/
 }
 
 

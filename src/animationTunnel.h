@@ -23,8 +23,28 @@ class TunnelElement
         float                   m_t;
 };
 
+class AnimationTunnel;
+class Tunnel
+{
+	public:
+	
+		Tunnel					(AnimationTunnel*);
+	
+		virtual	void			VM_update				(float dt);
+		virtual	void			VM_draw					();
+
+
+		AnimationTunnel*		mp_animation;
+
+		ofVec2f                 m_posAnchor;
+        float                   m_volumeAccum;
+        vector<TunnelElement*>  m_listTunnelElement;
+};
+
 class AnimationTunnel : public Animation
 {
+	friend class Tunnel;
+
     public:
         AnimationTunnel(string name);
 
@@ -38,6 +58,9 @@ class AnimationTunnel : public Animation
         virtual void            guiEvent                (ofxUIEventArgs &e);
     
     protected:
+		map<string, Tunnel*>	m_mapTunnels;
+	
+	
         ofVec2f                 m_posAnchor;
     
         VolumeAccum             m_volAccum;

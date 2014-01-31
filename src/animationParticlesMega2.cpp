@@ -11,6 +11,21 @@
 
 
 //--------------------------------------------------------------
+ParticleForce::ParticleForce(float anchorx, float anchory)
+{
+	m_anchor.set(anchorx, anchory);
+	m_volume = m_volumeTarget = 0.0f;
+}
+
+
+//--------------------------------------------------------------
+void ParticleForce::update(float dt)
+{
+    m_volume += (m_volumeTarget-m_volume)*0.4f;
+}
+
+
+//--------------------------------------------------------------
 AnimationParticlesMega2::AnimationParticlesMega2(string name) : Animation(name)
 {
     m_isParticlesInit = false;
@@ -19,6 +34,17 @@ AnimationParticlesMega2::AnimationParticlesMega2(string name) : Animation(name)
     m_repulsionRadius = 100.0;
     m_ampRepulsion = 10.0;
     m_ampAttraction = 10.0;
+	
+	m_particlesSize = 1.0f;
+}
+
+
+//--------------------------------------------------------------
+AnimationParticlesMega2::~AnimationParticlesMega2()
+{
+	map<string,ParticleForce*>::iterator it = m_mapParticleForce.begin();
+	for ( ; it != m_mapParticleForce.end() ; ++it)
+		delete it->second;
 }
 
 //--------------------------------------------------------------
@@ -71,20 +97,34 @@ void AnimationParticlesMega2::createUICustom()
         mp_UIcanvas->addSlider("amp. attraction", 1.0f, 20.0f, &m_ampAttraction);
         mp_UIcanvas->addSlider("amp. repulsion", 1.0f, 100.0f, &m_ampRepulsion);
         mp_UIcanvas->addSlider("radius repulsion", 40.0f, 300.0f, &m_repulsionRadius);
+        mp_UIcanvas->addSlider("particles size", 1.0f, 5.0f, &m_particlesSize);
     }
 }
 
 //--------------------------------------------------------------
 void AnimationParticlesMega2::guiEvent(ofxUIEventArgs &e)
 {
-    
+    string name = e.widget->getName();
+    if (name == "particles size")
+    {
+		m_particlesSize = ((ofxUISlider*) e.widget)->getScaledValue();
+		particleSystem.setParticleSize(m_particlesSize);
+	}
 }
 
 //--------------------------------------------------------------
 void AnimationParticlesMega2::VM_update(float dt)
 {
     m_volume += (m_volumeTarget-m_volume)*0.4f;
-    SoundManager::instance()->setVolumeSoundMainNormalized(m_volume);
+	map<string,ParticleForce*>::iterator it = m_mapParticleForce.begin();
+	ParticleForce* pParticleForce=0;
+	for ( ; it != m_mapParticleForce.end() ; ++it)
+	{
+		pParticleForce = it->second;
+		pParticleForce->update(dt);
+	}
+	
+    //SoundManager::instance()->setVolumeSoundMainNormalized(m_volume);
 }
 
 //--------------------------------------------------------------
@@ -119,8 +159,15 @@ void AnimationParticlesMega2::VM_draw(float w, float h)
 //	glEnd();
     
 	// single global forces
-	particleSystem.addAttractionForce(m_anchor.x, m_anchor.y, w, centerAttraction*m_ampAttraction);
-    particleSystem.addRepulsionForce(m_anchor.x, m_anchor.y, m_volume*m_repulsionRadius, m_volume*m_ampRepulsion);
+	map<string,ParticleForce*>::iterator it = m_mapParticleForce.begin();
+	ParticleForce* pParticleForce=0;
+	for ( ; it != m_mapParticleForce.end() ; ++it)
+	{
+		pParticleForce = it->second;
+	
+		particleSystem.addAttractionForce(pParticleForce->m_anchor.x, pParticleForce->m_anchor.y, w, centerAttraction*m_ampAttraction);
+    	particleSystem.addRepulsionForce(pParticleForce->m_anchor.x, pParticleForce->m_anchor.y, pParticleForce->m_volume*m_repulsionRadius, pParticleForce->m_volume*m_ampRepulsion);
+	}
 
         
     particleSystem.update();
@@ -143,12 +190,34 @@ void AnimationParticlesMega2::VM_exit()
 //--------------------------------------------------------------
 void AnimationParticlesMega2::onNewPacket(DevicePacket* pDevicePacket, string deviceId, float x, float y)
 {
-    m_anchor.set(x, y);
+	 map<string,ParticleForce*>::iterator it = m_mapParticleForce.find(deviceId);
+	 ParticleForce* pParticleForce=0;
 
+	 if ( it == m_mapParticleForce.end())
+	 {
+		 pParticleForce = new ParticleForce(x,y);
+		 m_mapParticleForce[deviceId] = pParticleForce;
+	 }
+	 else
+	 {
+		 pParticleForce = it->second;
+	 }
+
+	 if (pParticleForce && pDevicePacket)
+	 {
+		 pParticleForce->m_anchor.set(x,y);
+		 pParticleForce->m_volumeTarget = pDevicePacket->m_volume;
+		 //printf("pDevicePacket->m_volume = %.5f\n", pDevicePacket->m_volume);
+	 }
+
+
+/*
+    m_anchor.set(x, y);
     if (pDevicePacket)
     {
         m_volumeTarget = pDevicePacket->m_volume;
     }
+*/
 }
 
 
@@ -348,8 +417,11 @@ void ParticleSystem::update() {
 
 void ParticleSystem::draw() {
 	int n = particles.size();
+	glPointSize(particleSize);
+	glEnable(GL_POINT_SPRITE);
 	glBegin(GL_POINTS);
 	for(int i = 0; i < n; i++)
 		particles[i].draw();
 	glEnd();
+	glDisable(GL_POINT_SPRITE);
 }
