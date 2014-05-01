@@ -1,0 +1,35 @@
+<Widget>
+    <Kind>4</Kind>
+    <Name>noiseFactor</Name>
+    <Value>0.010272727</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>noiseFactorTime</Name>
+    <Value>0.026090909</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>sizeRandomMin</Name>
+    <Value>3.657575846</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>sizeRandomMax</Name>
+    <Value>13.636363983</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>speedRandomMin</Name>
+    <Value>-3.121212006</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>speedRandomMax</Name>
+    <Value>2.636363506</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>angleRotation</Name>
+    <Value>1.272727251</Value>
+</Widget>

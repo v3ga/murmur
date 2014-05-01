@@ -36,6 +36,7 @@ function ParticleSquare(x,y)
 //--------------------------------------------------------------
 // Appel au dÃ©marrage de l'animation
 //
+this.iii=0;
 function setup()
 {
 	this.particles = new Array();
@@ -79,8 +80,7 @@ function draw(w,h)
 		of.Line(this.xSaved,this.ySaved,this.particles[i].x,this.particles[i].y);
 		this.particles[i].draw();
 	}
-	//println("here");
-	println(this.particles.length);
+	//println(this.iii);
 }
 
 

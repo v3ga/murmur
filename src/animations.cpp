@@ -89,7 +89,7 @@ Animation::Animation(string name_,string pathAbsScript_)
 
     sm_mapJSObj_Anim[mp_obj] = this;
 
-    printf("#### setting private %s for obj %p, this=%p\n", ok == JS_TRUE ? "OK" : "NO", mp_obj, this);
+    // printf("#### setting private %s for obj %p, this=%p\n", ok == JS_TRUE ? "OK" : "NO", mp_obj, this);
 }
 
 //--------------------------------------------------------------
@@ -158,7 +158,7 @@ void Animation::createUI()
 {
     if (mp_UIcanvas)
     {
-        mp_UIcanvas->addWidgetDown(new ofxUILabel(m_name, OFX_UI_FONT_MEDIUM));
+        mp_UIcanvas->addWidgetDown(new ofxUILabel(m_name, OFX_UI_FONT_LARGE));
         mp_UIcanvas->addWidgetDown(new ofxUISpacer(300, 2));
     }
     
@@ -172,6 +172,12 @@ void Animation::createUI()
     createUICustom();
 
     ofAddListener(mp_UIcanvas->newGUIEvent, this, &Animation::guiEvent);
+}
+
+//--------------------------------------------------------------
+ofxUICanvas* Animation::getUI()
+{
+	return mp_UIcanvas;
 }
 
 //--------------------------------------------------------------
@@ -265,7 +271,7 @@ ofxJSBOOL Animation::jsNewSlider(ofxJSContext* cx, ofxJSObject* obj, uintN argc,
             float max = ofxJSValue_TO_float(argv[2]);
             float val = ofxJSValue_TO_float(argv[3]);
             
-            pThis->mp_UIcanvas->addWidgetDown( new ofxUISlider(ANIM_UI_WIDTH_DEFAULT,ANIM_UI_HEIGHT_DEFAULT,min,max,val,name) );
+            pThis->mp_UIcanvas->addWidgetDown( new ofxUISlider(name, min,max,val, ANIM_UI_WIDTH_DEFAULT,ANIM_UI_HEIGHT_DEFAULT) );
         
             return JS_TRUE;
             
@@ -288,7 +294,7 @@ ofxJSBOOL Animation::jsNewToggle(ofxJSContext* cx, ofxJSObject* obj, uintN argc,
             string name = ofxJSValue_TO_string(argv[0]);
             int val = ofxJSValue_TO_int(argv[1]);
             
-            pThis->mp_UIcanvas->addWidgetDown( new ofxUIToggle(ANIM_UI_HEIGHT_DEFAULT,ANIM_UI_HEIGHT_DEFAULT, val == 0 ? false : true,name) );
+            pThis->mp_UIcanvas->addWidgetDown( new ofxUIToggle(name, val == 0 ? false : true, ANIM_UI_HEIGHT_DEFAULT,ANIM_UI_HEIGHT_DEFAULT) );
         
             return JS_TRUE;
         }

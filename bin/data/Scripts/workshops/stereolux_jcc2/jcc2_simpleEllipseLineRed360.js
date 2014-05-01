@@ -123,5 +123,5 @@ function onNewPacket(deviceId,volume,x,y)
 	this.volumeSaved = volume*200;
 	this.xSaved = x;
 	this.ySaved = y;
-	a=(a+1)%360
+	//a=(a+1)%360
 }

@@ -124,6 +124,18 @@ SoundPlayer* SoundManager::getSoundPlayer(string name)
 }
 
 //--------------------------------------------------------------
+vector<string> SoundManager::getListSoundsName()
+{
+	vector<string> listSoundsName;
+    vector< SoundPlayer* >::iterator it = m_listSoundPlayer.begin();
+    for ( ; it != m_listSoundPlayer.end() ; ++it)
+	{
+		listSoundsName.push_back( (*it)->m_name );
+	}
+	return listSoundsName;
+}
+
+//--------------------------------------------------------------
 void SoundManager::activateSoundMain(bool is)
 {
     if (mp_soundMain)

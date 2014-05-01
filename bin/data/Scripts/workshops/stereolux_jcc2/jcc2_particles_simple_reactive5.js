@@ -66,7 +66,7 @@ function update(dt)
 	
 	for (var i=this.particles.length-1; i>=0 ; i--)
 	{
-		if (this.particles[i].age>=this.particle[i].ageMax)
+		if (this.particles[i].age>=this.particles[i].ageMax)
 		{
 			this.particles[i].age = 4.0;
 			this.particles.splice(i,1);
@@ -90,7 +90,7 @@ function draw(w,h)
 		this.particles[i].draw();
 	}
 	//println("here");
-	println(this.particles.length);
+	//println(this.particles.length);
 }
 
 

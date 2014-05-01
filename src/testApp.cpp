@@ -19,13 +19,19 @@ void testApp::setup()
     // Zero all
 	m_isUpdateLayout = false;
 	
+	mp_guiMain = 0;
+	mp_guiNetwork = 0;
+	mp_guiSound = 0;
 	mp_gui1 = 0;
     mp_gui2 = 0;
     mp_gui3 = 0;
     mp_gui4 = 0;
+	mp_guiAnimations = 0;
     mp_guiAnimProps = 0;
+	mp_radioPanels = 0;
     mp_ddlDevices = 0;
     mp_lblAnimTitle = 0;
+	mp_lblAnimDirJs = 0;
     mp_lblDeviceTitle = 0;
     mp_tgViewSimu = 0;
     mp_sliderDeviceVolMax = 0;
@@ -36,6 +42,8 @@ void testApp::setup()
     mp_sliderDeviceNbLEDsStandby = 0;
     mp_sliderDeviceSpeedStandby = 0;
 	mp_lblSurfaceActivity = 0;
+	mp_consoleJs = 0;
+	m_listLogJsMax = 20;
     
     // Settings
     m_settings.loadFile("configuration.xml");
@@ -53,7 +61,7 @@ void testApp::setup()
     m_oscReceiverIP = "127.0.0.1";
     m_oscReceiverPort = 1234;
 	m_isLaunchMadMapper = false;
-	m_isLaunchMurmurRaspberry = false;
+	m_isLaunchDevices = false;
     
     // Globals
     Globals::instance()->mp_app = this;
@@ -98,23 +106,56 @@ void testApp::setup()
 	}
 	
 	// Launch Murmur on Raspberry
-	if (m_isLaunchMurmurRaspberry && !isSimulation)
+	if (m_isLaunchDevices && !isSimulation)
 	{
-		launchMurmurRaspberry();
+		launchDevices();
 	}
 	
 	// GO
 	ofSetVerticalSync(true);
+	ofSetFrameRate(60);
+	
+    vidRecorder.setVideoCodec("mpeg4"); 
+    vidRecorder.setVideoBitrate("800k");
+//    vidRecorder.setAudioCodec("mp3");
+//    vidRecorder.setAudioBitrate("192k");
+	vidRecorder.setFfmpegLocation( ofFilePath::getAbsolutePath("Video/ffmpeg", true) );
+	// ofLog() << ofFilePath::getAbsolutePath("Video/ffmpeg", true);
+
+//	vidRecorder.setup("test.mov", ofGetWidth(), ofGetHeight(), 30);
 }
 
-//--------------------------------------------------------------
-void testApp::launchMurmurRaspberry()
-{
-	string strIPMurmur = m_settings.getValue("murmur:raspberry:ip", "10.23.108.114");
-	string strRun = "ssh pi@" + strIPMurmur + " /home/pi/Dev/C/openFrameworks/examples/myapps/murmurRaspberry/bin/run_murmur.sh";
 
-	m_threadRasp.setCommand(strRun);
-	m_threadRasp.startThread();
+//--------------------------------------------------------------
+/*void testApp::videoSaved(ofVideoSavedEventArgs& e){
+	// the ofQTKitGrabber sends a message with the file name and any errors when the video is done recording
+	if(e.error.empty())
+	{
+		ofSystem("open " + e.videoPath);
+	}
+	else {
+	   	ofLogError("videoSavedEvent") << "Video save error: " << e.error;
+	}
+}*/
+
+
+//--------------------------------------------------------------
+void testApp::launchDevices()
+{
+	printf("[testApp::launchDevices]\n");
+	int nbLaunchDevices = m_settings.getNumTags("murmur:raspberry:ip");
+	for (int i=0;i<nbLaunchDevices;i++)
+	{
+		string strIPMurmur = m_settings.getValue("murmur:raspberry:ip", "10.23.108.114", i);
+		string strRun = "ssh pi@" + strIPMurmur + " /home/pi/Dev/C/openFrameworks/examples/myapps/murmurRaspberry/bin/run_murmur.sh";
+		threadRasp* pThreadLaunchDevice = new threadRasp();
+		pThreadLaunchDevice->setCommand(strRun);
+		pThreadLaunchDevice->startThread();
+
+		printf("  - running \"%s\"\n", strRun.c_str());
+
+		m_listThreadLaunchDevices.push_back(pThreadLaunchDevice);
+	}
 }
 
 //--------------------------------------------------------------
@@ -150,23 +191,46 @@ void testApp::exit()
 
     if (mp_surfaceMain)
         mp_surfaceMain->saveAnimationsProperties();
-        
+
+	if (mp_guiMain)
+		mp_guiMain->saveSettings("GUI/guiMain_settings.xml");
+ 
+	if (mp_guiNetwork)
+		 mp_guiNetwork->saveSettings("GUI/guiNetwork_settings.xml");
+
+	if (mp_guiAnimations)
+		 mp_guiAnimations->saveSettings("GUI/guiAnimations_settings.xml");
+	
+	if (mp_guiSound)
+		 mp_guiSound->saveSettings("GUI/guiSound_settings.xml");
+ 
 	if (mp_gui1)
         mp_gui1->saveSettings("GUI/gui1_settings.xml");
-    
+ 
 	if (mp_gui4)
         mp_gui4->saveSettings("GUI/gui4_settings.xml");
-
-    
+	
+ 
     delete mp_sceneVisualisation;
     delete mp_deviceManager;
     delete mp_deviceInfoManager;
     delete Globals::instance();
     delete Data::instance();
+	delete mp_guiMain;
+	delete mp_guiNetwork;
+	delete mp_guiSound;
+	delete mp_guiAnimations;
 	delete mp_gui1;
 	delete mp_gui2;
 	delete mp_gui3;
 	delete mp_gui4;
+	
+	vector<threadRasp*>::iterator it;
+	for (it = m_listThreadLaunchDevices.begin(); it!=m_listThreadLaunchDevices.end(); ++it)
+	{
+		(*it)->waitForThread(true);
+		delete (*it);
+	}
 
 	printf("[testApp::exit()] end\n");
 }
@@ -252,6 +316,17 @@ void testApp::initSurfaces()
     // TODO : should have a list here
     mp_surfaceMain = new Surface("main", ofGetWidth(),ofGetHeight());
     mp_surfaceMain->setup();
+
+	// TODO : where to put this
+	// TODO : also when updating the fbo
+#if MURMUR_WARPING
+    m_surfaceQuadWarp.setSourceRect( ofRectangle( 0, 0, mp_surfaceMain->getOffscreen().getWidth(), mp_surfaceMain->getOffscreen().getHeight() ) );              // this is the source rectangle which is the size of the image and located at ( 0, 0 )
+    m_surfaceQuadWarp.setTopLeftCornerPosition( ofPoint( 0, 0 ) );             // this is position of the quad warp corners, centering the image on the screen.
+    m_surfaceQuadWarp.setTopRightCornerPosition( ofPoint( ofGetWidth(), 0 ) );        // this is position of the quad warp corners, centering the image on the screen.
+    m_surfaceQuadWarp.setBottomLeftCornerPosition( ofPoint( 0 ,  ofGetHeight() ) );      // this is position of the quad warp corners, centering the image on the screen.
+    m_surfaceQuadWarp.setBottomRightCornerPosition( ofPoint( ofGetWidth(), ofGetHeight() ) ); // this is position of the quad warp corners, centering the image on the screen.
+    m_surfaceQuadWarp.setup();
+#endif
 }
 
 //--------------------------------------------------------------
@@ -349,154 +424,233 @@ void testApp::initControls()
 	// UI
 	float dim = 16;
 	int widthDefault = 320;
-	float h = 10;
+	float h = 0;
+	ofxUIWidgetFontType fontType = OFX_UI_FONT_SMALL;
     
     //--------------------------------------------------------------
+	// Main panel info
     //--------------------------------------------------------------
-	mp_gui1 = new ofxUICanvas(0,h,widthDefault,1200);
-//	mp_gui1->addWidgetDown(new ofxUILabel("MURMUR", OFX_UI_FONT_LARGE));
-    mp_gui1->addWidgetDown(new ofxUIImage(0,0,238,60,&Data::instance()->m_imgLogo,"logo",false));
+	vector<string> panelNames;
+	panelNames.push_back("Configuration");
+	panelNames.push_back("Network");
+	panelNames.push_back("Devices");
+	panelNames.push_back("Animations");
+	panelNames.push_back("Surfaces");
+	panelNames.push_back("Scene");
+	panelNames.push_back("Sound");
 
-//    mp_gui1->addWidgetDown(new ofxUISpacer(widthDefault, 2));
-    mp_gui1->addWidgetDown(new ofxUIFPS(OFX_UI_FONT_SMALL));
-    
-    mp_gui1->addWidgetDown(new ofxUILabel("CONFIGURATION", OFX_UI_FONT_MEDIUM));
-    mp_gui1->addWidgetDown(new ofxUISpacer(widthDefault, 2));
-    mp_gui1->addWidgetDown(new ofxUIToggle( dim, dim, isShowDevicePointSurfaces, "Show device points"));
-    mp_tgViewSimu = new ofxUIToggle( dim, dim, isViewSimulation, "View simulation");
-    mp_gui1->addWidgetRight(mp_tgViewSimu);
-//    mp_gui1->addWidgetDown(new ofxUIToggle( dim, dim, false, "Show infos on projection"));
-	mp_gui1->addWidgetDown(new ofxUISlider( widthDefault-10, dim, 0.0f, 50.0f, 10.0f, "cache LEDs diameter" ));
+	mp_guiMain = new ofxUICanvas(0,0,widthDefault,1200);
+	mp_guiMain->setWidgetFontSize(OFX_UI_FONT_MEDIUM);
+    mp_guiMain->addWidgetDown(new ofxUIImage(0,0,238,60,&Data::instance()->m_imgLogo,"logo",false));
+    mp_guiMain->addWidgetDown(new ofxUIFPS(fontType));
+	mp_radioPanels = mp_guiMain->addRadio("Panels", panelNames, OFX_UI_ORIENTATION_VERTICAL, OFX_UI_FONT_MEDIUM);
+	
+	mp_guiMain->autoSizeToFitWidgets();
 
-    mp_gui1->addWidgetDown(new ofxUILabel("OSC", OFX_UI_FONT_MEDIUM));
-    mp_gui1->addWidgetDown(new ofxUISpacer(widthDefault, 2));
-    mp_gui1->addWidgetDown(new ofxUILabel("port : ", OFX_UI_FONT_SMALL));
-    mp_gui1->addWidgetRight(new ofxUITextInput("Port", ofToString(m_oscReceiverPort) , 100, dim,0,0,OFX_UI_FONT_SMALL));
-    
-    mp_gui1->addWidgetDown(new ofxUILabel("SOUND", OFX_UI_FONT_MEDIUM));
-    mp_gui1->addWidgetDown(new ofxUISpacer(widthDefault, 2));
-    mp_gui1->addWidgetDown(new ofxUIToggle( dim, dim, isAnimationSequence, "activate main sound"));
-	mp_gui1->addWidgetDown(new ofxUISlider( widthDefault-10, dim, 0.0f, 1.0f, 0.5f, "vol. main sound min." ));
-	mp_gui1->addWidgetDown(new ofxUISlider( widthDefault-10, dim, 0.0f, 1.0f, 1.0f, "vol. main sound max." ));
-    
-/*
-    mp_gui1->addWidgetDown(new ofxUILabel("CONSOLE", OFX_UI_FONT_MEDIUM));
-    mp_gui1->addWidgetDown(new ofxUISpacer(widthDefault, 2));
-    
-    ofxUITextArea* mp_console = new ofxUITextArea( "console", "text\nexample", widthDefault-10, 200.0f, 0.0f,0.0f, OFX_UI_FONT_SMALL);
-    mp_gui1->addWidgetDown(mp_console);
-*/
-    
-    mp_gui1->autoSizeToFitWidgets();
+	float xPanel = mp_guiMain->getRect()->getWidth()+10;
 
-    
-	ofAddListener(mp_gui1->newGUIEvent, this, &testApp::guiEvent);
-    mp_gui1->loadSettings("GUI/gui1_settings.xml");
-    
-    
     //--------------------------------------------------------------
+	// Configuration
     //--------------------------------------------------------------
-	mp_gui2 = new ofxUICanvas(mp_gui1->getRect()->getWidth()+10,h,widthDefault+10,400);
+	mp_gui1 = new ofxUICanvas(xPanel,h,widthDefault,1200);
+	mp_gui1->setName("Configuration");
+	mp_gui1->addWidgetDown(new ofxUILabel("Configuration", OFX_UI_FONT_LARGE));
+    mp_gui1->addWidgetDown(new ofxUISpacer(widthDefault, 2));
+    mp_gui1->addToggle("Show device points", isShowDevicePointSurfaces, dim, dim);
+    mp_tgViewSimu = mp_gui1->addToggle("View simulation", isViewSimulation, dim, dim);
+
+    mp_gui1->addWidgetDown(new ofxUIToggle( "launch madmapper @ start", false, dim, dim));
+    mp_gui1->addWidgetDown(new ofxUIToggle("launch murmur @ rasp", false, dim, dim));
+
+	mp_gui1->autoSizeToFitWidgets();
+	mp_gui1->setVisible(false);
+
+	m_listPanels.push_back(mp_gui1);
+
+    //--------------------------------------------------------------
+	// Network
+    //--------------------------------------------------------------
+	mp_guiNetwork = new ofxUICanvas(xPanel,h,widthDefault,1200);
+    mp_guiNetwork->addWidgetDown(new ofxUILabel("Network", OFX_UI_FONT_LARGE));
+    mp_guiNetwork->addWidgetDown(new ofxUISpacer(widthDefault, 2));
+    mp_guiNetwork->addWidgetDown(new ofxUILabel("port : ", fontType));
+    mp_guiNetwork->addWidgetRight(new ofxUITextInput("Port", ofToString(m_oscReceiverPort) , 100, dim,0,0,fontType));
+
+	mp_guiNetwork->autoSizeToFitWidgets();
+	mp_guiNetwork->setVisible(false);
+
+	m_listPanels.push_back(mp_guiNetwork);
+
+    //--------------------------------------------------------------
+	// Devices
+    //--------------------------------------------------------------
+	mp_gui2 = new ofxUICanvas(xPanel,h,widthDefault,200);
+//	mp_gui2->setName("Devices");
     vector<string> listDevicesIds;
-	mp_ddlDevices = new ofxUIDropDownList(widthDefault, "Devices", listDevicesIds, OFX_UI_FONT_LARGE);
+	mp_ddlDevices = new ofxUIDropDownList("", listDevicesIds);
     guiUpdateListDevices(widthDefault);
 	mp_gui2->setVisible(true);
 	mp_gui2->addWidgetDown(mp_ddlDevices);
- 
-    
+
+//	mp_gui2->autoSizeToFitWidgets();
+	mp_gui2->setVisible(false);
+	
+	m_listPanels.push_back(mp_gui2);
+	
     //--------------------------------------------------------------
-    //--------------------------------------------------------------
-    float xGui3 = mp_gui2->getRect()->getLeft() + mp_gui2->getRect()->getWidth()+10;
-    float wGui3 = ofGetWidth() - xGui3;
+    float xGui3 = xPanel+widthDefault+10;
+    float wGui3 = widthDefault;
 	mp_gui3 = new ofxUICanvas(xGui3,h,wGui3+10,300);
-	mp_lblDeviceTitle = new ofxUILabel("Device", OFX_UI_FONT_LARGE);
+	mp_gui3->setWidgetFontSize(OFX_UI_FONT_MEDIUM);
+	mp_lblDeviceTitle = new ofxUILabel("Devices", OFX_UI_FONT_LARGE);
     mp_gui3->addWidgetDown(mp_lblDeviceTitle);
+    mp_gui3->addWidgetDown(new ofxUISpacer(widthDefault, 2));
 	
 	if (isSimulation)
 	{
-		mp_gui3->addWidgetDown( new ofxUIToggle(dim, dim, false, "mute sound input") );
+		mp_gui3->addWidgetDown( new ofxUIToggle("mute sound input", false, dim, dim) );
 	}
-	
-    
-    mp_sliderDeviceVolMax = new ofxUISlider( wGui3-10, dim, 0.005f, 0.25f, 0.10f, "Vol. max" );
-    mp_sliderDeviceVolHistorySize = new ofxUISlider( wGui3-10, dim, 50, 500, 400, "Vol. history size" );
-    mp_toggleDeviceEnableStandby = new ofxUIToggle( dim, dim, true, "Enable standby");
-    mp_sliderDeviceVolHistoryTh = new ofxUISlider( wGui3-10, dim, 0.0f, 0.75f, 0.5f, "Vol. history standby" );
-    mp_sliderDeviceTimeStandby = new ofxUISlider( wGui3-10, dim, 5.0f, 20.0f, 10.0f, "Time standby" );
-    mp_sliderDeviceNbLEDsStandby = new ofxUISlider( wGui3-10, dim, 10, 100, 50.0f, "Nb LEDs standby" );
-    mp_sliderDeviceSpeedStandby = new ofxUISlider( wGui3-10, dim, 40, 360, 70.0f, "Speed standby" );
+ 
+    mp_sliderDeviceVolMax = new ofxUISlider("Vol. max", 0.005f, 0.04f, 0.02f, wGui3-10, dim );
+    mp_sliderDeviceVolHistorySize = new ofxUISlider("Vol. history size", 50, 500, 400, wGui3-10, dim );
+    mp_toggleDeviceEnableStandby = new ofxUIToggle("Enable standby", true, dim, dim);
+    mp_sliderDeviceVolHistoryTh = new ofxUISlider( "Vol. history standby", 0.0f, 0.75f, 0.5f, wGui3-10, dim );
+    mp_sliderDeviceTimeStandby = new ofxUISlider("Time standby", 5.0f, 20.0f, 10.0f, wGui3-10, dim );
+    mp_sliderDeviceNbLEDsStandby = new ofxUISlider( "Nb LEDs standby", 10, 100, 50.0f, wGui3-10, dim );
+    mp_sliderDeviceSpeedStandby = new ofxUISlider( "Speed standby", 40, 360, 70.0f, wGui3-10, dim );
  
 	mp_gui3->addWidgetDown(mp_sliderDeviceVolMax);
 	mp_gui3->addWidgetDown(mp_sliderDeviceVolHistorySize);
 
-    mp_gui3->addWidgetDown(new ofxUILabel("> Stand by", OFX_UI_FONT_SMALL));
+    mp_gui3->addWidgetDown(new ofxUILabel("> Stand by", fontType));
     mp_gui3->addWidgetDown(mp_toggleDeviceEnableStandby);
 	mp_gui3->addWidgetDown(mp_sliderDeviceVolHistoryTh);
 	mp_gui3->addWidgetDown(mp_sliderDeviceTimeStandby);
 	mp_gui3->addWidgetDown(mp_sliderDeviceNbLEDsStandby);
 	mp_gui3->addWidgetDown(mp_sliderDeviceSpeedStandby);
 
-    
-    mp_gui3->autoSizeToFitWidgets();
-    
-    
-    ofxUIRectangle* pGui3Rect = mp_gui3->getRect();
-    mp_gui4 = new ofxUICanvas(pGui3Rect->getX(), pGui3Rect->getY()+pGui3Rect->getHeight() ,pGui3Rect->getWidth(),300);
+	mp_gui3->autoSizeToFitWidgets();
+	mp_gui3->setVisible(false);
+
+	m_listPanels.push_back(mp_gui3);
 
 
- 
-    mp_gui4->addWidgetDown	( new ofxUILabel("SURFACE", OFX_UI_FONT_MEDIUM) );
-    mp_gui4->addWidgetDown	( new ofxUISpacer(widthDefault, 2));
+    //--------------------------------------------------------------
+	// Animations
+    //--------------------------------------------------------------
+	mp_guiAnimations = new ofxUICanvas(xPanel,h,widthDefault,300);
+    mp_guiAnimations->addWidgetDown(new ofxUILabel("Animations", OFX_UI_FONT_LARGE));
+    mp_guiAnimations->addWidgetDown(new ofxUISpacer(widthDefault, 2));
+	mp_guiAnimations->addWidgetDown(new ofxUIToggle("activate sequence", isAnimationSequence, dim, dim));
+	mp_guiAnimations->addWidgetDown(new ofxUISlider("transition duration (s)", 0.5f, 2.0f, 0.75f, wGui3-10, dim ));
+	mp_guiAnimations->addWidgetDown(new ofxUISlider("animation duration (s)", 30.0f, 180.0f, 120.0f, wGui3-10, dim ));
 
-    mp_gui4->addWidgetDown	( new ofxUIToggle( dim, dim, false, "surf. enable standby") );
-    mp_gui4->addWidgetRight	( new ofxUILabel("| state", OFX_UI_FONT_SMALL) );
-	mp_lblSurfaceActivity = new ofxUILabel("1234", "4",OFX_UI_FONT_SMALL);
-    mp_gui4->addWidgetRight ( mp_lblSurfaceActivity );
-    mp_gui4->addWidgetDown(new ofxUISlider( wGui3-10, dim, 0.01f, 0.1f, 0.02f, "th. go standby" ));
-    mp_gui4->addWidgetDown(new ofxUISlider( wGui3-10, dim, 0.01f, 0.1f, 0.02f, "th. go active" ));
-    mp_gui4->addWidgetDown(new ofxUISlider( wGui3-10, dim, 10.0f, 60.0f, 20.0f, "dur. pre-standby" ));
-
-
-    mp_gui4->addWidgetDown	( new ofxUILabel("Dimensions", OFX_UI_FONT_SMALL) );
-    mp_gui4->addWidgetRight ( new ofxUITextInput("wSurface", "4" , 40, dim,0,0,OFX_UI_FONT_SMALL));
-    mp_gui4->addWidgetRight	( new ofxUILabel("x", OFX_UI_FONT_SMALL) );
-    mp_gui4->addWidgetRight	( new ofxUITextInput("hSurface", "3" , 40, dim,0,0,OFX_UI_FONT_SMALL));
-
-    mp_gui4->addWidgetDown	( new ofxUILabel("FBO", OFX_UI_FONT_SMALL) );
-    mp_gui4->addWidgetRight ( new ofxUITextInput("wFboSurface", "1000" , 40, dim,0,0,OFX_UI_FONT_SMALL));
-    mp_gui4->addWidgetRight	( new ofxUILabel("x", OFX_UI_FONT_SMALL) );
-    mp_gui4->addWidgetRight	( new ofxUITextInput("hFboSurface", "1000" , 40, dim,0,0,OFX_UI_FONT_SMALL));
-
-
-    mp_gui4->addWidgetDown(new ofxUIToggle( dim, dim, false, "syphon"));
-    mp_gui4->addWidgetRight(new ofxUIToggle( dim, dim, false, "target"));
-    mp_gui4->addWidgetRight(new ofxUISlider( 100, dim, 1.0f, 8.0f, 2.0f, "target line w" ));
-    mp_gui4->addWidgetDown(new ofxUIToggle( dim, dim, false, "launch madmapper @ start"));
-    mp_gui4->addWidgetDown(new ofxUIToggle( dim, dim, false, "launch murmur @ rasp"));
-
-    mp_gui4->addWidgetDown(new ofxUIToggle( dim, dim, isAnimationSequence, "activate sequence"));
-	mp_gui4->addWidgetDown(new ofxUISlider( wGui3-10, dim, 0.5f, 2.0f, 0.75f, "transition duration (s)" ));
-	mp_gui4->addWidgetDown(new ofxUISlider( wGui3-10, dim, 30.0f, 180.0f, 120.0f, "animation duration (s)" ));
+	mp_guiAnimations->addWidgetDown(new ofxUILabel("Scripts", OFX_UI_FONT_MEDIUM));
+    mp_guiAnimations->addWidgetDown(new ofxUISpacer(widthDefault, 2));
+    mp_lblAnimDirJs = new ofxUILabel("> dir", fontType);
+    mp_lblAnimTitle = new ofxUILabel("> playing animation.js", fontType);
+	mp_guiAnimations->addWidgetDown(mp_lblAnimDirJs);
+	mp_guiAnimations->addWidgetDown(mp_lblAnimTitle);
+	mp_guiAnimations->addWidgetDown(new ofxUILabelButton("Reload", 100, false,fontType));
+	mp_guiAnimations->addWidgetRight(new ofxUILabelButton("Edit", 100, false,fontType));
+	mp_guiAnimations->addWidgetDown(new ofxUILabel("Console", OFX_UI_FONT_MEDIUM));
+    mp_guiAnimations->addWidgetDown(new ofxUISpacer(widthDefault, 2));
+	mp_consoleJs = new ofxUITextArea("Console", "", widthDefault, 300,0,0,fontType);
+	mp_guiAnimations->addWidgetDown(mp_consoleJs);
 
 
-    mp_lblAnimTitle = new ofxUILabel("> playing animation.js", OFX_UI_FONT_SMALL);
-	mp_gui4->addWidgetDown(mp_lblAnimTitle);
-	mp_gui4->addWidgetDown(new ofxUILabelButton( 100, false, "Reload",OFX_UI_FONT_SMALL));
-	mp_gui4->addWidgetRight(new ofxUILabelButton( 100, false, "Edit",OFX_UI_FONT_SMALL));
+//void ofxUITextArea::init(string _name, string _textstring, float w, float h, float x, float y, int _size)
+
+
+    mp_guiAnimations->setVisible(false);
+	mp_guiAnimations->autoSizeToFitWidgets();
 
     guiUpdateDeviceAnimationTitle();
-    mp_gui4->setVisible(true);
+
+
+	m_listPanels.push_back(mp_guiAnimations);
+
+    //--------------------------------------------------------------
+	// Surfaces
+    //--------------------------------------------------------------
+    mp_gui4 = new ofxUICanvas(xPanel, h , widthDefault,300);
+	mp_gui4->setWidgetFontSize(OFX_UI_FONT_MEDIUM);
+ 
+    mp_gui4->addWidgetDown	( new ofxUILabel("Surfaces", OFX_UI_FONT_MEDIUM) );
+    mp_gui4->addWidgetDown	( new ofxUISpacer(widthDefault, 2));
+
+    mp_gui4->addWidgetDown	( new ofxUIToggle("surf. enable standby", false, dim, dim) );
+    mp_gui4->addWidgetRight	( new ofxUILabel("| state", fontType) );
+	mp_lblSurfaceActivity = new ofxUILabel("1234", "4",fontType);
+    mp_gui4->addWidgetRight ( mp_lblSurfaceActivity );
+    mp_gui4->addWidgetDown(new ofxUISlider( "th. go standby", 0.01f, 0.1f, 0.02f,wGui3-10, dim ));
+    mp_gui4->addWidgetDown(new ofxUISlider( "th. go active", 0.01f, 0.1f, 0.02f,wGui3-10, dim ));
+    mp_gui4->addWidgetDown(new ofxUISlider( "dur. pre-standby", 10.0f, 60.0f, 20.0f,wGui3-10, dim ));
+
+
+    mp_gui4->addWidgetDown	( new ofxUILabel("Dimensions", fontType) );
+    mp_gui4->addWidgetRight ( new ofxUITextInput("wSurface", "4" , 40, dim,0,0,fontType));
+    mp_gui4->addWidgetRight	( new ofxUILabel("x", fontType) );
+    mp_gui4->addWidgetRight	( new ofxUITextInput("hSurface", "3" , 40, dim,0,0,fontType));
+
+    mp_gui4->addWidgetDown	( new ofxUILabel("FBO", fontType) );
+    mp_gui4->addWidgetRight ( new ofxUITextInput("wFboSurface", "1000" , 40, dim,0,0,fontType));
+    mp_gui4->addWidgetRight	( new ofxUILabel("x", fontType) );
+    mp_gui4->addWidgetRight	( new ofxUITextInput("hFboSurface", "1000" , 40, dim,0,0,fontType));
+
+
+    mp_gui4->addWidgetDown(new ofxUIToggle("syphon", false, dim, dim));
+    mp_gui4->addWidgetRight(new ofxUIToggle("target", false, dim, dim));
+    mp_gui4->addWidgetRight(new ofxUISlider("target line w", 1.0f, 8.0f, 2.0f, 100, dim ));
+
+
+	mp_gui4->setVisible(false);
 	mp_gui4->autoSizeToFitWidgets();
-	ofAddListener(mp_gui4->newGUIEvent, this, &testApp::guiEvent);
-    mp_gui4->loadSettings("GUI/gui4_settings.xml");
-    
+
+
+	m_listPanels.push_back(mp_gui4);
+
+    //--------------------------------------------------------------
+	// Sound
+    //--------------------------------------------------------------
+	mp_guiSound = new ofxUICanvas(xPanel,h,widthDefault,1200);
+
+    mp_guiSound->addWidgetDown(new ofxUILabel("Sounds", OFX_UI_FONT_LARGE));
+    mp_guiSound->addWidgetDown(new ofxUISpacer(widthDefault, 2));
+    mp_guiSound->addWidgetDown(new ofxUIToggle( "activate main sound", isAnimationSequence, dim, dim));
+	mp_guiSound->addWidgetDown(new ofxUISlider( "vol. main sound min.", 0.0f, 1.0f, 0.5f, widthDefault-10, dim));
+	mp_guiSound->addWidgetDown(new ofxUISlider( "vol. main sound max.", 0.0f, 1.0f, 1.0f, widthDefault-10, dim));
+
+//    mp_guiSound->addWidgetDown(new ofxUILabel("Library", OFX_UI_FONT_LARGE));
+//    mp_guiSound->addWidgetDown(new ofxUISpacer(widthDefault, 2));
+
+	ofxUIDropDownList* mp_ddlSounds = new ofxUIDropDownList("Library", SoundManager::instance()->getListSoundsName());
+//	mp_ddlSounds->setLabelText("Sounds");
+	mp_ddlSounds->open();
+	mp_guiSound->addWidgetDown(mp_ddlSounds);
+
+	mp_guiSound->autoSizeToFitWidgets();
+	mp_guiSound->setVisible(false);
+
+	m_listPanels.push_back(mp_guiSound);
 
     //--------------------------------------------------------------
     //--------------------------------------------------------------
+	ofAddListener(mp_guiMain->newGUIEvent, this, &testApp::guiMainEvent);
+	ofAddListener(mp_guiNetwork->newGUIEvent, this, &testApp::guiEvent);
+	ofAddListener(mp_guiAnimations->newGUIEvent, this, &testApp::guiEvent);
+	ofAddListener(mp_gui1->newGUIEvent, this, &testApp::guiEvent);
 	ofAddListener(mp_gui2->newGUIEvent, this, &testApp::guiEvent);
 	ofAddListener(mp_gui3->newGUIEvent, this, &testApp::guiEvent);
-    
-    
+	ofAddListener(mp_gui4->newGUIEvent, this, &testApp::guiEvent);
+	ofAddListener(mp_guiSound->newGUIEvent, this, &testApp::guiEvent);
+	
+	 mp_gui1->loadSettings("GUI/gui1_settings.xml");
+	 mp_gui4->loadSettings("GUI/gui4_settings.xml");
+	 mp_guiNetwork->loadSettings("GUI/guiNetwork_settings.xml");
+	 mp_guiSound->loadSettings("GUI/guiSound_settings.xml");
+	 mp_guiAnimations->loadSettings("GUI/guiAnimations_settings.xml");
+ 
     //--------------------------------------------------------------
     //--------------------------------------------------------------
     // TODO : iterate through the list of surfaces here
@@ -509,8 +663,8 @@ void testApp::initControls()
         {
             Animation* pAnim = *it;
 
-            ofxUIRectangle* pGui4Rect = mp_gui4->getRect();
-            ofxUICanvas* pAnimCanvas = new ofxUICanvas(pGui4Rect->getX(), pGui4Rect->getY()+pGui4Rect->getHeight() ,pGui4Rect->getWidth(), 300);
+            ofxUIRectangle* pGuiAnimRect = mp_guiAnimations->getRect();
+            ofxUICanvas* pAnimCanvas = new ofxUICanvas(pGuiAnimRect->getX()+pGuiAnimRect->getWidth()+10, pGuiAnimRect->getY(), widthDefault, 300);
             pAnim->setUICanvas( pAnimCanvas );
             pAnim->createUI();
             
@@ -540,8 +694,34 @@ void testApp::initJS()
 {
 	int err = ofxJSInitialize();
     if (err == 0)
+	{
+		// Log
+		ofxJSPrintCallback((void*)this, logJS);
+
+		// Create some new functions
         setupJS();
-} 
+	}
+}
+
+//--------------------------------------------------------------
+void testApp::logJS(void* pData, const string& message)
+{
+   std::cout << message;
+   testApp* pThis = (testApp*) pData;
+   if (pThis && pThis->mp_consoleJs)
+   {
+		pThis->m_listLogJs.insert(pThis->m_listLogJs.begin(), message);
+		if (pThis->m_listLogJs.size() > pThis->m_listLogJsMax){
+			pThis->m_listLogJs.pop_back();
+		}
+		string s = "";
+		for (int i=0;i<pThis->m_listLogJs.size();i++){
+			s = s+pThis->m_listLogJs[i]+"\n";
+		}
+		pThis->mp_consoleJs->setTextString(s);
+   }
+}
+ 
 
 //--------------------------------------------------------------
 void testApp::update()
@@ -597,22 +777,19 @@ void testApp::draw()
 
         // Draw sound input data
         Device* pDeviceCurrent = mp_deviceManager->getDeviceCurrent();
-        if (pDeviceCurrent && mp_gui2->isVisible()){
- //           pDeviceCurrent->drawSoundInputVolume( 0.5f*(ofGetWidth()-pDeviceCurrent->getWidthSoundInputVolume()) ,ofGetHeight()-pDeviceCurrent->getHeightSoundInputVolume());
+        if (pDeviceCurrent && mp_gui2 && mp_gui2->isVisible())
+		{
             pDeviceCurrent->drawSoundInputVolume( 0.5f*(ofGetWidth()) ,ofGetHeight()-pDeviceCurrent->getHeightSoundInputVolume());
         }
         
 		if (m_isUpdateLayout)
 		{
 			guiUpdateListDevices(320);
-		
 			m_isUpdateLayout = false;
 		}
 
-     
-/*        if (mp_gui1)
-            mp_gui1->draw();
-*/
+		recordingImage.grabScreen(0, 0, ofGetWidth(), ofGetHeight());
+        vidRecorder.addFrame(recordingImage.getPixelsRef());
     }
 	else
     {
@@ -634,8 +811,64 @@ void testApp::draw()
 			{
                 mp_surfaceMain->drawDevicePointSurface(m_rectSurfaceOff);
             }
+			
+			#if MURMUR_WARPING
+				ofMatrix4x4 mat = m_surfaceQuadWarp.getMatrix();
+				
+				//======================== use the matrix to transform our fbo.
+				
+				glPushMatrix();
+				glMultMatrixf( mat.getPtr() );
+				{
+					mp_surfaceMain->getOffscreen().draw( 0, 0 );
+				}
+				glPopMatrix();
+			#endif
+
         }
     }
+}
+
+//--------------------------------------------------------------
+void testApp::guiMainEvent(ofxUIEventArgs &e)
+{
+    string name = e.widget->getName();
+	if (name == "Panels")
+	{
+        ofxUIRadio *radio = (ofxUIRadio *) e.widget;
+        //cout << radio->getName() << " value: " << radio->getValue() << " active name: " << radio->getActiveName() << endl;
+		vector<ofxUICanvas*>::iterator it;
+		for (it = m_listPanels.begin() ; it!=m_listPanels.end(); ++it){
+			(*it)->setVisible(false);
+		}
+		if (mp_guiAnimProps)
+			mp_guiAnimProps->setVisible(false);
+
+		string panelName = radio->getActiveName();
+		
+		if (panelName == "Configuration"){
+			if (mp_gui1) mp_gui1->setVisible(true);
+		}
+		else if (panelName == "Network"){
+			if (mp_guiNetwork) mp_guiNetwork->setVisible(true);
+		}
+		else if (panelName == "Devices"){
+			if (mp_gui2) mp_gui2->setVisible(true);
+			if (mp_gui3) mp_gui3->setVisible(true);
+		}
+		else if (panelName == "Animations"){
+			if (mp_guiAnimations) mp_guiAnimations->setVisible(true);
+			if (mp_guiAnimProps) mp_guiAnimProps->setVisible(true);
+		}
+		else if (panelName == "Surfaces"){
+			if (mp_gui4) mp_gui4->setVisible(true);
+		}
+		else if (panelName == "Sound"){
+			if (mp_guiSound) mp_guiSound->setVisible(true);
+		}
+		
+		
+	}
 }
 
 //--------------------------------------------------------------
@@ -681,7 +914,7 @@ void testApp::guiEvent(ofxUIEventArgs &e)
 	else
 	if (name == "launch murmur @ rasp")
 	{
-		m_isLaunchMurmurRaspberry = ((ofxUIToggle *) e.widget)->getValue();
+		m_isLaunchDevices = ((ofxUIToggle *) e.widget)->getValue();
 	}
 	else
     if (name == "syphon")
@@ -731,6 +964,17 @@ void testApp::guiEvent(ofxUIEventArgs &e)
     {
         SoundManager::instance()->m_soundMainVolumeMax = ((ofxUISlider *) e.widget)->getScaledValue();
     }
+    else if (name == "Library")
+    {
+        ofxUIDropDownList *ddlist = (ofxUIDropDownList *) e.widget;
+        vector<ofxUIWidget *> &selected = ddlist->getSelected();
+        if (selected.size()==1){
+			//printf("selected %s", selected[0]->getName().c_str());
+	    	
+		}
+    }
+
+
     else if (name == "Port")
     {
         m_oscReceiverPort = atoi( ((ofxUITextInput *) e.widget)->getTextString().c_str() );
@@ -789,7 +1033,7 @@ void testApp::guiEvent(ofxUIEventArgs &e)
     else if (name == "View simulation")
     {
         isViewSimulation = ((ofxUIToggle *) e.widget)->getValue();
-        showControls(isViewSimulation);
+       // showControls(isViewSimulation);
 //        toggleView();
     }
     else if (name == "Show device points")
@@ -868,7 +1112,9 @@ void testApp::selectDevice(string id)
         if (pDevice)
         {
             // Reveal container
-            if (mp_gui3) mp_gui3->setVisible(true);
+			if (mp_radioPanels) mp_radioPanels->activateToggle("Devices");
+	
+//            if (mp_gui3) mp_gui3->setVisible(true);
 
             // Label of container
             if (mp_lblDeviceTitle) mp_lblDeviceTitle->setLabel(pDevice->m_id);
@@ -894,19 +1140,27 @@ void testApp::guiUpdateListDevices(int widthDefault)
         printf("[testApp::guiUpdateListDevices]\n  - %d devices\n", (int)listDevicesId.size());
      
 		mp_ddlDevices->setAutoClose(false);
-        mp_ddlDevices->initToggles(listDevicesId, OFX_UI_FONT_SMALL);
+        mp_ddlDevices->init("Devices",listDevicesId);
     }
 }
 
 //--------------------------------------------------------------
 void testApp::guiUpdateDeviceAnimationTitle()
 {
-    if (mp_lblAnimTitle){
-        Surface* pSurfaceCurrent = this->getSurfaceForDeviceCurrent();
-        if (pSurfaceCurrent && pSurfaceCurrent->getAnimationManager().mp_animationCurrent){
-            mp_lblAnimTitle->setLabel("> surface '"+pSurfaceCurrent->getId()+"' / playing '"+pSurfaceCurrent->getAnimationManager().mp_animationCurrent->m_name+"'");
-        }
-    }
+   Surface* pSurfaceCurrent = this->getSurfaceForDeviceCurrent();
+   if (pSurfaceCurrent)
+   {
+   	 if (mp_lblAnimDirJs)
+	 {
+			 mp_lblAnimDirJs->setLabel("> dir "+pSurfaceCurrent->m_strDirScripts);
+	 }
+   
+	 if (mp_lblAnimTitle)
+	 {
+	 	if (pSurfaceCurrent->getAnimationManager().mp_animationCurrent)
+	 		mp_lblAnimTitle->setLabel("> surface '"+pSurfaceCurrent->getId()+"' / playing '"+pSurfaceCurrent->getAnimationManager().mp_animationCurrent->m_name+"'");
+	 }
+	}
 }
 
 //--------------------------------------------------------------
@@ -914,13 +1168,13 @@ void testApp::guiUpdateDevice(Device* pDevice)
 {
     if (pDevice)
     {
-        mp_sliderDeviceVolMax->setValue( pDevice->getSoundInputVolumeMax() );
-        mp_sliderDeviceVolHistorySize->setValue( float(pDevice->getSoundInputVolHistorySize()) );
-        mp_sliderDeviceVolHistoryTh->setValue( float(pDevice->getSoundInputVolHistoryTh()) );
-        mp_toggleDeviceEnableStandby->setValue( pDevice->getEnableStandbyMode() );
-        mp_sliderDeviceTimeStandby->setValue( pDevice->getTimeStandby() );
-        mp_sliderDeviceNbLEDsStandby->setValue( pDevice->getNbLEDsStandby() );
-        mp_sliderDeviceSpeedStandby->setValue( pDevice->getSpeedStandby() );
+        if (mp_sliderDeviceVolMax) mp_sliderDeviceVolMax->setValue( pDevice->getSoundInputVolumeMax() );
+        if (mp_sliderDeviceVolHistorySize) mp_sliderDeviceVolHistorySize->setValue( float(pDevice->getSoundInputVolHistorySize()) );
+        if (mp_sliderDeviceVolHistoryTh) mp_sliderDeviceVolHistoryTh->setValue( float(pDevice->getSoundInputVolHistoryTh()) );
+        if (mp_toggleDeviceEnableStandby) mp_toggleDeviceEnableStandby->setValue( pDevice->getEnableStandbyMode() );
+        if (mp_sliderDeviceTimeStandby) mp_sliderDeviceTimeStandby->setValue( pDevice->getTimeStandby() );
+        if (mp_sliderDeviceNbLEDsStandby) mp_sliderDeviceNbLEDsStandby->setValue( pDevice->getNbLEDsStandby() );
+        if (mp_sliderDeviceSpeedStandby) mp_sliderDeviceSpeedStandby->setValue( pDevice->getSpeedStandby() );
     }
 }
 
@@ -973,13 +1227,69 @@ void testApp::toggleView()
 }
 
 //--------------------------------------------------------------
+void testApp::saveWidgetState(ofxUIWidget* pWidget)
+{
+	if (pWidget)
+		m_mapControlsState[pWidget] = pWidget->isVisible();
+}
+
+//--------------------------------------------------------------
+void testApp::saveControlsState()
+{
+	saveWidgetState(mp_guiMain);
+	saveWidgetState(mp_gui1);
+	saveWidgetState(mp_gui2);
+	saveWidgetState(mp_gui3);
+	saveWidgetState(mp_gui4);
+	saveWidgetState(mp_guiSound);
+	saveWidgetState(mp_guiNetwork);
+	saveWidgetState(mp_guiAnimations);
+	saveWidgetState(mp_guiAnimProps);
+}
+
+//--------------------------------------------------------------
+void testApp::restoreControlsState()
+{
+	if (mp_guiMain) mp_guiMain->setVisible(m_mapControlsState[mp_guiMain]);
+    if (mp_gui1) mp_gui1->setVisible(m_mapControlsState[mp_gui1]);
+    if (mp_gui2) mp_gui2->setVisible(m_mapControlsState[mp_gui2]);
+    if (mp_gui3) mp_gui3->setVisible(m_mapControlsState[mp_gui3]);
+    if (mp_gui4) mp_gui4->setVisible(m_mapControlsState[mp_gui4]);
+    if (mp_guiSound) mp_guiSound->setVisible(m_mapControlsState[mp_guiSound]);
+    if (mp_guiNetwork) mp_guiNetwork->setVisible(m_mapControlsState[mp_guiNetwork]);
+    if (mp_guiAnimations) mp_guiAnimations->setVisible(m_mapControlsState[mp_guiAnimations]);
+    if (mp_guiAnimProps) mp_guiAnimProps->setVisible(m_mapControlsState[mp_guiAnimProps]);
+}
+
+//--------------------------------------------------------------
 void testApp::showControls(bool is)
 {
+	if (is)
+		restoreControlsState();
+	else{
+		saveControlsState();
+		if (mp_guiMain && mp_guiMain->isVisible()) mp_guiMain->setVisible(false);
+    	if (mp_gui1 && mp_gui1->isVisible()) mp_gui1->setVisible(false);
+    	if (mp_gui2 && mp_gui2->isVisible()) mp_gui2->setVisible(false);
+    	if (mp_gui3 && mp_gui3->isVisible()) mp_gui3->setVisible(false);
+    	if (mp_gui4 && mp_gui4->isVisible()) mp_gui4->setVisible(false);
+    	if (mp_guiSound && mp_guiSound->isVisible()) mp_guiSound->setVisible(false);
+    	if (mp_guiNetwork && mp_guiNetwork->isVisible()) mp_guiNetwork->setVisible(false);
+    	if (mp_guiAnimations && mp_guiAnimations->isVisible()) mp_guiAnimations->setVisible(false);
+    	if (mp_guiAnimProps && mp_guiAnimProps->isVisible()) mp_guiAnimProps->setVisible(false);
+	}
+/*
+	if (mp_guiMain) mp_guiMain->setVisible(is);
     if (mp_gui1) mp_gui1->setVisible(is);
     if (mp_gui2) mp_gui2->setVisible(is);
     if (mp_gui3) mp_gui3->setVisible(is);
     if (mp_gui4) mp_gui4->setVisible(is);
+    if (mp_guiSound) mp_guiSound->setVisible(is);
+    if (mp_guiNetwork) mp_guiNetwork->setVisible(is);
+    if (mp_guiAnimations) mp_guiAnimations->setVisible(is);
     if (mp_guiAnimProps) mp_guiAnimProps->setVisible(is);
+*/
+
 }
 
 //--------------------------------------------------------------
@@ -990,7 +1300,8 @@ void testApp::keyPressed(int key)
         toggleView();
         guiUpdateViewSimulation();
     }
-	else if (key == OF_KEY_RIGHT)
+	else
+	if (key == OF_KEY_RIGHT)
     {
         Surface* pSurfaceCurrent = getSurfaceForDeviceCurrent();
         if (pSurfaceCurrent)
@@ -1007,11 +1318,15 @@ void testApp::keyPressed(int key)
             {
                 Animation* pAnimationCurrent = pSurfaceCurrent->getAnimationManager().mp_animationCurrent;
                 if (pAnimationCurrent)
-                    mp_guiAnimProps = pAnimationCurrent->showUI();
+                    mp_guiAnimProps = pAnimationCurrent->getUI();
+				if (mp_radioPanels && mp_radioPanels->getActiveName() == "Animations" && mp_guiAnimProps){
+					mp_guiAnimProps->setVisible(true);
+				}
             }
         }
     }
-	else if (key == OF_KEY_LEFT)
+	else
+	if (key == OF_KEY_LEFT)
     {
         Surface* pSurfaceCurrent = getSurfaceForDeviceCurrent();
         if (pSurfaceCurrent)
@@ -1025,15 +1340,23 @@ void testApp::keyPressed(int key)
             {
                 Animation* pAnimationCurrent = pSurfaceCurrent->getAnimationManager().mp_animationCurrent;
                 if (pAnimationCurrent)
-                    mp_guiAnimProps = pAnimationCurrent->showUI();
+                    mp_guiAnimProps = pAnimationCurrent->getUI();
+				if (mp_radioPanels && mp_radioPanels->getActiveName() == "Animations" && mp_guiAnimProps){
+					mp_guiAnimProps->setVisible(true);
+				}
             }
-        
-        
         }
     }
-	else if ( key >= '1' && key <='9')
+	else
+	if ( key >= '1' && key <='9')
 	{
 		Globals::instance()->mp_app->selectDeviceWithIndex((int)(key-'1'));
+	}
+	else
+	if (key == 'x')
+	{
+		vidRecorder.close();
+		ofLog() << vidRecorder.getMoviePath();
 	}
     else
     {
@@ -1090,13 +1413,17 @@ void testApp::onSurfaceModified(Surface* pSurface)
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button)
 {
-    if (isViewSimulation)
+    if (isViewSimulation && mp_gui1 && mp_gui2 && mp_gui3 && mp_gui4)
     {
         m_isUserControls =
         mp_gui1->isHit(x,y) ||
         mp_gui2->isHit(x,y) ||
         mp_gui3->isHit(x,y) ||
         mp_gui4->isHit(x,y) ||
+        mp_guiNetwork->isHit(x,y) ||
+        mp_guiAnimations->isHit(x,y) ||
+        mp_guiMain->isHit(x,y) ||
+        mp_guiSound->isHit(x,y) ||
         (mp_guiAnimProps && mp_guiAnimProps->isHit(x,y));
 
         if (m_isUserControls) return;

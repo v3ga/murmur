@@ -34,7 +34,6 @@ bool setupJS()
 	if (pScript){
 		bool evalOk = ofxJSEval(pScript);
 		if (evalOk){
-			//printf("Loaded \"versatubes.js\"\n");
 		}
 	}
 	
@@ -121,15 +120,20 @@ ofxJSDeclareFunctionCpp(playSound)
 	if (argc==1)
     {
         SoundManager::instance()->playSound( ofxJSValue_TO_string(argv[0]) );
+		return JS_TRUE;
     }
 	else if (argc==2)
     {
         SoundManager::instance()->playSound( ofxJSValue_TO_string(argv[0]),  ofxJSValue_TO_int(argv[1]) == 0 ? false : true );
+		return JS_TRUE;
     }
 	else if (argc==3)
     {
         SoundManager::instance()->playSound( ofxJSValue_TO_string(argv[0]),  ofxJSValue_TO_int(argv[1]) == 0 ? false : true, ofxJSValue_TO_float(argv[2]) );
+		return JS_TRUE;
     }
+
+	return JS_FALSE;
 }
 
 //--------------------------------------------------------------

@@ -21,7 +21,7 @@ Surface::Surface(string id, int wPixels, int hPixels)
 	zeroAll();
 
 	setDimensions(wPixels,hPixels);
-	#if MURMUR_USE_SYPHON
+	#if MURMUR_DEFINE_SYPHON
 		m_syphonServer.setName(m_id);
 	#endif
 }
@@ -34,7 +34,7 @@ Surface::Surface(string id)
     m_id = id;
 	zeroAll();
 
-	#if MURMUR_USE_SYPHON
+	#if MURMUR_DEFINE_SYPHON
 		m_syphonServer.setName(m_id);
 	#endif
 }
@@ -120,25 +120,98 @@ void Surface::setup()
     ofxXmlSettings surfaceSettings;
 	string filename = "Config/surfaces/surface"+m_id+".xml";
 	
-    if ( surfaceSettings.loadFile(filename.c_str()) ) // TODO : depends on the id of the surface...
+    if ( surfaceSettings.loadFile(filename.c_str()) )
     {
         surfaceSettings.pushTag("surface");
-        surfaceSettings.pushTag("animations");
+		
+		int nbAnimationsTag = surfaceSettings.getNumTags("animations");
+		for (int i=0;i<nbAnimationsTag;i++)
+		{
+			string type = surfaceSettings.getAttribute("animations", "type", "", i);
+			printf(" - type=%s\n", type.c_str());
 
-        int nbAnimations = surfaceSettings.getNumTags("animation");
-        printf("  - nbAnimations=%d\n", nbAnimations);
-        for (int i=0;i<nbAnimations;i++){
+			// ----------------------------------------
+			// CPP
+			// ----------------------------------------
+			if (type == "cpp")
+			{
+
+				surfaceSettings.pushTag("animations", i);
+
+		        int nbAnimations = surfaceSettings.getNumTags("animation");
+        		printf(" - nbAnimations=%d\n", nbAnimations);
+        		for (int j=0;j<nbAnimations;j++)
+				{
             
-            string animName = surfaceSettings.getValue("animation","",i);
-            printf("   - %s\n", animName.c_str());
+            		string animName = surfaceSettings.getValue("animation","",j);
+            		printf("    - %s\n", animName.c_str());
             
-            if (animName != ""){
-                Animation* pAnimation = AnimationsFactory::create( animName );
-                if (pAnimation!=0)
-                    m_animationManager.M_addAnimation(pAnimation);
-            }
-        }
-        surfaceSettings.popTag();
+            		if (animName != "")
+					{
+                		Animation* pAnimation = AnimationsFactory::create( animName );
+                		if (pAnimation!=0)
+                    		m_animationManager.M_addAnimation(pAnimation);
+					}
+        		}
+				surfaceSettings.popTag();
+			}
+			// ----------------------------------------
+			// JS
+			// ----------------------------------------
+			else if (type == "js")
+			{
+				string strDirNameScripts = surfaceSettings.getAttribute("animations", "folder", "",i);
+				m_strDirScripts = "Scripts/"+strDirNameScripts;
+
+				ofDirectory dirScripts(m_strDirScripts.c_str());
+				if (dirScripts.exists())
+				{
+					dirScripts.listDir();
+					printf("    - DIR %s [%d file(s)]\n", dirScripts.path().c_str(),dirScripts.size());
+					
+					vector<ofFile> files = dirScripts.getFiles();
+					vector<ofFile>::iterator it;
+					for (it = files.begin(); it != files.end(); ++it)
+					{
+						if ((*it).getExtension() == "js")
+						{
+							Animation* pAnimation = new Animation((*it).getFileName(), (*it).getAbsolutePath());
+							
+							// Eval script to extract informations from it
+							if (pAnimation->M_loadScript( (*it).getAbsolutePath().c_str() ))
+							{
+								// Theme + autoclear
+								ofxJSValue retValTheme,retValAutoClear;
+								retValTheme = int_TO_ofxJSValue(1);
+								retValAutoClear = bool_TO_ofxJSValue(true);
+								
+								if (pAnimation->mp_obj)
+								{
+									ofxJSCallFunctionNameObject_NoArgs_IfExists(pAnimation->mp_obj,"getTheme",		retValTheme);
+									ofxJSCallFunctionNameObject_NoArgs_IfExists(pAnimation->mp_obj,"getAutoClear",	retValAutoClear);
+								}
+								
+								int theme = ofxJSValue_TO_int(retValTheme);
+								bool isAutoClear = ofxJSValue_TO_bool(retValAutoClear);
+								
+								printf("    - js [%s], theme=%d, autoclear=%s\n", (*it).getFileName().c_str(),theme, isAutoClear ? "true" : "false");
+								
+								pAnimation->M_setTheme(theme);
+								pAnimation->m_isAutoClear = isAutoClear;
+
+								m_animationManager.M_addAnimation(pAnimation);
+							}
+						}
+					}
+				
+				}
+				dirScripts.close();
+			}
+			
+		}
+		
+//        surfaceSettings.pushTag("animations");
+
         surfaceSettings.popTag();
     }
     else
@@ -146,48 +219,7 @@ void Surface::setup()
     
 	// Scripts
 	ofDirectory dirScripts("Scripts");
-	if (dirScripts.exists())
-	{
-		dirScripts.listDir();
-		printf("   - DIR %s [%d file(s)]\n", dirScripts.path().c_str(),dirScripts.size());
-        
-		vector<ofFile> files = dirScripts.getFiles();
-		vector<ofFile>::iterator it;
-		for (it = files.begin(); it != files.end(); ++it)
-        {
-            if ((*it).getExtension() == "js")
-			{
-				Animation* pAnimation = new Animation((*it).getFileName(), (*it).getAbsolutePath());
-				
-				// Eval script to extract informations from it
-				if (pAnimation->M_loadScript( (*it).getAbsolutePath().c_str() ))
-                {
-					// Theme + autoclear
-					ofxJSValue retValTheme,retValAutoClear;
-					retValTheme = int_TO_ofxJSValue(1);
-					retValAutoClear = bool_TO_ofxJSValue(true);
-                    
-                    if (pAnimation->mp_obj)
-                    {
-						ofxJSCallFunctionNameObject_NoArgs_IfExists(pAnimation->mp_obj,"getTheme",		retValTheme);
-						ofxJSCallFunctionNameObject_NoArgs_IfExists(pAnimation->mp_obj,"getAutoClear",	retValAutoClear);
-					}
-                    
-					int theme = ofxJSValue_TO_int(retValTheme);
-					bool isAutoClear = ofxJSValue_TO_bool(retValAutoClear);
-					
-                    printf("  - [%s], theme=%d, autoclear=%s\n", (*it).getFileName().c_str(),theme, isAutoClear ? "true" : "false");
-                    
-					pAnimation->M_setTheme(theme);
-					pAnimation->m_isAutoClear = isAutoClear;
-
-					m_animationManager.M_addAnimation(pAnimation);
-				}
-			}
-		}
-	}
-	dirScripts.close();
-    
+ 
     m_animationManager.M_readSettings(surfaceSettings);
     m_animationManager.M_setAnimation(0);
 }
@@ -377,7 +409,7 @@ void Surface::renderOffscreen(bool isRenderDevicePoints)
 //--------------------------------------------------------------
 void Surface::publishSyphon()
 {
-	#if MURMUR_USE_SYPHON
+	#if MURMUR_DEFINE_SYPHON
 		if (m_isPublishSyphon)
 		{
 			m_syphonServer.publishTexture(&m_fbo.getTextureReference());
