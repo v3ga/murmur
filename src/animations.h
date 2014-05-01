@@ -78,6 +78,7 @@ class Animation
         virtual void            setUICanvas             (ofxUICanvas* p){mp_UIcanvas=p;}
         virtual void            createUI                ();
         virtual void            createUICustom          (){};
+				ofxUICanvas*	getUI					();
         virtual ofxUICanvas*    showUI                  (bool is=true);
         virtual ofxUICanvas*    hideUI                  ();
         virtual void            guiEvent                (ofxUIEventArgs &e);

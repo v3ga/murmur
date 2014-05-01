@@ -12,7 +12,7 @@
 #include "ofFbo.h"
 #include "animations.h"
 #include "device.h"
-#if MURMUR_USE_SYPHON
+#if MURMUR_DEFINE_SYPHON
 	#include "ofxSyphon.h"
 #endif
 
@@ -71,6 +71,7 @@ class Surface
 		void			setEnableStandby			(bool is){m_isEnableStandby=is; if (!m_isEnableStandby) m_stateActivity=EStandby_active;}
 		void			setDurationPreStandby		(float v){m_durationPreStandby=v;}
 	
+		string			m_strDirScripts;
 		bool			m_isEnableStandby;
 		bool			m_isLaunchPacket;
 		float			m_timeLaunchPacket;
@@ -103,7 +104,7 @@ class Surface
 		int					m_volumePacketsHistoryNb;
 
 	
-#if MURMUR_USE_SYPHON
+#if MURMUR_DEFINE_SYPHON
 		ofxSyphonServer 	m_syphonServer;
 #endif
 };

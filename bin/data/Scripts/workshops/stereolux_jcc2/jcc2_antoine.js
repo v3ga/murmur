@@ -1,9 +1,9 @@
 //--------------------------------------------------------------
 // Declaration des variables d'instance
 //
-var font = new ofxJSTrueTypeFont();
+//var font = new ofxJSTrueTypeFont();
 //font.loadFont("Scripts/symbol.ttf",100);  // 
-font.loadFont("Scripts/data/futura.ttf",100);
+//font.loadFont("Scripts/data/futura.ttf",100);
 MAX_AGE=500; // const MAX_AGE=500;
 
 this.x=0;
@@ -31,8 +31,8 @@ function ParticleSquare(x,y) {
 			else if (this.typeOfParticle <= 78)
 				of.Circle(this.x, this.y, this.size/2);
 			else // if (this.typeOfParticle == 5)
-				if (font)
-					font.drawString("*",this.x,this.y)
+//				if (font)
+//					font.drawString("*",this.x,this.y)
 	}
 	
 	this.update = function(dt)

@@ -84,6 +84,7 @@ function setup()
 //
 function update(dt)
 {
+    if(this.sines == null) return;
     this.volumeFiltre += (this.volumeActuel-this.volumeFiltre)*0.3*dt;
 
     for (var i=0;i<this.sines.length;i++)
@@ -123,13 +124,14 @@ function draw(w,h)
        of.SetColor(0, 0, 0, 20);
        of.Rect(0, 0, w, h);
     of.Translate(this.xCentral, this.yCentral,0);
-    for (var i=0;i<this.sines.length;i++)
+    if (this.sines)
     {
-        this.sines[i].freq = 1+this.volumeFiltre *10;
-        this.sines[i].draw();
-
-    }       
-
+        for (var i=0;i<this.sines.length;i++)
+        {
+            this.sines[i].freq = 1+this.volumeFiltre *10;
+            this.sines[i].draw();
+        }       
+    }
 	
       //  of.Translate(this.xCentral, this.yCentral, 0);
         //this.premierTest(0, 0, (this.volumeActuel*1000), (this.volumeActuel*100));

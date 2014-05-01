@@ -11,32 +11,32 @@
 <Widget>
     <Kind>4</Kind>
     <Name>th. go active</Name>
-    <Value>0.012916666</Value>
+    <Value>0.020000000</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>dur. pre-standby</Name>
-    <Value>10.000000000</Value>
+    <Value>20.000000000</Value>
 </Widget>
 <Widget>
     <Kind>12</Kind>
     <Name>wSurface</Name>
-    <Value>8</Value>
+    <Value>5.92</Value>
 </Widget>
 <Widget>
     <Kind>12</Kind>
     <Name>hSurface</Name>
-    <Value>6</Value>
+    <Value>4.18</Value>
 </Widget>
 <Widget>
     <Kind>12</Kind>
     <Name>wFboSurface</Name>
-    <Value>1200</Value>
+    <Value>1184</Value>
 </Widget>
 <Widget>
     <Kind>12</Kind>
     <Name>hFboSurface</Name>
-    <Value>900</Value>
+    <Value>836</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -51,30 +51,5 @@
 <Widget>
     <Kind>4</Kind>
     <Name>target line w</Name>
-    <Value>1.139999986</Value>
-</Widget>
-<Widget>
-    <Kind>2</Kind>
-    <Name>launch madmapper @ start</Name>
-    <Value>0</Value>
-</Widget>
-<Widget>
-    <Kind>2</Kind>
-    <Name>launch murmur @ rasp</Name>
-    <Value>0</Value>
-</Widget>
-<Widget>
-    <Kind>2</Kind>
-    <Name>activate sequence</Name>
-    <Value>0</Value>
-</Widget>
-<Widget>
-    <Kind>4</Kind>
-    <Name>transition duration (s)</Name>
-    <Value>1.674107075</Value>
-</Widget>
-<Widget>
-    <Kind>4</Kind>
-    <Name>animation duration (s)</Name>
-    <Value>152.232147217</Value>
+    <Value>2.000000000</Value>
 </Widget>

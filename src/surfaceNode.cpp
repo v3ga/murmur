@@ -42,8 +42,7 @@ void SurfaceNode::customDraw()
     if (mp_surface)
     {
         ofPushMatrix();
-        ofScale(1,-1);
-        mp_surface->getOffscreen().draw(0,-m_height,m_width,m_height);
+        mp_surface->getOffscreen().draw(0,0,m_width,m_height);
 //        Data::instance()->m_fontHelvetica.drawString("Animation.js", -m_height, m_height);
         ofPopMatrix();
 

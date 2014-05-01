@@ -36,9 +36,11 @@ class SoundManager
         void                            setVolumeSoundMain(float vol);
         void                            setVolumeSoundMainNormalized(float t);
         SoundPlayer*                    getSoundPlayer(string name);
+		vector<string> 					getListSoundsName();
 
         float                           m_soundMainVolumeMin;
         float                           m_soundMainVolumeMax;
+	
 
 
     private:

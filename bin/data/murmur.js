@@ -27,12 +27,18 @@ include("Scripts/libraries/murmur/Particle2DMass.js");
 include("Scripts/libraries/murmur/GridVerlet.js");
 include("Scripts/libraries/murmur/Wave.js");
 include("Scripts/libraries/murmur/Grid3D.js");
+include("Scripts/libraries/murmur/SoundPlayer.js");
+include("Scripts/libraries/murmur/VolumeAccum.js");
+include("Scripts/libraries/murmur/Tunnel.js");
 
 // --------------------------------------------------------
 THEME_UNKNOWN			= 0;
 THEME_SURFACE			= 1;
 THEME_CREATURE			= 2;
 THEME_ARBORESCENCE		= 3;
+
+// --------------------------------------------------------
+this.deviceManager = {};
 
 // --------------------------------------------------------
 function Device(id)
@@ -46,7 +52,7 @@ function Device(id)
     }
 }
 
-
+// --------------------------------------------------------
 function getDevice(id)
 {
     if (deviceManager[id]==null){
@@ -56,93 +62,7 @@ function getDevice(id)
     return deviceManager[id];
 }
 
-this.deviceManager = {};
 
-
-// --------------------------------------------------------
-function VolumeAccum()
-{
-    this.value = 0;
-    
-    /**/
-    this.valueMax = 0.3;
-    this.valueTh = 0.15;
-    /**/
-    
-    this.STATE_WAVE_INSIDE = 1;
-    this.STATE_WAVE_OUT = 2;
-
-    this.valueTriggerIn = 0.15;
-    this.valueTriggerOut = 0.15;
-    
-    this.state = this.STATE_WAVE_OUT;
-    
-    this.add = function(volume, fEvent)
-    {
-        if (this.state == this.STATE_WAVE_INSIDE)
-        {
-            if (volume <= this.valueTriggerOut)
-            {
-                this.state=this.STATE_WAVE_OUT;
-            }
-        }
-        else if (this.state == this.STATE_WAVE_OUT)
-        {
-            this.value += volume;
-            if (volume >= this.valueTriggerIn )
-            {
-                if (fEvent && fEvent.f && fEvent.obj)
-                    fEvent.f.call(fEvent.obj, fEvent.params);
-                this.state = this.STATE_WAVE_INSIDE;
-                this.value=0;
-            }
-        }
-            
-//        if (volume > this.valueTh)
-        
-/*      if (volume > this.valueTh)
-        {
-            this.value += volume;
-        }
-        else
-        {
-            if (this.value >= this.valueMax)
-            {
-                if (fEvent && fEvent.f && fEvent.obj)
-                    fEvent.f.call(fEvent.obj, fEvent.params);
-            }
-            this.value = 0;
-        }
-*/
-    }
-}
-
-// --------------------------------------------------------
-function SoundPlayer(soundsName)
-{
-    this.soundsName = soundsName;
-    this.lastPlayedIndex = -1;
-
-    this.playRandom = function(a,b)
-    {
-        if (soundsName.length>=2)
-        {
-		println( soundsName[0] );
-            playSound( soundsName[0] );
-/*
-            var rndIndex = -1;
-            do{
-                rndIndex = Math.floor(Math.random() * soundsName.length);
-            } while (rndIndex==this.lastPlayedIndex);
-            this.lastPlayedIndex = rndIndex;
-        
-            playSound( soundsName[rndIndex],a,b );
-        }
-        else
-*/
-		}
-    }
-}
 
 // --------------------------------------------------------
 function shuffleArray(a)

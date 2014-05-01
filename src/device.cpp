@@ -101,7 +101,7 @@ float Device::getHeightSoundInputVolume()
 //--------------------------------------------------------------
 void Device::setSoundInputVolumeMax(float v)
 {
-    //printf("setVolumeMax, v=%.3f\n", v);
+    // printf("setVolumeMax, v=%.3f\n", v);
     ofxOscMessage m;
     m.setAddress( OSC_ADDRESS_SET_DEVICE_PROP );
     m.addStringArg(m_id);

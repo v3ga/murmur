@@ -5,5 +5,9 @@ OF_PATH = ../../..
 //THIS HAS ALL THE HEADER AND LIBS FOR OF CORE
 #include "../../../libs/openFrameworksCompiled/project/osx/CoreOF.xcconfig"
 
-OTHER_LDFLAGS = $(OF_CORE_LIBS) 
-HEADER_SEARCH_PATHS = $(OF_CORE_HEADERS) ../../../addons/ofxMSAObjCPointer/src ../../../addons/ofxMSACore/src ../../../addons/ofxMSAPhysics/src ../../../addons/ofxOsc/src ../../../addons/ofxOsc/libs ../../../addons/ofxOsc/libs/oscpack ../../../addons/ofxOsc/libs/oscpack/src ../../../addons/ofxOsc/libs/oscpack/src/ip ../../../addons/ofxOsc/libs/oscpack/src/ip/posix
+OTHER_LDFLAGS = $(OF_CORE_LIBS)
+HEADER_SEARCH_PATHS = $(OF_CORE_HEADERS) $(OF_OPENCV_HEADERS) ../../../addons/ofxMSAObjCPointer/src ../../../addons/ofxMSACore/src ../../../addons/ofxMSAPhysics/src ../../../addons/ofxOsc/src ../../../addons/ofxOsc/libs ../../../addons/ofxOsc/libs/oscpack ../../../addons/ofxOsc/libs/oscpack/src ../../../addons/ofxOsc/libs/oscpack/src/ip ../../../addons/ofxOsc/libs/oscpack/src/ip/posix
+
+
+OF_OPENCV_HEADERS = "z" "$(OF_PATH)/addons/ofxOpenCv/libs/opencv/include/opencv" "$(OF_PATH)/addons/ofxOpenCv/libs/opencv/include/opencv2" "$(OF_PATH)/addons/ofxOpenCv/libs/opencv/include/opencv2/core"
+OF_OPENCV_LIBS = "$(OF_PATH)/addons/ofxOpenCv/libs/opencv/lib/osx/opencv.a"
