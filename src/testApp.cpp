@@ -362,7 +362,7 @@ void testApp::draw()
 			m_isUpdateLayout = false;
 		}
 		
-		toolManager.draw();
+		toolManager.drawUI();
     }
 	else
     {
@@ -483,81 +483,13 @@ void testApp::toggleView()
         ofShowCursor();
 }
 
-//--------------------------------------------------------------
-void testApp::saveWidgetState(ofxUIWidget* pWidget)
-{
-	if (pWidget)
-		m_mapControlsState[pWidget] = pWidget->isVisible();
-}
 
-//--------------------------------------------------------------
-void testApp::saveControlsState()
-{
-/*	saveWidgetState(mp_guiMain);
-	saveWidgetState(mp_gui1);
-	saveWidgetState(mp_gui2);
-	saveWidgetState(mp_gui3);
-	saveWidgetState(mp_gui4);
-	saveWidgetState(mp_guiSound);
-	saveWidgetState(mp_guiNetwork);
-	saveWidgetState(mp_guiAnimations);
-	saveWidgetState(mp_guiAnimProps);
-*/
-}
-
-//--------------------------------------------------------------
-void testApp::restoreControlsState()
-{
-/*	if (mp_guiMain) mp_guiMain->setVisible(m_mapControlsState[mp_guiMain]);
-    if (mp_gui1) mp_gui1->setVisible(m_mapControlsState[mp_gui1]);
-    if (mp_gui2) mp_gui2->setVisible(m_mapControlsState[mp_gui2]);
-    if (mp_gui3) mp_gui3->setVisible(m_mapControlsState[mp_gui3]);
-    if (mp_gui4) mp_gui4->setVisible(m_mapControlsState[mp_gui4]);
-    if (mp_guiSound) mp_guiSound->setVisible(m_mapControlsState[mp_guiSound]);
-    if (mp_guiNetwork) mp_guiNetwork->setVisible(m_mapControlsState[mp_guiNetwork]);
-    if (mp_guiAnimations) mp_guiAnimations->setVisible(m_mapControlsState[mp_guiAnimations]);
-    if (mp_guiAnimProps) mp_guiAnimProps->setVisible(m_mapControlsState[mp_guiAnimProps]);
-*/
-}
-
-//--------------------------------------------------------------
-void testApp::showControls(bool is)
-{
-/*
-	if (is)
-		restoreControlsState();
-	else{
-		saveControlsState();
-		if (mp_guiMain && mp_guiMain->isVisible()) mp_guiMain->setVisible(false);
-    	if (mp_gui1 && mp_gui1->isVisible()) mp_gui1->setVisible(false);
-    	if (mp_gui2 && mp_gui2->isVisible()) mp_gui2->setVisible(false);
-    	if (mp_gui3 && mp_gui3->isVisible()) mp_gui3->setVisible(false);
-    	if (mp_gui4 && mp_gui4->isVisible()) mp_gui4->setVisible(false);
-    	if (mp_guiSound && mp_guiSound->isVisible()) mp_guiSound->setVisible(false);
-    	if (mp_guiNetwork && mp_guiNetwork->isVisible()) mp_guiNetwork->setVisible(false);
-    	if (mp_guiAnimations && mp_guiAnimations->isVisible()) mp_guiAnimations->setVisible(false);
-    	if (mp_guiAnimProps && mp_guiAnimProps->isVisible()) mp_guiAnimProps->setVisible(false);
-	}
-	if (mp_guiMain) mp_guiMain->setVisible(is);
-    if (mp_gui1) mp_gui1->setVisible(is);
-    if (mp_gui2) mp_gui2->setVisible(is);
-    if (mp_gui3) mp_gui3->setVisible(is);
-    if (mp_gui4) mp_gui4->setVisible(is);
-    if (mp_guiSound) mp_guiSound->setVisible(is);
-    if (mp_guiNetwork) mp_guiNetwork->setVisible(is);
-    if (mp_guiAnimations) mp_guiAnimations->setVisible(is);
-    if (mp_guiAnimProps) mp_guiAnimProps->setVisible(is);
-*/
-
-}
 
 //--------------------------------------------------------------
 void testApp::keyPressed(int key)
 {
 	if (key == ' ')
     {
-        //toggleView();
-        //guiUpdateViewSimulation();
 	    isViewSimulation = !isViewSimulation;
 		toolManager.enableDrawCallback( isViewSimulation );
     }
@@ -565,83 +497,6 @@ void testApp::keyPressed(int key)
 	{
 		toolManager.keyPressed(key);
 	}
-
-
-/*	if (key == 'e')
-	{
-        Surface* pSurfaceCurrent = getSurfaceForDeviceCurrent();
-        if (pSurfaceCurrent && pSurfaceCurrent->getAnimationManager().mp_animationCurrent)
-		{
-			string imgName = "Exports/Images/" + ofToString( ofGetUnixTime() ) + "_export_"+pSurfaceCurrent->getAnimationManager().mp_animationCurrent->m_name + ".png";
-
-			ofSaveScreen(imgName);
-		}
-	
-	}
-	else
-	if (key == ' ')
-    {
-        toggleView();
-        guiUpdateViewSimulation();
-    }
-	else
-	if (key == OF_KEY_RIGHT)
-    {
-        Surface* pSurfaceCurrent = getSurfaceForDeviceCurrent();
-        if (pSurfaceCurrent)
-        {
-            // Goto next animation
-            pSurfaceCurrent->getAnimationManager().gotoAnimationNext();
-
-            // Update Title
-            guiUpdateDeviceAnimationTitle();
-
-            // Show animation interface
-            guiShowAnimationPropsAll(false);
-            if (!pSurfaceCurrent->isTimelineActive())
-            {
-                Animation* pAnimationCurrent = pSurfaceCurrent->getAnimationManager().mp_animationCurrent;
-                if (pAnimationCurrent)
-                    mp_guiAnimProps = pAnimationCurrent->getUI();
-				if (mp_radioPanels && mp_radioPanels->getActiveName() == "Animations" && mp_guiAnimProps){
-					mp_guiAnimProps->setVisible(true);
-				}
-            }
-        }
-    }
-	else
-	if (key == OF_KEY_LEFT)
-    {
-        Surface* pSurfaceCurrent = getSurfaceForDeviceCurrent();
-        if (pSurfaceCurrent)
-        {
-            pSurfaceCurrent->getAnimationManager().gotoAnimationPrev();
-            guiUpdateDeviceAnimationTitle();
-        
-            // Show animation interface
-            guiShowAnimationPropsAll(false);
-            if (!pSurfaceCurrent->isTimelineActive())
-            {
-                Animation* pAnimationCurrent = pSurfaceCurrent->getAnimationManager().mp_animationCurrent;
-                if (pAnimationCurrent)
-                    mp_guiAnimProps = pAnimationCurrent->getUI();
-				if (mp_radioPanels && mp_radioPanels->getActiveName() == "Animations" && mp_guiAnimProps){
-					mp_guiAnimProps->setVisible(true);
-				}
-            }
-        }
-    }
-	else
-	if ( key >= '1' && key <='9')
-	{
-		Globals::instance()->mp_app->selectDeviceWithIndex((int)(key-'1'));
-	}
-    else
-    {
-        if (mp_sceneVisualisation)
-            mp_sceneVisualisation->keyPressed(key);
-    }
-*/
 }
 
 //--------------------------------------------------------------
