@@ -55,9 +55,6 @@ class testApp : public ofBaseApp
     
         map<Animation*, ofxUICanvas*> 	m_mapAnimationUI;
         map<ofxUIWidget*, bool> 		m_mapControlsState;
-		void				saveWidgetState			(ofxUIWidget* pWidget);
-		void				saveControlsState		();
-		void				restoreControlsState	();
 
 		void				guiUpdateListDevices	();
  

@@ -132,7 +132,7 @@ void toolDevices::createControlsCustomFinalize()
 }
 
 //--------------------------------------------------------------
-void toolDevices::draw()
+void toolDevices::drawUI()
 {
 	Device* pDeviceCurrent = mp_deviceManager->getDeviceCurrent();
 	if (pDeviceCurrent)

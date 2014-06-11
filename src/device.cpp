@@ -438,9 +438,13 @@ void Device::checkForActivity(float dt)
         else
         if (m_stateStandby == EStandby_standby)
         {
-            if (mp_soundInput && (mp_soundInput->getVolHistoryMeanFiltered() > m_volHistoryTh))
+			bool isSampleFinished = false;
+			if (mp_sampleStandBy && !mp_sampleStandBy->getIsPlaying())
+				isSampleFinished = true;
+		
+            if (mp_soundInput && (isSampleFinished || mp_soundInput->getVolHistoryMeanFiltered() > m_volHistoryTh))
             {
-                m_stateStandby = EStandby_active;
+                m_stateStandby = EStandby_pre_standby;
                 m_stateStandbyDuration=0.0f;
 				
 				if (mp_soundInput)
