@@ -14,6 +14,8 @@
 #include "animations.h"
 #include "timeline.h"
 
+#define GLOBALS Globals::instance()
+
 class testApp;
 class DeviceManager;
 class DeviceInfoManager;
@@ -30,7 +32,6 @@ class Globals
 		Timeline*				mp_timeline;
 		testApp*				mp_app;
         DeviceManager*          mp_deviceManager;
-        DeviceInfoManager*      mp_deviceInfoManager;
 
         bool					m_isAutoReloadScript;
 

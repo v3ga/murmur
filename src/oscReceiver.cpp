@@ -26,10 +26,12 @@ void oscReceiver::update()
             if (m_oscMessage.getAddress() == OSC_ADDRESS_SET_DEVICE_PROP)
             {
                 Device* pDevice = pDeviceManager->getDeviceById( m_oscMessage.getArgAsString(indexArg++) );
-                if (pDevice){
+                if (pDevice)
+				{
                     // Property
                     string propName = m_oscMessage.getArgAsString(indexArg++);
-                    if (propName == "volMax")
+                 
+					if (propName == "volMax")
                     {
                         pDevice->setSoundInputVolumeMaxOSC( m_oscMessage.getArgAsFloat(indexArg) );
                     }
@@ -55,14 +57,19 @@ void oscReceiver::update()
                         pDevice->setTimeStandbyOSC( m_oscMessage.getArgAsFloat(indexArg) );
                     }
                     else
+                    if (propName == "sampleVolStandby")
+					{
+                        pDevice->setSampleVolumeStandbyOSC( m_oscMessage.getArgAsFloat(indexArg) );
+					}
+                    else
                     if (propName == "nbLEDsStandby")
                     {
-                        pDevice->setNbLEDsStandbyOSC( m_oscMessage.getArgAsInt32(indexArg) );
+                        // pDevice->setNbLEDsStandbyOSC( m_oscMessage.getArgAsInt32(indexArg) );
                     }
                     else
                     if (propName == "speedStandby")
                     {
-                        pDevice->setSpeedStandbyOSC( m_oscMessage.getArgAsFloat(indexArg) );
+                        // pDevice->setSpeedStandbyOSC( m_oscMessage.getArgAsFloat(indexArg) );
                     }
                     
                 }
@@ -102,7 +109,7 @@ void oscReceiver::update()
                             // Update interface
                          
 							//Globals::instance()->mp_app->guiMarkUpdateLayout();
-                            Globals::instance()->mp_app->guiUpdateListDevices(320);
+                            Globals::instance()->mp_app->guiUpdateListDevices();
                             Globals::instance()->mp_app->selectDevice(pDeviceEcho->m_id);
                         
                             // TODO : Send configuration parameters to it (if any)
@@ -128,7 +135,6 @@ void oscReceiver::update()
                         pDevice->onReceivePacketEnd();
 
                         // Get the surface of device and update animation
-                        //Surface* pSurface = Globals::instance()->mp_deviceInfoManager->getSurfaceForDevice(pDevice);
                         Surface* pSurface = Globals::instance()->mp_app->getSurfaceForDevice(pDevice);
                         
                         if (pSurface){

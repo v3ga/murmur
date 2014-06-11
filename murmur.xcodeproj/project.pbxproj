@@ -141,6 +141,16 @@
 		F9993398171B659200272085 /* deviceEcho.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9993396171B659100272085 /* deviceEcho.cpp */; };
 		F999339C171C870200272085 /* soundInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F999339A171C870200272085 /* soundInput.cpp */; };
 		F99DFCD817DCB3B6003AE52C /* Syphon.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = F9E11C4517C3A2F000AD3DFD /* Syphon.framework */; };
+		F9AB0BEF1940FA760020D78A /* tool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9AB0BED1940FA760020D78A /* tool.cpp */; };
+		F9AB0BF31940FB0D0020D78A /* toolNetwork.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9AB0BF11940FB0D0020D78A /* toolNetwork.cpp */; };
+		F9AB0BF61940FB660020D78A /* toolSound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9AB0BF41940FB660020D78A /* toolSound.cpp */; };
+		F9AB0BF91940FBAE0020D78A /* toolAnimations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9AB0BF71940FBAE0020D78A /* toolAnimations.cpp */; };
+		F9AB0BFC1940FBBB0020D78A /* toolConfiguration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9AB0BFA1940FBBB0020D78A /* toolConfiguration.cpp */; };
+		F9AB0BFF1940FBE10020D78A /* toolDevices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9AB0BFD1940FBE10020D78A /* toolDevices.cpp */; };
+		F9AB0C021940FBF00020D78A /* toolSurfaces.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9AB0C001940FBF00020D78A /* toolSurfaces.cpp */; };
+		F9AB0C051940FC2E0020D78A /* toolScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9AB0C031940FC2E0020D78A /* toolScene.cpp */; };
+		F9AB0C091941B0DE0020D78A /* toolVideo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9AB0C071941B0DE0020D78A /* toolVideo.cpp */; };
+		F9AB0C111947A0FE0020D78A /* Sample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9AB0C0F1947A0FE0020D78A /* Sample.cpp */; };
 		F9BC6AF6174512E000633C5C /* animationsFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9BC6AF4174512E000633C5C /* animationsFactory.cpp */; };
 		F9BC6AF91745149C00633C5C /* animationWaveShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9BC6AF71745149C00633C5C /* animationWaveShader.cpp */; };
 		F9BC6B0B17456DDD00633C5C /* soundManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9BC6B0917456DDC00633C5C /* soundManager.cpp */; };
@@ -598,6 +608,27 @@
 		F9993397171B659100272085 /* deviceEcho.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = deviceEcho.h; sourceTree = "<group>"; };
 		F999339A171C870200272085 /* soundInput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = soundInput.cpp; sourceTree = "<group>"; };
 		F999339B171C870200272085 /* soundInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = soundInput.h; sourceTree = "<group>"; };
+		F9AB0BED1940FA760020D78A /* tool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tool.cpp; sourceTree = "<group>"; };
+		F9AB0BEE1940FA760020D78A /* tool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tool.h; sourceTree = "<group>"; };
+		F9AB0BF11940FB0D0020D78A /* toolNetwork.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = toolNetwork.cpp; sourceTree = "<group>"; };
+		F9AB0BF21940FB0D0020D78A /* toolNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = toolNetwork.h; sourceTree = "<group>"; };
+		F9AB0BF41940FB660020D78A /* toolSound.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = toolSound.cpp; sourceTree = "<group>"; };
+		F9AB0BF51940FB660020D78A /* toolSound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = toolSound.h; sourceTree = "<group>"; };
+		F9AB0BF71940FBAE0020D78A /* toolAnimations.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = toolAnimations.cpp; sourceTree = "<group>"; };
+		F9AB0BF81940FBAE0020D78A /* toolAnimations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = toolAnimations.h; sourceTree = "<group>"; };
+		F9AB0BFA1940FBBB0020D78A /* toolConfiguration.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = toolConfiguration.cpp; sourceTree = "<group>"; };
+		F9AB0BFB1940FBBB0020D78A /* toolConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = toolConfiguration.h; sourceTree = "<group>"; };
+		F9AB0BFD1940FBE10020D78A /* toolDevices.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = toolDevices.cpp; sourceTree = "<group>"; };
+		F9AB0BFE1940FBE10020D78A /* toolDevices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = toolDevices.h; sourceTree = "<group>"; };
+		F9AB0C001940FBF00020D78A /* toolSurfaces.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = toolSurfaces.cpp; sourceTree = "<group>"; };
+		F9AB0C011940FBF00020D78A /* toolSurfaces.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = toolSurfaces.h; sourceTree = "<group>"; };
+		F9AB0C031940FC2E0020D78A /* toolScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = toolScene.cpp; sourceTree = "<group>"; };
+		F9AB0C041940FC2E0020D78A /* toolScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = toolScene.h; sourceTree = "<group>"; };
+		F9AB0C06194119D00020D78A /* tools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tools.h; sourceTree = "<group>"; };
+		F9AB0C071941B0DE0020D78A /* toolVideo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = toolVideo.cpp; sourceTree = "<group>"; };
+		F9AB0C081941B0DE0020D78A /* toolVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = toolVideo.h; sourceTree = "<group>"; };
+		F9AB0C0F1947A0FE0020D78A /* Sample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sample.cpp; sourceTree = "<group>"; };
+		F9AB0C101947A0FE0020D78A /* Sample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sample.h; sourceTree = "<group>"; };
 		F9BC6ADD1743BA7E00633C5C /* Class.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Class.js; sourceTree = "<group>"; };
 		F9BC6ADE1743BA7E00633C5C /* Header.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Header.js; sourceTree = "<group>"; };
 		F9BC6AE01743BA7E00633C5C /* Math.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Math.js; sourceTree = "<group>"; };
@@ -809,6 +840,7 @@
 				F96B925B172EDB14007B1CFF /* ofxMSACore */,
 				F90AB69C172EAF4300B79E39 /* ofxMSAPhysics */,
 				F999313117198B8B00272085 /* ofxUI */,
+				F9AB0BEB1940FA760020D78A /* ofxToolManager */,
 				F99930BB171989EB00272085 /* ofxTween */,
 				F99930771719888600272085 /* ofxOsc */,
 				F99930A11719888600272085 /* ofxXmlSettings */,
@@ -883,10 +915,10 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				F9AB0BF01940FAF40020D78A /* Tools */,
 				F9993399171B66D600272085 /* Devices */,
 				F987123116C057330069F12A /* Animations */,
 				F96B924B172EB7C6007B1CFF /* Scenes */,
-				F987123516C057B10069F12A /* UI */,
 				F9BC6D17174DEF2100633C5C /* Utils */,
 				F9F47B931899260300DDE2E3 /* murmur.h */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
@@ -1265,13 +1297,6 @@
 			name = Animations;
 			sourceTree = "<group>";
 		};
-		F987123516C057B10069F12A /* UI */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = UI;
-			sourceTree = "<group>";
-		};
 		F987123616C058150069F12A /* data */ = {
 			isa = PBXGroup;
 			children = (
@@ -1595,6 +1620,48 @@
 				F9993396171B659100272085 /* deviceEcho.cpp */,
 			);
 			name = Devices;
+			sourceTree = "<group>";
+		};
+		F9AB0BEB1940FA760020D78A /* ofxToolManager */ = {
+			isa = PBXGroup;
+			children = (
+				F9AB0BEC1940FA760020D78A /* src */,
+			);
+			name = ofxToolManager;
+			path = ../../../../of_v0.8.1_osx_release/addons/ofxToolManager;
+			sourceTree = "<group>";
+		};
+		F9AB0BEC1940FA760020D78A /* src */ = {
+			isa = PBXGroup;
+			children = (
+				F9AB0BED1940FA760020D78A /* tool.cpp */,
+				F9AB0BEE1940FA760020D78A /* tool.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		F9AB0BF01940FAF40020D78A /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				F9AB0C06194119D00020D78A /* tools.h */,
+				F9AB0BF11940FB0D0020D78A /* toolNetwork.cpp */,
+				F9AB0BF21940FB0D0020D78A /* toolNetwork.h */,
+				F9AB0BF41940FB660020D78A /* toolSound.cpp */,
+				F9AB0BF51940FB660020D78A /* toolSound.h */,
+				F9AB0BF71940FBAE0020D78A /* toolAnimations.cpp */,
+				F9AB0BF81940FBAE0020D78A /* toolAnimations.h */,
+				F9AB0BFA1940FBBB0020D78A /* toolConfiguration.cpp */,
+				F9AB0BFB1940FBBB0020D78A /* toolConfiguration.h */,
+				F9AB0BFD1940FBE10020D78A /* toolDevices.cpp */,
+				F9AB0BFE1940FBE10020D78A /* toolDevices.h */,
+				F9AB0C001940FBF00020D78A /* toolSurfaces.cpp */,
+				F9AB0C011940FBF00020D78A /* toolSurfaces.h */,
+				F9AB0C031940FC2E0020D78A /* toolScene.cpp */,
+				F9AB0C041940FC2E0020D78A /* toolScene.h */,
+				F9AB0C071941B0DE0020D78A /* toolVideo.cpp */,
+				F9AB0C081941B0DE0020D78A /* toolVideo.h */,
+			);
+			name = Tools;
 			sourceTree = "<group>";
 		};
 		F9BC6AD21743BA7E00633C5C /* libraries */ = {
@@ -1968,6 +2035,8 @@
 		F9BC6D17174DEF2100633C5C /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				F9AB0C0F1947A0FE0020D78A /* Sample.cpp */,
+				F9AB0C101947A0FE0020D78A /* Sample.h */,
 				F987120616C054900069F12A /* utils.h */,
 				F987120716C054900069F12A /* utils.cpp */,
 				F9BC6D1C174DEF5C00633C5C /* volumeAccum.h */,
@@ -2138,6 +2207,7 @@
 				F98711AF16C052C40069F12A /* ofxJavascript.cpp in Sources */,
 				F98711B016C052C40069F12A /* ofxJSGlobalFunc.cpp in Sources */,
 				F98711B116C052C40069F12A /* ofxJSImage.cpp in Sources */,
+				F9AB0C111947A0FE0020D78A /* Sample.cpp in Sources */,
 				F98711B216C052C40069F12A /* ofxJSOpenGL.cpp in Sources */,
 				F92BC4A9189F094600CA158A /* ofxUICircleSlider.cpp in Sources */,
 				F92BC4BC189F094600CA158A /* ofxUIRadio.cpp in Sources */,
@@ -2160,19 +2230,23 @@
 				F99930B51719888600272085 /* ofxOscReceiver.cpp in Sources */,
 				F99930B61719888600272085 /* ofxOscSender.cpp in Sources */,
 				F99930B71719888600272085 /* tinyxml.cpp in Sources */,
+				F9AB0BFC1940FBBB0020D78A /* toolConfiguration.cpp in Sources */,
 				F99930B81719888600272085 /* tinyxmlerror.cpp in Sources */,
 				F99930B91719888600272085 /* tinyxmlparser.cpp in Sources */,
 				F93F3267189E9EEB00C02161 /* ofxTween.cpp in Sources */,
 				F99930BA1719888600272085 /* ofxXmlSettings.cpp in Sources */,
 				F99930F6171989EB00272085 /* ofxEasing.cpp in Sources */,
+				F9AB0BF31940FB0D0020D78A /* toolNetwork.cpp in Sources */,
 				F99930F7171989EB00272085 /* ofxEasingBack.cpp in Sources */,
 				F99930F8171989EB00272085 /* ofxEasingBounce.cpp in Sources */,
 				F92BC4C7189F094600CA158A /* ofxUITextArea.cpp in Sources */,
 				F99930F9171989EB00272085 /* ofxEasingCirc.cpp in Sources */,
 				F92BC4BA189F094600CA158A /* ofxUIMultiImageToggle.cpp in Sources */,
 				F99930FA171989EB00272085 /* ofxEasingCubic.cpp in Sources */,
+				F9AB0BEF1940FA760020D78A /* tool.cpp in Sources */,
 				F92BC4A3189F094600CA158A /* ofxUI2DGraph.cpp in Sources */,
 				F99930FB171989EB00272085 /* ofxEasingElastic.cpp in Sources */,
+				F9AB0BF61940FB660020D78A /* toolSound.cpp in Sources */,
 				F99930FC171989EB00272085 /* ofxEasingExpo.cpp in Sources */,
 				F99930FD171989EB00272085 /* ofxEasingLinear.cpp in Sources */,
 				F99930FE171989EB00272085 /* ofxEasingQuad.cpp in Sources */,
@@ -2181,6 +2255,7 @@
 				F9993101171989EB00272085 /* ofxEasingSine.cpp in Sources */,
 				F999312717198ABD00272085 /* IpEndpointName.cpp in Sources */,
 				F92BC4C1189F094600CA158A /* ofxUISlider.cpp in Sources */,
+				F9AB0C091941B0DE0020D78A /* toolVideo.cpp in Sources */,
 				F92BC4B3189F094600CA158A /* ofxUIImageToggle.cpp in Sources */,
 				F999312817198ABD00272085 /* NetworkingUtils.cpp in Sources */,
 				F999312917198ABD00272085 /* UdpSocket.cpp in Sources */,
@@ -2239,13 +2314,16 @@
 				F9BC6C62174A621600633C5C /* b2TimeOfImpact.cpp in Sources */,
 				F9BC6C63174A621600633C5C /* b2CircleShape.cpp in Sources */,
 				F9BC6C64174A621600633C5C /* b2PolygonShape.cpp in Sources */,
+				F9AB0BF91940FBAE0020D78A /* toolAnimations.cpp in Sources */,
 				F92BC4E518A1544B00CA158A /* ofxMSAInteractiveObject.cpp in Sources */,
 				F9BC6C65174A621600633C5C /* b2BlockAllocator.cpp in Sources */,
+				F9AB0BFF1940FBE10020D78A /* toolDevices.cpp in Sources */,
 				F9BC6C66174A621600633C5C /* b2Math.cpp in Sources */,
 				F92BC4BF189F094600CA158A /* ofxUIRotarySlider.cpp in Sources */,
 				F9BC6C67174A621600633C5C /* b2Settings.cpp in Sources */,
 				F9BC6C68174A621600633C5C /* b2StackAllocator.cpp in Sources */,
 				F92BC4B9189F094600CA158A /* ofxUIMultiImageButton.cpp in Sources */,
+				F9AB0C051940FC2E0020D78A /* toolScene.cpp in Sources */,
 				F9BC6C69174A621600633C5C /* b2Body.cpp in Sources */,
 				F9BC6C6A174A621600633C5C /* b2ContactManager.cpp in Sources */,
 				F9BC6C6B174A621600633C5C /* b2Fixture.cpp in Sources */,
@@ -2271,6 +2349,7 @@
 				F9BC6C77174A621700633C5C /* b2GearJoint.cpp in Sources */,
 				F9BC6C78174A621700633C5C /* b2Joint.cpp in Sources */,
 				F9BC6C79174A621700633C5C /* b2LineJoint.cpp in Sources */,
+				F9AB0C021940FBF00020D78A /* toolSurfaces.cpp in Sources */,
 				F9BC6C7A174A621700633C5C /* b2MouseJoint.cpp in Sources */,
 				F9BC6C7B174A621700633C5C /* b2PrismaticJoint.cpp in Sources */,
 				F9BC6C7C174A621700633C5C /* b2PulleyJoint.cpp in Sources */,

@@ -24,7 +24,6 @@ Globals::Globals()
     mp_oscReceiver = 0;
     mp_oscSender = 0;
     mp_deviceManager = 0;
-    mp_deviceInfoManager = 0;
 	m_isAutoReloadScript = false;
 }
 

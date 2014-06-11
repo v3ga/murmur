@@ -5,7 +5,7 @@
 
         <!-- Sound input for simulators -->
         <soundInput>
-            <device>1</device>
+            <device>0</device>
             <nbChannels>1</nbChannels>
         </soundInput>
         
@@ -31,6 +31,6 @@
 
     <!-- Raspberry -->
     <launchDevices>
-        <ip>10.23.108.114</ip>
+        <ip>192.168.0.45</ip>
     </launchDevices>
 </murmur>
