@@ -35,23 +35,16 @@ Device::Device(string id, int nbLEDs, float distLEDs)
     m_stateStandby = EStandby_active;
     m_stateStandbyDuration = 0.0f;
     m_timeStandby = 10.0f;
-    m_nbLEDsStandby = 50;
-    mp_sampleStandBy = 0;
-    m_angleSampleStandby = 0.0f;
-    m_angleSampleStandbySpeed = 70.0f;
-    
-    mp_sampleStandBy = new float[m_nbLEDs];
-    for (int i=0;i<m_nbLEDs;i++){
-        mp_sampleStandBy[i]=0.0f;
-    }
-
+	mp_sampleStandBy = 0;
+	m_sampleVolStandby = 0.35f;
+	m_sampleNameStandby = "Sounds/StandBy/theme1-4.wav";
 }
 
 //--------------------------------------------------------------
 Device::~Device()
 {
     delete mp_soundInput;
-    delete[] mp_sampleStandBy;
+	delete mp_sampleStandBy;
 }
 
 //--------------------------------------------------------------
@@ -67,11 +60,6 @@ void Device::set(string id, int nbLEDs, float distLEDs)
 //    printf("m_length=%.3f\n", m_length);
     
     createPackets(m_nbLEDs);
-
-    mp_sampleStandBy = new float[m_nbLEDs];
-    for (int i=0;i<m_nbLEDs;i++){
-        mp_sampleStandBy[i]=0.0f;
-    }
 }
 
 //--------------------------------------------------------------
@@ -210,6 +198,26 @@ float Device::getSoundInputVolHistorySize()
 }
 
 //--------------------------------------------------------------
+void Device::resetStandBy()
+{
+	if (mp_sampleStandBy)
+	{
+		delete mp_sampleStandBy;
+		mp_sampleStandBy = 0;
+	}
+
+	mp_sampleStandBy = new Sample();
+	if ( mp_sampleStandBy->load(ofToDataPath(m_sampleNameStandby)) )
+	{
+		mp_soundInput->setSample(mp_sampleStandBy);
+	}else
+	{
+		delete mp_sampleStandBy;
+		mp_sampleStandBy = 0;
+	}
+}
+
+//--------------------------------------------------------------
 void Device::setTimeStandby(float v)
 {
     ofxOscMessage m;
@@ -229,41 +237,24 @@ void Device::setTimeStandbyOSC(float v)
 }
 
 //--------------------------------------------------------------
-void Device::setNbLEDsStandby(int nb)
+void Device::setSampleVolumeStandby(float v)
 {
     ofxOscMessage m;
     m.setAddress( OSC_ADDRESS_SET_DEVICE_PROP );
     m.addStringArg(m_id);
-    m.addStringArg("nbLEDsStandby");
-    m.addIntArg(nb);
-    m_oscSender.sendMessage(m);
-
-    m_nbLEDsStandby = nb;
-}
-
-//--------------------------------------------------------------
-void Device::setNbLEDsStandbyOSC(int nb)
-{
-    m_nbLEDsStandby = nb;
-}
-
-//--------------------------------------------------------------
-void Device::setSpeedStandby(float v)
-{
-    ofxOscMessage m;
-    m.setAddress( OSC_ADDRESS_SET_DEVICE_PROP );
-    m.addStringArg(m_id);
-    m.addStringArg("speedStandby");
+    m.addStringArg("sampleVolStandby");
     m.addFloatArg(v);
     m_oscSender.sendMessage(m);
-    
-    m_angleSampleStandbySpeed = v;
+	
+	m_sampleVolStandby = v;
 }
 
 //--------------------------------------------------------------
-void Device::setSpeedStandbyOSC(float v)
+void Device::setSampleVolumeStandbyOSC(float v)
 {
-    m_angleSampleStandbySpeed = v;
+    if (mp_soundInput){
+        mp_soundInput->setSampleVolume(v);
+    }
 }
 
 
@@ -340,37 +331,6 @@ void Device::deletePackets()
         delete *it;
         it = m_listPackets.erase(it);
     }
-}
-
-
-
-//--------------------------------------------------------------
-void Device::sampleStandbyInput()
-{
-    if (m_listPackets.size()<=2) return;
-
-    int nbPackets = m_listPackets.size();
-    for (int i=0;i<nbPackets;i++)
-        m_listPackets[i]->m_volume = mp_sampleStandBy[i];
-}
-
-//--------------------------------------------------------------
-void Device::generateSampleStandBy(float dt)
-{
-    float step = PI / float(m_nbLEDsStandby-1);
-    for (int i=0;i<m_nbLEDs;i++)
-    {
-        if (i<=m_nbLEDsStandby){
-            mp_sampleStandBy[i] = 0.5f * (1.0f+sin( float(i)*step-ofDegToRad(m_angleSampleStandby) ));
-        }
-        else{
-            mp_sampleStandBy[i] = 0.0f;
-        }
-    }
-//    printf("%.2f -", m_angleSampleStandby);
-    m_angleSampleStandby += m_angleSampleStandbySpeed*dt;
-    if (m_angleSampleStandby>=360.0f)
-        m_angleSampleStandby -= 360.0f;
 }
 
 //--------------------------------------------------------------
@@ -471,9 +431,9 @@ void Device::checkForActivity(float dt)
             {
                 m_stateStandby = EStandby_standby;
                 m_stateStandbyDuration=0.0f;
-                printf("> Entering standby\n");
+				resetStandBy();
+                ofLog() << "> Entering standby\n";
             }
-
         }
         else
         if (m_stateStandby == EStandby_standby)
@@ -482,6 +442,9 @@ void Device::checkForActivity(float dt)
             {
                 m_stateStandby = EStandby_active;
                 m_stateStandbyDuration=0.0f;
+				
+				if (mp_soundInput)
+					mp_soundInput->setSample(0);
             }
         }
     }
@@ -499,19 +462,8 @@ void Device::update(float dt)
         // Update sound data
         mp_soundInput->update();
 
-        // If stand by, send our own packets
-        if (m_stateStandby == EStandby_standby)
-        {
-            generateSampleStandBy(dt);
-            sampleStandbyInput();
-        }
-        // sample
-        else
-        {
-            // Sample them and writes into packet
-            sampleSoundInput();
-        }
-        
+		// Sample them and writes into packet
+        sampleSoundInput();
 
         // Send packets / values to network
         sendPacketsOSC();
@@ -536,8 +488,9 @@ void Device::loadXML(string dir)
         printf("    - volHistoryTh=%.3f\n", settings.getValue("device:soundInput:volHistoryTh",0.1f));
         printf("    - enableStandby=%s\n", settings.getValue("device:enableStandby",1) ? "true" : "false");
         printf("    - timeStandby=%.2f\n", settings.getValue("device:timeStandby",10.0f) );
-        printf("    - nbLEDsStandby=%d\n", settings.getValue("device:nbLEDsStandby",50) );
-        printf("    - speedStandby=%.2f\n", settings.getValue("device:speedStandby",70.0f) );
+        printf("    - sampleVolStandby=%.2f\n", settings.getValue("device:sampleVolStandby",0.35f) );
+//        printf("    - nbLEDsStandby=%d\n", settings.getValue("device:nbLEDsStandby",50) );
+//        printf("    - speedStandby=%.2f\n", settings.getValue("device:speedStandby",70.0f) );
         printf("    - surface=%s (xNorm=%.2f,yNorm=%.2f)\n",surfaceId.c_str(), xNorm, yNorm);
         
         setSoundInputVolumeMax( settings.getValue("device:soundInput:volMax",0.05f) );
@@ -545,8 +498,9 @@ void Device::loadXML(string dir)
         setSoundInputVolHistoryTh( settings.getValue("device:soundInput:volHistoryTh",0.1f) );
         setEnableStandbyMode( settings.getValue("device:enableStandby",1)==1 ? true : false );
         setTimeStandby( settings.getValue("device:timeStandby",10.0f) );
-        setNbLEDsStandby( settings.getValue("device:nbLEDsStandby", 50) );
-        setSpeedStandbyOSC( settings.getValue("device:speedStandby", 70.0) );
+//        setNbLEDsStandby( settings.getValue("device:nbLEDsStandby", 50) );
+//        setSpeedStandbyOSC( settings.getValue("device:speedStandby", 70.0) );
+        setSampleVolumeStandby( settings.getValue("device:sampleVolStandby", 0.35f) );
         setPointSurface(xNorm, yNorm);
         
     }
@@ -572,9 +526,10 @@ void Device::saveXML(string dir)
         settings.popTag();
     settings.addValue("enableStandby", getEnableStandbyMode() ? 1 : 0);
     settings.addValue("timeStandby", m_timeStandby);
-    settings.addValue("nbLEDsStandby", getNbLEDsStandby());
-    settings.addValue("speedStandby", getSpeedStandby());
-    
+//    settings.addValue("nbLEDsStandby", getNbLEDsStandby());
+//    settings.addValue("speedStandby", getSpeedStandby());
+    settings.addValue("sampleVolStandby", getSampleVolStandby());
+ 
     settings.addTag("surface");
     settings.setAttribute("surface", "id", "main", 0);
     settings.pushTag("surface");

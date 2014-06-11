@@ -1,0 +1,20 @@
+<Widget>
+    <Kind>2</Kind>
+    <Name>Show device points</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>View simulation</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>launch madmapper @ start</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>launch murmur @ rasp</Name>
+    <Value>0</Value>
+</Widget>

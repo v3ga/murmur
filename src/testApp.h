@@ -6,10 +6,7 @@
 #include "oscReceiver.h"
 #include "oscSender.h"
 #include "threadRasp.h"
-#if MURMUR_WARPING
-#include "ofxQuadWarp.h"
-#endif
-#include "ofxVideoRecorder.h"
+#include "tool.h"
 
 class Scene;
 class SceneVisualisation;
@@ -39,28 +36,19 @@ class testApp : public ofBaseApp
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 	
-		// Video
-//		ofPtr<ofQTKitGrabber>	vidRecorder;
-//		void 					videoSaved(ofVideoSavedEventArgs& e);
-
-		ofImage 				recordingImage;
-	    ofxVideoRecorder    	vidRecorder;
- 
         // Javascript
 		void                initJS();
-		static void			logJS(void* pData, const string& message);
+
+		// OSC
+		oscReceiver			m_oscReceiver;
 
         // UI
+		toolManager			toolManager;
+	
         bool                m_isUserControls;
 		bool				m_isUpdateLayout;
-        void                initControls();
-		void				updateControls();
+//		void				updateControls();
         void                showControls(bool is=true);
-        void                guiEvent(ofxUIEventArgs &e);
-        void                guiMainEvent(ofxUIEventArgs &e);
-        void                guiUpdateListDevices(int widthDefault);
-        void                guiUpdateDeviceAnimationTitle();
-        void                guiUpdateDevice(Device*);
         void                guiUpdateViewSimulation();
         void                guiShowAnimationPropsAll(bool is=true);
 		void				guiMarkUpdateLayout(){m_isUpdateLayout=true;}
@@ -71,28 +59,7 @@ class testApp : public ofBaseApp
 		void				saveControlsState		();
 		void				restoreControlsState	();
 
-	    ofxUITabBar 		*mp_guiTabBar;
-		ofxUICanvas			*mp_guiMain;
-		ofxUICanvas			*mp_guiNetwork;
-		ofxUICanvas			*mp_guiSound;
-		ofxUICanvas			*mp_guiAnimations;
-        ofxUICanvas         *mp_gui1,*mp_gui2,*mp_gui3,*mp_gui4,*mp_guiAnimProps;
-        ofxUIDropDownList*	mp_ddlDevices;
-        ofxUILabel*         mp_lblAnimTitle;
-		ofxUILabel*			mp_lblAnimDirJs;
-        ofxUIToggle*        mp_tgViewSimu;
-		ofxUIRadio*			mp_radioPanels;
-		vector<ofxUICanvas*>m_listPanels;
-
-        ofxUILabel*         mp_lblDeviceTitle;
-        ofxUISlider         *mp_sliderDeviceVolMax,*mp_sliderDeviceVolHistorySize,*mp_sliderDeviceVolHistoryTh,*mp_sliderDeviceTimeStandby,*mp_sliderDeviceNbLEDsStandby,*mp_sliderDeviceSpeedStandby;
-        ofxUIToggle*        mp_toggleDeviceEnableStandby;
-		ofxUILabel*			mp_lblSurfaceActivity;
-
-
-		ofxUITextArea*		mp_consoleJs;
-		vector<string>		m_listLogJs;
-		int					m_listLogJsMax;
+		void				guiUpdateListDevices	();
  
         // Application settings
         ofxXmlSettings      m_settings;
@@ -104,26 +71,9 @@ class testApp : public ofBaseApp
         bool                isViewSimulation;
         bool                isSimulation;
         bool                m_isViewAnimProperties;
-#if MURMUR_WARPING
-		ofxQuadWarp			m_surfaceQuadWarp;
-#endif
 
         void                toggleView();
-	
-		// @ launch
-		void				launchDevices();
-		bool				m_isLaunchDevices;
-		threadRasp			m_threadRasp;
-		vector<threadRasp*>	m_listThreadLaunchDevices;
-	
-		void				launchMadMapper();
-		bool				m_isLaunchMadMapper;
-    
-        // OSC
-        oscReceiver         m_oscReceiver;
-        string              m_oscReceiverIP;
-        int                 m_oscReceiverPort;
-    
+ 
         // Devices
         DeviceManager*      mp_deviceManager;
         DeviceEchoSimulator*mp_deviceSimulator;
@@ -134,7 +84,6 @@ class testApp : public ofBaseApp
         void                selectDevice(string id);
 	
 		vector<DeviceEchoSimulator*>	m_listDeviceSimulator;
-//		vector<DeviceNode*>				m_listDeviceSimNode;
 
 		// Sound (simulation only)
 		ofSoundStream		m_soundStreamInput;
@@ -149,7 +98,6 @@ class testApp : public ofBaseApp
 		ofRectangle			 m_rectSurfaceOff;
 	
         // Devices <> Surfaces
-        DeviceInfoManager*  mp_deviceInfoManager; // DEPRECATED
         void                attachDevicesToSurfaces();
         Surface*            getSurfaceForDevice(Device*);
         Surface*            getSurfaceForDeviceCurrent();

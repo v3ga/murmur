@@ -7,12 +7,13 @@
 //
 
 #include "soundInput.h"
-
+#include "Sample.h"
 
 //--------------------------------------------------------------
 SoundInput::~SoundInput()
 {
 	delete mp_soundStreamInput;
+	delete m_sampleData;
 }
 
 //--------------------------------------------------------------
@@ -52,6 +53,10 @@ void SoundInput::setup(int deviceId, int nChannels)
 
     mp_soundStreamInput->start();
 	mute(false);
+	
+	mp_sample = 0;
+	m_sampleData = 0;
+	m_sampleVolume = 0.35f;
 }
 
 //--------------------------------------------------------------
@@ -81,6 +86,15 @@ void SoundInput::setup(int nChannels)
 	mute(false);
 }
 
+
+//--------------------------------------------------------------
+void SoundInput::setVolume(float vol)
+{
+	if (m_isStopInput == true)
+	{
+		m_smoothedVol = vol;
+	}
+}
 
 //--------------------------------------------------------------
 void SoundInput::setVolHistorySize(int nb)
@@ -222,9 +236,62 @@ void SoundInput::initAudioBuffers()
 }
 
 //--------------------------------------------------------------
+void SoundInput::setSample(Sample* pSample)
+{
+	mp_sample = pSample;
+	
+	if (mp_sample==0)
+	{
+		stopInput(false);
+		
+		delete m_sampleData;
+		m_sampleData = 0;
+	}else
+	{
+		stopInput();
+
+		mp_sample->setLooping(false);
+		mp_sample->play();
+	}
+}
+
+//--------------------------------------------------------------
 void SoundInput::audioIn(float * input, int bufferSize, int nChannels)
 {
-    
+	if (m_isStopInput == false)
+	{
+		processAudio(input,bufferSize,nChannels);
+	}
+	else
+	{
+		if (mp_sample)
+		{
+			// Feed audioIn with our own data from sample
+			int nbChannelsSample = mp_sample->getChannels();
+		
+			if (m_sampleData==0)
+				m_sampleData = new float[bufferSize * nbChannelsSample];
+				
+			for (int i=0; i<bufferSize ; i++)
+			{
+			   if (nbChannelsSample==1){
+			   		m_sampleData[i] = (float)mp_sample->update();
+			   }
+			   else if (nbChannelsSample==2){
+				   m_sampleData[2*i] = (float)mp_sample->update() * m_sampleVolume;
+				   m_sampleData[2*i+1] = (float)mp_sample->update() * m_sampleVolume;
+			   }
+			}
+			
+			// Process
+			processAudio(m_sampleData,bufferSize,nbChannelsSample);
+		}
+	}
+}
+
+//--------------------------------------------------------------
+void SoundInput::processAudio(float * input, int bufferSize, int nChannels)
+{
 	float curVol = 0.0;
     int numCounted = 0;
 
@@ -277,5 +344,7 @@ void SoundInput::audioIn(float * input, int bufferSize, int nChannels)
      
         //bufferCounter++;
     }
-    
 }
+
+
+

@@ -21,27 +21,27 @@
 <Widget>
     <Kind>12</Kind>
     <Name>wSurface</Name>
-    <Value>5.92</Value>
+    <Value>4</Value>
 </Widget>
 <Widget>
     <Kind>12</Kind>
     <Name>hSurface</Name>
-    <Value>4.18</Value>
+    <Value>3</Value>
 </Widget>
 <Widget>
     <Kind>12</Kind>
     <Name>wFboSurface</Name>
-    <Value>1184</Value>
+    <Value>1000</Value>
 </Widget>
 <Widget>
     <Kind>12</Kind>
     <Name>hFboSurface</Name>
-    <Value>836</Value>
+    <Value>1000</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
     <Name>syphon</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>

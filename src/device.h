@@ -11,6 +11,7 @@
 #include "ofMain.h"
 #include "oscSender.h"
 #include "soundInput.h"
+#include "Sample.h"
 
 // ======================================================================================
 class DevicePacket
@@ -88,31 +89,23 @@ class Device
         float               getSoundInputVolHistoryTh(){return m_volHistoryTh;}
         bool                getEnableStandbyMode(){return m_isEnableStandbyMode;}
     
-        void               setTimeStandby(float v);
-        void               setTimeStandbyOSC(float v);
+		void				resetStandBy();
+		void               	setTimeStandby(float v);
+        void               	setTimeStandbyOSC(float v);
         float               getTimeStandby(){return m_timeStandby;}
-    
-        void                setNbLEDsStandby        (int nb);
-        void                setNbLEDsStandbyOSC     (int nb);
-        int                 getNbLEDsStandby        (){return m_nbLEDsStandby;}
-    
-        void                setSpeedStandby         (float v);
-        void                setSpeedStandbyOSC      (float v);
-        float               getSpeedStandby         (){return m_angleSampleStandbySpeed;}
-    
-        float*              mp_sampleStandBy;
-        int                 m_nbLEDsStandby;
-        float               m_angleSampleStandby;
-        float               m_angleSampleStandbySpeed;
-    
-        virtual void        sampleStandbyInput();
-        virtual void        generateSampleStandBy(float dt);
-	
-		virtual	void		mute(bool is=true){if(mp_soundInput) mp_soundInput->mute(is);}
-    
-        
+		float				getSampleVolStandby(){return m_sampleVolStandby;}
 
-    
+		void				setSampleVolumeStandby		(float v);
+		void				setSampleVolumeStandbyOSC	(float v);
+
+ 
+		virtual	void		mute(bool is=true){if(mp_soundInput) mp_soundInput->mute(is);}
+
+		// Sample (stand by)
+		Sample*				mp_sampleStandBy;
+		float				m_sampleVolStandby;
+		string				m_sampleNameStandby;
+ 
         // Saving
         void                loadXML(string dir);
         void                saveXML(string dir);
