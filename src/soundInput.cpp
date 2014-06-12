@@ -12,7 +12,7 @@
 //--------------------------------------------------------------
 SoundInput::~SoundInput()
 {
-	delete mp_soundStreamInput;
+	//delete mp_soundStreamInput;
 	delete m_sampleData;
 }
 
@@ -26,23 +26,23 @@ void SoundInput::setup(int deviceId, int nChannels)
     m_volEmpiricalMax = 0.10f;
 	
  
-	mp_soundStreamInput = new ofSoundStream();
-	mp_soundStreamInput->listDevices();
+	//mp_soundStreamInput = new ofSoundStream();
+	m_soundStreamInput.listDevices();
     
 	//if you want to set a different device id
     //bear in mind the device id corresponds to all audio devices, including  input-only and output-only devices.
     if (deviceId>=0)
-        mp_soundStreamInput->setDeviceID(deviceId);
+        m_soundStreamInput.setDeviceID(deviceId);
 
     m_bufferSize = 256; // 256 to be compliant with FFT
     m_nbChannels = nChannels;
 
-	mp_soundStreamInput->setup(ofGetAppPtr(), 0, m_nbChannels, 44100, m_bufferSize, 4);
+	m_soundStreamInput.setup(ofGetAppPtr(), 0, m_nbChannels, 44100, m_bufferSize, 4);
 #if SOUNDINPUT_USE_FFT
     if (nChannels==1 /*&& m_bufferSize == m_fft.getNoOfBands()*/){
 //        m_fft.setNoOfBands(20);
 //        m_fft.setThreshold(0.8);
-        m_fft.setup(mp_soundStreamInput);
+        m_fft.setup(&m_soundStreamInput);
     }
     else
         printf(">>> FFT, nChannels should be 1 & m_bufferSize should be %d\n", m_fft.getNoOfBands());
@@ -51,7 +51,7 @@ void SoundInput::setup(int deviceId, int nChannels)
     initAudioBuffers();
     setVolHistorySize(400);
 
-    mp_soundStreamInput->start();
+    m_soundStreamInput.start();
 	mute(false);
 	
 	mp_sample = 0;

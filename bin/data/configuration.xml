@@ -31,6 +31,6 @@
 
     <!-- Raspberry -->
     <launchDevices>
-        <ip>192.168.0.45</ip>
+        <ip>192.168.1.31</ip>
     </launchDevices>
 </murmur>

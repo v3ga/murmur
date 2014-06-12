@@ -54,7 +54,8 @@ class SoundInput
 		float				getSampleVolume	(){return m_sampleVolume;}
  
     private:
-        ofSoundStream*       mp_soundStreamInput;
+        //ofSoundStream*       mp_soundStreamInput;
+        ofSoundStream       m_soundStreamInput;
 #if SOUNDINPUT_USE_FFT
         ofxFFTLive          m_fft;
 #endif
