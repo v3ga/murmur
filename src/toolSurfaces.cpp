@@ -17,10 +17,9 @@ toolSurfaces::toolSurfaces(toolManager* parent, Surface* surface) : tool("Surfac
 {
 	mp_lblSurfaceActivity 	= 0;
 	mp_surfaceMain			= surface;
+	mp_mask					= 0;
+	mp_maskUI 				= 0;
 }
-
-
-
 
 	
 //--------------------------------------------------------------
@@ -35,14 +34,14 @@ void toolSurfaces::createControlsCustom()
 	    mp_canvas->addWidgetDown	( new ofxUILabel("Surfaces", OFX_UI_FONT_MEDIUM) );
     	mp_canvas->addWidgetDown	( new ofxUISpacer(widthDefault, 2));
 
-	    mp_canvas->addWidgetDown	( new ofxUIToggle("surf. enable standby", false, dim, dim) );
+/*	    mp_canvas->addWidgetDown	( new ofxUIToggle("surf. enable standby", false, dim, dim) );
     	mp_canvas->addWidgetRight	( new ofxUILabel("| state", fontType) );
 		mp_lblSurfaceActivity = new ofxUILabel("1234", "4",fontType);
     	mp_canvas->addWidgetRight 	( mp_lblSurfaceActivity );
     	mp_canvas->addWidgetDown	(new ofxUISlider( "th. go standby", 0.01f, 0.1f, 0.02f,widthDefault-10, dim ));
     	mp_canvas->addWidgetDown	(new ofxUISlider( "th. go active", 0.01f, 0.1f, 0.02f,widthDefault-10, dim ));
     	mp_canvas->addWidgetDown	(new ofxUISlider( "dur. pre-standby", 10.0f, 60.0f, 20.0f,widthDefault-10, dim ));
-
+*/
 
     	mp_canvas->addWidgetDown	( new ofxUILabel("Dimensions", fontType) );
     	mp_canvas->addWidgetRight 	( new ofxUITextInput("wSurface", "4" , 40, dim,0,0,fontType));
@@ -58,7 +57,14 @@ void toolSurfaces::createControlsCustom()
 	    mp_canvas->addWidgetDown	(new ofxUIToggle("syphon", false, dim, dim));
     	mp_canvas->addWidgetRight	(new ofxUIToggle("target", false, dim, dim));
     	mp_canvas->addWidgetRight	(new ofxUISlider("target line w", 1.0f, 8.0f, 2.0f, 100, dim ));
-		
+
+	    mp_canvas->addWidgetDown	( new ofxUIToggle("enable mask", false, dim, dim) );
+/*	    mp_canvas->addWidgetRight	( new ofxUIButton("load mask", false, dim, dim) );
+*/		mp_canvas->addImage			( "mask", 0, widthDefault, 300);
+		ofxUITextInput* lblPathMask = new ofxUITextInput("pathMask", "", widthDefault);
+    	mp_canvas->addWidgetDown	( lblPathMask );
+		lblPathMask->setVisible(false);
+	
 		mp_canvas->autoSizeToFitWidgets();
 	
 	}
@@ -104,6 +110,7 @@ void toolSurfaces::update()
 {
     if (mp_surfaceMain)
 	{
+		mp_surfaceMain->setMask(mp_mask); // TEMP here?
         mp_surfaceMain->renderOffscreen(GLOBALS->mp_app->isShowDevicePointSurfaces);
 		mp_surfaceMain->publishSyphon();
     }
@@ -118,9 +125,9 @@ void toolSurfaces::handleEvents(ofxUIEventArgs& e)
 	toolScene* pToolScene = (toolScene*)mp_toolManager->getTool("Scene");
 	if (pToolScene == 0) return;
 
-
     string name = e.widget->getName();
-	if (name == "surf. enable standby")
+
+/*	if (name == "surf. enable standby")
 	{
 		pSurfaceCurrent->setEnableStandby( ((ofxUIToggle *) e.widget)->getValue() );
 	}
@@ -136,7 +143,8 @@ void toolSurfaces::handleEvents(ofxUIEventArgs& e)
 	{
 		pSurfaceCurrent->setDurationPreStandby( ((ofxUISlider *) e.widget)->getScaledValue() );
 	}
-	else if (name == "wSurface")
+*/
+	 if (name == "wSurface")
     {
 		SurfaceNode * pSurfaceNodeCurrent = pToolScene->getSurfaceNode(pSurfaceCurrent);
 		float wSurface = atof( ((ofxUITextInput *) e.widget)->getTextString().c_str() );
@@ -176,6 +184,88 @@ void toolSurfaces::handleEvents(ofxUIEventArgs& e)
 	{
 		pSurfaceCurrent->setRenderTargetLineWidth( ((ofxUISlider *) e.widget)->getScaledValue() );
 	}
+	else if (name == "enable mask")
+	{
+		pSurfaceCurrent->setDrawMask( ((ofxUIToggle *) e.widget)->getValue() );
+	}
+	else if (name == "load mask")
+	{
+		bool value = ((ofxUIButton *) e.widget)->getValue();
+		if (value){
+	
+		}
+	}
+	else if (name == "pathMask")
+	{
+		string value = ((ofxUITextInput *) e.widget)->getTextString();
+		if ( loadMask( value ) )
+			updateMaskUI( value );
+	}
 }
+
+//--------------------------------------------------------------
+void toolSurfaces::dragEvent(ofDragInfo dragInfo)
+{
+	int nbFiles = dragInfo.files.size();
+	if( nbFiles > 0 )
+	{
+		// ofLog() << dragInfo.files[0];
+
+		ofFile fileSrc( dragInfo.files[0] );
+		if (fileSrc.exists())
+		{
+			string fileDstPath = "Images/Surfaces/" + fileSrc.getFileName();
+			if ( ofFile::copyFromTo(fileSrc.getAbsolutePath(), fileDstPath, true, true) )
+			{
+				if ( loadMask(fileDstPath) )
+				{
+					updateMaskUI(fileDstPath);
+				}
+			}
+		}
+	}
+}
+
+//--------------------------------------------------------------
+void toolSurfaces::updateMaskUI(string path)
+{
+	if (mp_canvas == 0) return;
+	
+	ofxUIImage* pMaskUI = (ofxUIImage*) mp_canvas->getWidget("mask");
+	ofxUITextInput* pMaskPathUI = (ofxUITextInput*) mp_canvas->getWidget("pathMask");
+	if (mp_mask && pMaskUI && pMaskPathUI)
+	{
+		pMaskPathUI->setTextString(path);
+
+		if (mp_maskUI == 0)
+		{
+			mp_maskUI = new ofImage(mp_mask->getPixelsRef());
+			mp_maskUI->resize( (int)pMaskUI->getRect()->getWidth(), (int)pMaskUI->getRect()->getHeight() );
+			pMaskUI->setImage(mp_maskUI);
+		}
+
+	}
+}
+
+
+//--------------------------------------------------------------
+bool toolSurfaces::loadMask(string path)
+{
+	mp_mask = new ofImage();
+	if (mp_mask->loadImage(path))
+	{
+		delete mp_maskUI;
+		mp_maskUI = 0;
+		return true;
+	}
+	else{
+		delete mp_mask;
+		mp_mask = 0;
+		
+	}
+	
+	return false;
+}
+
 
 

@@ -5,7 +5,7 @@
         <volHistoryTh>0.234677419</volHistoryTh>
     </soundInput>
     <enableStandby>1</enableStandby>
-    <timeStandby>17.483871460</timeStandby>
+    <timeStandby>60.000000000</timeStandby>
     <sampleVolStandby>0.083870970</sampleVolStandby>
     <surface id="main">
         <xNorm>0.472656250</xNorm>

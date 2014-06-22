@@ -25,7 +25,14 @@ class toolSurfaces : public tool
 		void 					onSurfaceModified			(Surface*);
 		void					update						();
 		void					handleEvents				(ofxUIEventArgs& e);
+	
+		bool					loadMask					(string pathMask);
+		void					updateMaskUI				(string pathMask);
+	
+		void					dragEvent					(ofDragInfo dragInfo);
 
 		ofxUILabel*				mp_lblSurfaceActivity;
 		Surface*				mp_surfaceMain;
+		ofImage*				mp_mask;
+		ofImage*				mp_maskUI;
 };

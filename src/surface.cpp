@@ -62,6 +62,9 @@ void Surface::zeroAll()
 	m_durationLaunchPacket = 0.0f;
 	m_durationNoLaunchPacket = 0.0f;
 	m_durationPreStandby = 10.0f;
+	
+	setMask(0);
+	m_isDrawMask = false;
 }
 
 //--------------------------------------------------------------
@@ -398,11 +401,23 @@ void Surface::drawRenderTarget()
 }
 
 //--------------------------------------------------------------
+void Surface::drawMask()
+{
+	if (m_isDrawMask && mp_mask)
+	{
+		ofEnableBlendMode(OF_BLENDMODE_MULTIPLY);
+		mp_mask->draw(0,0,m_fbo.getWidth(),m_fbo.getHeight());
+		ofDisableBlendMode();
+	}
+}
+
+//--------------------------------------------------------------
 void Surface::renderOffscreen(bool isRenderDevicePoints)
 {
     m_fbo.begin();
 	    m_animationManager.M_drawCanvas(m_fbo.getWidth(),m_fbo.getHeight());
 		drawRenderTarget();
+		drawMask();
     m_fbo.end();
 }
 
