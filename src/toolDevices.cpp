@@ -110,7 +110,7 @@ void toolDevices::createControlsCustomFinalize()
     mp_sliderDeviceVolHistorySize = new ofxUISlider("Vol. history size", 50, 500, 400, widthDefault-10, dim );
     mp_toggleDeviceEnableStandby = new ofxUIToggle("Enable standby", true, dim, dim);
     mp_sliderDeviceVolHistoryTh = new ofxUISlider( "Vol. history standby", 0.0f, 0.75f, 0.5f, widthDefault-10, dim );
-    mp_sliderDeviceTimeStandby = new ofxUISlider("Time standby", 5.0f, 20.0f, 10.0f, widthDefault-10, dim );
+    mp_sliderDeviceTimeStandby = new ofxUISlider("Time standby", 5.0f, 60.0f, 10.0f, widthDefault-10, dim );
 	mp_sliderDeviceSampleVolStandby = new ofxUISlider( "Sample vol. standby", 0.0f, 1.0f, 0.35f, widthDefault-10, dim );
 //    mp_sliderDeviceNbLEDsStandby = new ofxUISlider( "Nb LEDs standby", 10, 100, 50.0f, widthDefault-10, dim );
 //    mp_sliderDeviceSpeedStandby = new ofxUISlider( "Speed standby", 40, 360, 70.0f, widthDefault-10, dim );

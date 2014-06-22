@@ -62,6 +62,10 @@ class Surface
 		void			drawRenderTarget();
 		void			setRenderTarget	(bool is=true);
 		void			setRenderTargetLineWidth(float w=2.0f);
+
+		void			setDrawMask(bool is=true){m_isDrawMask = is;}
+		void			setMask(ofImage* image){mp_mask = image;}
+		void			drawMask();
 	
 		float			getVolumePacketsHistoryMean	(){return m_volumePacketsHistoryMean;}
 		string			getStateActivity			();
@@ -97,11 +101,14 @@ class Surface
 		bool				m_isPublishSyphon;
 		bool				m_isRenderTarget;
 		float				m_renderTargetLineWidth;
+		bool				m_isDrawMask;
 	
 		void				computeVolumePacketsMean(DevicePacket* pDevicePacket);
 		float				m_volumePacketsHistoryMean;
         vector <float>      m_volumePacketsHistory;
 		int					m_volumePacketsHistoryNb;
+	
+		ofImage*			mp_mask;
 
 	
 #if MURMUR_DEFINE_SYPHON
