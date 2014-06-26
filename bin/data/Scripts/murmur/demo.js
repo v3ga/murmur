@@ -42,8 +42,10 @@ function update(dt)
 function draw(w,h)
 {
 	of.Background(0,0,0);
-	of.SetColor(255,255,255);
-//	of.Circle(this.xSaved, this.ySaved,this.volumeSaved*200)
+	of.SetColor(255,255,0);
+	of.Circle(this.xSaved+30, this.ySaved,this.volumeSaved*500)
+	of.SetColor(0,255,0);
+	of.Circle(this.xSaved-30, this.ySaved,this.volumeSaved*500)
 }
 
 
