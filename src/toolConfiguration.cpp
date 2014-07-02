@@ -75,14 +75,15 @@ void toolConfiguration::launchDevices()
 	int nbLaunchDevices = GLOBALS->mp_app->m_settings.getNumTags("murmur:launchDevices:ip");
 	for (int i=0;i<nbLaunchDevices;i++)
 	{
-		string strIPMurmur = GLOBALS->mp_app->m_settings.getValue("murmur:launchDevices:ip", "10.23.108.114", i);
-		string strRun = "ssh pi@" + strIPMurmur + " /home/pi/Dev/C/openFrameworks/examples/myapps/murmurRaspberry/bin/run_murmur.sh";
+		string strIPMurmur 	= GLOBALS->mp_app->m_settings.getValue("murmur:launchDevices:ip", "10.23.108.114", i);
+		string strSSH_kill 	= "ssh pi@" + strIPMurmur + " 'sudo pkill -f murmurRaspberry'";
+		string strSSH_run 	= "ssh pi@" + strIPMurmur + " /home/pi/Dev/C/openFrameworks/examples/myapps/murmurRaspberry/bin/run_murmur.sh";
+		
 		threadRasp* pThreadLaunchDevice = new threadRasp();
-		pThreadLaunchDevice->setCommand(strRun);
+		pThreadLaunchDevice->addCommand(strSSH_kill);
+		pThreadLaunchDevice->addCommand(strSSH_run);
 		pThreadLaunchDevice->startThread();
-
-		printf("  - running \"%s\"\n", strRun.c_str());
-
+		
 		m_listThreadLaunchDevices.push_back(pThreadLaunchDevice);
 	}
 }

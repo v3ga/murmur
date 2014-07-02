@@ -60,11 +60,12 @@ void testApp::setup()
 	toolAnimations* 	pToolAnimations 	= new toolAnimations(&toolManager);
 	toolDevices*		pToolDevices		= new toolDevices(&toolManager, mp_deviceManager);
 	toolNetwork* 		pToolNetwork 		= new toolNetwork(&toolManager);
+	toolSurfaces*		pToolSurfaces		= new toolSurfaces(&toolManager, mp_surfaceMain);
 
 	toolManager.addTool( pToolConfiguration );
 	toolManager.addTool( new toolNetwork(&toolManager) );
 	toolManager.addTool( pToolDevices );
-	toolManager.addTool( new toolSurfaces(&toolManager, mp_surfaceMain) );
+	toolManager.addTool( pToolSurfaces );
 	toolManager.addTool( pToolAnimations );
 	toolManager.addTool( new toolScene(&toolManager, mp_sceneVisualisation) );
 	toolManager.addTool( new toolSound(&toolManager) );
@@ -85,6 +86,7 @@ void testApp::setup()
 	if (pToolAnimations)		pToolAnimations->createControlsAnimations(mp_surfaceMain);
 	if (pToolConfiguration)		pToolConfiguration->setup();
 	if (pToolDevices)			pToolDevices->setup();
+	if (pToolSurfaces)			pToolSurfaces->setup();
 	
 	// GO
 	ofSetVerticalSync(true);
@@ -366,25 +368,10 @@ void testApp::draw()
     }
 	else
     {
-        if (mp_surfaceMain)
-		{
-			ofFbo& offSurface = mp_surfaceMain->getOffscreen();
-
-			ofRectangle rectScreen(0,0,ofGetWidth(),ofGetHeight());
-			m_rectSurfaceOff.set(0,0,offSurface.getWidth(),offSurface.getHeight());
-			m_rectSurfaceOff.scaleTo(rectScreen);
-			m_rectSurfaceOff.alignTo(rectScreen);
-
-
-			ofClear(70,70,70);
-            ofSetColor(255,255,255,255);
-            mp_surfaceMain->getOffscreen().draw(m_rectSurfaceOff.getX(),m_rectSurfaceOff.getY(),m_rectSurfaceOff.getWidth(),m_rectSurfaceOff.getHeight());
-//            mp_surfaceMain->drawCacheLEDs(m_diamCacheLEDs);
-            if (isShowDevicePointSurfaces)
-			{
-                mp_surfaceMain->drawDevicePointSurface(m_rectSurfaceOff);
-            }
-        }
+		toolSurfaces* pToolSurfaces = (toolSurfaces*) toolManager.getTool("Surfaces");
+		if (pToolSurfaces){
+			pToolSurfaces->draw();
+		}
     }
 }
 
@@ -538,33 +525,9 @@ void testApp::mousePressed(int x, int y, int button)
 	}
 	else
 	{
-        Device* pDeviceCurrent = mp_deviceManager->getDeviceCurrent();
-        
-        if (pDeviceCurrent)
-        {
-            Surface* pSurfaceCurrent = getSurfaceForDevice(pDeviceCurrent);
-            if (pSurfaceCurrent)
-            {
-				float dx = x - m_rectSurfaceOff.getX();
-				float dy = y - m_rectSurfaceOff.getY();
-				
-				float xNorm = ofClamp(dx / m_rectSurfaceOff.getWidth(),0.0f,1.0f);
-				float yNorm = ofClamp(dy / m_rectSurfaceOff.getHeight(),0.0f,1.0f);
-			
-                pDeviceCurrent->setPointSurface(xNorm, yNorm);
-             
-                // Update simulation
-                if(mp_sceneVisualisation)
-                {
-                    DeviceNode* pDeviceNode = mp_sceneVisualisation->getDeviceNode(pDeviceCurrent);
-                    SurfaceNode* pSurfaceNode = mp_sceneVisualisation->getSurfaceNode(pSurfaceCurrent);
-                    if (pDeviceNode && pSurfaceNode)
-                        pDeviceNode->setPositionNodeSurface( pSurfaceNode->getGlobalPositionDevicePointSurface(pDeviceNode->getDevice()) );
-                    
-                }
-            }
-        }
-	
+		toolSurfaces* pToolSurfaces = (toolSurfaces*) toolManager.getTool("Surfaces");
+		if (pToolSurfaces)
+			pToolSurfaces->mousePressed(x, y, button);
 	}
 }
 

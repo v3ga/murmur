@@ -86,6 +86,8 @@
 		F951EBFD195AC12300056B2A /* ofxCvHaarFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F951EBF0195AC12300056B2A /* ofxCvHaarFinder.cpp */; };
 		F951EBFE195AC12300056B2A /* ofxCvImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F951EBF2195AC12300056B2A /* ofxCvImage.cpp */; };
 		F951EBFF195AC12300056B2A /* ofxCvShortImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F951EBF5195AC12300056B2A /* ofxCvShortImage.cpp */; };
+		F951EC061963576600056B2A /* ofxHomographyHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F951EC041963576600056B2A /* ofxHomographyHelper.cpp */; };
+		F951EC09196359E600056B2A /* quadWarping.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F951EC07196359E600056B2A /* quadWarping.cpp */; };
 		F964768818A25D930061C848 /* tunnel.js in Sources */ = {isa = PBXBuildFile; fileRef = F964768718A25D930061C848 /* tunnel.js */; };
 		F969FB2217160CF700F3F410 /* device.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F969FB2117160CF700F3F410 /* device.cpp */; };
 		F969FB2517160E8600F3F410 /* surface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F969FB2417160E8600F3F410 /* surface.cpp */; };
@@ -490,6 +492,10 @@
 		F951EBF5195AC12300056B2A /* ofxCvShortImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxCvShortImage.cpp; sourceTree = "<group>"; };
 		F951EBF6195AC12300056B2A /* ofxCvShortImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxCvShortImage.h; sourceTree = "<group>"; };
 		F951EBF7195AC12300056B2A /* ofxOpenCv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOpenCv.h; sourceTree = "<group>"; };
+		F951EC041963576600056B2A /* ofxHomographyHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxHomographyHelper.cpp; sourceTree = "<group>"; };
+		F951EC051963576600056B2A /* ofxHomographyHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxHomographyHelper.h; sourceTree = "<group>"; };
+		F951EC07196359E600056B2A /* quadWarping.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = quadWarping.cpp; sourceTree = "<group>"; };
+		F951EC08196359E600056B2A /* quadWarping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = quadWarping.h; sourceTree = "<group>"; };
 		F964768218A2575F0061C848 /* waves2.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = waves2.js; sourceTree = "<group>"; };
 		F964768318A25BDE0061C848 /* SoundPlayer.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = SoundPlayer.js; sourceTree = "<group>"; };
 		F964768418A25BDE0061C848 /* VolumeAccum.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = VolumeAccum.js; sourceTree = "<group>"; };
@@ -944,6 +950,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				F951EC031963576600056B2A /* ofxHomographyHelper */,
 				F951EB7C195AC12300056B2A /* ofxOpenCv */,
 				F951EB56195AC0D800056B2A /* ofxQuadWarp */,
 				F934070B1906B89A003F4D97 /* ofxVideoRecorder */,
@@ -1066,8 +1073,6 @@
 				F9BC6B0917456DDC00633C5C /* soundManager.cpp */,
 				F999339B171C870200272085 /* soundInput.h */,
 				F999339A171C870200272085 /* soundInput.cpp */,
-				F9C38AFB1885AAF100219152 /* threadRasp.h */,
-				F9C38AFA1885AAF100219152 /* threadRasp.cpp */,
 				F987123616C058150069F12A /* data */,
 			);
 			path = src;
@@ -1469,6 +1474,16 @@
 				F951EBF7195AC12300056B2A /* ofxOpenCv.h */,
 			);
 			path = src;
+			sourceTree = "<group>";
+		};
+		F951EC031963576600056B2A /* ofxHomographyHelper */ = {
+			isa = PBXGroup;
+			children = (
+				F951EC041963576600056B2A /* ofxHomographyHelper.cpp */,
+				F951EC051963576600056B2A /* ofxHomographyHelper.h */,
+			);
+			name = ofxHomographyHelper;
+			path = ../../../addons/ofxHomographyHelper;
 			sourceTree = "<group>";
 		};
 		F964768118A2575F0061C848 /* murmur */ = {
@@ -2457,6 +2472,10 @@
 				F987120716C054900069F12A /* utils.cpp */,
 				F9BC6D1C174DEF5C00633C5C /* volumeAccum.h */,
 				F9BC6D1B174DEF5C00633C5C /* volumeAccum.cpp */,
+				F951EC07196359E600056B2A /* quadWarping.cpp */,
+				F951EC08196359E600056B2A /* quadWarping.h */,
+				F9C38AFB1885AAF100219152 /* threadRasp.h */,
+				F9C38AFA1885AAF100219152 /* threadRasp.cpp */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -2618,6 +2637,7 @@
 				F92BC4C4189F094600CA158A /* ofxUISpectrum.cpp in Sources */,
 				F92BC4A7189F094600CA158A /* ofxUIButton.cpp in Sources */,
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
+				F951EC061963576600056B2A /* ofxHomographyHelper.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* testApp.cpp in Sources */,
 				F92BC4B0189F094600CA158A /* ofxUIImageButton.cpp in Sources */,
 				F98711AF16C052C40069F12A /* ofxJavascript.cpp in Sources */,
@@ -2691,6 +2711,7 @@
 				F96B924A172EB518007B1CFF /* surfaceNode.cpp in Sources */,
 				F92BC4AD189F094600CA158A /* ofxUIFPS.cpp in Sources */,
 				F96B924E172EB837007B1CFF /* scene.cpp in Sources */,
+				F951EC09196359E600056B2A /* quadWarping.cpp in Sources */,
 				F96B9251172EB8A0007B1CFF /* sceneVisualisation.cpp in Sources */,
 				F96B9254172EBE17007B1CFF /* deviceNode.cpp in Sources */,
 				F964768818A25D930061C848 /* tunnel.js in Sources */,
@@ -2836,6 +2857,7 @@
 					"$(OF_CORE_HEADERS)",
 					src,
 					../../../addons/ofxOsc/libs/oscpack/src,
+					"$(OF_OPENCV_HEADERS)",
 				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"-D__MACOSX_CORE__",
@@ -2871,6 +2893,7 @@
 					"$(OF_CORE_HEADERS)",
 					src,
 					../../../addons/ofxOsc/libs/oscpack/src,
+					"$(OF_OPENCV_HEADERS)",
 				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"-D__MACOSX_CORE__",
@@ -2899,6 +2922,32 @@
 				GCC_MODEL_TUNING = NONE;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = (
+					"$(OF_CORE_HEADERS)",
+					src,
+					../../../addons/ofxOsc/libs/oscpack/src,
+					../../../addons/ofxOpenCv/libs,
+					../../../addons/ofxOpenCv/libs/opencv,
+					../../../addons/ofxOpenCv/libs/opencv/include,
+					../../../addons/ofxOpenCv/libs/opencv/include/opencv,
+					../../../addons/ofxOpenCv/libs/opencv/include/opencv2,
+					../../../addons/ofxOpenCv/libs/opencv/include/opencv2/calib3d,
+					../../../addons/ofxOpenCv/libs/opencv/include/opencv2/contrib,
+					../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core,
+					../../../addons/ofxOpenCv/libs/opencv/include/opencv2/features2d,
+					../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann,
+					../../../addons/ofxOpenCv/libs/opencv/include/opencv2/gpu,
+					../../../addons/ofxOpenCv/libs/opencv/include/opencv2/highgui,
+					../../../addons/ofxOpenCv/libs/opencv/include/opencv2/imgproc,
+					../../../addons/ofxOpenCv/libs/opencv/include/opencv2/legacy,
+					../../../addons/ofxOpenCv/libs/opencv/include/opencv2/ml,
+					../../../addons/ofxOpenCv/libs/opencv/include/opencv2/objdetect,
+					../../../addons/ofxOpenCv/libs/opencv/include/opencv2/ts,
+					../../../addons/ofxOpenCv/libs/opencv/include/opencv2/video,
+					../../../addons/ofxOpenCv/libs/opencv/lib,
+					../../../addons/ofxOpenCv/libs/opencv/lib/osx,
+					../../../addons/ofxOpenCv/src,
+				);
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = (
@@ -2999,6 +3048,32 @@
 				GCC_MODEL_TUNING = NONE;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = (
+					"$(OF_CORE_HEADERS)",
+					src,
+					../../../addons/ofxOsc/libs/oscpack/src,
+					../../../addons/ofxOpenCv/libs,
+					../../../addons/ofxOpenCv/libs/opencv,
+					../../../addons/ofxOpenCv/libs/opencv/include,
+					../../../addons/ofxOpenCv/libs/opencv/include/opencv,
+					../../../addons/ofxOpenCv/libs/opencv/include/opencv2,
+					../../../addons/ofxOpenCv/libs/opencv/include/opencv2/calib3d,
+					../../../addons/ofxOpenCv/libs/opencv/include/opencv2/contrib,
+					../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core,
+					../../../addons/ofxOpenCv/libs/opencv/include/opencv2/features2d,
+					../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann,
+					../../../addons/ofxOpenCv/libs/opencv/include/opencv2/gpu,
+					../../../addons/ofxOpenCv/libs/opencv/include/opencv2/highgui,
+					../../../addons/ofxOpenCv/libs/opencv/include/opencv2/imgproc,
+					../../../addons/ofxOpenCv/libs/opencv/include/opencv2/legacy,
+					../../../addons/ofxOpenCv/libs/opencv/include/opencv2/ml,
+					../../../addons/ofxOpenCv/libs/opencv/include/opencv2/objdetect,
+					../../../addons/ofxOpenCv/libs/opencv/include/opencv2/ts,
+					../../../addons/ofxOpenCv/libs/opencv/include/opencv2/video,
+					../../../addons/ofxOpenCv/libs/opencv/lib,
+					../../../addons/ofxOpenCv/libs/opencv/lib/osx,
+					../../../addons/ofxOpenCv/src,
+				);
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = (

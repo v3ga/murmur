@@ -12,17 +12,24 @@ threadRasp::threadRasp() : ofThread()
 {
 }
 
-void threadRasp::setCommand(string command_)
+void threadRasp::addCommand(string command_)
 {
-	m_command = command_;
+	m_commands.push_back( command_ );
 }
 
 void threadRasp::threadedFunction()
 {
-	if (m_command=="") return;
+	if (m_commands.size()==0) return;
 	
-    printf("Launching Raspberry thread with %s\n", m_command.c_str());
-	system(m_command.c_str());
+    printf("Launching Raspberry thread with : \n");
+	vector<string>::iterator it;
+	for (it = m_commands.begin() ; it != m_commands.end() ; ++it){
+		string command = (*it);
+		printf("  - %s\n", command.c_str());
+
+		system(command.c_str());
+		sleep( 1000 );
+	}
     printf("Stopping Raspberry thread\n");
 }
 
