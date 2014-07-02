@@ -16,7 +16,7 @@ class threadRasp : public ofThread
 		threadRasp	();
 	
 		void threadedFunction();
-		void setCommand(string command_);
+		void addCommand(string command_);
 
-		string	m_command;
+		vector<string>	m_commands;
 };

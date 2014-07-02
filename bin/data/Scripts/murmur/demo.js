@@ -48,6 +48,10 @@ function draw(w,h)
 	of.Circle(this.xSaved-30, this.ySaved,this.volumeSaved*500)
 }
 
+//--------------------------------------------------------------
+function exit()
+{
+}
 
 //--------------------------------------------------------------
 // Appel lorsque la surface reçoit un nouveau «packet» lumineux

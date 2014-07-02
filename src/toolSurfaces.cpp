@@ -11,6 +11,7 @@
 #include "toolScene.h"
 #include "globals.h"
 #include "testApp.h"
+#include "ofxHomographyHelper.h"
 
 //--------------------------------------------------------------
 toolSurfaces::toolSurfaces(toolManager* parent, Surface* surface) : tool("Surfaces", parent)
@@ -19,9 +20,42 @@ toolSurfaces::toolSurfaces(toolManager* parent, Surface* surface) : tool("Surfac
 	mp_surfaceMain			= surface;
 	mp_mask					= 0;
 	mp_maskUI 				= 0;
+	m_isDrawHandles			= true;
+	
+	setView					(VIEW_NORMAL);
 }
 
+//--------------------------------------------------------------
+void toolSurfaces::setup()
+{
+    int x = 0;   // center on screen.
+    int y = 0;   // center on screen.
+    int w = ofGetWidth();
+    int h = ofGetHeight();
 	
+	m_quadWarping.setup();
+}
+
+//--------------------------------------------------------------
+void toolSurfaces::saveData()
+{
+	tool::saveData();
+	m_quadWarping.save(getQuadWarpingPathFile());
+}
+
+//--------------------------------------------------------------
+void toolSurfaces::loadData()
+{
+	tool::loadData();
+	m_quadWarping.load(getQuadWarpingPathFile());
+}
+
+//--------------------------------------------------------------
+string toolSurfaces::getQuadWarpingPathFile()
+{
+   return mp_toolManager->m_relPathData + "/" + "Surfaces_quadWarping.xml";
+}
+
 //--------------------------------------------------------------
 void toolSurfaces::createControlsCustom()
 {
@@ -34,15 +68,6 @@ void toolSurfaces::createControlsCustom()
 	    mp_canvas->addWidgetDown	( new ofxUILabel("Surfaces", OFX_UI_FONT_MEDIUM) );
     	mp_canvas->addWidgetDown	( new ofxUISpacer(widthDefault, 2));
 
-/*	    mp_canvas->addWidgetDown	( new ofxUIToggle("surf. enable standby", false, dim, dim) );
-    	mp_canvas->addWidgetRight	( new ofxUILabel("| state", fontType) );
-		mp_lblSurfaceActivity = new ofxUILabel("1234", "4",fontType);
-    	mp_canvas->addWidgetRight 	( mp_lblSurfaceActivity );
-    	mp_canvas->addWidgetDown	(new ofxUISlider( "th. go standby", 0.01f, 0.1f, 0.02f,widthDefault-10, dim ));
-    	mp_canvas->addWidgetDown	(new ofxUISlider( "th. go active", 0.01f, 0.1f, 0.02f,widthDefault-10, dim ));
-    	mp_canvas->addWidgetDown	(new ofxUISlider( "dur. pre-standby", 10.0f, 60.0f, 20.0f,widthDefault-10, dim ));
-*/
-
     	mp_canvas->addWidgetDown	( new ofxUILabel("Dimensions", fontType) );
     	mp_canvas->addWidgetRight 	( new ofxUITextInput("wSurface", "4" , 40, dim,0,0,fontType));
     	mp_canvas->addWidgetRight	( new ofxUILabel("x", fontType) );
@@ -54,16 +79,18 @@ void toolSurfaces::createControlsCustom()
 		mp_canvas->addWidgetRight	( new ofxUITextInput("hFboSurface", "1000" , 40, dim,0,0,fontType));
 
 
-	    mp_canvas->addWidgetDown	(new ofxUIToggle("syphon", false, dim, dim));
-    	mp_canvas->addWidgetRight	(new ofxUIToggle("target", false, dim, dim));
+    	mp_canvas->addWidgetDown	(new ofxUIToggle("target", false, dim, dim));
     	mp_canvas->addWidgetRight	(new ofxUISlider("target line w", 1.0f, 8.0f, 2.0f, 100, dim ));
 
 	    mp_canvas->addWidgetDown	( new ofxUIToggle("enable mask", false, dim, dim) );
-/*	    mp_canvas->addWidgetRight	( new ofxUIButton("load mask", false, dim, dim) );
-*/		mp_canvas->addImage			( "mask", 0, widthDefault, 300);
+		mp_canvas->addImage			( "mask", 0, widthDefault, 300);
 		ofxUITextInput* lblPathMask = new ofxUITextInput("pathMask", "", widthDefault);
     	mp_canvas->addWidgetDown	( lblPathMask );
 		lblPathMask->setVisible(false);
+
+	    mp_canvas->addWidgetDown	(new ofxUIToggle("syphon", false, dim, dim));
+	    mp_canvas->addWidgetDown	(new ofxUIToggle("quad warping", false, dim, dim));
+	    mp_canvas->addWidgetDown	(new ofxUIToggle("draw quad warping", false, dim, dim));
 	
 		mp_canvas->autoSizeToFitWidgets();
 	
@@ -117,6 +144,61 @@ void toolSurfaces::update()
 }
 
 //--------------------------------------------------------------
+void toolSurfaces::draw()
+{
+	ofFbo& offSurface = mp_surfaceMain->getOffscreen();
+
+	m_rectScreen.set(0,0,ofGetWidth(),ofGetHeight());
+	m_rectSurfaceOff.set(0,0,offSurface.getWidth(),offSurface.getHeight());
+	m_rectSurfaceOff.scaleTo(m_rectScreen);
+	m_rectSurfaceOff.alignTo(m_rectScreen);
+
+	if (m_view == VIEW_NORMAL)
+	{
+        if (mp_surfaceMain)
+		{
+
+			ofClear(70,70,70);
+            ofSetColor(255,255,255,255);
+            mp_surfaceMain->getOffscreen().draw(m_rectSurfaceOff.getX(),m_rectSurfaceOff.getY(),m_rectSurfaceOff.getWidth(),m_rectSurfaceOff.getHeight());
+//            mp_surfaceMain->drawCacheLEDs(m_diamCacheLEDs);
+            if (GLOBALS->mp_app->isShowDevicePointSurfaces)
+			{
+                mp_surfaceMain->drawDevicePointSurface(m_rectSurfaceOff);
+            }
+			
+        }
+	}
+	else if (m_view == VIEW_QUADWARPING)
+	{
+		if (mp_surfaceMain)
+		{
+			ofPushMatrix();
+			ofMultMatrix( m_quadWarping.findTransformMatrix(m_rectSurfaceOff) );
+			mp_surfaceMain->getOffscreen().draw(0,0,m_rectSurfaceOff.getWidth(),m_rectSurfaceOff.getHeight());
+			ofPopMatrix();
+
+			if (m_isDrawHandles)
+		   		m_quadWarping.draw();
+		}
+	}
+}
+
+//--------------------------------------------------------------
+void toolSurfaces::setView(int which)
+{
+	m_view = which;
+	if (m_view == VIEW_NORMAL){
+		m_quadWarping.disableMouseEvents();
+	}
+	else if (m_view == VIEW_QUADWARPING){
+		m_quadWarping.enableMouseEvents();
+	}
+	
+}
+
+
+//--------------------------------------------------------------
 void toolSurfaces::handleEvents(ofxUIEventArgs& e)
 {
     Surface* pSurfaceCurrent = getSurfaceForDeviceCurrent();
@@ -126,25 +208,8 @@ void toolSurfaces::handleEvents(ofxUIEventArgs& e)
 	if (pToolScene == 0) return;
 
     string name = e.widget->getName();
-
-/*	if (name == "surf. enable standby")
-	{
-		pSurfaceCurrent->setEnableStandby( ((ofxUIToggle *) e.widget)->getValue() );
-	}
-	else if (name == "th. go standby")
-	{
-		pSurfaceCurrent->setGoStandbyTh( ((ofxUISlider *) e.widget)->getScaledValue() );
-	}
-	else if (name == "th. go active")
-	{
-		pSurfaceCurrent->setGoActiveTh( ((ofxUISlider *) e.widget)->getScaledValue() );
-	}
-	else if (name == "dur. pre-standby")
-	{
-		pSurfaceCurrent->setDurationPreStandby( ((ofxUISlider *) e.widget)->getScaledValue() );
-	}
-*/
-	 if (name == "wSurface")
+	
+	if (name == "wSurface")
     {
 		SurfaceNode * pSurfaceNodeCurrent = pToolScene->getSurfaceNode(pSurfaceCurrent);
 		float wSurface = atof( ((ofxUITextInput *) e.widget)->getTextString().c_str() );
@@ -188,18 +253,76 @@ void toolSurfaces::handleEvents(ofxUIEventArgs& e)
 	{
 		pSurfaceCurrent->setDrawMask( ((ofxUIToggle *) e.widget)->getValue() );
 	}
-	else if (name == "load mask")
-	{
-		bool value = ((ofxUIButton *) e.widget)->getValue();
-		if (value){
-	
-		}
-	}
 	else if (name == "pathMask")
 	{
 		string value = ((ofxUITextInput *) e.widget)->getTextString();
 		if ( loadMask( value ) )
 			updateMaskUI( value );
+	}
+	else if (name == "quad warping")
+	{
+		bool value = ((ofxUIToggle *) e.widget)->getValue();
+		if (value){
+			setView(VIEW_QUADWARPING);
+		}else{
+			setView(VIEW_NORMAL);
+		}
+	}
+	else if (name == "draw quad warping")
+	{
+		m_isDrawHandles = ((ofxUIToggle *) e.widget)->getValue();
+		if (m_isDrawHandles)
+			m_quadWarping.enableMouseEvents();
+		else
+			m_quadWarping.disableMouseEvents();
+	}
+}
+
+//--------------------------------------------------------------
+void toolSurfaces::mousePressed(int x, int y, int button)
+{
+	if (m_view == VIEW_NORMAL)
+	{
+	   toolDevices*	pToolDevices 	= (toolDevices*) mp_toolManager->getTool("Devices");
+	   toolScene* 	pToolScene 		= (toolScene*)mp_toolManager->getTool("Scene");
+
+	   if (pToolDevices == 0 || pToolDevices->mp_deviceManager == 0 || pToolScene == 0) return;
+
+	   Device*  pDeviceCurrent 		= pToolDevices->mp_deviceManager->getDeviceCurrent();
+	   Surface* pSurfaceCurrent  	= this->getSurfaceForDevice(pDeviceCurrent);
+
+	   if (pDeviceCurrent && pSurfaceCurrent)
+	   {
+		   float dx = x - m_rectSurfaceOff.getX();
+		   float dy = y - m_rectSurfaceOff.getY();
+		   
+		   float xNorm = ofClamp(dx / m_rectSurfaceOff.getWidth(),0.0f,1.0f);
+		   float yNorm = ofClamp(dy / m_rectSurfaceOff.getHeight(),0.0f,1.0f);
+	   
+		   pDeviceCurrent->setPointSurface(xNorm, yNorm);
+		
+		   // Update simulation
+		   if(pToolScene->getScene())
+		   {
+			   DeviceNode* pDeviceNode = pToolScene->getScene()->getDeviceNode(pDeviceCurrent);
+			   SurfaceNode* pSurfaceNode = pToolScene->getScene()->getSurfaceNode(pSurfaceCurrent);
+			   if (pDeviceNode && pSurfaceNode)
+				   pDeviceNode->setPositionNodeSurface( pSurfaceNode->getGlobalPositionDevicePointSurface(pDeviceNode->getDevice()) );
+			   
+		   }
+	   }
+	}
+}
+
+//--------------------------------------------------------------
+void toolSurfaces::keyPressed(int key)
+{
+	if (m_view == VIEW_QUADWARPING)
+	{
+		if (key == OF_KEY_LEFT) 			m_quadWarping.moveSelectedHandle( ofVec2f(-1.0f, 0.0f) );
+		if (key == OF_KEY_RIGHT)			m_quadWarping.moveSelectedHandle( ofVec2f( 1.0f, 0.0f) );
+		if (key == OF_KEY_UP)				m_quadWarping.moveSelectedHandle( ofVec2f( 0.0f, -1.0f) );
+		if (key == OF_KEY_DOWN)				m_quadWarping.moveSelectedHandle( ofVec2f( 0.0f, 1.0f) );
 	}
 }
 
