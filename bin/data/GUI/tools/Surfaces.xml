@@ -16,7 +16,7 @@
 <Widget>
     <Kind>12</Kind>
     <Name>hFboSurface</Name>
-    <Value>800</Value>
+    <Value>500</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -51,5 +51,5 @@
 <Widget>
     <Kind>2</Kind>
     <Name>draw quad warping</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>

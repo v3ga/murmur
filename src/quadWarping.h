@@ -19,6 +19,7 @@ class quadWarpingHandle : public ofxMSAInteractiveObject
 	
 		bool			hitTest	(int x, int y);
 		void			setup	(quadWarping* pParent=0);
+		void			update	();
 		void			draw	();
 		void			onPress(int x, int y, int button);
 		void			onDragOver(int x, int y, int button);
@@ -29,21 +30,27 @@ class quadWarpingHandle : public ofxMSAInteractiveObject
 		bool			m_isSelected;
 	private:
 		ofVec2f			dragDelta;
+		ofVec2f			posNormalized;
 		quadWarping*	mp_parent;
 };
 
 class quadWarping
 {
 	public:
+								quadWarping			();
 
 		void					disableMouseEvents	();
 		void					enableMouseEvents	();
 		void					setup				();
+		void					update				();
 		void					draw				();
 		void					save				(string pathFile);
 		void					load				(string pathFile);
 		void					moveSelectedHandle	(ofVec2f delta);
+		void					unselectHandle		();
 		void					selectHandle		(quadWarpingHandle* p);
+		void					windowResized		(int w, int h);
+		void					windowResized		(int wold, int hold,int w, int h);
 
 		float*					findTransformMatrix	(const ofRectangle& src);
 

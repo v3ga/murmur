@@ -65,7 +65,7 @@ void toolSurfaces::createControlsCustom()
 		float widthDefault = 320;
 		float dim = 16;
 	
-	    mp_canvas->addWidgetDown	( new ofxUILabel("Surfaces", OFX_UI_FONT_MEDIUM) );
+	    mp_canvas->addWidgetDown	( new ofxUILabel("Surfaces", OFX_UI_FONT_LARGE) );
     	mp_canvas->addWidgetDown	( new ofxUISpacer(widthDefault, 2));
 
     	mp_canvas->addWidgetDown	( new ofxUILabel("Dimensions", fontType) );
@@ -141,6 +141,9 @@ void toolSurfaces::update()
         mp_surfaceMain->renderOffscreen(GLOBALS->mp_app->isShowDevicePointSurfaces);
 		mp_surfaceMain->publishSyphon();
     }
+	
+	m_quadWarping.update();
+	
 }
 
 //--------------------------------------------------------------
@@ -184,6 +187,7 @@ void toolSurfaces::draw()
 	}
 }
 
+
 //--------------------------------------------------------------
 void toolSurfaces::setView(int which)
 {
@@ -192,6 +196,7 @@ void toolSurfaces::setView(int which)
 		m_quadWarping.disableMouseEvents();
 	}
 	else if (m_view == VIEW_QUADWARPING){
+		m_quadWarping.unselectHandle();
 		m_quadWarping.enableMouseEvents();
 	}
 	
@@ -312,19 +317,49 @@ void toolSurfaces::mousePressed(int x, int y, int button)
 		   }
 	   }
 	}
+	else if (m_view == VIEW_QUADWARPING)
+	{
+		bool isOverHandle = false;
+		for (int i=0;i<4;i++)
+		{
+			if (m_quadWarping.m_handles[i].isMouseOver()){
+				isOverHandle = true;
+				break;
+			}
+		}
+		if (isOverHandle == false){
+			m_quadWarping.unselectHandle();
+		}
+	}
 }
 
 //--------------------------------------------------------------
-void toolSurfaces::keyPressed(int key)
+bool toolSurfaces::keyPressed(int key)
 {
 	if (m_view == VIEW_QUADWARPING)
 	{
-		if (key == OF_KEY_LEFT) 			m_quadWarping.moveSelectedHandle( ofVec2f(-1.0f, 0.0f) );
-		if (key == OF_KEY_RIGHT)			m_quadWarping.moveSelectedHandle( ofVec2f( 1.0f, 0.0f) );
-		if (key == OF_KEY_UP)				m_quadWarping.moveSelectedHandle( ofVec2f( 0.0f, -1.0f) );
-		if (key == OF_KEY_DOWN)				m_quadWarping.moveSelectedHandle( ofVec2f( 0.0f, 1.0f) );
+		if (key == OF_KEY_LEFT) 			{m_quadWarping.moveSelectedHandle( ofVec2f(-1.0f, 0.0f) );	return true;}
+		if (key == OF_KEY_RIGHT)			{m_quadWarping.moveSelectedHandle( ofVec2f( 1.0f, 0.0f) );	return true;}
+		if (key == OF_KEY_UP)				{m_quadWarping.moveSelectedHandle( ofVec2f( 0.0f, -1.0f) );	return true;}
+		if (key == OF_KEY_DOWN)				{m_quadWarping.moveSelectedHandle( ofVec2f( 0.0f, 1.0f) );	return true;}
 	}
+	
+	return false;
 }
+
+//--------------------------------------------------------------
+void toolSurfaces::windowResized(int w, int h)
+{
+	m_quadWarping.windowResized(w,h);
+}
+
+//--------------------------------------------------------------
+void toolSurfaces::windowResized(int wold, int hold, int w, int h)
+{
+	m_quadWarping.windowResized(wold,hold,w,h);
+}
+
+
 
 //--------------------------------------------------------------
 void toolSurfaces::dragEvent(ofDragInfo dragInfo)

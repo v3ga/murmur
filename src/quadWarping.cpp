@@ -34,8 +34,16 @@ void quadWarpingHandle::setup(quadWarping* pParent)
 }
 
 //--------------------------------------------------------------
+void quadWarpingHandle::update()
+{
+	
+}
+
+//--------------------------------------------------------------
 void quadWarpingHandle::draw()
 {
+	posNormalized.set( x/ofGetWidth(),  x/ofGetHeight());
+
 	if (m_isSelected)
 		ofSetColor(200,0,0);
 	else
@@ -78,6 +86,12 @@ void quadWarpingHandle::onReleaseOutside(int x, int y, int button)
 }
 
 //--------------------------------------------------------------
+quadWarping::quadWarping()
+{
+	mp_handleSelected = 0;
+}
+
+//--------------------------------------------------------------
 void quadWarping::disableMouseEvents()
 {
 	for (int i=0;i<4;i++)
@@ -108,8 +122,6 @@ void quadWarping::selectHandle(quadWarpingHandle* p)
 //--------------------------------------------------------------
 void quadWarping::setup()
 {
-	mp_handleSelected = 0;
-
 	for (int i=0;i<4;i++)
 	{
 		m_handles[i].setup(this);
@@ -117,11 +129,22 @@ void quadWarping::setup()
 }
 
 //--------------------------------------------------------------
+void quadWarping::update()
+{
+	for (int i=0;i<4;i++)
+	{
+		m_handles[i].update();
+	}
+}
+
+
+//--------------------------------------------------------------
 void quadWarping::draw()
 {
 	ofPushStyle();
 	ofSetColor(255);
-	for (int i=0;i<4;i++){
+	for (int i=0;i<4;i++)
+	{
 		ofLine( m_handles[i].x,m_handles[i].y,m_handles[(i+1)%4].x,m_handles[(i+1)%4].y  );
 	}
 
@@ -195,6 +218,36 @@ void quadWarping::moveSelectedHandle(ofVec2f delta)
 	}
 }
 
+//--------------------------------------------------------------
+void quadWarping::unselectHandle()
+{
+	if (mp_handleSelected)
+	{
+		mp_handleSelected->m_isSelected = false;
+		mp_handleSelected = 0;
+	}
+}
+
+
+//--------------------------------------------------------------
+void quadWarping::windowResized(int wold, int hold, int w, int h)
+{
+	for (int i=0;i<4;i++)
+	{
+		ofVec2f posNorm( m_handles[i].x/(float)wold, m_handles[i].y/(float)hold );
+		m_handles[i].setPos( posNorm.x*(float)w, posNorm.y*(float)h );
+	}
+}
+
+//--------------------------------------------------------------
+void quadWarping::windowResized(int w, int h)
+{
+	ofLog() << w << "/" << h;
+	for (int i=0;i<4;i++)
+	{
+		
+	}
+}
 
 //--------------------------------------------------------------
 float* quadWarping::findTransformMatrix(const ofRectangle& rect)

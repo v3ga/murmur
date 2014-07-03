@@ -32,8 +32,9 @@ class toolSurfaces : public tool
 		void					draw						();
 		void					handleEvents				(ofxUIEventArgs& e);
 		void					mousePressed				(int x, int y, int button);
-		void					keyPressed					(int key);
-
+		bool					keyPressed					(int key);
+		void					windowResized				(int w, int h);
+		void					windowResized				(int wold, int hold, int w, int h);
 	
 	
 		bool					loadMask					(string pathMask);
