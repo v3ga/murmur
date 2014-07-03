@@ -23,6 +23,11 @@ class toolConfiguration : public tool
 		void					setup				();
 		void					launchMadMapper		();
 		void					launchDevices		();
+		void					setFullscreen		(bool is=true);
+		void					toggleFullscreen	();
+		void					setViewSimulation	(bool is=true);
+		void					toggleViewSimulation();
+		void					updateUI			();
 		void					handleEvents		(ofxUIEventArgs& e);
 
 
@@ -34,5 +39,8 @@ class toolConfiguration : public tool
 		vector<threadRasp*>		m_listThreadLaunchDevices;
 
         ofxUIToggle*        	mp_tgViewSimu;
+        ofxUIToggle*        	mp_tgFullscreen;
+	
+		bool					m_isFullscreen;
 
 };

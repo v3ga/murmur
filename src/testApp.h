@@ -68,8 +68,9 @@ class testApp : public ofBaseApp
         bool                isViewSimulation;
         bool                isSimulation;
         bool                m_isViewAnimProperties;
+		ofVec2f				m_windowSize;
 
-        void                toggleView();
+		void				setViewSimulation(bool is=true);
  
         // Devices
         DeviceManager*      mp_deviceManager;

@@ -22,10 +22,12 @@ class toolAnimations : public tool
 		void							createControlsAnimations	(Surface*);
 		void							handleEvents				(ofxUIEventArgs& e);
 		void							logJS						(void* pData, const string& message);
-		void							keyPressed					(int key);
+		bool							keyPressed					(int key);
 		void							show						(bool is);
 		void 							enableDrawCallback			(bool is);
-	
+		void							showPrevAnimation			();
+		void							showNextAnimation			();
+		bool							isSequenceActive			();
 
 		void							updateDeviceAnimationTitle	();
 		void							showAnimationPropsAll		(bool is=true);
@@ -34,6 +36,7 @@ class toolAnimations : public tool
 		ofxUILabel* 					mp_lblAnimTitle;
 		ofxUITextArea*					mp_consoleJs;
 		ofxUICanvas*					mp_animationUI;
+		bool							m_isEnableDrawCallback;
 
         map<Animation*, ofxUICanvas*> 	m_mapAnimationUI;
 

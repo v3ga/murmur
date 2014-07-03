@@ -134,11 +134,13 @@ void toolDevices::createControlsCustomFinalize()
 //--------------------------------------------------------------
 void toolDevices::drawUI()
 {
+	ofPushStyle();
 	Device* pDeviceCurrent = mp_deviceManager->getDeviceCurrent();
 	if (pDeviceCurrent)
 	{
 		pDeviceCurrent->drawSoundInputVolume( 0.5f*(ofGetWidth()) ,ofGetHeight()-pDeviceCurrent->getHeightSoundInputVolume());
     }
+	ofPopStyle();
 }
 
 //--------------------------------------------------------------

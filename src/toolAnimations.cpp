@@ -20,6 +20,7 @@ toolAnimations::toolAnimations(toolManager* parent) : tool("Animations", parent)
 	mp_animationUI		= 0;
 	
 	m_listLogJsMax		= 20;
+	m_isEnableDrawCallback = true;
 }
 
 //--------------------------------------------------------------
@@ -46,6 +47,7 @@ void  toolAnimations::enableDrawCallback(bool is)
 			mp_animationUI->disableMouseEventCallbacks();
 		}
 	}
+	m_isEnableDrawCallback = is;
 }
 
 
@@ -168,37 +170,11 @@ void toolAnimations::handleEvents(ofxUIEventArgs& e)
 }
 
 //--------------------------------------------------------------
-void toolAnimations::keyPressed(int key)
+void toolAnimations::showPrevAnimation()
 {
 	toolSurfaces* pToolSurfaces = (toolSurfaces*) mp_toolManager->getTool("Surfaces");
 	if (pToolSurfaces == 0) return;
 
-	if (key == OF_KEY_RIGHT)
-    {
-        Surface* pSurfaceCurrent = pToolSurfaces->getSurfaceForDeviceCurrent();
-        if (pSurfaceCurrent)
-        {
-            // Goto next animation
-            pSurfaceCurrent->getAnimationManager().gotoAnimationNext();
-
-            // Update Title
-            updateDeviceAnimationTitle();
-
-            // Show animation interface
-            showAnimationPropsAll(false);
-            if (!pSurfaceCurrent->isTimelineActive())
-            {
-                Animation* pAnimationCurrent = pSurfaceCurrent->getAnimationManager().mp_animationCurrent;
-                if (pAnimationCurrent){
-                    mp_animationUI = pAnimationCurrent->getUI();
-					mp_animationUI->setVisible(true);
-				 }
-            }
-        }
-    }
-	else
-	if (key == OF_KEY_LEFT)
-    {
         Surface* pSurfaceCurrent = pToolSurfaces->getSurfaceForDeviceCurrent();
         if (pSurfaceCurrent)
         {
@@ -210,17 +186,64 @@ void toolAnimations::keyPressed(int key)
             if (!pSurfaceCurrent->isTimelineActive())
             {
                 Animation* pAnimationCurrent = pSurfaceCurrent->getAnimationManager().mp_animationCurrent;
-                if (pAnimationCurrent)
-				{
-	                if (pAnimationCurrent){
-    	                mp_animationUI = pAnimationCurrent->getUI();
-						mp_animationUI->setVisible(true);
-					 }
-				}
+				if (pAnimationCurrent){
+					mp_animationUI = pAnimationCurrent->getUI();
+					mp_animationUI->setVisible( mp_canvas->isVisible() && m_isEnableDrawCallback );
+					// ofLog() << (mp_canvas->isVisible() ? "true" : "false") <<  "  -  " << (m_isEnableDrawCallback ? "true" : "false");
+				 }
             }
         }
-    }
-	
+
+}
+
+//--------------------------------------------------------------
+void toolAnimations::showNextAnimation()
+{
+	toolSurfaces* pToolSurfaces = (toolSurfaces*) mp_toolManager->getTool("Surfaces");
+	if (pToolSurfaces == 0) return;
+
+	Surface* pSurfaceCurrent = pToolSurfaces->getSurfaceForDeviceCurrent();
+	if (pSurfaceCurrent)
+	{
+		// Goto next animation
+		pSurfaceCurrent->getAnimationManager().gotoAnimationNext();
+
+		// Update Title
+		updateDeviceAnimationTitle();
+
+		// Show animation interface
+		showAnimationPropsAll(false);
+		if (!pSurfaceCurrent->isTimelineActive())
+		{
+			Animation* pAnimationCurrent = pSurfaceCurrent->getAnimationManager().mp_animationCurrent;
+			if (pAnimationCurrent){
+				mp_animationUI = pAnimationCurrent->getUI();
+				mp_animationUI->setVisible(mp_canvas->isVisible() && m_isEnableDrawCallback);
+			 }
+		}
+	}
+
+}
+
+//--------------------------------------------------------------
+bool toolAnimations::isSequenceActive()
+{
+	toolSurfaces* pToolSurfaces = (toolSurfaces*) mp_toolManager->getTool("Surfaces");
+	if (pToolSurfaces == 0) return;
+
+	Surface* pSurfaceCurrent = pToolSurfaces->getSurfaceForDeviceCurrent();
+	if (pSurfaceCurrent)
+	{
+		return pSurfaceCurrent->isTimelineActive();
+	}
+	return false;
+}
+
+
+//--------------------------------------------------------------
+bool toolAnimations::keyPressed(int key)
+{
+	return false;
 }
 
 //--------------------------------------------------------------

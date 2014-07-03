@@ -25,6 +25,9 @@ void toolNetwork::createControlsCustom()
 		float dim = 16;
 		int widthDefault = 320;
 
+	    mp_canvas->addWidgetDown( new ofxUILabel("Network",OFX_UI_FONT_LARGE) );
+    	mp_canvas->addWidgetDown(new ofxUISpacer(widthDefault, 2));
+
 	    mp_canvas->addWidgetDown(new ofxUILabel("port : ", fontType));
     	mp_canvas->addWidgetRight(new ofxUITextInput("Port", ofToString(m_oscReceiverPort) , 100, dim,0,0,fontType));
 	}

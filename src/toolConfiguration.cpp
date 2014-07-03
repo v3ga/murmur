@@ -14,11 +14,13 @@
 toolConfiguration::toolConfiguration(toolManager* parent) : tool("Configuration", parent)
 {
 	isShowDevicePointSurfaces	= false;
-	isViewSimulation			= false;
+	isViewSimulation			= true;
 	m_isLaunchMadMapper			= false;
 	m_isLaunchDevices			= false;
 
 	mp_tgViewSimu				= 0;
+	mp_tgFullscreen				= 0;
+	m_isFullscreen				= false;
 }
 
 //--------------------------------------------------------------
@@ -39,11 +41,17 @@ void toolConfiguration::createControlsCustom()
 		float dim = 16;
 		int widthDefault = 320;
 
+	    mp_canvas->addWidgetDown( new ofxUILabel("Configuration",OFX_UI_FONT_LARGE) );
+    	mp_canvas->addWidgetDown(new ofxUISpacer(widthDefault, 2));
+
 	    mp_canvas->addToggle("Show device points", isShowDevicePointSurfaces, dim, dim);
     	mp_tgViewSimu = mp_canvas->addToggle("View simulation", isViewSimulation, dim, dim);
 
-    	mp_canvas->addWidgetDown(new ofxUIToggle("launch madmapper @ start", false, dim, dim));
-    	mp_canvas->addWidgetDown(new ofxUIToggle("launch murmur @ rasp", false, dim, dim));
+    	mp_canvas->addWidgetDown(new ofxUIToggle("Launch madmapper @ start", false, dim, dim));
+    	mp_canvas->addWidgetDown(new ofxUIToggle("Launch murmur @ rasp", false, dim, dim));
+
+		mp_tgFullscreen = new ofxUIToggle("Fullscreen", false, dim, dim);
+    	mp_canvas->addWidgetDown( mp_tgFullscreen );
 
 		mp_canvas->autoSizeToFitWidgets();
 		mp_canvas->setVisible(false);
@@ -105,6 +113,43 @@ void toolConfiguration::launchMadMapper()
 	}
 }
 
+//--------------------------------------------------------------
+void toolConfiguration::setFullscreen(bool is)
+{
+	m_isFullscreen = is;
+	ofSetFullscreen(m_isFullscreen);
+	updateUI();
+}
+
+//--------------------------------------------------------------
+void toolConfiguration::toggleFullscreen()
+{
+	setFullscreen(!m_isFullscreen);
+}
+
+//--------------------------------------------------------------
+void toolConfiguration::setViewSimulation(bool is)
+{
+	isViewSimulation = is;
+	GLOBALS->mp_app->setViewSimulation(isViewSimulation);
+	updateUI();
+}
+
+//--------------------------------------------------------------
+void toolConfiguration::toggleViewSimulation()
+{
+	setViewSimulation(!isViewSimulation);
+}
+
+
+//--------------------------------------------------------------
+void toolConfiguration::updateUI()
+{
+	if (mp_tgFullscreen)
+		mp_tgFullscreen->setValue(m_isFullscreen);
+	if (mp_tgViewSimu)
+		mp_tgViewSimu->setValue(isViewSimulation);
+}
 
 //--------------------------------------------------------------
 void toolConfiguration::handleEvents(ofxUIEventArgs& e)
@@ -114,19 +159,25 @@ void toolConfiguration::handleEvents(ofxUIEventArgs& e)
 	if (name == "View simulation")
     {
         isViewSimulation = ((ofxUIToggle *) e.widget)->getValue();
+		GLOBALS->mp_app->setViewSimulation( isViewSimulation );
     }
     else if (name == "Show device points")
     {
         GLOBALS->mp_app->isShowDevicePointSurfaces = ((ofxUIToggle *) e.widget)->getValue();
     }
-	else if (name == "launch madmapper @ start")
+	else if (name == "Launch madmapper @ start")
 	{
 		m_isLaunchMadMapper = ((ofxUIToggle *) e.widget)->getValue();
 	}
 	else
-	if (name == "launch murmur @ rasp")
+	if (name == "Launch murmur @ rasp")
 	{
 		m_isLaunchDevices = ((ofxUIToggle *) e.widget)->getValue();
 	}
-
+	else
+	if (name == "Fullscreen")
+	{
+		m_isFullscreen = ((ofxUIToggle *) e.widget)->getValue();
+		ofSetFullscreen( m_isFullscreen );
+	}
 }

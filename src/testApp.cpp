@@ -91,8 +91,9 @@ void testApp::setup()
 	// GO
 	ofSetVerticalSync(true);
 	ofSetFrameRate(60);
-}
 
+	m_windowSize.set(ofGetWidth(),ofGetHeight());
+}
 
 //--------------------------------------------------------------
 void testApp::exit()
@@ -458,31 +459,58 @@ void testApp::audioIn(float * input, int bufferSize, int nChannels)
 }
 
 //--------------------------------------------------------------
-void testApp::toggleView()
+void testApp::setViewSimulation(bool is)
 {
-    isViewSimulation = !isViewSimulation;
-    showControls(isViewSimulation);
-    if (!isViewSimulation){
-        if (!isShowDevicePointSurfaces)
-            ofHideCursor();
-    }
-    else
-        ofShowCursor();
+	toolSurfaces* pToolSurfaces = (toolSurfaces*) toolManager.getTool("Surfaces");
+
+	isViewSimulation = is;
+	if (isViewSimulation)
+	{
+		ofShowCursor();
+	}else
+	{
+		if (isShowDevicePointSurfaces || (pToolSurfaces && pToolSurfaces->m_isDrawHandles) )
+			ofShowCursor();
+		else
+			ofHideCursor();
+	}
+
+	toolManager.enableDrawCallback( isViewSimulation );
 }
-
-
 
 //--------------------------------------------------------------
 void testApp::keyPressed(int key)
 {
+	toolConfiguration* 	pToolConfiguration 	= (toolConfiguration*) 		toolManager.getTool("Configuration");
+	toolAnimations* 	pToolAnimations 	= (toolAnimations*) 		toolManager.getTool("Animations");
+	
 	if (key == ' ')
     {
-	    isViewSimulation = !isViewSimulation;
-		toolManager.enableDrawCallback( isViewSimulation );
+		if (pToolConfiguration)
+			pToolConfiguration->toggleViewSimulation();
     }
+	else if (key == 'f' || key == 'F')
+	{
+		if (pToolConfiguration)
+			pToolConfiguration->toggleFullscreen();
+	}
 	else
 	{
-		toolManager.keyPressed(key);
+		if (toolManager.keyPressed(key) == false)
+		{
+			if (key == OF_KEY_LEFT)
+			{
+				if (pToolAnimations && !pToolAnimations->isSequenceActive()){
+					pToolAnimations->showPrevAnimation();
+				}
+			}
+			else if (key == OF_KEY_RIGHT)
+			{
+				if (pToolAnimations && !pToolAnimations->isSequenceActive()){
+					pToolAnimations->showNextAnimation();
+				}
+			}
+		}
 	}
 }
 
@@ -499,11 +527,7 @@ void testApp::mouseMoved(int x, int y){
 //--------------------------------------------------------------
 void testApp::mouseDragged(int x, int y, int button)
 {
-    if (!isViewSimulation)
-    {
-    
-    }
-    else
+    if (isViewSimulation)
     {
         if (m_isUserControls) return;
         
@@ -546,8 +570,22 @@ void testApp::mouseReleased(int x, int y, int button)
 }
 
 //--------------------------------------------------------------
-void testApp::windowResized(int w, int h){
+void testApp::windowResized(int w, int h)
+{
+	float wnew = (float)w;
+	float hnew = (float)h;
+	if (wnew != m_windowSize.x && hnew != m_windowSize.y)
+	{
+		int wold = (int) m_windowSize.x;
+		int hold = (int) m_windowSize.y;
 
+		// toolManager.windowResized(w,h);
+		toolSurfaces* pToolSurfaces = (toolSurfaces*) toolManager.getTool("Surfaces");
+		if (pToolSurfaces)
+			pToolSurfaces->windowResized(wold, hold, w,h);
+
+		m_windowSize.set(w,h);
+	}
 }
 
 //--------------------------------------------------------------
