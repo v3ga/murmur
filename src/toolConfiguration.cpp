@@ -9,6 +9,7 @@
 #include "toolConfiguration.h"
 #include "globals.h"
 #include "testApp.h"
+#include "utils.h"
 
 //--------------------------------------------------------------
 toolConfiguration::toolConfiguration(toolManager* parent) : tool("Configuration", parent)
@@ -52,6 +53,11 @@ void toolConfiguration::createControlsCustom()
 
 		mp_tgFullscreen = new ofxUIToggle("Fullscreen", false, dim, dim);
     	mp_canvas->addWidgetDown( mp_tgFullscreen );
+
+    	mp_canvas->addWidgetDown(new ofxUISpacer(widthDefault, 2));
+		mp_canvas->addWidgetDown(new ofxUILabelButton("Edit configuration.xml", 100, false, OFX_UI_FONT_SMALL));
+		mp_canvas->addWidgetDown(new ofxUILabel("warning", "/!\\ Editing this file needs", OFX_UI_FONT_SMALL));
+		mp_canvas->addWidgetDown(new ofxUILabel("warning", "   restarting the application", OFX_UI_FONT_SMALL));
 
 		mp_canvas->autoSizeToFitWidgets();
 		mp_canvas->setVisible(false);
@@ -179,5 +185,10 @@ void toolConfiguration::handleEvents(ofxUIEventArgs& e)
 	{
 		m_isFullscreen = ((ofxUIToggle *) e.widget)->getValue();
 		ofSetFullscreen( m_isFullscreen );
+	}
+	else
+	if (name == "Edit configuration.xml")
+	{
+		ofLVOpenProgram(ofToDataPath("configuration.xml"));
 	}
 }

@@ -2,7 +2,7 @@
     <soundInput>
         <volMax>0.032096773</volMax>
         <volHistoryNb>77.000000000</volHistoryNb>
-        <volHistoryTh>0.082258061</volHistoryTh>
+        <volHistoryTh>0.750000000</volHistoryTh>
     </soundInput>
     <enableStandby>1</enableStandby>
     <timeStandby>5.000000000</timeStandby>
