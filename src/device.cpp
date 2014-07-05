@@ -405,6 +405,7 @@ void Device::enableStandbyMode(bool is)
 //--------------------------------------------------------------
 void Device::checkForActivity(float dt)
 {
+
     if (m_isEnableStandbyMode)
     {
         m_stateStandbyDuration += dt;
