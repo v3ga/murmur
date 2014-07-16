@@ -14,6 +14,3 @@
 #else
 	#define MURMUR_DEFINE_SYPHON 0
 #endif
-
-
-#define MURMUR_WARPING 0

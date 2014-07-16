@@ -71,6 +71,7 @@
 		F92BC4CD189F094600CA158A /* ofxUIWidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F92BC4A1189F094600CA158A /* ofxUIWidget.cpp */; };
 		F92BC4CE189F094600CA158A /* ofxUIWidgetWithLabel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F92BC4A2189F094600CA158A /* ofxUIWidgetWithLabel.cpp */; };
 		F92BC4E518A1544B00CA158A /* ofxMSAInteractiveObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F92BC4E318A1544B00CA158A /* ofxMSAInteractiveObject.cpp */; };
+		F932F0201969900D00C82556 /* ofxMultiGLFWWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F932F01B1969900C00C82556 /* ofxMultiGLFWWindow.cpp */; };
 		F93407041906B69D003F4D97 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F93407031906B69C003F4D97 /* QTKit.framework */; };
 		F93407061906B6AD003F4D97 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F93407051906B6AD003F4D97 /* CoreVideo.framework */; };
 		F93407081906B6DE003F4D97 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F93407071906B6DE003F4D97 /* Carbon.framework */; };
@@ -378,6 +379,8 @@
 		F92BC4E118A1544B00CA158A /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		F92BC4E318A1544B00CA158A /* ofxMSAInteractiveObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxMSAInteractiveObject.cpp; sourceTree = "<group>"; };
 		F92BC4E418A1544B00CA158A /* ofxMSAInteractiveObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMSAInteractiveObject.h; sourceTree = "<group>"; };
+		F932F01B1969900C00C82556 /* ofxMultiGLFWWindow.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = ofxMultiGLFWWindow.cpp; sourceTree = "<group>"; };
+		F932F01C1969900C00C82556 /* ofxMultiGLFWWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMultiGLFWWindow.h; sourceTree = "<group>"; };
 		F93407031906B69C003F4D97 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = ../../../../../../../../System/Library/Frameworks/QTKit.framework; sourceTree = "<group>"; };
 		F93407051906B6AD003F4D97 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = ../../../../../../../../System/Library/Frameworks/CoreVideo.framework; sourceTree = "<group>"; };
 		F93407071906B6DE003F4D97 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = ../../../../../../../../System/Library/Frameworks/Carbon.framework; sourceTree = "<group>"; };
@@ -950,6 +953,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				F932F0011969900C00C82556 /* ofxMultiGLFWWindow */,
 				F951EC031963576600056B2A /* ofxHomographyHelper */,
 				F951EB7C195AC12300056B2A /* ofxOpenCv */,
 				F951EB56195AC0D800056B2A /* ofxQuadWarp */,
@@ -1156,6 +1160,24 @@
 			children = (
 				F92BC4E318A1544B00CA158A /* ofxMSAInteractiveObject.cpp */,
 				F92BC4E418A1544B00CA158A /* ofxMSAInteractiveObject.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		F932F0011969900C00C82556 /* ofxMultiGLFWWindow */ = {
+			isa = PBXGroup;
+			children = (
+				F932F01A1969900C00C82556 /* src */,
+			);
+			name = ofxMultiGLFWWindow;
+			path = ../../../addons/ofxMultiGLFWWindow;
+			sourceTree = "<group>";
+		};
+		F932F01A1969900C00C82556 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				F932F01B1969900C00C82556 /* ofxMultiGLFWWindow.cpp */,
+				F932F01C1969900C00C82556 /* ofxMultiGLFWWindow.h */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -2786,6 +2808,7 @@
 				F9BC6C76174A621700633C5C /* b2FrictionJoint.cpp in Sources */,
 				F92BC4C0189F094600CA158A /* ofxUIScrollableCanvas.cpp in Sources */,
 				F92BC4B5189F094600CA158A /* ofxUILabelButton.cpp in Sources */,
+				F932F0201969900D00C82556 /* ofxMultiGLFWWindow.cpp in Sources */,
 				F9BC6C77174A621700633C5C /* b2GearJoint.cpp in Sources */,
 				F951EBFB195AC12300056B2A /* ofxCvFloatImage.cpp in Sources */,
 				F9BC6C78174A621700633C5C /* b2Joint.cpp in Sources */,
