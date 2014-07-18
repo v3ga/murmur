@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta content="Boks - 0.5.8" name="generator">
+<title>murmur_js_doc</title>
+<!-- Framework CSS -->
+<link rel="stylesheet" href="css/screen.css" type="text/css" media="screen, projection">
+<link rel="stylesheet" href="css/custom.css" type="text/css" media="screen, projection">
+<!--[if lt IE 8]><link rel="stylesheet" href="css/ie.css" type="text/css" media="screen, projection"><![endif]-->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" type="text/javascript"></script>  
+<script type="text/javascript" >  
+$(document).ready(function(){
+  $(".scroll").click(function(event){
+    event.preventDefault();
+    var offset = $($(this).attr('href')).offset().top;
+    $('html, body').animate({scrollTop:offset}, 500);
+  });
+});
+</script>  
+
+</head>
+<body>
+<div id="container">
+	
+	<div class="span-6 last">
+	<a href="#logo" class="scroll"><img src="img/logoflip.png" id=logoflip></a></div>
+	
+	<div class="span-6 last" id="menu">
+		<img src="img/logo.jpg" id=logo>
+		<div class="span-1 ">
+			
+		
+	
+	</div>
+		<div class="span-5 last">
+<h1>MURMUR | Documentation des scripts JS</h1>
+		</div>
+	</div>
+	
+	<div class="span-5 last" id ="sommaire">
+		
+			<ul><!-- block d'une liste -->			
+		<li class="span-3"><a href="#murmurtxt" class="scroll"><h2>Présentation MURMUR</h2></a></li>
+				
+		<li class="span-3"><a href="#jstxt" class="scroll"><h2>Présentation JAVASCRIPT</h2></a></li>
+				
+		<li class="span-3"><a href="#programmetype" class="scroll"><h2>Programme Type</h2></a>
+		
+			<ul class ="sslist"><li><a href="#setup" class="scroll"><h5>setup( )</h5></a></li><li><a href="#update" class="scroll"><h5>update( )</h5></a></li><li><a href="#draw" class="scroll"><h5>draw( )</h5></a></li><li><a href="#onnew" class="scroll"><h5>onNewPacket( )</h5></a></li></ul></li>
+				<li class="span-3"><a href="#exemplescript" class="scroll"><h2>Exemple de script</h2></a><ul class ="sslist"><li><a href="#particuleexemple" class="scroll"><h5>particleSquare ( )</h5></a></li><li><a href="#setupexemple" class="scroll"><h5>setup( )</h5></a></li><li><a href="#updateexemple" class="scroll"><h5>update( )</h5></a></li><li><a href="#drawexemple" class="scroll"><h5>draw( )</h5></a></li><li><a href="#onnewexemple" class="scroll"><h5>onNewPacket( )</h5></a></li></ul>
+		</li>			
+		<li class="span-3"><h2>Fonctions</h2></li>
+			   
+			</ul><!-- fin block d'une liste -->
+		</div>
+	
+	
+	
+	
+	
+	<div class="span-6 last">
+		<img src="img/bandeau2.jpg" id=bandeau>
+	
+	</div>
+	
+	
+	
+			<div class="span-2"  id= "murmurtxt">
+				<p><h3>MURMUR</h3> Murmur est installation numérique composée d'une prothèse architecturale permettant la communication entre une personne et un mur sur lequel elle est connectée. Elle a été dévoilée lors de la «Nuit Numérique #10» à Reims en Mai 2013.</br>
+L’installation simule le déplacement des ondes sonores en créant un pont lumineux entre le monde physique et le monde virtuel. Murmur se focalise sur ce déplacement et engendre ainsi un dialogue non-conventionnel entre le public et le mur.</br>
+La «Chambre d'Echo», périphérique créé sur mesure, recueille les paroles et les murmures du public pour les transformer en ondes lumineuses, elles-mêmes re-interprétées en figures géométriques sur la surface où elles sont projetées.</p>
+			</div>
+	<div class="span-2 last"  id= "jstxt">
+				<p><h3>JAVASCRIPT</h3>Le javaScript (souvent abrégé JS) créé en 1995 par Brendan Eich est un langage de programmation de scripts principalement utilisé dans les pages web interactives mais aussi côté serveur.</br> C’est un langage orienté objet à prototype, c’est-à-dire que les bases du langage et ses principales interfaces sont fournies par des objets qui ne sont pas des instances de classes, mais qui sont chacun équipés de constructeurs permettant de créer leurs propriétés, et notamment une propriété de prototypage qui permet d’en créer des objets héritiers personnalisés. En outre, les fonctions sont des objets de première classe. Dans le cas de MURMUR, le JS permet de créer les animations visiblent sur la surface de projection.</p>
+			</div>
+	
+	
+	
+
+
+<div class="span-6 last">
+		<img src="img/bandeau.jpg" id=bandeau>
+</div>
+	
+	<div class="span-6 last" id="programmetype">
+				<h3>PROGRAMME TYPE</h3> 
+			</div>
+
+
+<div class="span-2" id= "javascript">
+<p>//--------------------------------------------------------------</br>
+</br>
+function setup()</br>
+{</br>
+}</br>
+</br>
+//--------------------------------------------------------------</br>
+</br>
+function update(dt)</br>
+{</br>
+}</br>
+</br>
+//--------------------------------------------------------------</br>
+</br>
+function draw(w,h)</br>
+{</br>
+	of.Background(0,0,0);</br>
+	of.SetColor(255);</br>
+	of.Line(0,0,w,h);</br>
+	of.Line(w,0,0,h);</br>
+}</br>
+</br>
+//--------------------------------------------------------------</br>
+</br>
+function onNewPacket(deviceId,volume,x,y)</br>
+{</br>
+}</br>
+
+</p>
+</div>
+<div class="span-2"  id= "texte">
+				<h5>Librairies</h5>
+<p>
+Les librairies dans Murmur se trouve dans le dossier data/Scripts/libraries de l'application. Elles sont chargées depuis le fichier data/Murmur.js.</p>
+
+<h5>Sketchs</h5>
+<p>
+Les sketchs qui vont être chargés en tant qu'animation dans Murmur sont placés dans le dossier data/Scripts de l'application. À son lancement, Murmur liste l'ensemble des fichiers .js présents dans ce dossier et crée une animation associée, accessible par les flèches droite et gauche depuis l'interface.
+</p>
+<p>
+Murmur utilise la syntaxe de ofxJavascript dans Openframeworks. </br>Sont utilisés notamment :</br>
+
+les fonctions globales pour le dessin et les opérations.
+les fonctions pour le chargement et l'affichage de texte.</p>
+			</div>
+
+<div class="span-2 last"  id= "texte">
+				<p></br></p>
+			</div>
+<div class="span-6 last">
+				</br>
+			</div>
+<div class="span-2" id= "javascript">
+<p>//--------------------------------------------------------------</br>
+</br>
+function setup()</br>
+{</br>
+}</br>
+
+
+</p>
+</div>
+
+<div class="span-2" id="setup">
+<h5>Setup ( )</h5>
+	<p>
+La fonction setup est la première appelée lors de l'exécution du script. Cette fonction est utilisée pour initialiser et déclarer des variables. Elle n'est exécutée qu'une seule fois, lors du lancement de l'animation.
+</p>
+</div>
+<div class="span-2 last"  id= "texte">
+				<p></br></p>
+			</div>
+<div class="span-6 last">
+				</br>
+			</div>
+<div class="span-2" id= "javascript">
+<p>//--------------------------------------------------------------</br>
+</br>
+function update(dt)</br>
+{</br>
+}</br>
+
+
+</p>
+</div>
+<div class="span-2" id="update">
+<h5>Update (dt)</h5>
+	<p>
+L'update est une fonction appellée continuellement pendant l'exécution de l'animation (elle tourne en boucle). Elle permet d'appeler des fonctions, des variables avant que l'animation soit exécutée permettant de déclarer certains comportements.</br>
+DT représente le temps écoulé depuis le dernier dessin (en seconde).
+</p>
+</div>
+<div class="span-2 last"  id= "texte">
+				<p></br></p>
+			</div>
+
+
+
+
+
+<div class="span-6 last">
+				</br>
+			</div>
+<div class="span-2" id= "javascript">
+<p>//--------------------------------------------------------------</br>
+</br>
+function draw(w,h)</br>
+{</br>
+	of.Background(0,0,0);</br>
+	of.SetColor(255);</br>
+	of.Line(0,0,w,h);</br>
+	of.Line(w,0,0,h);</br>
+}</br>
+
+</p>
+</div>
+
+
+<div class="span-2" id="draw">
+<h5>Draw (w,h)</h5>
+	<p>
+La fonction draw appelle le dessin sur la surface de projection, dessin dont les spécificités sont déclarées dans la fonction update. W et H sont les dimensions de la surface en pixels.</br></br>Of.Background permet de spécifier la couleur de fond de la projection en RGB .</br>Of.SetColor permet d'indiquer la couleur du dessin.</br> Il existe différentes <a href="#menu" class="scroll">fonctions de dessin</a>. C'est le cas de la fonction of.Line qui permet de dessiner un vecteur en indiquant un point de départ et un point d'arrivé en X et Y. 
+</p>
+</div>
+
+
+
+
+<div class="span-6 last">
+				</br>
+			</div>
+<div class="span-2" id= "javascript">
+<p>//--------------------------------------------------------------</br>
+</br>
+function onNewPacket(deviceId,volume,x,y)</br>
+{</br>
+}</br>
+
+</p>
+</div>
+
+
+<div class="span-2" id="onnew">
+<h5>OnNewPacket (deviceId,volume,x,y)</h5>
+	<p>
+La fonction OnNewPacket est appelée lorsque la surface de projection reçoit un nouveau "packet" lumineux.</br>DeviceId est l'identifiant de la chambre d'Echo.
+</br>Volume est la valeur du volume transporté, entre 0 et 1.
+</br>X et Y sont la position du point d'accroche sur la surface.
+</p>
+</div>
+	<div class="span-6 last" id="exemplescript">
+				<h3>EXEMPLE DE SCRIPT</h3> 
+			</div>
+
+
+<div class="span-2" id= "javascript">
+<pre>//--------------------------------------------------------------
+
+function ParticleSquare(x,y)
+{
+this.x = x;
+this.y = y;
+	
+this.vx = of.Random(-7,7);
+this.vy = of.Random(-7,7);
+
+	
+
+this.R = (0);
+this.G = of.Random(100,255);
+this.B = of.Random(100,150);
+
+this.mouv = of.Random(0,500);
+
+this.age = 0;
+	
+
+this.taille = (10);
+	
+
+this.draw = function()
+	{
+	of.SetColor(this.R,this.G,this.B, 255*(4-this.age/4.0));
+	of.Rect(this.x-this.taille/2, this.y-this.taille/2, 1,1);
+		
+
+	}
+
+this.update = function(dt)
+	{
+	var noise = ofNoise(this.x*0.01, this.y*0.01,dt*0);
+	this.x += this.vx*Math.cos(3.5*noise*noise*Math.PI); 		
+	this.y += this.vy*Math.sin(3.5*noise*noise*Math.PI); 		
+	this.age += dt;
+	}
+}
+
+
+
+//--------------------------------------------------------------
+
+function setup()
+{
+	this.particles = new Array();
+}
+
+//--------------------------------------------------------------
+
+
+function update(dt)
+{
+for (var i=0 ; i < this.particles.length ; i++)
+{
+	this.particles[i].update(dt);
+}
+
+for (var i=this.particles.length-1; i>=0 ; i--)
+{
+	if (this.particles[i].age>=100)
+	{
+	this.particles.splice(i,1);
+	}
+	}
+}
+
+//--------------------------------------------------------------
+
+
+function draw(w,h)
+{
+
+//of.Background(0,0,0);
+of.SetColor(0,0,0,4);
+of.Rect(0,0,w,h);
+
+
+for (var i=0 ; i < this.particles.length ; i++)
+{
+	this.particles[i].draw();
+}
+
+}
+
+
+//--------------------------------------------------------------
+
+
+function onNewPacket(deviceId,volume,x,y)
+{
+if (volume > 0.5)
+	{
+	this.particles.push( new ParticleSquare(x,y) );
+	}
+
+this.volumeSaved = volume;
+this.xSaved = x;
+this.ySaved = y;
+}
+
+</pre>
+</div>
+<div class="span-3 last">
+		<img src="img/racine.jpg" id=racine>
+		
+</div>
+
+<div class="span-2 last"  id= "texte">
+				<p></br></p>
+			</div>
+
+<div class="span-2" id="texteexemple">
+
+<div class="span-2" id="particuleexemple">
+	<h5>ParticleSquare (x,y)</h5>
+	<p>
+Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500, quand un peintre anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte. Il n'a pas fait que survivre cinq siècles, mais s'est aussi adapté à la bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé dans les années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.ition du point d'accroche sur la surface.
+Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500, quand un peintre anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte. Il n'a pas fait que survivre cinq siècles, mais s'est aussi adapté à la bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé dans les années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.
+bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé dans les années 1960 grâce à la vente de feuilles Letraset contenant des passages  
+</p>
+</div>
+
+<div class="span-2 last"  id= "texte">
+				<p></br></p>
+			</div>
+
+
+<div class="span-2" id="setupexemple">
+	<h5>Setup ( )</h5>
+	<p>
+années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.
+bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé dan
+</p>
+</div>
+
+<div class="span-2 last"  id= "texte">
+				<p></br></p>
+			</div>
+
+
+<div class="span-2" id="updateexemple">
+	<h5>Update (dt)</h5>
+	<p>
+années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.
+bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé danans que son contenu n'en soit modifié. Il a été popularisé dans les années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.
+bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé dans lesans que son contenu n'en soit modifié. Il a été popularisé dans les années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.
+bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé dans les
+</p>
+</div>
+
+<div class="span-2 last"  id= "texte">
+				<p></br></p>
+			</div>
+
+
+<div class="span-2" id="drawexemple">
+	<h5>Draw (w,h)</h5>
+	<p>
+années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.
+bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé danans que son contenu n'en soit modifié. Il a été popularisé dans les années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.
+bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé dans lesans que son contenu n'en soit modifié. Il a été popularisé dans les années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.
+bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé dans 
+</p>
+</div>
+
+<div class="span-2 last"  id= "texte">
+				<p></br></p>
+			</div>
+
+
+<div class="span-2" id="onnewexemple">
+	<h5>OnNewPacket (deviceId,volume,x,y)</h5>
+	<p>
+années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.
+bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé danans que son contenu n'en soit modifié. Il a été popularisé dans les années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.
+bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé dans lesans que son contenu n'en soit modifié. Il a été popularisé dans les années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.
+
+</p>
+</div>
+
+</div>
+	
+	
+	
+</div> <!-- fin container -->
+</body>
+</html>
