@@ -51,7 +51,7 @@ $(document).ready(function(){
 			<ul class ="sslist"><li><a href="#setup" class="scroll"><h5>setup( )</h5></a></li><li><a href="#update" class="scroll"><h5>update( )</h5></a></li><li><a href="#draw" class="scroll"><h5>draw( )</h5></a></li><li><a href="#onnew" class="scroll"><h5>onNewPacket( )</h5></a></li></ul></li>
 				<li class="span-3"><a href="#exemplescript" class="scroll"><h2>Exemple de script</h2></a><ul class ="sslist"><li><a href="#particuleexemple" class="scroll"><h5>particleSquare ( )</h5></a></li><li><a href="#setupexemple" class="scroll"><h5>setup( )</h5></a></li><li><a href="#updateexemple" class="scroll"><h5>update( )</h5></a></li><li><a href="#drawexemple" class="scroll"><h5>draw( )</h5></a></li><li><a href="#onnewexemple" class="scroll"><h5>onNewPacket( )</h5></a></li></ul>
 		</li>			
-		<li class="span-3"><h2>Fonctions</h2></li>
+		<li class="span-3"><a href="#fonctions" class="scroll"><h2>Fonctions</h2></a></li>
 			   
 			</ul><!-- fin block d'une liste -->
 		</div>
@@ -159,9 +159,7 @@ function setup()</br>
 La fonction setup est la première appelée lors de l'exécution du script. Cette fonction est utilisée pour initialiser et déclarer des variables. Elle n'est exécutée qu'une seule fois, lors du lancement de l'animation.
 </p>
 </div>
-<div class="span-2 last"  id= "texte">
-				<p></br></p>
-			</div>
+
 <div class="span-6 last">
 				</br>
 			</div>
@@ -182,9 +180,7 @@ L'update est une fonction appellée continuellement pendant l'exécution de l'an
 DT représente le temps écoulé depuis le dernier dessin (en seconde).
 </p>
 </div>
-<div class="span-2 last"  id= "texte">
-				<p></br></p>
-			</div>
+
 
 
 
@@ -193,6 +189,7 @@ DT représente le temps écoulé depuis le dernier dessin (en seconde).
 <div class="span-6 last">
 				</br>
 			</div>
+
 <div class="span-2" id= "javascript">
 <p>//--------------------------------------------------------------</br>
 </br>
@@ -211,7 +208,7 @@ function draw(w,h)</br>
 <div class="span-2" id="draw">
 <h5>Draw (w,h)</h5>
 	<p>
-La fonction draw appelle le dessin sur la surface de projection, dessin dont les spécificités sont déclarées dans la fonction update. W et H sont les dimensions de la surface en pixels.</br></br>Of.Background permet de spécifier la couleur de fond de la projection en RGB .</br>Of.SetColor permet d'indiquer la couleur du dessin.</br> Il existe différentes <a href="#menu" class="scroll">fonctions de dessin</a>. C'est le cas de la fonction of.Line qui permet de dessiner un vecteur en indiquant un point de départ et un point d'arrivé en X et Y. 
+La fonction draw appelle le dessin sur la surface de projection, dessin dont les spécificités sont déclarées dans la fonction update. W et H sont les dimensions de la surface en pixels.</br></br>Of.Background permet de spécifier la couleur de fond de la projection en RGB .</br>Of.SetColor permet d'indiquer la couleur du dessin.</br> Il existe différentes <a href="#fonctions" class="scroll">fonctions de dessin</a>. C'est le cas de la fonction of.Line qui permet de dessiner un vecteur en indiquant un point de départ et un point d'arrivé en X et Y. 
 </p>
 </div>
 
@@ -245,8 +242,22 @@ La fonction OnNewPacket est appelée lorsque la surface de projection reçoit un
 			</div>
 
 
+
+
+<div class="span-6 last">
+		<img src="img/bandeauracine.jpg" id=racine>
+
+</div>
+<div class="span-6 last">
+				<p></br></p>
+			</div>
+
+
+
+
 <div class="span-2" id= "javascript">
-<pre>//--------------------------------------------------------------
+<pre>
+//--------------------------------------------------------------
 
 function ParticleSquare(x,y)
 {
@@ -289,12 +300,23 @@ this.update = function(dt)
 
 
 
+
+
+
+
+
+
+
 //--------------------------------------------------------------
+
+
 
 function setup()
 {
 	this.particles = new Array();
 }
+
+
 
 //--------------------------------------------------------------
 
@@ -313,9 +335,16 @@ for (var i=this.particles.length-1; i>=0 ; i--)
 	this.particles.splice(i,1);
 	}
 	}
+
+
+
+
 }
 
 //--------------------------------------------------------------
+
+
+
 
 
 function draw(w,h)
@@ -331,7 +360,10 @@ for (var i=0 ; i < this.particles.length ; i++)
 	this.particles[i].draw();
 }
 
+
 }
+
+
 
 
 //--------------------------------------------------------------
@@ -349,38 +381,71 @@ this.xSaved = x;
 this.ySaved = y;
 }
 
+
 </pre>
 </div>
-<div class="span-3 last">
-		<img src="img/racine.jpg" id=racine>
-		
-</div>
 
-<div class="span-2 last"  id= "texte">
-				<p></br></p>
-			</div>
+
 
 <div class="span-2" id="texteexemple">
 
 <div class="span-2" id="particuleexemple">
 	<h5>ParticleSquare (x,y)</h5>
 	<p>
-Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500, quand un peintre anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte. Il n'a pas fait que survivre cinq siècles, mais s'est aussi adapté à la bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé dans les années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.ition du point d'accroche sur la surface.
-Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500, quand un peintre anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte. Il n'a pas fait que survivre cinq siècles, mais s'est aussi adapté à la bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé dans les années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.
-bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé dans les années 1960 grâce à la vente de feuilles Letraset contenant des passages  
+La fonction ParticleSquare permet de créer un ensemble de particules qui vont se déplacer dans l'espace de manière aléatoire. Cette fontion et ses spécificités sont déclarées à part, hors du setup( ), de l'update( ), du draw( ) et de la fonction onNewPacket( ). La plupart des déclarations de variables sont précédées de this. qui précise que les variables en question sont accessibles seulement dans ce script, ce qui permet d'éviter d'eventuels conflits parmis les différents scripts.</br>
+
+<h6>
+this.x = x;</br>
+this.y = y;</h6>
+Déclare la source des particules et en l'occurence le point d'accroche du LEDstrip.</br>
+</br>
+<h6>this.vx = of.Random(-7,7);</br>
+this.vy = of.Random(-7,7);</h6>
+Déclare la fourchette de propagation en x et y des particules. Avec of.Random elle apparaissent aléatoirements entre -7 et 7.</br>
+</br>
+<h6>
+this.R = (0);</br>
+this.G = of.Random(100,255);</br>
+this.B = of.Random(100,150);</br>
+</h6>
+Ici on déclare la couleur des particules en RGB, avec l'aide de of.Random les couleurs sont plus ou moins aléatoires.</br>
+</br>
+<h6>
+this.mouv = of.Random(0,500);</br>
+this.age = 0;
+	</h6>
+On déclare la vitesse des particules aléatoirement entre 0 et 500 et leur age de départ.</br>
+</br>
+<h6>this.taille = (10);</h6>
+Déclaration de la taille des particules.</br>
+</br>
+<h6>this.draw = function()
+	{</br>
+	of.SetColor(this.R,this.G,this.B, 255*(4-this.age/4.0));</br>
+	of.Rect(this.x-this.taille/2, this.y-this.taille/2, 1,1);</h6>
+Avec this.draw, on spécifie des comportements qui seront appellés lors de l'exécution du draw. En l'occurence on appelle la couleur déclarée plus haut et on précise qu'elle tend de plus en plus vers le noir en fonction de son age. Ce qui va faire disparaitre les particules au fur à mesure. On dessine également un rectangle en arrière plan.</br>
+</br>
+<h6>this.update = function(dt)
+	{</br>
+	var noise = ofNoise(this.x*0.01, this.y*0.01,dt*0);</br>
+	this.x += this.vx*Math.cos(3.5*noise*noise*Math.PI);</br>		
+	this.y += this.vy*Math.sin(3.5*noise*noise*Math.PI);</br>	
+	this.age += dt;</br>
+	}</h6>
+This.update permet d'indiquer des comportements à la fonction particleSquare qui seront appelés dans la fonction update. Ici on renseigne le noise (fonction propre à particleSquare) qui influence le déplacement des particules (plus ou moins aléatoire) mais également leur angle de propagation. Pour finir on précise que l'age des particules, déclaré plus haut est égal à dt. (temps entre deux dessin).
 </p>
 </div>
-
 <div class="span-2 last"  id= "texte">
 				<p></br></p>
 			</div>
 
-
 <div class="span-2" id="setupexemple">
 	<h5>Setup ( )</h5>
-	<p>
-années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.
-bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé dan
+	<p><h6>function setup( )
+{</br>
+	this.particles = new Array( );</br>
+}</h6>
+Dans le setup( ) on appelle la fonction particles au lancement de l'animation. Particles comprend la fontion particleSquare et donc tout les comportements programmés précédemment. 
 </p>
 </div>
 
@@ -391,11 +456,30 @@ bureautique informatique, sans que son contenu n'en soit modifié. Il a été po
 
 <div class="span-2" id="updateexemple">
 	<h5>Update (dt)</h5>
-	<p>
-années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.
-bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé danans que son contenu n'en soit modifié. Il a été popularisé dans les années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.
-bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé dans lesans que son contenu n'en soit modifié. Il a été popularisé dans les années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.
-bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé dans les
+	<p><h6>function update(dt)</br>
+{</br>
+for (var i=0 ; i < this.particles.length ; i++)
+{</br>
+this.particles[i].update(dt);</br>
+}
+</h6>
+Dans la fonction update on instancie une condition : i est une variable égale à 0, i est inférieur à this.particles et i s'incrémente à chaque execution de la boucle update. </br>Si la condition est validée on execute la variable this particles dans l'update.</br>
+</br>
+<h6>
+for (var i=this.particles.length-1; i>=0 ; i--)
+{</br>
+	if (this.particles[i].age>=100)
+	 {</br>
+	this.particles.splice(i,1);
+	 }</br> 
+	}
+}</h6>
+Dans l'update on donne une deuxième condition découlant de la première : i est une variable égale à this.particles.length-1, i est supérieur ou égal à 0 et i se désincrémente. Ensuite on y ajoute une nouvelle condition if : si l'age des particules est égal ou supérieur à 100 alors on réduit le nombre de particules. Ainsi on à put limiter le nombre de particules entre 0 et 100.
+</p>
+
+
+
+
 </p>
 </div>
 
@@ -406,11 +490,26 @@ bureautique informatique, sans que son contenu n'en soit modifié. Il a été po
 
 <div class="span-2" id="drawexemple">
 	<h5>Draw (w,h)</h5>
-	<p>
-années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.
-bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé danans que son contenu n'en soit modifié. Il a été popularisé dans les années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.
-bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé dans lesans que son contenu n'en soit modifié. Il a été popularisé dans les années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.
-bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé dans 
+	<p><h6>
+	
+	function draw(w,h)
+{</br>
+
+//of.Background(0,0,0);</br>
+of.SetColor(0,0,0,4);</br>
+of.Rect(0,0,w,h);</br>
+</h6>
+Dans la fonction draw on peut voir que le of.Background n'est pas actif, il est commenté à l'aide du double slash //.</br>
+Un rectangle de la taille de l'écran est dessiné avec la fonction of.Rect et on lui donne aucune couleurs mais seulement une légère opacité avec la fonction of.SetColor, c'est ce qui nous donne cet effet d'image fantome en arrière plan. Si le background est activé on verra seulement des points se déplacer sur l'écran.</br>
+</br>
+<h6>for (var i=0 ; i < this.particles.length ; i++)</br>
+{</br>
+	this.particles[i].draw();</br>
+}
+
+}</br>
+ </h6>
+Pour finir on déclare une nouvelle condition qui précise que tant que le nombre de particules est inférieur à this.particles.length (100) alors le draw peut dessiner la fontion this.particles[i].draw() dont les spécificités ont été établies dans la fonction ParticleSquare(x,y).
 </p>
 </div>
 
@@ -421,15 +520,27 @@ bureautique informatique, sans que son contenu n'en soit modifié. Il a été po
 
 <div class="span-2" id="onnewexemple">
 	<h5>OnNewPacket (deviceId,volume,x,y)</h5>
-	<p>
-années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.
-bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé danans que son contenu n'en soit modifié. Il a été popularisé dans les années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.
-bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé dans lesans que son contenu n'en soit modifié. Il a été popularisé dans les années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.
-
+	<p><h6>function onNewPacket(deviceId,volume,x,y)
+{</br>
+if (volume > 0.5)
+	{</br>
+	this.particles.push( new ParticleSquare(x,y) );</br>
+	}</br>
+</h6>
+Dans la fonction onNewPacket, on programme que la fonction ParticleSquare est appelée à chaque fois que le volume depassera la valeur indiquée dans ce cas 0.5 (le volume est situé entre 0 et 1).</br>
+</br>
+<h6>this.volumeSaved = volume;</br>
+this.xSaved = x;</br>
+this.ySaved = y;</br>
+}</h6>
+On déclare les variables qui sont réutilisées dans la fonction ParticleSquare.
 </p>
 </div>
 
 </div>
+<div class="span-6 last" id="fonctions">
+				<h3>FONCTIONS</h3> 
+			</div>
 	
 	
 	
