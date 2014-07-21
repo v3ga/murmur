@@ -1,10 +1,24 @@
-/*@font-face { 
-  font-family: 'Theinhardt'; 
-  src: url('font/Theinhardt-Regular.otf'), url('font/Theinhardt-RegularIta.otf'), url('font/Theinhardt-Light.otf'), url('font/Theinhardt-LightIta.otf'), url('font/Theinhardt-BoldIta.otf'), url('font/Theinhardt-Bold.otf');
+/*		url('font/Theinhardt-RegularIta.otf'), 
+		url('font/Theinhardt-Light.otf'), 
+		url('font/Theinhardt-LightIta.otf'), 
+		url('font/Theinhardt-BoldIta.otf'), 
+		url('font/Theinhardt-Bold.otf');
+*/
+
+
+
+@font-face { 
+    font-family: 'Theinhardt',  "Theinhardtlight";
+    src: url('font/Theinhardt-Regular.otf');
+	src: url('font/Theinhardt-Light.otf');
+		
+   
 }
 
-body, h1, h2,h3,h4,h5, p{font-family: 'Theinhardt', sans-serif;}*/
 
+
+
+body, h2,h3,h4,h5, p{font-family: 'Theinhardt', sans-serif;}
 
 #logoflip{
 	width: 40px;
@@ -71,7 +85,9 @@ h1{
 font-weight: 150;
 	font-size: 4em;
 	font-size: 3em;
-	margin-left: 3.5em
+	margin-left: 3.5em;
+	
+		
 }
 
 h2{
@@ -95,8 +111,8 @@ margin-bottom: 0.5em;
 	
 }
 
-a :hover, a:link {text-decoration: none;
-	color: #685fbe;	
+a :hover, a:link, a:visited {text-decoration: none;
+	color: #ff5bb0;
 }
 
 
@@ -121,6 +137,12 @@ margin-bottom: 0px;
 #codepre {
 	color: #ff5bb0;
 
-	
+	}
+
+#frame { border-width: 2px;
+	border-color: #ff5bb0;
+		
+	border-style:solid;
+
 
 }
