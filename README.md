@@ -29,4 +29,4 @@ http://m-u-r-m-u-r.me/
 * ofxMSAPhysics — https://github.com/memo/ofxMSAPhysics
 * ofxHomographyHelper — http://forum.openframeworks.cc/t/quad-warping-homography-without-opencv/3121
 * ofxLPD8806 — https://github.com/fishkingsin/ofxLPD8806
-# ofxTween — https://github.com/arturoc/ofxTween
+* ofxTween — https://github.com/arturoc/ofxTween
