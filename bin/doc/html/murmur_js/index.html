@@ -7,6 +7,14 @@
 <!-- Framework CSS -->
 <link rel="stylesheet" href="css/screen.css" type="text/css" media="screen, projection">
 <link rel="stylesheet" href="css/custom.css" type="text/css" media="screen, projection">
+	
+	
+<link rel="stylesheet" href="css/highlight/styles/tomorrow-night.css">
+<script src="css/highlight/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+	
+	
+	
 <!--[if lt IE 8]><link rel="stylesheet" href="css/ie.css" type="text/css" media="screen, projection"><![endif]-->
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" type="text/javascript"></script>  
@@ -15,11 +23,15 @@ $(document).ready(function(){
   $(".scroll").click(function(event){
     event.preventDefault();
     var offset = $($(this).attr('href')).offset().top;
-    $('html, body').animate({scrollTop:offset}, 500);
+    $('html, body').animate({scrollTop:offset}, 3000);
   });
 });
 </script>  
 
+	
+<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js?lang=css&skin=sunburst"></script>
+	
+	
 </head>
 <body>
 <div id="container">
@@ -89,36 +101,37 @@ La «Chambre d'Echo», périphérique créé sur mesure, recueille les paroles e
 			</div>
 
 
-<div class="span-2" id= "javascript">
-<p>//--------------------------------------------------------------</br>
-</br>
-function setup()</br>
-{</br>
-}</br>
-</br>
-//--------------------------------------------------------------</br>
-</br>
-function update(dt)</br>
-{</br>
-}</br>
-</br>
-//--------------------------------------------------------------</br>
-</br>
-function draw(w,h)</br>
-{</br>
-	of.Background(0,0,0);</br>
-	of.SetColor(255);</br>
-	of.Line(0,0,w,h);</br>
-	of.Line(w,0,0,h);</br>
-}</br>
-</br>
-//--------------------------------------------------------------</br>
-</br>
-function onNewPacket(deviceId,volume,x,y)</br>
-{</br>
-}</br>
+<div class="span-2">
+<pre><code class="javascript">
+//--------------------------------------------------------------
 
-</p>
+function setup()
+{
+}
+
+//--------------------------------------------------------------
+
+function update(dt)
+{
+}
+
+//--------------------------------------------------------------
+
+function draw(w,h)
+{
+	of.Background(0,0,0);
+	of.SetColor(255);
+	of.Line(0,0,w,h);
+	of.Line(w,0,0,h);
+}
+
+//--------------------------------------------------------------
+
+function onNewPacket(deviceId,volume,x,y)
+{
+}
+
+</code></pre>
 </div>
 <div class="span-2"  id= "texte">
 				<h5>Librairies</h5>
@@ -142,15 +155,14 @@ les fonctions pour le chargement et l'affichage de texte.</p>
 <div class="span-6 last">
 				</br>
 			</div>
-<div class="span-2" id= "javascript">
-<p>//--------------------------------------------------------------</br>
-</br>
-function setup()</br>
-{</br>
-}</br>
+<div class="span-2">
+<pre><code class="javascript">//--------------------------------------------------------------
 
+function setup()
+{
+}
 
-</p>
+</code></pre>
 </div>
 
 <div class="span-2" id="setup">
@@ -163,15 +175,14 @@ La fonction setup est la première appelée lors de l'exécution du script. Cett
 <div class="span-6 last">
 				</br>
 			</div>
-<div class="span-2" id= "javascript">
-<p>//--------------------------------------------------------------</br>
-</br>
-function update(dt)</br>
-{</br>
-}</br>
+<div class="span-2">
+<pre><code class="javascript">//--------------------------------------------------------------
 
+function update(dt)
+{
+}
 
-</p>
+</code></pre>
 </div>
 <div class="span-2" id="update">
 <h5>Update (dt)</h5>
@@ -190,18 +201,17 @@ DT représente le temps écoulé depuis le dernier dessin (en seconde).
 				</br>
 			</div>
 
-<div class="span-2" id= "javascript">
-<p>//--------------------------------------------------------------</br>
-</br>
-function draw(w,h)</br>
-{</br>
-	of.Background(0,0,0);</br>
-	of.SetColor(255);</br>
-	of.Line(0,0,w,h);</br>
-	of.Line(w,0,0,h);</br>
-}</br>
+<div class="span-2" >
+<pre><code class="javascript">//--------------------------------------------------------------
+function draw(w,h)
+{
+	of.Background(0,0,0);
+	of.SetColor(255);
+	of.Line(0,0,w,h);
+	of.Line(w,0,0,h);
+}
 
-</p>
+</code></pre>
 </div>
 
 
@@ -218,14 +228,15 @@ La fonction draw appelle le dessin sur la surface de projection, dessin dont les
 <div class="span-6 last">
 				</br>
 			</div>
-<div class="span-2" id= "javascript">
-<p>//--------------------------------------------------------------</br>
-</br>
-function onNewPacket(deviceId,volume,x,y)</br>
-{</br>
-}</br>
+<div class="span-2">
+	<pre><code class="javascript">
+//--------------------------------------------------------------
 
-</p>
+function onNewPacket(deviceId,volume,x,y)
+{
+}
+
+</code></pre>
 </div>
 
 
@@ -255,9 +266,8 @@ La fonction OnNewPacket est appelée lorsque la surface de projection reçoit un
 
 
 
-<div class="span-2" id= "javascript">
-<pre>
-//--------------------------------------------------------------
+<div class="span-2">
+<pre><code class="javascript">//--------------------------------------------------------------
 
 function ParticleSquare(x,y)
 {
@@ -382,7 +392,7 @@ this.ySaved = y;
 }
 
 
-</pre>
+</code></pre>
 </div>
 
 
@@ -546,6 +556,8 @@ On déclare les variables qui sont réutilisées dans la fonction ParticleSquare
 			</div>
 <div class="span-6 last" >
 				<a href="http://www.openframeworks.cc/documentation/graphics/ofGraphics.html" target="_blank" >OpenFramework graphics</a> 
+	
+	
 			</div>
 	
 	
