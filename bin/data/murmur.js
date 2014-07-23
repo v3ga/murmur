@@ -32,12 +32,6 @@ include("Scripts/libraries/murmur/VolumeAccum.js");
 include("Scripts/libraries/murmur/Tunnel.js");
 
 // --------------------------------------------------------
-THEME_UNKNOWN			= 0;
-THEME_SURFACE			= 1;
-THEME_CREATURE			= 2;
-THEME_ARBORESCENCE		= 3;
-
-// --------------------------------------------------------
 this.deviceManager = {};
 
 // --------------------------------------------------------
