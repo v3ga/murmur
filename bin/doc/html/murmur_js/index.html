@@ -54,15 +54,15 @@ $(document).ready(function(){
 	<div class="span-5 last" id ="sommaire">
 		
 			<ul><!-- block d'une liste -->			
-		<li class="span-3"><a href="#murmurtxt" class="scroll"><h2>Présentation MURMUR</h2></a></li>
+		<li class="span-3"><a href="#jsscript" class="scroll"><h2>Scripts JS</h2></a></li>
 				
-		<li class="span-3"><a href="#jstxt" class="scroll"><h2>Présentation JAVASCRIPT</h2></a></li>
 				
-		<li class="span-3"><a href="#programmetype" class="scroll"><h2>Programme Type</h2></a>
+		<li class="span-3"><a href="#programmetype" class="scroll"><h2>Interface</h2></a>
 		
 			<ul class ="sslist"><li><a href="#setup" class="scroll"><h5>setup( )</h5></a></li><li><a href="#update" class="scroll"><h5>update( )</h5></a></li><li><a href="#draw" class="scroll"><h5>draw( )</h5></a></li><li><a href="#onnew" class="scroll"><h5>onNewPacket( )</h5></a></li></ul></li>
-				<li class="span-3"><a href="#exemplescript" class="scroll"><h2>Exemple de script</h2></a><ul class ="sslist"><li><a href="#particuleexemple" class="scroll"><h5>particleSquare ( )</h5></a></li><li><a href="#setupexemple" class="scroll"><h5>setup( )</h5></a></li><li><a href="#updateexemple" class="scroll"><h5>update( )</h5></a></li><li><a href="#drawexemple" class="scroll"><h5>draw( )</h5></a></li><li><a href="#onnewexemple" class="scroll"><h5>onNewPacket( )</h5></a></li></ul>
-		</li>			
+				<li class="span-3"><a href="#exemplescript" class="scroll"><h2>Exemple de script</h2></a><ul class ="sslist"><li><a href="#variable" class="scroll"><h5>déclarer une variable en JS</h5></a></li><li><a href="#particuleexemple" class="scroll"><h5>particleSquare ( )</h5></a></li><li><a href="#setupexemple" class="scroll"><h5>setup( )</h5></a></li><li><a href="#updateexemple" class="scroll"><h5>update( )</h5></a></li><li><a href="#drawexemple" class="scroll"><h5>draw( )</h5></a></li><li><a href="#onnewexemple" class="scroll"><h5>onNewPacket( )</h5></a></li><li><a href="#UIexemple" class="scroll"><h5>createUI( ) et eventUI( )</h5></a></li></ul>
+		</li>	
+				<li class="span-3"><a href="#erreur" class="scroll"><h2>Gestion des erreurs</h2></a></li>
 		<li class="span-3"><a href="#fonctions" class="scroll"><h2>Fonctions</h2></a></li>
 			   
 			</ul><!-- fin block d'une liste -->
@@ -79,14 +79,13 @@ $(document).ready(function(){
 	
 	
 	
-			<div class="span-2"  id= "murmurtxt">
-				<p><h3>MURMUR</h3> Murmur est installation numérique composée d'une prothèse architecturale permettant la communication entre une personne et un mur sur lequel elle est connectée. Elle a été dévoilée lors de la «Nuit Numérique #10» à Reims en Mai 2013.</br>
-L’installation simule le déplacement des ondes sonores en créant un pont lumineux entre le monde physique et le monde virtuel. Murmur se focalise sur ce déplacement et engendre ainsi un dialogue non-conventionnel entre le public et le mur.</br>
-La «Chambre d'Echo», périphérique créé sur mesure, recueille les paroles et les murmures du public pour les transformer en ondes lumineuses, elles-mêmes re-interprétées en figures géométriques sur la surface où elles sont projetées.</p>
+			<div class="span-2"  id= "jsscript">
+				<p><h3>Script JS</h3> Avec le l'application MURMUR il est possible de programmer des animations JS en live coding. Il est donc possible de lancer l'animation, de modifier le script et de voir directement les changements dans le soft de MURMUR. Pour celà il suffit juste de cliquer sur "edit" et "reload" dans l'onglet "animation" du logiciel.</br>L'ensemble des scripts se situe dans le dossier <h7>/data/Scripts/</h7>. Il est alors possible de spécifier le dossier contenant les différents scripts grâce au fichier.xml <h7>/data/Config/surfaces/surfacemain.xml</h7>. </p>
 			</div>
-	<div class="span-2 last"  id= "jstxt">
-				<p><h3>JAVASCRIPT</h3>Le javaScript (souvent abrégé JS) créé en 1995 par Brendan Eich est un langage de programmation de scripts principalement utilisé dans les pages web interactives mais aussi côté serveur.</br> C’est un langage orienté objet à prototype, c’est-à-dire que les bases du langage et ses principales interfaces sont fournies par des objets qui ne sont pas des instances de classes, mais qui sont chacun équipés de constructeurs permettant de créer leurs propriétés, et notamment une propriété de prototypage qui permet d’en créer des objets héritiers personnalisés. En outre, les fonctions sont des objets de première classe. Dans le cas de MURMUR, le JS permet de créer les animations visiblent sur la surface de projection.</p>
+	<div class="span-2 last"  id= "jsscript">
+				<p><h3></br></h3>L'application MURMUR permet également d'utiliser des librairies javascript qui ne font pas appellent à des ressources en ligne. Pour ajouter une librairie il sufit de la télécharger, de la déposer dans le dossier <h7>/data/Scripts/librairies</h7> et de la déclarer dans fichier murmur.js à l'aide de la de "include"  (<h7>/data/murmur.js</h7>)</br>Les animations et les fonctions qui les composent sont issus de l'addon <a href="https://code.google.com/p/ofxjavascript/wiki/ofxJSGlobalFunctions" target="_blank">ofxJavascript</a>. Les fonctions programmées en C++ sont adaptées en javascript grâce à l'objet global of. Par exemple la fonction ofBackground est reconnu dans MURMUR par l'appelation of.Background.</p>
 			</div>
+	
 	
 	
 	
@@ -97,7 +96,7 @@ La «Chambre d'Echo», périphérique créé sur mesure, recueille les paroles e
 </div>
 	
 	<div class="span-6 last" id="programmetype">
-				<h3>PROGRAMME TYPE</h3> 
+				<h3>Interface</h3> 
 			</div>
 
 
@@ -166,7 +165,7 @@ function setup()
 </div>
 
 <div class="span-2" id="setup">
-<h5>Setup ( )</h5>
+<h5>setup ( )</h5>
 	<p>
 La fonction setup est la première appelée lors de l'exécution du script. Cette fonction est utilisée pour initialiser et déclarer des variables. Elle n'est exécutée qu'une seule fois, lors du lancement de l'animation.
 </p>
@@ -185,7 +184,7 @@ function update(dt)
 </code></pre>
 </div>
 <div class="span-2" id="update">
-<h5>Update (dt)</h5>
+<h5>update (dt)</h5>
 	<p>
 L'update est une fonction appellée continuellement pendant l'exécution de l'animation (elle tourne en boucle). Elle permet d'appeler des fonctions, des variables avant que l'animation soit exécutée permettant de déclarer certains comportements.</br>
 DT représente le temps écoulé depuis le dernier dessin (en seconde).
@@ -216,9 +215,9 @@ function draw(w,h)
 
 
 <div class="span-2" id="draw">
-<h5>Draw (w,h)</h5>
+<h5>draw (w,h)</h5>
 	<p>
-La fonction draw appelle le dessin sur la surface de projection, dessin dont les spécificités sont déclarées dans la fonction update. W et H sont les dimensions de la surface en pixels.</br></br>Of.Background permet de spécifier la couleur de fond de la projection en RGB .</br>Of.SetColor permet d'indiquer la couleur du dessin.</br> Il existe différentes <a href="#fonctions" class="scroll">fonctions de dessin</a>. C'est le cas de la fonction of.Line qui permet de dessiner un vecteur en indiquant un point de départ et un point d'arrivé en X et Y. 
+La fonction draw appelle le dessin sur la surface de projection, dessin dont les spécificités sont déclarées dans la fonction update. W et H sont les dimensions de la surface en pixels. Les coordonées 0,0 représentent le coin en haut à gauche.</br></br>Of.Background permet de spécifier la couleur de fond de la projection en RGB .</br>Of.SetColor permet d'indiquer la couleur du dessin.</br> Il existe différentes <a href="#fonctions" class="scroll">fonctions de dessin</a>. C'est le cas de la fonction of.Line qui permet de dessiner un vecteur en indiquant un point de départ et un point d'arrivé en X et Y. 
 </p>
 </div>
 
@@ -241,7 +240,7 @@ function onNewPacket(deviceId,volume,x,y)
 
 
 <div class="span-2" id="onnew">
-<h5>OnNewPacket (deviceId,volume,x,y)</h5>
+<h5>onNewPacket (deviceId,volume,x,y)</h5>
 	<p>
 La fonction OnNewPacket est appelée lorsque la surface de projection reçoit un nouveau "packet" lumineux.</br>DeviceId est l'identifiant de la chambre d'Echo.
 </br>Volume est la valeur du volume transporté, entre 0 et 1.
@@ -264,7 +263,18 @@ La fonction OnNewPacket est appelée lorsque la surface de projection reçoit un
 			</div>
 
 
-
+<div class=span-2 last id="variable">
+	<h5>Déclarer une variable en JS</h5>
+<p> Declarer une variable se trouve être relativement simple, car le language javascript est souple concernant les variables. La déclaration peut se faire de deux façons :</br>
+</br>
+soit de façon explicite, en faisant précéder la variable du mot clé var qui permet d'indiquer de façon rigoureuse qu'il s'agit d'une variable:<h6>var chaine= "bonjour"</h6> soit de façon implicite, il suffit d'écrire le nom de la variable suivie du caractère = et de la valeur à affecter :
+ <h6>chaine= "bonjour"</h6></br>
+</br>Mais afin qu'il n'y ai pas de conflits entre les différents scripts il faut préciser que la variable concerne seulement le script dans lequel elle se trouve à l'aide this. On déclarera alors la variable comme celà :<h6>
+this.chaine="bonjour"</h6></p>
+</div>
+<div class="span-6 last">
+				<p></br></p>
+			</div>
 
 <div class="span-2">
 <pre><code class="javascript">//--------------------------------------------------------------
@@ -399,8 +409,9 @@ this.ySaved = y;
 
 <div class="span-2" id="texteexemple">
 
+
 <div class="span-2" id="particuleexemple">
-	<h5>ParticleSquare (x,y)</h5>
+	<h5>particleSquare (x,y)</h5>
 	<p>
 La fonction ParticleSquare permet de créer un ensemble de particules qui vont se déplacer dans l'espace de manière aléatoire. Cette fontion et ses spécificités sont déclarées à part, hors du setup( ), de l'update( ), du draw( ) et de la fonction onNewPacket( ). La plupart des déclarations de variables sont précédées de this. qui précise que les variables en question sont accessibles seulement dans ce script, ce qui permet d'éviter d'eventuels conflits parmis les différents scripts.</br>
 
@@ -450,7 +461,7 @@ This.update permet d'indiquer des comportements à la fonction particleSquare qu
 			</div>
 
 <div class="span-2" id="setupexemple">
-	<h5>Setup ( )</h5>
+	<h5>setup ( )</h5>
 	<p><h6>function setup( )
 {</br>
 	this.particles = new Array( );</br>
@@ -465,7 +476,7 @@ Dans le setup( ) on appelle la fonction particles au lancement de l'animation. P
 
 
 <div class="span-2" id="updateexemple">
-	<h5>Update (dt)</h5>
+	<h5>update (dt)</h5>
 	<p><h6>function update(dt)</br>
 {</br>
 for (var i=0 ; i < this.particles.length ; i++)
@@ -499,7 +510,7 @@ Dans l'update on donne une deuxième condition découlant de la première : i es
 
 
 <div class="span-2" id="drawexemple">
-	<h5>Draw (w,h)</h5>
+	<h5>draw (w,h)</h5>
 	<p><h6>
 	
 	function draw(w,h)
@@ -529,7 +540,7 @@ Pour finir on déclare une nouvelle condition qui précise que tant que le nombr
 
 
 <div class="span-2" id="onnewexemple">
-	<h5>OnNewPacket (deviceId,volume,x,y)</h5>
+	<h5>onNewPacket (deviceId,volume,x,y)</h5>
 	<p><h6>function onNewPacket(deviceId,volume,x,y)
 {</br>
 if (volume > 0.5)
@@ -546,8 +557,66 @@ this.ySaved = y;</br>
 On déclare les variables qui sont réutilisées dans la fonction ParticleSquare.
 </p>
 </div>
-
+<div class="span-2 last"  id= "texte">
+				<p></br></p>
+			</div>
 </div>
+
+
+<div class="span-2" >
+<pre><code class="javascript">//--------------------------------------------------------------
+
+function createUI()
+{
+    this.newSlider("color_R",0,255,this.R);
+    this.newSlider("color_G",0,255,this.G);
+    this.newSlider("color_B",0,255,this.B);
+    
+   
+}
+
+function eventUI(name, value)
+{
+    if (name == "color_R")
+    {
+        this.R = value;
+    }
+    else if (name == "color_G")
+    {
+        this.G = value;
+    }
+    else if (name == "color_B")
+    {
+        this.B = value;
+    }
+    
+}
+
+</code></pre>
+	
+	</div>
+<div class="span-2" id="UIexemple">
+	<h5>createUI( ) et eventUI( )</h5>
+	<p>Les Fonctions createUI( ) et eventUI( ) permettent de créer pour une animation donnée des boutons (toggle switch) et des barres de contrôle (slider control). Permettant ainsi d'intervenir sur l'animation sans avoir besoin de l'ouvrir dans un éditeur de texte. Les boutons sont déssinés dans l'interface, onglet "animations".</br></br>La fonction createUI( ) permet de dessiner et de déclarer le bouton :<h6> this.newSlider ( "color_R", 0, 255,this.R) ;</h6>On déclare la variable this.newSlider, on lui donne un nom: "color_R", une echelle de valeurs: entre 0 et 255 et on lui attribut une variable qui va changer en fonction du slider: This.R, qui en l'occurence représente la valeur de rouge en RGB.</br></br>La fonction eventUI( ) permet de lier le bouton à l'animation, que les changements d'état ou de position du bouton affecte une variable dans l'animation:</br></br><h6> if  (name == "color_R")</br>
+    {</br>
+        this.R = value ;</br>
+    }</h6>On précise donc que pour le slider "color_R" la valeur de "this.R" est égal à la valeur du slider (située entre 0 et 255). Si plusieurs sliders ou toggles sont déclarés dan la fonction createUI( ), il suffit d'utiliser la condition: <h6>else if ( ) { }</h6>.
+</p>
+</div>
+<div class="span-6 last" id="erreur">
+				<h3>GESTION DES ERREURS</h3></div>
+<div class="span-2" >
+<p>Afin de contôler les erreurs au fur à mesure de l'écriture du script il est possible de faire apparaitre la consôle.</br>Sur un environment WINDOWS il suffit de lancer la version debug de MURMUR.</br>Sur MACOS il suffit d'afficher le contenus du paquet de la version Debug de MURMUR et d'ouvrir le fichier <h7>contents/MAcOS/MurmurDebug.exe</h7>.</br> Pour afficher des données dans la consôle il suffit d'utiliser la variable: <h6>this.println(...) ;</h6> </p> 
+			</div>
+
+<div class="span-2 last">
+<img src="img/console.jpg" id=console>
+			</div>
+
+<div class="span-6 last">
+				<p></br></p>
+			</div>
+
 <div class="span-6 last" id="fonctions">
 				<h3>FONCTIONS</h3> 
 			</div>
