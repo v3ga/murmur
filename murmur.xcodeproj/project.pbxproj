@@ -285,6 +285,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		848BFC8119A240E40014EB4B /* ofxJSGlobalFunc.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ofxJSGlobalFunc.cpp; path = js/ofxJSGlobalFunc.cpp; sourceTree = "<group>"; };
+		848BFC8219A240E40014EB4B /* ofxJSGlobalFunc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ofxJSGlobalFunc.h; path = js/ofxJSGlobalFunc.h; sourceTree = "<group>"; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E45BE9710E8CC7DD009D7055 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
@@ -950,6 +952,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		848BFC8019A240CC0014EB4B /* js */ = {
+			isa = PBXGroup;
+			children = (
+				848BFC8119A240E40014EB4B /* ofxJSGlobalFunc.cpp */,
+				848BFC8219A240E40014EB4B /* ofxJSGlobalFunc.h */,
+			);
+			name = js;
+			sourceTree = "<group>";
+		};
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
@@ -1691,6 +1702,7 @@
 		F987119E16C052C40069F12A /* src */ = {
 			isa = PBXGroup;
 			children = (
+				848BFC8019A240CC0014EB4B /* js */,
 				F987119F16C052C40069F12A /* ofxJavascript.cpp */,
 				F98711A016C052C40069F12A /* ofxJavascript.h */,
 				F98711A116C052C40069F12A /* ofxJSGlobalFunc.cpp */,

@@ -41,11 +41,22 @@ function update(dt)
 //
 function draw(w,h)
 {
+	
 	of.Background(0,0,0);
 	of.SetColor(255,255,0);
-	of.Circle(this.xSaved+30, this.ySaved,this.volumeSaved*500)
+	of.Circle(this.xSaved+100, this.ySaved,this.volumeSaved*250)
 	of.SetColor(0,255,0);
-	of.Circle(this.xSaved-30, this.ySaved,this.volumeSaved*500)
+	of.Circle(this.xSaved-100, this.ySaved,this.volumeSaved*250)
+	
+	of.SetColor(224,246,106);
+	
+	of.BeginShape();
+	of.Vertex(this.volumeSaved*600,200);
+	of.Vertex(this.volumeSaved*-100,50);
+	of.Vertex(this.volumeSaved*100,this.volumeSaved*100);
+	of.Vertex(200,this.volumeSaved*250);
+	of.Vertex(100,20);
+	of.EndShape();
 }
 
 //--------------------------------------------------------------
