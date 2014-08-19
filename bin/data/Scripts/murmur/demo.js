@@ -42,21 +42,54 @@ function update(dt)
 function draw(w,h)
 {
 	
-	of.Background(0,0,0);
-	of.SetColor(255,255,0);
+	
+	of.BackgroundGradient (255,0,0,0,0,255,OF_GRADIENT_BAR);
+	of.SetColor(255,0,0);
 	of.Circle(this.xSaved+100, this.ySaved,this.volumeSaved*250)
-	of.SetColor(0,255,0);
+	of.SetColor(0,0,255);
 	of.Circle(this.xSaved-100, this.ySaved,this.volumeSaved*250)
 	
-	of.SetColor(224,246,106);
 	
+	of.SetColor(255,255,255);
+//of.NoFill();
+	//of.SetLineWidth (10);
+	
+	
+	of.SetPolyMode(OF_POLY_WINDING_ODD);
 	of.BeginShape();
-	of.Vertex(this.volumeSaved*600,200);
-	of.Vertex(this.volumeSaved*-100,50);
-	of.Vertex(this.volumeSaved*100,this.volumeSaved*100);
-	of.Vertex(200,this.volumeSaved*250);
-	of.Vertex(100,20);
+	of.Vertex(this.xSaved-200,this.ySaved);
+	of.Vertex(this.xSaved-150,this.ySaved-150);
+	of.Vertex(this.xSaved-50,this.ySaved-200);
+	of.Vertex(this.xSaved+100,this.ySaved-100);
+	
+	of.NextContour(false);
+	
+	of.Vertex(this.xSaved+150*this.volumeSaved,this.ySaved*this.volumeSaved);
+	of.Vertex(this.xSaved+100*this.volumeSaved,this.ySaved+150*this.volumeSaved);
+	of.Vertex(this.xSaved*this.volumeSaved,this.ySaved+50*this.volumeSaved);
+	of.Vertex(this.xSaved-100*this.volumeSaved,this.ySaved*this.volumeSaved);
+	
+	of.NextContour(false); 
+	
+	of.Vertex(this.xSaved+200,this.ySaved);
+	of.Vertex(this.xSaved+150,this.ySaved+150);
+	of.Vertex(this.xSaved+50,this.ySaved+200);
+	of.Vertex(this.xSaved-100,this.ySaved+100);
+	
+	of.NextContour(false); 
+	
+	of.Vertex(this.xSaved-40*(this.volumeSaved*2),this.ySaved-40*(this.volumeSaved*2));
+	of.Vertex(this.xSaved,this.ySaved-50*(this.volumeSaved*4));
+	of.Vertex(this.xSaved+40*(this.volumeSaved*2),this.ySaved-40*(this.volumeSaved*2));
+	of.Vertex(this.xSaved+50*(this.volumeSaved*2),this.ySaved);
+	of.Vertex(this.xSaved+40*(this.volumeSaved*2),this.ySaved+40*(this.volumeSaved*2));
+	of.Vertex(this.xSaved,this.ySaved+50*(this.volumeSaved*4));
+	of.Vertex(this.xSaved-40*(this.volumeSaved*2),this.ySaved+40*(this.volumeSaved*2));
+	of.Vertex(this.xSaved-50*(this.volumeSaved*2),this.ySaved);
+	
 	of.EndShape();
+	
+	
 }
 
 //--------------------------------------------------------------

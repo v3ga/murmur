@@ -1,14 +1,14 @@
 <device id="deviceEchoSimulator01">
     <soundInput>
-        <volMax>0.032096773</volMax>
-        <volHistoryNb>77.000000000</volHistoryNb>
-        <volHistoryTh>0.750000000</volHistoryTh>
+        <volMax>0.035032257</volMax>
+        <volHistoryNb>50.000000000</volHistoryNb>
+        <volHistoryTh>0.266129017</volHistoryTh>
     </soundInput>
-    <enableStandby>1</enableStandby>
+    <enableStandby>0</enableStandby>
     <timeStandby>5.000000000</timeStandby>
     <sampleVolStandby>0.151612908</sampleVolStandby>
     <surface id="main">
-        <xNorm>0.433593750</xNorm>
-        <yNorm>0.449218750</yNorm>
+        <xNorm>0.110351562</xNorm>
+        <yNorm>0.013671875</yNorm>
     </surface>
 </device>
