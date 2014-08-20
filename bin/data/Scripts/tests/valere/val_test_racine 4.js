@@ -3,6 +3,8 @@ this.G = 255;
 this.B = 255;
 this.facteurNoise = 100;
 this.circleSize = 1;
+this.light = null;
+
 
 function createUI()
 {
@@ -92,6 +94,7 @@ this.iii=0;
 function setup()
 {
 	this.particles = new Array();
+	this.light = new ofxJSLight;
 }
 
 //--------------------------------------------------------------
@@ -126,6 +129,7 @@ function draw(w,h)
 {
 	of.SetColor(0,0,0,4);
 	of.Rect(0,0,w,h);
+	this.light.disable();
 
 	for (var i=0 ; i < this.particles.length ; i++){
 		
