@@ -5,7 +5,7 @@
         <animation>box2DCircles</animation>
     </animations>
 
-    <animations type="js" folder="murmur">
+    <animations type="js" folder="tests/valere">
     <!--
     <animations type="js" folder="workshops/esad_amiens_codesign">
     <animations type="js" folder="workshops/stereolux_jcc2">
