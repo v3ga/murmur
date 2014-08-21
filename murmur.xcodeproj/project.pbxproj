@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8463806619A4CE4F0071BFB4 /* ofxJSLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8463806419A4CE4F0071BFB4 /* ofxJSLight.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E45BE97B0E8CC7DD009D7055 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9710E8CC7DD009D7055 /* AGL.framework */; };
@@ -286,6 +287,10 @@
 
 /* Begin PBXFileReference section */
 		8422569F19A35C8F001C9AA7 /* ofxJSOfConstants.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxJSOfConstants.cpp; sourceTree = "<group>"; };
+		8463806419A4CE4F0071BFB4 /* ofxJSLight.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxJSLight.cpp; sourceTree = "<group>"; };
+		8463806519A4CE4F0071BFB4 /* ofxJSLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxJSLight.h; sourceTree = "<group>"; };
+		8463806719A4CE6B0071BFB4 /* ofxJSLight.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ofxJSLight.cpp; path = js/ofxJSLight.cpp; sourceTree = "<group>"; };
+		8463806819A4CE6B0071BFB4 /* ofxJSLight.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ofxJSLight.h; path = js/ofxJSLight.h; sourceTree = "<group>"; };
 		848BFC8119A240E40014EB4B /* ofxJSGlobalFunc.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ofxJSGlobalFunc.cpp; path = js/ofxJSGlobalFunc.cpp; sourceTree = "<group>"; };
 		848BFC8219A240E40014EB4B /* ofxJSGlobalFunc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ofxJSGlobalFunc.h; path = js/ofxJSGlobalFunc.h; sourceTree = "<group>"; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
@@ -956,6 +961,8 @@
 		848BFC8019A240CC0014EB4B /* js */ = {
 			isa = PBXGroup;
 			children = (
+				8463806719A4CE6B0071BFB4 /* ofxJSLight.cpp */,
+				8463806819A4CE6B0071BFB4 /* ofxJSLight.h */,
 				8422569F19A35C8F001C9AA7 /* ofxJSOfConstants.cpp */,
 				848BFC8119A240E40014EB4B /* ofxJSGlobalFunc.cpp */,
 				848BFC8219A240E40014EB4B /* ofxJSGlobalFunc.h */,
@@ -1704,6 +1711,8 @@
 		F987119E16C052C40069F12A /* src */ = {
 			isa = PBXGroup;
 			children = (
+				8463806419A4CE4F0071BFB4 /* ofxJSLight.cpp */,
+				8463806519A4CE4F0071BFB4 /* ofxJSLight.h */,
 				848BFC8019A240CC0014EB4B /* js */,
 				F987119F16C052C40069F12A /* ofxJavascript.cpp */,
 				F98711A016C052C40069F12A /* ofxJavascript.h */,
@@ -2722,6 +2731,7 @@
 				F999312D17198ABD00272085 /* OscPrintReceivedElements.cpp in Sources */,
 				F999312E17198ABD00272085 /* OscReceivedElements.cpp in Sources */,
 				F999312F17198ABD00272085 /* OscTypes.cpp in Sources */,
+				8463806619A4CE4F0071BFB4 /* ofxJSLight.cpp in Sources */,
 				F999338C171B432900272085 /* deviceInfo.cpp in Sources */,
 				F999338F171B5E5600272085 /* oscReceiver.cpp in Sources */,
 				F9993392171B605600272085 /* oscSender.cpp in Sources */,
