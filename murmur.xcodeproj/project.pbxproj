@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8463806619A4CE4F0071BFB4 /* ofxJSLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8463806419A4CE4F0071BFB4 /* ofxJSLight.cpp */; };
+		8491EE3919A649F600469AE8 /* ofxJSNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8491EE3719A649F600469AE8 /* ofxJSNode.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E45BE97B0E8CC7DD009D7055 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9710E8CC7DD009D7055 /* AGL.framework */; };
@@ -293,6 +294,8 @@
 		8463806819A4CE6B0071BFB4 /* ofxJSLight.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ofxJSLight.h; path = js/ofxJSLight.h; sourceTree = "<group>"; };
 		848BFC8119A240E40014EB4B /* ofxJSGlobalFunc.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ofxJSGlobalFunc.cpp; path = js/ofxJSGlobalFunc.cpp; sourceTree = "<group>"; };
 		848BFC8219A240E40014EB4B /* ofxJSGlobalFunc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ofxJSGlobalFunc.h; path = js/ofxJSGlobalFunc.h; sourceTree = "<group>"; };
+		8491EE3719A649F600469AE8 /* ofxJSNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxJSNode.cpp; sourceTree = "<group>"; };
+		8491EE3819A649F600469AE8 /* ofxJSNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxJSNode.h; sourceTree = "<group>"; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E45BE9710E8CC7DD009D7055 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
@@ -1711,6 +1714,8 @@
 		F987119E16C052C40069F12A /* src */ = {
 			isa = PBXGroup;
 			children = (
+				8491EE3719A649F600469AE8 /* ofxJSNode.cpp */,
+				8491EE3819A649F600469AE8 /* ofxJSNode.h */,
 				8463806419A4CE4F0071BFB4 /* ofxJSLight.cpp */,
 				8463806519A4CE4F0071BFB4 /* ofxJSLight.h */,
 				848BFC8019A240CC0014EB4B /* js */,
@@ -2720,6 +2725,7 @@
 				F99930FF171989EB00272085 /* ofxEasingQuart.cpp in Sources */,
 				F9993100171989EB00272085 /* ofxEasingQuint.cpp in Sources */,
 				F9993101171989EB00272085 /* ofxEasingSine.cpp in Sources */,
+				8491EE3919A649F600469AE8 /* ofxJSNode.cpp in Sources */,
 				F999312717198ABD00272085 /* IpEndpointName.cpp in Sources */,
 				F92BC4C1189F094600CA158A /* ofxUISlider.cpp in Sources */,
 				F9AB0C091941B0DE0020D78A /* toolVideo.cpp in Sources */,
