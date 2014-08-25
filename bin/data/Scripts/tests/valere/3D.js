@@ -52,8 +52,10 @@ function draw(w,h)
 	//of.NoFill();
 	
 	of.EnableLighting();
-	this.light.setSpotlight (90,50);
+	
+	this.light.setSpotlight ();
 	this.light.enable(); 
+	
 	of.SetColor (106,87,230);
 	//of.DrawBox (this.xSaved,this.ySaved,200,100,this.volumeSaved*100,50);
 	//of.DrawCylinder (this.xSaved-200,this.ySaved+200,this.volumeSaved*150,100);
