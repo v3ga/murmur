@@ -9,12 +9,6 @@
 /* Begin PBXBuildFile section */
 		8463806619A4CE4F0071BFB4 /* ofxJSLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8463806419A4CE4F0071BFB4 /* ofxJSLight.cpp */; };
 		8491EE3919A649F600469AE8 /* ofxJSNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8491EE3719A649F600469AE8 /* ofxJSNode.cpp */; };
-		84C9A23919AC8307007AA55E /* ofxJSOscMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84C9A22D19AC8307007AA55E /* ofxJSOscMessage.cpp */; };
-		84C9A23A19AC8307007AA55E /* ofxJSOscReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84C9A22F19AC8307007AA55E /* ofxJSOscReceiver.cpp */; };
-		84C9A23B19AC8307007AA55E /* ofxJSOscSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84C9A23119AC8307007AA55E /* ofxJSOscSender.cpp */; };
-		84C9A23C19AC8307007AA55E /* ofxJSSoundPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84C9A23319AC8307007AA55E /* ofxJSSoundPlayer.cpp */; };
-		84C9A23D19AC8307007AA55E /* ofxJSVideoGrabber.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84C9A23519AC8307007AA55E /* ofxJSVideoGrabber.cpp */; };
-		84C9A23E19AC8307007AA55E /* ofxJSVideoPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84C9A23719AC8307007AA55E /* ofxJSVideoPlayer.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E45BE97B0E8CC7DD009D7055 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9710E8CC7DD009D7055 /* AGL.framework */; };
@@ -309,18 +303,6 @@
 		848BFC8219A240E40014EB4B /* ofxJSGlobalFunc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ofxJSGlobalFunc.h; path = js/ofxJSGlobalFunc.h; sourceTree = "<group>"; };
 		8491EE3719A649F600469AE8 /* ofxJSNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxJSNode.cpp; sourceTree = "<group>"; };
 		8491EE3819A649F600469AE8 /* ofxJSNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxJSNode.h; sourceTree = "<group>"; };
-		84C9A22D19AC8307007AA55E /* ofxJSOscMessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxJSOscMessage.cpp; sourceTree = "<group>"; };
-		84C9A22E19AC8307007AA55E /* ofxJSOscMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxJSOscMessage.h; sourceTree = "<group>"; };
-		84C9A22F19AC8307007AA55E /* ofxJSOscReceiver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxJSOscReceiver.cpp; sourceTree = "<group>"; };
-		84C9A23019AC8307007AA55E /* ofxJSOscReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxJSOscReceiver.h; sourceTree = "<group>"; };
-		84C9A23119AC8307007AA55E /* ofxJSOscSender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxJSOscSender.cpp; sourceTree = "<group>"; };
-		84C9A23219AC8307007AA55E /* ofxJSOscSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxJSOscSender.h; sourceTree = "<group>"; };
-		84C9A23319AC8307007AA55E /* ofxJSSoundPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxJSSoundPlayer.cpp; sourceTree = "<group>"; };
-		84C9A23419AC8307007AA55E /* ofxJSSoundPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxJSSoundPlayer.h; sourceTree = "<group>"; };
-		84C9A23519AC8307007AA55E /* ofxJSVideoGrabber.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxJSVideoGrabber.cpp; sourceTree = "<group>"; };
-		84C9A23619AC8307007AA55E /* ofxJSVideoGrabber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxJSVideoGrabber.h; sourceTree = "<group>"; };
-		84C9A23719AC8307007AA55E /* ofxJSVideoPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxJSVideoPlayer.cpp; sourceTree = "<group>"; };
-		84C9A23819AC8307007AA55E /* ofxJSVideoPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxJSVideoPlayer.h; sourceTree = "<group>"; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E45BE9710E8CC7DD009D7055 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
@@ -1754,7 +1736,6 @@
 		F987119E16C052C40069F12A /* src */ = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
 				848BFC8019A240CC0014EB4B /* js */,
 				F9DC7C2519CA170900682D1A /* ofxJSOscMessage.cpp */,
 				F9DC7C2619CA170900682D1A /* ofxJSOscMessage.h */,
@@ -1768,20 +1749,6 @@
 				F9DC7C1F19CA16F500682D1A /* ofxJSVideoGrabber.h */,
 				F9DC7C2019CA16F500682D1A /* ofxJSVideoPlayer.cpp */,
 				F9DC7C2119CA16F500682D1A /* ofxJSVideoPlayer.h */,
-=======
-				84C9A22D19AC8307007AA55E /* ofxJSOscMessage.cpp */,
-				84C9A22E19AC8307007AA55E /* ofxJSOscMessage.h */,
-				84C9A22F19AC8307007AA55E /* ofxJSOscReceiver.cpp */,
-				84C9A23019AC8307007AA55E /* ofxJSOscReceiver.h */,
-				84C9A23119AC8307007AA55E /* ofxJSOscSender.cpp */,
-				84C9A23219AC8307007AA55E /* ofxJSOscSender.h */,
-				84C9A23319AC8307007AA55E /* ofxJSSoundPlayer.cpp */,
-				84C9A23419AC8307007AA55E /* ofxJSSoundPlayer.h */,
-				84C9A23519AC8307007AA55E /* ofxJSVideoGrabber.cpp */,
-				84C9A23619AC8307007AA55E /* ofxJSVideoGrabber.h */,
-				84C9A23719AC8307007AA55E /* ofxJSVideoPlayer.cpp */,
-				84C9A23819AC8307007AA55E /* ofxJSVideoPlayer.h */,
->>>>>>> FETCH_HEAD
 				8491EE3719A649F600469AE8 /* ofxJSNode.cpp */,
 				8491EE3819A649F600469AE8 /* ofxJSNode.h */,
 				8463806419A4CE4F0071BFB4 /* ofxJSLight.cpp */,
@@ -2777,7 +2744,6 @@
 				F98711CF16C053F50069F12A /* timeline.cpp in Sources */,
 				F987120816C054900069F12A /* utils.cpp in Sources */,
 				F987123016C0567C0069F12A /* js.cpp in Sources */,
-				84C9A23E19AC8307007AA55E /* ofxJSVideoPlayer.cpp in Sources */,
 				F951EBFA195AC12300056B2A /* ofxCvContourFinder.cpp in Sources */,
 				F969FB2217160CF700F3F410 /* device.cpp in Sources */,
 				F969FB2517160E8600F3F410 /* surface.cpp in Sources */,
@@ -2791,7 +2757,6 @@
 				F9AB0BFC1940FBBB0020D78A /* toolConfiguration.cpp in Sources */,
 				F99930B81719888600272085 /* tinyxmlerror.cpp in Sources */,
 				F99930B91719888600272085 /* tinyxmlparser.cpp in Sources */,
-				84C9A23C19AC8307007AA55E /* ofxJSSoundPlayer.cpp in Sources */,
 				F93F3267189E9EEB00C02161 /* ofxTween.cpp in Sources */,
 				F99930BA1719888600272085 /* ofxXmlSettings.cpp in Sources */,
 				F96FBE9019794D8600E58A6F /* ofAppLog.cpp in Sources */,
@@ -2840,7 +2805,6 @@
 				F951EC09196359E600056B2A /* quadWarping.cpp in Sources */,
 				F96B9251172EB8A0007B1CFF /* sceneVisualisation.cpp in Sources */,
 				F96B9254172EBE17007B1CFF /* deviceNode.cpp in Sources */,
-				84C9A23B19AC8307007AA55E /* ofxJSOscSender.cpp in Sources */,
 				F964768818A25D930061C848 /* tunnel.js in Sources */,
 				F951EB78195AC0D800056B2A /* ofxQuadWarp.cpp in Sources */,
 				F96B9258172EC356007B1CFF /* sceneNode.cpp in Sources */,
@@ -2896,7 +2860,6 @@
 				F9BC6C6A174A621600633C5C /* b2ContactManager.cpp in Sources */,
 				F9BC6C6B174A621600633C5C /* b2Fixture.cpp in Sources */,
 				F9BC6C6C174A621600633C5C /* b2Island.cpp in Sources */,
-				84C9A23D19AC8307007AA55E /* ofxJSVideoGrabber.cpp in Sources */,
 				F9BC6C6D174A621600633C5C /* b2World.cpp in Sources */,
 				F9BC6C6E174A621600633C5C /* b2WorldCallbacks.cpp in Sources */,
 				F92BC4C9189F094600CA158A /* ofxUIToggle.cpp in Sources */,
@@ -2927,7 +2890,6 @@
 				F9BC6C7C174A621700633C5C /* b2PulleyJoint.cpp in Sources */,
 				F951EBF9195AC12300056B2A /* ofxCvColorImage.cpp in Sources */,
 				F9BC6C7D174A621700633C5C /* b2RevoluteJoint.cpp in Sources */,
-				84C9A23A19AC8307007AA55E /* ofxJSOscReceiver.cpp in Sources */,
 				F9BC6C7E174A621700633C5C /* b2WeldJoint.cpp in Sources */,
 				F9BC6C7F174A621700633C5C /* del_impl.cpp in Sources */,
 				F9BC6C80174A621700633C5C /* ofxBox2d.cpp in Sources */,
@@ -2945,7 +2907,6 @@
 				F9BC6CFA174AC6B700633C5C /* ofxFFTFile.cpp in Sources */,
 				F951EBFC195AC12300056B2A /* ofxCvGrayscaleImage.cpp in Sources */,
 				F9BC6CFB174AC6B700633C5C /* ofxFFTLive.cpp in Sources */,
-				84C9A23919AC8307007AA55E /* ofxJSOscMessage.cpp in Sources */,
 				F9BC6D1D174DEF5C00633C5C /* volumeAccum.cpp in Sources */,
 				F90A221E174FA39A005DE613 /* animationTunnel.cpp in Sources */,
 				F9E11C5317C3A2F000AD3DFD /* SyphonNameboundClient.m in Sources */,
