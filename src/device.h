@@ -139,7 +139,12 @@ class Device
         virtual float       getWidthSoundInputVolume();
         virtual float       getHeightSoundInputVolume();
         virtual void        drawSoundInputVolume(float x, float y);
-    
+	
+		// Sound playing
+		vector<int>			m_listSpeakerIds;
+		void				clearListSpeakers	();
+		void				addSpeakerId		(int id);
+ 
         // > only used on server side
         float               m_soundInputVolHistorySize;
         float               m_soundInputVolEmpiricalMax;

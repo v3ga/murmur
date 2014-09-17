@@ -507,7 +507,20 @@ void Device::loadXML(string dir)
 //        setSpeedStandbyOSC( settings.getValue("device:speedStandby", 70.0) );
         setSampleVolumeStandby( settings.getValue("device:sampleVolStandby", 0.35f) );
         setPointSurface(xNorm, yNorm);
-        
+
+		settings.pushTag("device");
+		settings.pushTag("soundOutput");
+		int nbSpeakers = settings.getNumTags("speaker");
+		clearListSpeakers();
+		for (int i=0;i<nbSpeakers;i++){
+			int speakerId = settings.getValue("speaker",0,i);
+			addSpeakerId( speakerId );
+	        printf("    - speaker %d added\n",speakerId);
+		}
+		settings.popTag();
+		settings.popTag();
+
+     
     }
     else{
         printf("Device, error loading %s\n", pathFile.c_str());
@@ -528,7 +541,15 @@ void Device::saveXML(string dir)
             settings.addValue("volMax", getSoundInputVolumeMax());
             settings.addValue("volHistoryNb", getSoundInputVolHistorySize());
             settings.addValue("volHistoryTh", getSoundInputVolHistoryTh());
+		settings.popTag();
+
+        settings.addTag("soundOutput");
+        settings.pushTag("soundOutput");
+		for (int i=0; i<m_listSpeakerIds.size(); i++)
+            settings.addValue("speaker", m_listSpeakerIds[i]);
         settings.popTag();
+
+
     settings.addValue("enableStandby", getEnableStandbyMode() ? 1 : 0);
     settings.addValue("timeStandby", m_timeStandby);
 //    settings.addValue("nbLEDsStandby", getNbLEDsStandby());
@@ -542,7 +563,7 @@ void Device::saveXML(string dir)
         settings.addValue("yNorm", m_pointSurface.y);
     settings.popTag();
    
-    
+ 
     settings.popTag();
     settings.saveFile( getPathXML(dir) );
     
@@ -553,6 +574,19 @@ string Device::getPathXML(string dir)
 {
     string path = dir + m_id + ".xml";
     return path;
+}
+
+
+//--------------------------------------------------------------
+void Device::clearListSpeakers()
+{
+	m_listSpeakerIds.clear();
+}
+
+//--------------------------------------------------------------
+void Device::addSpeakerId(int id)
+{
+	m_listSpeakerIds.push_back(id);
 }
 
 
@@ -633,6 +667,9 @@ void DeviceManager::turnoffDevices()
 	for (itDevices = m_listDevices.begin(); itDevices != m_listDevices.end(); ++itDevices)
         (*itDevices)->turnoff();
 }
+
+
+
 
 
 
