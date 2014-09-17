@@ -11,6 +11,7 @@
 #include "testApp.h"
 #include "toolSurfaces.h"
 #include "toolAnimations.h"
+#include "ofxSoundPlayerMultiOutput.h"
 
 //--------------------------------------------------------------
 toolDevices::toolDevices(toolManager* parent, DeviceManager* manager) : tool("Devices", parent)
@@ -100,6 +101,10 @@ void toolDevices::createControlsCustomFinalize()
 	mp_lblDeviceTitle = new ofxUILabel("Devices", OFX_UI_FONT_LARGE);
     mp_canvasDevice->addWidgetDown(mp_lblDeviceTitle);
     mp_canvasDevice->addWidgetDown(new ofxUISpacer(widthDefault, 2));
+
+    mp_canvasDevice->addWidgetDown(new ofxUILabel("Micro", OFX_UI_FONT_MEDIUM));
+    mp_canvasDevice->addWidgetDown(new ofxUISpacer(widthDefault, 1));
+
 	
 	if (GLOBALS->mp_app->isSimulation)
 	{
@@ -118,13 +123,34 @@ void toolDevices::createControlsCustomFinalize()
 	mp_canvasDevice->addWidgetDown(mp_sliderDeviceVolMax);
 	mp_canvasDevice->addWidgetDown(mp_sliderDeviceVolHistorySize);
 
-    mp_canvasDevice->addWidgetDown(new ofxUILabel("> Stand by", fontType));
+//    mp_canvasDevice->addWidgetDown(new ofxUILabel("> Stand by", fontType));
+    mp_canvasDevice->addWidgetDown(new ofxUILabel("Stand by", OFX_UI_FONT_MEDIUM));
+    mp_canvasDevice->addWidgetDown(new ofxUISpacer(widthDefault, 1));
+
     mp_canvasDevice->addWidgetDown(mp_toggleDeviceEnableStandby);
 	mp_canvasDevice->addWidgetDown(mp_sliderDeviceVolHistoryTh);
 	mp_canvasDevice->addWidgetDown(mp_sliderDeviceTimeStandby);
 	mp_canvasDevice->addWidgetDown(mp_sliderDeviceSampleVolStandby);
 //	mp_canvasDevice->addWidgetDown(mp_sliderDeviceNbLEDsStandby);
 //	mp_canvasDevice->addWidgetDown(mp_sliderDeviceSpeedStandby);
+	
+    mp_canvasDevice->addWidgetDown(new ofxUILabel("Speakers", OFX_UI_FONT_MEDIUM));
+    mp_canvasDevice->addWidgetDown(new ofxUISpacer(widthDefault, 1));
+
+	
+	int speakerId=0;
+	char tgSpeakerName[16];
+	for (int speakerId=0; speakerId<ofFmodGetNumOutputs(); speakerId++)
+	{
+		sprintf(tgSpeakerName, "s%02d", speakerId);
+		m_speakersId.push_back(string(tgSpeakerName));
+		ofxUIToggle* pSpeakerToggle = new ofxUIToggle(string(tgSpeakerName),false,20,20);
+		if (speakerId%6 == 0)
+			mp_canvasDevice->addWidgetDown(pSpeakerToggle);
+		else
+			mp_canvasDevice->addWidgetRight(pSpeakerToggle);
+	}
+	
 
 	mp_canvasDevice->autoSizeToFitWidgets();
 	
@@ -213,6 +239,22 @@ void toolDevices::updateDeviceUI(Device* pDevice)
         if (mp_sliderDeviceTimeStandby) mp_sliderDeviceTimeStandby->setValue( pDevice->getTimeStandby() );
         if (mp_sliderDeviceSampleVolStandby) mp_sliderDeviceSampleVolStandby->setValue( pDevice->getSampleVolStandby() );
 
+		if (mp_canvasDevice)
+		{
+			for (int i=0;i<m_speakersId.size();i++)
+			{
+				ofxUIToggle* pSpeakerToggle = (ofxUIToggle*) mp_canvasDevice->getWidget( m_speakersId[i] );
+				if (pSpeakerToggle){
+					for (int j=0; j<pDevice->m_listSpeakerIds.size() ;j++){
+						if (pDevice->m_listSpeakerIds[j] == i)
+						{
+							pSpeakerToggle->setValue(true);
+						}
+					}
+				}
+			}
+		}
+
 		 updateDeviceAnimationTitle();
     }
 }
@@ -277,6 +319,22 @@ void toolDevices::handleEvents(ofxUIEventArgs& e)
  //           pDeviceCurrent->setSpeedStandby( ((ofxUISlider *) e.widget)->getScaledValue() );
         }
     }
+	else
+	{
+		if (pDeviceCurrent)
+		{
+			pDeviceCurrent->clearListSpeakers();
+			for (int i=0;i<m_speakersId.size();i++)
+			{
+				ofxUIToggle* pToggle = (ofxUIToggle*) this->mp_canvasDevice->getWidget(m_speakersId[i]);
+				if (pToggle->getValue()){
+					pDeviceCurrent->addSpeakerId(i);
+					// ofLog() << pDeviceCurrent->m_listSpeakerIds.size();
+				}
+			}
+		}
+
+	}
 }
 
 //--------------------------------------------------------------

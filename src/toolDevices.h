@@ -33,9 +33,9 @@ class toolDevices : public tool
 		bool					isHit						(int x, int y);
 
         DeviceManager*      	mp_deviceManager;
+		vector<string>			m_speakersId;
 
         ofxUIDropDownList*		mp_ddlDevices;
-
 		ofxUICanvas*			mp_canvasDevice;
 		ofxUILabel*				mp_lblDeviceTitle;
 	    ofxUISlider*			mp_sliderDeviceVolMax;
@@ -44,4 +44,6 @@ class toolDevices : public tool
     	ofxUISlider* 			mp_sliderDeviceVolHistoryTh;
     	ofxUISlider* 			mp_sliderDeviceTimeStandby;
     	ofxUISlider* 			mp_sliderDeviceSampleVolStandby;
+	
+	
 };
