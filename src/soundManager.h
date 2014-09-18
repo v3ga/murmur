@@ -8,8 +8,10 @@
 
 #pragma once
 #include "ofMain.h"
+#include "ofxXmlSettings.h"
+#include "ofxSoundPlayerMultiOutput.h"
 
-class SoundPlayer : public ofSoundPlayer
+class SoundPlayer : public ofxSoundPlayerMultiOutput/*ofSoundPlayer*/
 {
     public:
         SoundPlayer                     (string name){m_name = name;}
@@ -26,7 +28,7 @@ class SoundManager
     
     
         static SoundManager*			instance();
-        void                            setup();
+        void                            setup(ofxXmlSettings& settings);
         void                            update();
         void                            playSound(string name, bool isLoop=true, float volume=1.0f);
         void                            setVolume(string name, float volume);
@@ -40,6 +42,8 @@ class SoundManager
 
         float                           m_soundMainVolumeMin;
         float                           m_soundMainVolumeMax;
+		int*							mp_soundMainSpeakers;
+		int								m_nbSoundMainSpeakers;
 	
 
 

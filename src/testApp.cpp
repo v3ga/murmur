@@ -43,7 +43,7 @@ void testApp::setup()
     Data::instance()->load();
 
     // Sounds
-    SoundManager::instance()->setup();
+    SoundManager::instance()->setup(m_settings);
     
     // Devices + Surfaces
     initDevices();
