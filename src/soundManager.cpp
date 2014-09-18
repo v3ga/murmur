@@ -7,6 +7,7 @@
 //
 
 #include "soundManager.h"
+#include "ofxSoundPlayerMultiOutput.h"
 
 //--------------------------------------------------------------
 SoundManager* SoundManager::smp_instance = 0;
@@ -18,7 +19,18 @@ SoundManager::SoundManager()
     m_soundMainVolumeMin    = 0.0f;
     m_soundMainVolumeMax    = 1.0f;
     m_soundMainVolume       = 1.0f;
+	mp_soundMainSpeakers	= 0;
+	m_nbSoundMainSpeakers	= 0;
 }
+
+//--------------------------------------------------------------
+SoundManager::~SoundManager()
+{
+	delete mp_soundMainSpeakers;
+	mp_soundMainSpeakers = 0;
+	m_nbSoundMainSpeakers = 0;
+}
+
 
 //--------------------------------------------------------------
 SoundManager* SoundManager::instance()
@@ -29,8 +41,34 @@ SoundManager* SoundManager::instance()
 }
 
 //--------------------------------------------------------------
-void SoundManager::setup()
+void SoundManager::setup(ofxXmlSettings& settings)
 {
+
+	int driver = settings.getValue("murmur:soundOutput:driver", 0);
+	printf("- setting sound output driver [%d]\n", driver);
+
+	int nbOutputs = settings.getValue("murmur:soundOutput:nbSpeakers", 2);
+	printf("- setting sound output for %d speakers\n", nbOutputs);
+	ofFmodSetNumOutputs( nbOutputs );
+
+		settings.pushTag("murmur");
+		settings.pushTag("soundOutput");
+		settings.pushTag("soundMain");
+		int nbSpeakers = settings.getNumTags("speaker");
+		mp_soundMainSpeakers = new int[nbSpeakers];
+		for (int i=0;i<nbSpeakers;i++)
+		{
+			mp_soundMainSpeakers[i] = settings.getValue("speaker",0,i);
+	        printf("- adding for sound main speaker [%d]\n", i);
+		}
+		m_nbSoundMainSpeakers = nbSpeakers;
+		settings.popTag();
+		settings.popTag();
+
+	string soundMainFile = settings.getAttribute("murmur:soundOutput:soundMain","file", "main.wav");
+	printf("- sound main is [%s]\n", soundMainFile.c_str());
+
+
 	ofDirectory dirSounds("Sounds");
 	if (dirSounds.exists())
 	{
@@ -56,16 +94,8 @@ void SoundManager::setup()
             }
         }
     }
-    
-    
-    mp_soundMain = getSoundPlayer("main.mp3");
-    if (mp_soundMain == 0)
-        mp_soundMain = getSoundPlayer("main.wav");
-    if (mp_soundMain)
-    {
-//        mp_soundMain->setLoop(true);
-//        mp_soundMain->play();
-    }
+
+	mp_soundMain = getSoundPlayer(soundMainFile);
 }
 
 //--------------------------------------------------------------
@@ -142,8 +172,9 @@ void SoundManager::activateSoundMain(bool is)
     {
         if (is){
             mp_soundMain->setLoop(true);
-            mp_soundMain->play();
-        }
+//            mp_soundMain->play();
+            mp_soundMain->playTo(mp_soundMainSpeakers, m_nbSoundMainSpeakers);
+		}
         else
             mp_soundMain->stop();
     }
