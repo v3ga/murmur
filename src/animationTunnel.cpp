@@ -219,7 +219,7 @@ void AnimationTunnel::onNewPacket(DevicePacket* pDevicePacket, string deviceId, 
 
 
 //--------------------------------------------------------------
-void AnimationTunnel::sM_volTriggerIn(void* pUserData)
+void AnimationTunnel::sM_volTriggerIn(void* pUserData,VolumeAccum*)
 {
     AnimationTunnel* pThis = (AnimationTunnel*) pUserData;
     pThis->m_listTunnelElement.push_back( new TunnelElement() );

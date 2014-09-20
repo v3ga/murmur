@@ -64,7 +64,7 @@ class AnimationTunnel : public Animation
         ofVec2f                 m_posAnchor;
     
         VolumeAccum             m_volAccum;
-        static void             sM_volTriggerIn(void*);
+        static void             sM_volTriggerIn(void*,VolumeAccum*);
     
         AnimationSoundPlayer    m_soundPlayer;
     

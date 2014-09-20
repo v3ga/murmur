@@ -7,7 +7,6 @@
     <soundOutput>
         <speaker>0</speaker>
         <speaker>1</speaker>
-        <speaker>2</speaker>
     </soundOutput>
     <enableStandby>1</enableStandby>
     <timeStandby>10.000000000</timeStandby>

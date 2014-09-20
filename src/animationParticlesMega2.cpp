@@ -8,6 +8,7 @@
 
 #include "animationParticlesMega2.h"
 #include "soundManager.h"
+#include "globals.h"
 
 
 //--------------------------------------------------------------
@@ -36,6 +37,15 @@ AnimationParticlesMega2::AnimationParticlesMega2(string name) : Animation(name)
     m_ampAttraction = 10.0;
 	
 	m_particlesSize = 1.0f;
+
+    m_soundPlayer.add( "waves1.wav" );
+    m_soundPlayer.add( "waves2.wav" );
+    m_soundPlayer.add( "waves3.wav" );
+    m_soundPlayer.add( "waves4.wav" );
+    m_soundPlayer.add( "waves5.wav" );
+    m_soundPlayer.add( "waves6.wav" );
+    m_soundPlayer.add( "waves7.wav" );
+    m_soundPlayer.add( "waves8.wav" );
 }
 
 
@@ -188,8 +198,24 @@ void AnimationParticlesMega2::VM_exit()
 }
 
 //--------------------------------------------------------------
+void AnimationParticlesMega2::onVolumAccumEvent(string deviceId)
+{
+	ofLog()<<"AnimationParticlesMega2::onVolumAccumEvent("<<deviceId<<")";
+    DeviceManager* pDeviceManager = GLOBALS->mp_deviceManager;
+	if (pDeviceManager){
+		Device* pDevice = pDeviceManager->getDeviceById(deviceId);
+		if (pDevice){
+			m_soundPlayer.playRandom(pDevice->m_listSpeakerIds);
+		}
+	}
+}
+
+//--------------------------------------------------------------
 void AnimationParticlesMega2::onNewPacket(DevicePacket* pDevicePacket, string deviceId, float x, float y)
 {
+	if (pDevicePacket)
+		accumulateVolume(pDevicePacket->m_volume, deviceId);
+
 	 map<string,ParticleForce*>::iterator it = m_mapParticleForce.find(deviceId);
 	 ParticleForce* pParticleForce=0;
 

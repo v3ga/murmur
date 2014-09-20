@@ -392,7 +392,6 @@ void Device::onReceivePacketEnd()
 {
 }
 
-
 //--------------------------------------------------------------
 void Device::enableStandbyMode(bool is)
 {

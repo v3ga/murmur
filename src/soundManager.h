@@ -30,7 +30,7 @@ class SoundManager
         static SoundManager*			instance();
         void                            setup(ofxXmlSettings& settings);
         void                            update();
-        void                            playSound(string name, bool isLoop=true, float volume=1.0f);
+        void                            playSound(string name, bool isLoop=true, float volume=1.0f,int* speakers=0,int nbSpeakers=0);
         void                            setVolume(string name, float volume);
         void                            setVolumeAll(float volume);
         void                            stopAll();

@@ -141,6 +141,8 @@ public:
     virtual void			VM_draw					(float w, float h);
     virtual	void			VM_exit					();
     virtual void            onNewPacket             (DevicePacket*, string deviceId, float xNorm, float yNorm);
+	virtual void			onVolumAccumEvent		(string deviceId);
+
 
     virtual void            createUICustom          ();
     virtual void            guiEvent                (ofxUIEventArgs &e);
