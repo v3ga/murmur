@@ -7,15 +7,18 @@
 //
 
 #pragma once
+#include "ofMain.h"
 
 //--------------------------------------------------------------
 class VolumeAccum
 {
     public:
-        typedef void (*cbTriggerIn)(void*);
+        typedef void (*cbTriggerIn)(void*,VolumeAccum*);
 
     
         VolumeAccum             ();
+	
+		string					m_deviceId;
     
         float                   m_value;
         float                   m_valueTriggerIn;

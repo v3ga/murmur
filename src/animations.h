@@ -15,6 +15,8 @@
 #include "ofxXmlSettings.h"
 #include "deviceInfo.h"
 #include "ofxUI.h"
+#include "volumeAccum.h"
+
 
 struct AnimationTheme
 {
@@ -41,7 +43,8 @@ class AnimationSoundPlayer
 
         void                        add(string name);
     
-    void                            playRandom();
+    void                            playRandom(vector<int>& speakers);
+	void							playRandom(int* speakers=0, int nbSpeakers=0);
     int                             m_lastPlayedIndex;
     std::vector<string>             m_listSoundNames;
 };
@@ -99,10 +102,18 @@ class Animation
 		void					M_endShader				();
 		void					M_loadShader			(string name);
 		ofShader				m_shader;
-		
+	
         // Event packets
         virtual void            onNewPacket             (DevicePacket*, string deviceId, float xNorm, float yNorm);
-    
+ 
+		// Volume accumulutators
+		void						accumulateVolume		(float volume, string deviceId);
+		map<string, VolumeAccum*>	m_mapDeviceVolumAccum;
+		static void					sOnVolumAccumEvent		(void*,VolumeAccum*);
+		virtual void				onVolumAccumEvent		(string deviceId);
+	
+		// Sound player
+		AnimationSoundPlayer		m_soundPlayer;
 	
         // Name + paths
 		string					m_name;

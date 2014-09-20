@@ -33,7 +33,20 @@ void AnimationSoundPlayer::add(string name)
 }
 
 //--------------------------------------------------------------
-void AnimationSoundPlayer::playRandom()
+void AnimationSoundPlayer::playRandom(vector<int>& listSpeakers)
+{
+	// TODO : cache this!!!
+	int nbSpeakers = listSpeakers.size();
+	int speakers[nbSpeakers];
+	for (int i=0;i<nbSpeakers;i++){
+		speakers[i] = listSpeakers.at(i);
+	}
+	
+	playRandom(speakers, nbSpeakers);
+}
+
+//--------------------------------------------------------------
+void AnimationSoundPlayer::playRandom(int* speakers, int nbSpeakers)
 {
     if (m_listSoundNames.size()>=2)
     {
@@ -47,13 +60,14 @@ void AnimationSoundPlayer::playRandom()
         while (rndIndex==m_lastPlayedIndex);
         m_lastPlayedIndex = rndIndex;
 
-        SoundManager::instance()->playSound( m_listSoundNames[rndIndex],false,1 );
+        SoundManager::instance()->playSound( m_listSoundNames[rndIndex],false,1,speakers,nbSpeakers );
     }
     else
     if (m_listSoundNames.size()==1)
-        SoundManager::instance()->playSound( m_listSoundNames[0],false,1 );
+        SoundManager::instance()->playSound( m_listSoundNames[0],false,1,speakers,nbSpeakers );
 
 }
+
 
 #define ____________Animation____________
 std::map<JSObject*, Animation*> Animation::sm_mapJSObj_Anim;
@@ -429,8 +443,48 @@ void Animation::VM_doTransition(int which, float t)
 }
 
 //--------------------------------------------------------------
+void Animation::sOnVolumAccumEvent(void* pData, VolumeAccum* pVolumAccum)
+{
+	Animation* pThis = (Animation*)pData;
+	if (pThis && pVolumAccum){
+		 pThis->onVolumAccumEvent(pVolumAccum->m_deviceId);
+	}
+}
+
+//--------------------------------------------------------------
+void Animation::onVolumAccumEvent(string deviceId)
+{
+	// Play sound here for your device ...
+}
+
+//--------------------------------------------------------------
+void Animation::accumulateVolume(float volume, string deviceId)
+{
+	// Volume Accumulators
+	map<string,VolumeAccum*>::iterator it = m_mapDeviceVolumAccum.find(deviceId);
+	VolumeAccum* pVolumeAccum = 0;
+	if ( it == m_mapDeviceVolumAccum.end())
+	{
+		pVolumeAccum = new VolumeAccum();
+		pVolumeAccum->m_deviceId = deviceId;
+		pVolumeAccum->setTriggerInCb( sOnVolumAccumEvent, (void*) this);
+		m_mapDeviceVolumAccum[deviceId] = pVolumeAccum;
+		
+		ofLog() << "creating volumeAccum instance for "<<deviceId;
+	}
+	else{
+		pVolumeAccum = it->second;
+	}
+	
+	if (pVolumeAccum)
+		pVolumeAccum->add( volume );
+}
+
+
+//--------------------------------------------------------------
 void Animation::onNewPacket(DevicePacket* pPacket, string deviceId, float xNorm, float yNorm)
 {
+	// Scripting
 	if (mp_script && mp_obj && pPacket)
     {
 		ofxJSValue retVal;

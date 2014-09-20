@@ -130,7 +130,8 @@ class Device
         virtual void        onReceivePacketEnd();
     
         DevicePacket*       getLastPacket(){return m_listPackets[m_nbLEDs-1];}
-    
+ 
+	
         // Sound input
         SoundInput*         mp_soundInput;
 		virtual	void		startSoundInput(int nbChannels);

@@ -32,11 +32,11 @@ void VolumeAccum::add(float volume)
     }
     else if (m_state == STATE_WAVE_OUT)
     {
-//        this.value += volume;
+        m_value += volume;
         if (volume >= m_valueTriggerIn )
         {
             if (mpf_funcTriggerIn && mp_userData)
-                (*mpf_funcTriggerIn)(mp_userData);
+                (*mpf_funcTriggerIn)(mp_userData, this);
             
             m_state = STATE_WAVE_INSIDE;
             m_value=0;

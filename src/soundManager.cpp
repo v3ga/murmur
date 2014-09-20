@@ -105,17 +105,21 @@ void SoundManager::update()
 }
 
 //--------------------------------------------------------------
-void SoundManager::playSound(string name, bool isLoop, float volume)
+void SoundManager::playSound(string name, bool isLoop, float volume, int* speakers,int nbSpeakers)
 {
     SoundPlayer* pSoundPlayer = getSoundPlayer(name);
-    if (pSoundPlayer){
-        pSoundPlayer->play();
-        pSoundPlayer->setLoop(isLoop);
+    if (pSoundPlayer)
+	{
+		if (speakers == 0)
+	        pSoundPlayer->play();
+     	else
+	        pSoundPlayer->playTo(speakers,nbSpeakers);
+	 
+		pSoundPlayer->setLoop(isLoop);
         pSoundPlayer->setVolume(volume);
-
-        //printf("SoundManager::playSound, name=%s, isLoop=%s, volume=%.2f\n", name.c_str(), isLoop ? "true" : "false", volume);
     }
 }
+
 
 //--------------------------------------------------------------
 void SoundManager::setVolume(string name, float volume)
