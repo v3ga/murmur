@@ -34,7 +34,7 @@ void toolSound::createControlsCustom()
 //    mp_guiSound->addWidgetDown(new ofxUILabel("Library", OFX_UI_FONT_LARGE));
 //    mp_guiSound->addWidgetDown(new ofxUISpacer(widthDefault, 2));
 
-		ofxUIDropDownList* mp_ddlSounds = new ofxUIDropDownList("Library", SoundManager::instance()->getListSoundsName());
+		ofxUIDropDownList* mp_ddlSounds = new ofxUIDropDownList("Library", SoundManager::instance()->getListSoundsName(),widthDefault,0,0,OFX_UI_FONT_SMALL);
 //	mp_ddlSounds->setLabelText("Sounds");
 		mp_ddlSounds->open();
 		mp_canvas->addWidgetDown(mp_ddlSounds);
