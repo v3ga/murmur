@@ -48,6 +48,7 @@ void AnimationSoundPlayer::playRandom(vector<int>& listSpeakers)
 //--------------------------------------------------------------
 void AnimationSoundPlayer::playRandom(int* speakers, int nbSpeakers)
 {
+//	ofLog() << m_listSoundNames.size();
     if (m_listSoundNames.size()>=2)
     {
         int rndIndex = -1;
@@ -67,6 +68,16 @@ void AnimationSoundPlayer::playRandom(int* speakers, int nbSpeakers)
         SoundManager::instance()->playSound( m_listSoundNames[0],false,1,speakers,nbSpeakers );
 
 }
+
+//--------------------------------------------------------------
+void AnimationSoundPlayer::print(string title)
+{
+	ofLog() << "+AnimationSoundPlayer for " << title;
+	for (int i=0; i<m_listSoundNames.size(); i++){
+		ofLog() << " - " << m_listSoundNames[i];
+	}
+}
+
 
 
 #define ____________Animation____________
@@ -184,8 +195,27 @@ void Animation::createUI()
     }
     
     createUICustom();
+	createUISound();
 
     ofAddListener(mp_UIcanvas->newGUIEvent, this, &Animation::guiEvent);
+}
+
+//--------------------------------------------------------------
+void Animation::createUISound()
+{
+	mp_UIcanvas->addWidgetDown(new ofxUILabel("Sounds", OFX_UI_FONT_MEDIUM));
+    mp_UIcanvas->addWidgetDown(new ofxUISpacer(300, 2));
+
+	vector<string> listSoundNames = SoundManager::instance()->getListSoundsName();
+	int nbSounds = listSoundNames.size();
+	for (int i=0; i<nbSounds; i++)
+	{
+		ofxUIToggle* pSoundToggle = new ofxUIToggle(listSoundNames[i],false,20,20);
+		if (i%2 == 0)
+			mp_UIcanvas->addWidgetDown(pSoundToggle);
+		else
+			mp_UIcanvas->addWidgetRight(pSoundToggle);
+	}
 }
 
 //--------------------------------------------------------------
@@ -211,6 +241,20 @@ ofxUICanvas* Animation::hideUI()
 }
 
 //--------------------------------------------------------------
+bool Animation::guiEventTogglesSound(string name)
+{
+	bool isSoundToggle = false;
+	vector<string> listSoundNames = SoundManager::instance()->getListSoundsName();
+	for (int i=0;i<listSoundNames.size();i++){
+		if (name == listSoundNames[i]){
+			isSoundToggle = true;
+			break;
+		}
+	}
+	return isSoundToggle;
+}
+
+//--------------------------------------------------------------
 void Animation::guiEvent(ofxUIEventArgs &e)
 {
 	string name = e.widget->getName();
@@ -231,16 +275,33 @@ void Animation::guiEvent(ofxUIEventArgs &e)
 	else
 	if (kind == OFX_UI_WIDGET_TOGGLE)
 	{
-		if (mp_obj)
-        {
-			bool valToggle = ((ofxUIToggle*) e.widget)->getValue() ;
-			
-            ofxJSValue args[2];
-            args[0] = string_TO_ofxJSValue( name );
-            args[1] = int_TO_ofxJSValue( valToggle ? 1 : 0 );
-			ofxJSCallFunctionNameObject_IfExists(mp_obj,"eventUI", args,2,retVal);
+		// TODO : not cool here
+
+		if (guiEventTogglesSound(name))
+		{
+			vector<string> listSoundNames = SoundManager::instance()->getListSoundsName();
+			m_soundPlayer.m_listSoundNames.clear();
+			for (int i=0; i<listSoundNames.size(); i++){
+				ofxUIToggle* pSoundToggle = (ofxUIToggle*) mp_UIcanvas->getWidget( listSoundNames[i] );
+				if (pSoundToggle->getValue()){
+					// ofLog() << m_name << " / " << listSoundNames[i];
+					m_soundPlayer.add( listSoundNames[i] );
+				}
+			}
+		
 		}
-	
+		else
+		{
+			if (mp_obj)
+    	    {
+				bool valToggle = ((ofxUIToggle*) e.widget)->getValue() ;
+			
+	            ofxJSValue args[2];
+    	        args[0] = string_TO_ofxJSValue( name );
+        	    args[1] = int_TO_ofxJSValue( valToggle ? 1 : 0 );
+				ofxJSCallFunctionNameObject_IfExists(mp_obj,"eventUI", args,2,retVal);
+			}
+		}
 	}
 }
 
@@ -261,6 +322,7 @@ void Animation::loadProperties(string id)
     {
         mp_UIcanvas->loadSettings( getPropertiesFilename(id) );
     }
+			m_soundPlayer.print(m_name);
 }
 
 //--------------------------------------------------------------
