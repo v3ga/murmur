@@ -37,15 +37,6 @@ AnimationParticlesMega2::AnimationParticlesMega2(string name) : Animation(name)
     m_ampAttraction = 10.0;
 	
 	m_particlesSize = 1.0f;
-
-    m_soundPlayer.add( "waves1.wav" );
-    m_soundPlayer.add( "waves2.wav" );
-    m_soundPlayer.add( "waves3.wav" );
-    m_soundPlayer.add( "waves4.wav" );
-    m_soundPlayer.add( "waves5.wav" );
-    m_soundPlayer.add( "waves6.wav" );
-    m_soundPlayer.add( "waves7.wav" );
-    m_soundPlayer.add( "waves8.wav" );
 }
 
 
@@ -114,6 +105,7 @@ void AnimationParticlesMega2::createUICustom()
 //--------------------------------------------------------------
 void AnimationParticlesMega2::guiEvent(ofxUIEventArgs &e)
 {
+	Animation::guiEvent(e);
     string name = e.widget->getName();
     if (name == "particles size")
     {

@@ -1,7 +1,7 @@
 <device id="deviceEchoSimulator01">
     <soundInput>
         <volMax>0.012225806</volMax>
-        <volHistoryNb>50.000000000</volHistoryNb>
+        <volHistoryNb>160.000000000</volHistoryNb>
         <volHistoryTh>0.205645174</volHistoryTh>
     </soundInput>
     <soundOutput>

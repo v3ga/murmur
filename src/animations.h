@@ -45,6 +45,7 @@ class AnimationSoundPlayer
     
     void                            playRandom(vector<int>& speakers);
 	void							playRandom(int* speakers=0, int nbSpeakers=0);
+	void							print(string title);
     int                             m_lastPlayedIndex;
     std::vector<string>             m_listSoundNames;
 };
@@ -77,14 +78,17 @@ class Animation
     
         // UI
         ofxUICanvas*            mp_UIcanvas;
+	
 
         virtual void            setUICanvas             (ofxUICanvas* p){mp_UIcanvas=p;}
         virtual void            createUI                ();
+		virtual	void			createUISound			();
         virtual void            createUICustom          (){};
 				ofxUICanvas*	getUI					();
         virtual ofxUICanvas*    showUI                  (bool is=true);
         virtual ofxUICanvas*    hideUI                  ();
         virtual void            guiEvent                (ofxUIEventArgs &e);
+		virtual	bool			guiEventTogglesSound	(string name);
 
         virtual void            saveProperties          (string id);
         virtual void            loadProperties          (string id);
