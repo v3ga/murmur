@@ -14,8 +14,10 @@
     </animations>
 
     <timeline>
-        <animation>tunnel</animation>
-        <animation>particlesMega2</animation>
+	     <!--
+		<animation>tunnel</animation>
+        -->
+		<animation>particlesMega2</animation>
         <animation>box2DCircles</animation>
         <animation>shaderWave</animation>
         <animation>waves2.js</animation>

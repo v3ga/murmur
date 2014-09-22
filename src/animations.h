@@ -41,13 +41,17 @@ class AnimationSoundPlayer
     public:
         AnimationSoundPlayer        ();
 
-        void                        add(string name);
+        void                        	add(string name);
     
-    void                            playRandom(vector<int>& speakers);
-	void							playRandom(int* speakers=0, int nbSpeakers=0);
-	void							print(string title);
-    int                             m_lastPlayedIndex;
-    std::vector<string>             m_listSoundNames;
+		void							setVolume(float v){m_volume=v;}
+	    void                            playRandom(vector<int>& speakers);
+		void							playRandom(int* speakers=0, int nbSpeakers=0);
+		void							print(string title);
+
+		float							m_volume;
+    	int                             m_lastPlayedIndex;
+    	std::vector<string>             m_listSoundNames; // those which are checked in interface
+
 };
 
 
@@ -118,6 +122,7 @@ class Animation
 	
 		// Sound player
 		AnimationSoundPlayer		m_soundPlayer;
+		vector<string>				m_listSoundNames;
 	
         // Name + paths
 		string					m_name;

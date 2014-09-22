@@ -10,6 +10,7 @@
 #include "js.h"
 #include "globals.h"
 #include "soundManager.h"
+#include "device.h"
 
 //--------------------------------------------------------------
 bool setupJS()
@@ -117,21 +118,43 @@ ofxJSDeclareFunctionCpp(setUniform2fShader)
 //--------------------------------------------------------------
 ofxJSDeclareFunctionCpp(playSound)
 {
+	// void SoundManager::playSound(string name, bool isLoop, float volume, int* speakers,int nbSpeakers)
+	// name
 	if (argc==1)
     {
         SoundManager::instance()->playSound( ofxJSValue_TO_string(argv[0]) );
 		return JS_TRUE;
     }
+	// name,isLoop
 	else if (argc==2)
     {
         SoundManager::instance()->playSound( ofxJSValue_TO_string(argv[0]),  ofxJSValue_TO_int(argv[1]) == 0 ? false : true );
 		return JS_TRUE;
     }
+	// name,isLoop,volume
 	else if (argc==3)
     {
         SoundManager::instance()->playSound( ofxJSValue_TO_string(argv[0]),  ofxJSValue_TO_int(argv[1]) == 0 ? false : true, ofxJSValue_TO_float(argv[2]) );
 		return JS_TRUE;
     }
+	// name,isLoop,volume,deviceId
+	// volume is overwritten by configuration of deviceId
+	else if (argc==4)
+    {
+		if (GLOBALS->mp_deviceManager)
+		{
+			Device* pDevice =  GLOBALS->mp_deviceManager->getDeviceById( ofxJSValue_TO_string(argv[3]) );
+			if (pDevice)
+			{
+				// TODO : cache this!!!
+				int nbSpeakers = pDevice->m_listSpeakerIds.size();
+				int speakers[nbSpeakers];
+				for (int i=0;i<nbSpeakers;i++) speakers[i] = pDevice->m_listSpeakerIds.at(i);
+	    	    SoundManager::instance()->playSound( ofxJSValue_TO_string(argv[0]),  ofxJSValue_TO_int(argv[1]) == 0 ? false : true, ofxJSValue_TO_float(argv[2]), speakers, nbSpeakers );
+				return JS_TRUE;
+			}
+    	}
+	}
 
 	return JS_FALSE;
 }

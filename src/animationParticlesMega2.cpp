@@ -192,14 +192,7 @@ void AnimationParticlesMega2::VM_exit()
 //--------------------------------------------------------------
 void AnimationParticlesMega2::onVolumAccumEvent(string deviceId)
 {
-	// ofLog()<<"AnimationParticlesMega2::onVolumAccumEvent("<<deviceId<<")";
-    DeviceManager* pDeviceManager = GLOBALS->mp_deviceManager;
-	if (pDeviceManager){
-		Device* pDevice = pDeviceManager->getDeviceById(deviceId);
-		if (pDevice){
-			m_soundPlayer.playRandom(pDevice->m_listSpeakerIds);
-		}
-	}
+	Animation::onVolumAccumEvent(deviceId);
 }
 
 //--------------------------------------------------------------

@@ -11,7 +11,17 @@
 #include "ofxXmlSettings.h"
 #include "ofxSoundPlayerMultiOutput.h"
 
-class SoundPlayer : public ofxSoundPlayerMultiOutput/*ofSoundPlayer*/
+class SoundInfo
+{
+	public:
+
+		void					setTagsString(string tags);
+		string					getTagsString();
+		bool					hasTag(string tag);
+		vector<string>			m_tags;
+};
+
+class SoundPlayer : public ofxSoundPlayerMultiOutput
 {
     public:
         SoundPlayer                     (string name){m_name = name;}
@@ -39,6 +49,9 @@ class SoundManager
         void                            setVolumeSoundMainNormalized(float t);
         SoundPlayer*                    getSoundPlayer(string name);
 		vector<string> 					getListSoundsName();
+		SoundInfo*						getSoundInfo(string name);
+		void							addSoundInfo(string name, SoundInfo*);
+		vector<string>					getListSoundsNameWithTag(vector<string>& tags);
 
         float                           m_soundMainVolumeMin;
         float                           m_soundMainVolumeMax;
@@ -50,6 +63,7 @@ class SoundManager
     private:
         static SoundManager*			smp_instance;
         vector< SoundPlayer* >          m_listSoundPlayer;
+		map<string, SoundInfo*>			m_mapSoundInfos; // associates file name with Sound info struct
         SoundPlayer*                    mp_soundMain;
     
         float                           m_soundMainVolume;

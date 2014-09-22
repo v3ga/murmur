@@ -51,6 +51,11 @@ void  toolAnimations::enableDrawCallback(bool is)
 }
 
 
+//--------------------------------------------------------------
+bool toolAnimations::isHit(int x, int y)
+{
+	return ( tool::isHit(x,y) || (mp_animationUI && mp_animationUI->isHit(x, y)) );
+}
 
 //--------------------------------------------------------------
 void toolAnimations::createControlsCustom()

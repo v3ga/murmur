@@ -90,7 +90,6 @@
 		F951EBFF195AC12300056B2A /* ofxCvShortImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F951EBF5195AC12300056B2A /* ofxCvShortImage.cpp */; };
 		F951EC061963576600056B2A /* ofxHomographyHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F951EC041963576600056B2A /* ofxHomographyHelper.cpp */; };
 		F951EC09196359E600056B2A /* quadWarping.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F951EC07196359E600056B2A /* quadWarping.cpp */; };
-		F964768818A25D930061C848 /* tunnel.js in Sources */ = {isa = PBXBuildFile; fileRef = F964768718A25D930061C848 /* tunnel.js */; };
 		F969FB2217160CF700F3F410 /* device.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F969FB2117160CF700F3F410 /* device.cpp */; };
 		F969FB2517160E8600F3F410 /* surface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F969FB2417160E8600F3F410 /* surface.cpp */; };
 		F96B924A172EB518007B1CFF /* surfaceNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F96B9248172EB518007B1CFF /* surfaceNode.cpp */; };
@@ -519,10 +518,7 @@
 		F964768318A25BDE0061C848 /* SoundPlayer.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = SoundPlayer.js; sourceTree = "<group>"; };
 		F964768418A25BDE0061C848 /* VolumeAccum.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = VolumeAccum.js; sourceTree = "<group>"; };
 		F964768618A25C900061C848 /* surfacemain.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = surfacemain.xml; sourceTree = "<group>"; };
-		F964768718A25D930061C848 /* tunnel.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = tunnel.js; sourceTree = "<group>"; };
 		F964768918A285210061C848 /* Tunnel.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Tunnel.js; sourceTree = "<group>"; };
-		F964768A18A313960061C848 /* jcc2_julia.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = jcc2_julia.js; sourceTree = "<group>"; };
-		F964768B18A313960061C848 /* jcc2_julien.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = jcc2_julien.js; sourceTree = "<group>"; };
 		F969FB2017160CF700F3F410 /* device.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = device.h; sourceTree = "<group>"; };
 		F969FB2117160CF700F3F410 /* device.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = device.cpp; sourceTree = "<group>"; };
 		F969FB2317160E8600F3F410 /* surface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = surface.h; sourceTree = "<group>"; };
@@ -808,8 +804,6 @@
 		F9BC6B4C17467A5000633C5C /* license.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = license.md; sourceTree = "<group>"; };
 		F9BC6B4D17467A5000633C5C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		F9BC6B4F17467A5000633C5C /* MSAPingPong.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MSAPingPong.h; sourceTree = "<group>"; };
-		F9BC6B5017467A9000633C5C /* animationParticlesMega.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animationParticlesMega.cpp; sourceTree = "<group>"; };
-		F9BC6B5117467A9000633C5C /* animationParticlesMega.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = animationParticlesMega.h; sourceTree = "<group>"; };
 		F9BC6B5317467F5C00633C5C /* OpenCL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenCL.framework; path = ../../../../../../../../System/Library/Frameworks/OpenCL.framework; sourceTree = "<group>"; };
 		F9BC6B551746831900633C5C /* animationParticlesMega2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animationParticlesMega2.cpp; sourceTree = "<group>"; };
 		F9BC6B561746831900633C5C /* animationParticlesMega2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = animationParticlesMega2.h; sourceTree = "<group>"; };
@@ -1537,10 +1531,7 @@
 		F964768118A2575F0061C848 /* murmur */ = {
 			isa = PBXGroup;
 			children = (
-				F964768A18A313960061C848 /* jcc2_julia.js */,
-				F964768B18A313960061C848 /* jcc2_julien.js */,
 				F964768218A2575F0061C848 /* waves2.js */,
-				F964768718A25D930061C848 /* tunnel.js */,
 			);
 			path = murmur;
 			sourceTree = "<group>";
@@ -1781,8 +1772,6 @@
 				F9BC6AF4174512E000633C5C /* animationsFactory.cpp */,
 				F9BC6AF81745149C00633C5C /* animationWaveShader.h */,
 				F9BC6AF71745149C00633C5C /* animationWaveShader.cpp */,
-				F9BC6B5117467A9000633C5C /* animationParticlesMega.h */,
-				F9BC6B5017467A9000633C5C /* animationParticlesMega.cpp */,
 				F9BC6B561746831900633C5C /* animationParticlesMega2.h */,
 				F9BC6B551746831900633C5C /* animationParticlesMega2.cpp */,
 				F9BC6B5A174A616A00633C5C /* animationBox2D.h */,
@@ -2805,7 +2794,6 @@
 				F951EC09196359E600056B2A /* quadWarping.cpp in Sources */,
 				F96B9251172EB8A0007B1CFF /* sceneVisualisation.cpp in Sources */,
 				F96B9254172EBE17007B1CFF /* deviceNode.cpp in Sources */,
-				F964768818A25D930061C848 /* tunnel.js in Sources */,
 				F951EB78195AC0D800056B2A /* ofxQuadWarp.cpp in Sources */,
 				F96B9258172EC356007B1CFF /* sceneNode.cpp in Sources */,
 				F9DC7C2B19CA170900682D1A /* ofxJSOscMessage.cpp in Sources */,

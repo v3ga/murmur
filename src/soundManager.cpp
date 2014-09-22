@@ -9,6 +9,38 @@
 #include "soundManager.h"
 #include "ofxSoundPlayerMultiOutput.h"
 
+
+
+//--------------------------------------------------------------
+bool SoundInfo::hasTag(string tag)
+{
+	int nbTags = m_tags.size();
+	for (int i=0;i<nbTags;i++){
+		if (m_tags[i] == tag)
+			return true;
+	}
+	return false;
+}
+
+//--------------------------------------------------------------
+void SoundInfo::setTagsString(string tags)
+{
+	m_tags = ofSplitString(tags, ";",true,true);
+}
+
+//--------------------------------------------------------------
+string SoundInfo::getTagsString()
+{
+	string tags = "";
+	string sep="";
+	for (int i=0; i<m_tags.size(); i++)
+	{
+		tags += sep+m_tags[i];
+		sep=";";
+	}
+	return tags;
+}
+
 //--------------------------------------------------------------
 SoundManager* SoundManager::smp_instance = 0;
 
@@ -167,6 +199,55 @@ vector<string> SoundManager::getListSoundsName()
 		listSoundsName.push_back( (*it)->m_name );
 	}
 	return listSoundsName;
+}
+
+
+//--------------------------------------------------------------
+void SoundManager::addSoundInfo(string name, SoundInfo* pSoundInfo)
+{
+	m_mapSoundInfos[name] = pSoundInfo;
+}
+
+//--------------------------------------------------------------
+SoundInfo* SoundManager::getSoundInfo(string name)
+{
+	SoundInfo* pSoundInfo = 0;
+	if (m_mapSoundInfos.find(name) != m_mapSoundInfos.end()){
+		pSoundInfo = m_mapSoundInfos[name];
+	}
+	return pSoundInfo;
+}
+
+//--------------------------------------------------------------
+vector<string> SoundManager::getListSoundsNameWithTag(vector<string>& tags)
+{
+	map<string,int> map; // Just to check if we put sound name in our list already ...
+	vector<string> listSoundsFiltered;
+	vector<string> listSounds = getListSoundsName();
+
+	string soundName;
+	string tag;
+
+	for (int j=0;j<listSounds.size();j++)
+	{
+		soundName = listSounds[j];
+		SoundInfo* pSoundInfo = getSoundInfo( soundName );
+		if (pSoundInfo)
+		{
+			int nbTags = tags.size();
+			for (int i=0;i<nbTags;i++)
+			{
+				tag = tags[i];
+
+				if (pSoundInfo->hasTag(tag) && map.find(soundName) == map.end())
+				{
+					map[soundName]=1;
+					listSoundsFiltered.push_back(soundName);
+				}
+			}
+		}
+	}
+	return listSoundsFiltered;
 }
 
 //--------------------------------------------------------------
