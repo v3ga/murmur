@@ -1,7 +1,7 @@
 <Widget>
     <Kind>2</Kind>
     <Name>activate main sound</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -26,7 +26,7 @@
 <Widget>
     <Kind>17</Kind>
     <Name>shader1.wav</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>17</Kind>
@@ -121,7 +121,7 @@
 <Widget>
     <Kind>17</Kind>
     <Name>waves4.wav</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>17</Kind>
