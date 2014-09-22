@@ -10,6 +10,9 @@
 
 #include "tool.h"
 
+
+
+class SoundPlayer;
 class toolSound : public tool
 {
 	public:
@@ -17,7 +20,20 @@ class toolSound : public tool
 		toolSound				(toolManager* parent);
 
 	
-		void					createControlsCustom();
-		void					update				();
-		void					handleEvents		(ofxUIEventArgs& e);
+		void					createControlsCustom	();
+		void					update					();
+		void					handleEvents			(ofxUIEventArgs& e);
+		void 					show					(bool is);
+		void					loadData				();
+		void					saveData				();
+		void					updateLayout			();
+		string					getSoundInfosPathFile	();
+	
+		ofxUICanvas*			mp_canvasSound;
+		ofxUILabel*				mp_lblSoundTitle;
+		ofxUITextInput*			mp_teSoundTags;
+
+		SoundPlayer*			mp_soundCurrent;
+	
+		bool					m_isUpdateLayout;
 };

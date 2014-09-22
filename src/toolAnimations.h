@@ -21,6 +21,7 @@ class toolAnimations : public tool
 		void							createControlsCustom		();
 		void							createControlsAnimations	(Surface*);
 		void							handleEvents				(ofxUIEventArgs& e);
+		bool							isHit						(int x, int y);
 		void							logJS						(void* pData, const string& message);
 		bool							keyPressed					(int key);
 		void							show						(bool is);

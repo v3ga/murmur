@@ -1,7 +1,7 @@
 <Widget>
     <Kind>12</Kind>
     <Name>wSurface</Name>
-    <Value>6</Value>
+    <Value>10</Value>
 </Widget>
 <Widget>
     <Kind>12</Kind>
@@ -41,7 +41,7 @@
 <Widget>
     <Kind>2</Kind>
     <Name>syphon</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>

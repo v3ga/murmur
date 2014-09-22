@@ -101,6 +101,9 @@ void AnimationShaderWave::onNewPacket(DevicePacket* pDevicePacket, string device
 {
     if (pDevicePacket)
 	{
+		accumulateVolume(pDevicePacket->m_volume, deviceId);
+
+
 		map<string,ShaderWave*>::iterator it = m_mapShaderWaves.find(deviceId);
 		ShaderWave* pShaderWave=0;
 

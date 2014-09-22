@@ -190,7 +190,7 @@ void Surface::setup()
 								
 								if (pAnimation->mp_obj)
 								{
-									ofxJSCallFunctionNameObject_NoArgs_IfExists(pAnimation->mp_obj,"getTheme",		retValTheme);
+//									ofxJSCallFunctionNameObject_NoArgs_IfExists(pAnimation->mp_obj,"getTheme",		retValTheme);
 									ofxJSCallFunctionNameObject_NoArgs_IfExists(pAnimation->mp_obj,"getAutoClear",	retValAutoClear);
 								}
 								

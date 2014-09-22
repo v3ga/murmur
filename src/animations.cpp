@@ -23,7 +23,7 @@
 #define ____________AnimationSoundPlayer____________
 AnimationSoundPlayer::AnimationSoundPlayer()
 {
-
+	m_volume = 1.0f;
 }
 
 //--------------------------------------------------------------
@@ -61,11 +61,11 @@ void AnimationSoundPlayer::playRandom(int* speakers, int nbSpeakers)
         while (rndIndex==m_lastPlayedIndex);
         m_lastPlayedIndex = rndIndex;
 
-        SoundManager::instance()->playSound( m_listSoundNames[rndIndex],false,1,speakers,nbSpeakers );
+        SoundManager::instance()->playSound( m_listSoundNames[rndIndex],false,m_volume,speakers,nbSpeakers );
     }
     else
     if (m_listSoundNames.size()==1)
-        SoundManager::instance()->playSound( m_listSoundNames[0],false,1,speakers,nbSpeakers );
+        SoundManager::instance()->playSound( m_listSoundNames[0],false,m_volume,speakers,nbSpeakers );
 
 }
 
@@ -184,7 +184,7 @@ void Animation::createUI()
     if (mp_UIcanvas)
     {
         mp_UIcanvas->addWidgetDown(new ofxUILabel(m_name, OFX_UI_FONT_LARGE));
-        mp_UIcanvas->addWidgetDown(new ofxUISpacer(300, 2));
+        mp_UIcanvas->addWidgetDown(new ofxUISpacer(ANIM_UI_WIDTH_DEFAULT, 2));
     }
     
     if (mp_UIcanvas && mp_obj)
@@ -203,19 +203,40 @@ void Animation::createUI()
 //--------------------------------------------------------------
 void Animation::createUISound()
 {
+	if (mp_UIcanvas == 0) return;
+	
 	mp_UIcanvas->addWidgetDown(new ofxUILabel("Sounds", OFX_UI_FONT_MEDIUM));
-    mp_UIcanvas->addWidgetDown(new ofxUISpacer(300, 2));
+    mp_UIcanvas->addWidgetDown(new ofxUISpacer(ANIM_UI_WIDTH_DEFAULT, 2));
 
-	vector<string> listSoundNames = SoundManager::instance()->getListSoundsName();
-	int nbSounds = listSoundNames.size();
+	// Soundplayer properties
+	mp_UIcanvas->addWidgetDown(new ofxUISlider("volume", 0.0f, 1.0f, 1.0f,310,ANIM_UI_HEIGHT_DEFAULT));
+	
+	// Sound lists (filtered by tags)
+	vector<string> soundTags;
+	soundTags.push_back(m_name);
+	soundTags.push_back("hit");
+	
+	string tags="";
+	string tags_sep="";
+	for (int i=0;i<soundTags.size();i++){
+		tags += tags_sep+"'"+soundTags[i]+"'";
+		tags_sep=", ";
+	}
+	
+	
+	m_listSoundNames = SoundManager::instance()->getListSoundsNameWithTag(soundTags);
+	int nbSounds = m_listSoundNames.size();
 	for (int i=0; i<nbSounds; i++)
 	{
-		ofxUIToggle* pSoundToggle = new ofxUIToggle(listSoundNames[i],false,20,20);
+		ofxUIToggle* pSoundToggle = new ofxUIToggle(m_listSoundNames[i],false,20,20);
 		if (i%2 == 0)
 			mp_UIcanvas->addWidgetDown(pSoundToggle);
 		else
 			mp_UIcanvas->addWidgetRight(pSoundToggle);
 	}
+
+	mp_UIcanvas->addWidgetDown(new ofxUITextArea("tags","Sound tags are "+tags+".",320,30,0,0,OFX_UI_FONT_SMALL));
+
 }
 
 //--------------------------------------------------------------
@@ -264,12 +285,19 @@ void Animation::guiEvent(ofxUIEventArgs &e)
 
     if (kind == OFX_UI_WIDGET_SLIDER_H || kind == OFX_UI_WIDGET_SLIDER_V)
     {
-		if (mp_obj)
-        {
-            ofxJSValue args[2];
-            args[0] = string_TO_ofxJSValue( name );
-            args[1] = float_TO_ofxJSValue( ((ofxUISlider*) e.widget)->getScaledValue() );
-			ofxJSCallFunctionNameObject_IfExists(mp_obj,"eventUI", args,2,retVal);
+		if (name == "volume")
+		{
+			m_soundPlayer.setVolume( ((ofxUISlider*) e.widget)->getScaledValue() );
+		}
+		else
+		{
+			if (mp_obj)
+    	    {
+        	    ofxJSValue args[2];
+            	args[0] = string_TO_ofxJSValue( name );
+            	args[1] = float_TO_ofxJSValue( ((ofxUISlider*) e.widget)->getScaledValue() );
+				ofxJSCallFunctionNameObject_IfExists(mp_obj,"eventUI", args,2,retVal);
+			}
 		}
     }
 	else
@@ -279,13 +307,14 @@ void Animation::guiEvent(ofxUIEventArgs &e)
 
 		if (guiEventTogglesSound(name))
 		{
-			vector<string> listSoundNames = SoundManager::instance()->getListSoundsName();
+			//vector<string> listSoundNames = SoundManager::instance()->getListSoundsName();
+			
 			m_soundPlayer.m_listSoundNames.clear();
-			for (int i=0; i<listSoundNames.size(); i++){
-				ofxUIToggle* pSoundToggle = (ofxUIToggle*) mp_UIcanvas->getWidget( listSoundNames[i] );
+			for (int i=0; i<m_listSoundNames.size(); i++){
+				ofxUIToggle* pSoundToggle = (ofxUIToggle*) mp_UIcanvas->getWidget( m_listSoundNames[i] );
 				if (pSoundToggle->getValue()){
 					// ofLog() << m_name << " / " << listSoundNames[i];
-					m_soundPlayer.add( listSoundNames[i] );
+					m_soundPlayer.add( m_listSoundNames[i] );
 				}
 			}
 		
@@ -322,7 +351,7 @@ void Animation::loadProperties(string id)
     {
         mp_UIcanvas->loadSettings( getPropertiesFilename(id) );
     }
-			m_soundPlayer.print(m_name);
+			//m_soundPlayer.print(m_name);
 }
 
 //--------------------------------------------------------------
@@ -516,7 +545,13 @@ void Animation::sOnVolumAccumEvent(void* pData, VolumeAccum* pVolumAccum)
 //--------------------------------------------------------------
 void Animation::onVolumAccumEvent(string deviceId)
 {
-	// Play sound here for your device ...
+    DeviceManager* pDeviceManager = GLOBALS->mp_deviceManager;
+	if (pDeviceManager)
+	{
+		Device* pDevice = pDeviceManager->getDeviceById(deviceId);
+		if (pDevice)
+			m_soundPlayer.playRandom(pDevice->m_listSpeakerIds);
+	}
 }
 
 //--------------------------------------------------------------

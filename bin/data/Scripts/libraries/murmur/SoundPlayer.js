@@ -4,7 +4,7 @@ function SoundPlayer(soundsName)
     this.soundsName = soundsName;
     this.lastPlayedIndex = -1;
 
-    this.playRandom = function(isLoop,volume)
+    this.playRandom = function(isLoop,volume,deviceId)
     {
         if (soundsName.length>=2)
         {
@@ -16,7 +16,7 @@ function SoundPlayer(soundsName)
             } while (rndIndex==this.lastPlayedIndex);
             this.lastPlayedIndex = rndIndex;
         
-            playSound( soundsName[rndIndex],isLoop,volume );
+            playSound( soundsName[rndIndex],isLoop,volume,deviceId );
         }
     }
 }

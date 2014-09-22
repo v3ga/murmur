@@ -186,7 +186,7 @@ function volAccumEvent(params)
 
 	if (this.mode > 0)
 	{
-    	this.mapWaveManager[params.deviceId].sndPlayer.playRandom(0,1);
+    	this.mapWaveManager[params.deviceId].sndPlayer.playRandom(0,1,params.deviceId);
     	this.mapWaveManager[params.deviceId].waves.push(w);
 	}
 	else

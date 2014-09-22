@@ -15,18 +15,19 @@ include("Scripts/libraries/fieldkit/src/math/Vec2.js");
 include("Scripts/libraries/fieldkit/src/math/Vec3.js");
 
 // --------------------------------------------------------
+/*
 include("Scripts/libraries/verlet-js/vec2.js");
 include("Scripts/libraries/verlet-js/verlet.js");
 include("Scripts/libraries/verlet-js/constraint.js");
 include("Scripts/libraries/verlet-js/objects.js");
-
+*/
 
 // --------------------------------------------------------
 include("Scripts/libraries/murmur/Particle2D.js");
 include("Scripts/libraries/murmur/Particle2DMass.js");
-include("Scripts/libraries/murmur/GridVerlet.js");
+//include("Scripts/libraries/murmur/GridVerlet.js");
 include("Scripts/libraries/murmur/Wave.js");
-include("Scripts/libraries/murmur/Grid3D.js");
+//include("Scripts/libraries/murmur/Grid3D.js");
 include("Scripts/libraries/murmur/SoundPlayer.js");
 include("Scripts/libraries/murmur/VolumeAccum.js");
 include("Scripts/libraries/murmur/Tunnel.js");
