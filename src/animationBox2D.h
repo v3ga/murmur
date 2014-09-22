@@ -40,6 +40,7 @@ class AnimationBox2D_circles : public AnimationBox2D
         virtual void            onNewPacket             (DevicePacket*, string deviceId, float x, float y);
 
         virtual void            createUICustom          ();
+		virtual	void			registerSoundTags		(vector<string>& soundTags);
 
         vector<ofxBox2dCircle>  m_listCircles;
         float                   m_gravity;

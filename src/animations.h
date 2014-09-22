@@ -123,6 +123,8 @@ class Animation
 		// Sound player
 		AnimationSoundPlayer		m_soundPlayer;
 		vector<string>				m_listSoundNames;
+		virtual void				registerSoundTags		(vector<string>& tags);
+		virtual	void				playSound				(string deviceId);
 	
         // Name + paths
 		string					m_name;

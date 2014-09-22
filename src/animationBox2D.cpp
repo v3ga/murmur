@@ -7,6 +7,7 @@
 //
 
 #include "animationBox2D.h"
+#include "globals.h"
 
 //--------------------------------------------------------------
 AnimationBox2D::AnimationBox2D(string name) : Animation(name)
@@ -41,16 +42,6 @@ AnimationBox2D_circles::AnimationBox2D_circles(string name ) : AnimationBox2D(na
     m_sizeMin = 10;
     m_sizeMax = 30;
     m_nbObjects = 400;
-    
-    m_soundPlayer.add( "waves1.wav" );
-    m_soundPlayer.add( "waves2.wav" );
-    m_soundPlayer.add( "waves3.wav" );
-    m_soundPlayer.add( "waves4.wav" );
-    m_soundPlayer.add( "waves5.wav" );
-    m_soundPlayer.add( "waves6.wav" );
-    m_soundPlayer.add( "waves7.wav" );
-    m_soundPlayer.add( "waves8.wav" );
-    
 }
 
 //--------------------------------------------------------------
@@ -93,15 +84,18 @@ void AnimationBox2D_circles::VM_draw(float w, float h)
 void AnimationBox2D_circles::onNewPacket(DevicePacket* pDevicePacket, string deviceId, float x, float y)
 {
     if (pDevicePacket==0) return;
-    
+ 
+	accumulateVolume(pDevicePacket->m_volume, deviceId);
+	
     m_posAnchor.set(x,y);
     
 	if (pDevicePacket->m_volume>m_volTrigger)
 	{
-		m_volumeAccumTarget += pDevicePacket->m_volume;
-//        m_isCircleInflating = true;
+		playSound(deviceId);
 
-        m_circleSize = ofRandom(m_sizeMin,m_sizeMax);//ofMap(m_volumeAccumTarget, 0.0f, 10.5f, 5, 100);
+		m_volumeAccumTarget += pDevicePacket->m_volume;
+
+        m_circleSize = ofRandom(m_sizeMin,m_sizeMax);
 
         //if (m_volumeAccumTarget>=10.5f)
         {
@@ -123,23 +117,6 @@ void AnimationBox2D_circles::onNewPacket(DevicePacket* pDevicePacket, string dev
     }
 	else
 	{
-		// Enough accumulation
-/*		if (m_volumeAccumTarget>=2.5f)
-		{
-            float delta = m_volumeAccumTarget-2.5f;
-            float size = ofMap(delta, 0.0f, 50.0f, 5, 100);
-            if (size>=100)
-                size = 100;
-            //printf("delta=%.2f -> size=%.2f\n", delta, size);
- 
-            ofxBox2dCircle circle;
-            circle.setPhysics(3.0, 0.53, 0.1);
-            circle.setup(m_box2d.getWorld(), x, y, size);
-            circle.setVelocity( ofRandom(-0.2,0.2), ofRandom(-0.2,0.2) );
-
-            m_listCircles.push_back(circle);
-		}
-*/
 		m_volumeAccumTarget = 0;
         m_isCircleInflating = false;
 	}
@@ -157,4 +134,12 @@ void AnimationBox2D_circles::createUICustom()
         mp_UIcanvas->addSlider("obj. number", 100, 500, &m_nbObjects);
     }
 }
+
+//--------------------------------------------------------------
+void AnimationBox2D_circles::registerSoundTags(vector<string>& soundTags)
+{
+	soundTags.push_back("hit");
+	soundTags.push_back("bubble");
+}
+
 
