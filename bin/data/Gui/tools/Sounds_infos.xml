@@ -1,6 +1,6 @@
 <sounds>
     <sound file="main.wav" tags=""></sound>
-    <sound file="shader1.wav" tags=""></sound>
+    <sound file="shader1.wav" tags="bubble"></sound>
     <sound file="shader2.wav" tags=""></sound>
     <sound file="shader3.wav" tags=""></sound>
     <sound file="shader4.wav" tags=""></sound>

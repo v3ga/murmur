@@ -200,6 +200,26 @@ void Animation::createUI()
     ofAddListener(mp_UIcanvas->newGUIEvent, this, &Animation::guiEvent);
 }
 
+
+//--------------------------------------------------------------
+void Animation::registerSoundTags(vector<string>& soundTags)
+{
+	soundTags.push_back("hit");
+}
+
+//--------------------------------------------------------------
+void Animation::playSound(string deviceId)
+{
+    DeviceManager* pDeviceManager = GLOBALS->mp_deviceManager;
+	if (pDeviceManager)
+	{
+		Device* pDevice = pDeviceManager->getDeviceById(deviceId);
+		if (pDevice)
+			m_soundPlayer.playRandom(pDevice->m_listSpeakerIds);
+	}
+}
+
+
 //--------------------------------------------------------------
 void Animation::createUISound()
 {
@@ -214,7 +234,7 @@ void Animation::createUISound()
 	// Sound lists (filtered by tags)
 	vector<string> soundTags;
 	soundTags.push_back(m_name);
-	soundTags.push_back("hit");
+	registerSoundTags(soundTags);
 	
 	string tags="";
 	string tags_sep="";
@@ -545,13 +565,7 @@ void Animation::sOnVolumAccumEvent(void* pData, VolumeAccum* pVolumAccum)
 //--------------------------------------------------------------
 void Animation::onVolumAccumEvent(string deviceId)
 {
-    DeviceManager* pDeviceManager = GLOBALS->mp_deviceManager;
-	if (pDeviceManager)
-	{
-		Device* pDevice = pDeviceManager->getDeviceById(deviceId);
-		if (pDevice)
-			m_soundPlayer.playRandom(pDevice->m_listSpeakerIds);
-	}
+	playSound(deviceId);
 }
 
 //--------------------------------------------------------------
