@@ -98,6 +98,21 @@ function setup()
 }
 
 //--------------------------------------------------------------
+function soundsChanged()
+{
+	if (this.mode > 0)
+	{
+		for (var deviceId in this.mapWaveManager)
+			this.mapWaveManager[deviceId].sndPlayer.setSoundsName( getSoundsForAnimation(deviceId, "waves2.js") );
+	}
+	else{
+			this.waveMono.sndPlayer.setSoundsName( getSoundsForAnimation(deviceId, "waves2.js") );
+	}
+}
+
+
+
+//--------------------------------------------------------------
 function createUI()
 {
     this.newSlider("waveDirAmp",0,1,this.waveDirAmp);

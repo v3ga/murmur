@@ -35,6 +35,8 @@ class SoundManager
     public:
         SoundManager					();
         ~SoundManager					();
+	
+		static void						destroy();
     
     
         static SoundManager*			instance();

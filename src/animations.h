@@ -71,8 +71,6 @@ class Animation
         virtual void            VM_doTransition         (int which, float t);
         virtual	void			VM_exit					();
 
-		void					M_setTheme				(int theme){m_theme=theme;}
-
 		bool					M_loadScript			(const char* pathAbs);
 		bool					M_reloadScript			();
 		void					M_deleteScript			();
@@ -103,7 +101,8 @@ class Animation
 
         static ofxJSBOOL        jsNewSlider             (ofxJSContext* cx, ofxJSObject* obj, uintN argc, ofxJSValue* argv, ofxJSValue* retVal);
         static ofxJSBOOL        jsNewToggle             (ofxJSContext* cx, ofxJSObject* obj, uintN argc, ofxJSValue* argv, ofxJSValue* retVal);
-
+	
+		void					jsCallSoundChanged		();
  
 		// Shader
 		void					M_beginShader			();
@@ -141,14 +140,7 @@ class Animation
 		
 		bool					m_isAutoClear;
 		
-		// Theme
-		int						m_theme;
-		enum{
-            THEME_UNKNOWN			= 0,
-            THEME_SURFACE			= 1,
-            THEME_CREATURE			= 2,
-            THEME_ARBORESCENCE		= 3
-		};
+
 };
 
 
@@ -175,7 +167,6 @@ class AnimationManager
 		Animation*				M_getAnimationByThemeRnd(int theme);
 		string					M_getAnimationNameRnd	();
 		void					M_addAnimation			(Animation*);
-		void					M_groupAnimationByTheme	();
 
 		bool					M_isAutoClear			();
 

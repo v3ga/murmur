@@ -129,7 +129,6 @@ void Animation::M_zeroAll()
 {
 	mp_script		= 0;
 	mp_obj			= 0;
-	m_theme			= THEME_UNKNOWN;
 	m_isAutoClear	= true;
     mp_UIcanvas     = 0;
 }
@@ -256,7 +255,6 @@ void Animation::createUISound()
 	}
 
 	mp_UIcanvas->addWidgetDown(new ofxUITextArea("tags","Sound tags are "+tags+".",320,30,0,0,OFX_UI_FONT_SMALL));
-
 }
 
 //--------------------------------------------------------------
@@ -295,13 +293,23 @@ bool Animation::guiEventTogglesSound(string name)
 	return isSoundToggle;
 }
 
+
+//--------------------------------------------------------------
+void Animation::jsCallSoundChanged()
+{
+  if (mp_obj)
+  {
+	  ofxJSValue retVal;
+	  ofxJSCallFunctionNameObject_NoArgs_IfExists(mp_obj, "soundsChanged", retVal);
+  }
+}
+
 //--------------------------------------------------------------
 void Animation::guiEvent(ofxUIEventArgs &e)
 {
 	string name = e.widget->getName();
 	int kind = e.widget->getKind();
 
-    ofxJSValue retVal;
 
     if (kind == OFX_UI_WIDGET_SLIDER_H || kind == OFX_UI_WIDGET_SLIDER_V)
     {
@@ -313,6 +321,7 @@ void Animation::guiEvent(ofxUIEventArgs &e)
 		{
 			if (mp_obj)
     	    {
+			    ofxJSValue retVal;
         	    ofxJSValue args[2];
             	args[0] = string_TO_ofxJSValue( name );
             	args[1] = float_TO_ofxJSValue( ((ofxUISlider*) e.widget)->getScaledValue() );
@@ -327,8 +336,6 @@ void Animation::guiEvent(ofxUIEventArgs &e)
 
 		if (guiEventTogglesSound(name))
 		{
-			//vector<string> listSoundNames = SoundManager::instance()->getListSoundsName();
-			
 			m_soundPlayer.m_listSoundNames.clear();
 			for (int i=0; i<m_listSoundNames.size(); i++){
 				ofxUIToggle* pSoundToggle = (ofxUIToggle*) mp_UIcanvas->getWidget( m_listSoundNames[i] );
@@ -337,14 +344,17 @@ void Animation::guiEvent(ofxUIEventArgs &e)
 					m_soundPlayer.add( m_listSoundNames[i] );
 				}
 			}
-		
+
+
+			// jsCallSoundChanged();
 		}
 		else
 		{
 			if (mp_obj)
     	    {
 				bool valToggle = ((ofxUIToggle*) e.widget)->getValue() ;
-			
+
+			    ofxJSValue retVal;
 	            ofxJSValue args[2];
     	        args[0] = string_TO_ofxJSValue( name );
         	    args[1] = int_TO_ofxJSValue( valToggle ? 1 : 0 );
@@ -813,33 +823,6 @@ string AnimationManager::M_getAnimationNameRnd()
 	int index = (int)ofRandom(m_listAnimations.size()-1);
 	return m_listAnimations[index]->m_name;
 }
-
-//--------------------------------------------------------------
-void AnimationManager::M_groupAnimationByTheme()
-{
-    int nbThemes = 4;
-    
-	m_listAnimationsTheme[Animation::THEME_UNKNOWN]			= new vector<Animation*>();	
-	m_listAnimationsTheme[Animation::THEME_SURFACE]			= new vector<Animation*>();
-	m_listAnimationsTheme[Animation::THEME_CREATURE]		= new vector<Animation*>();
-	m_listAnimationsTheme[Animation::THEME_ARBORESCENCE]	= new vector<Animation*>();
-
-	vector<Animation*>::iterator it;
-	for (it = m_listAnimations.begin(); it != m_listAnimations.end(); ++it){
-		m_listAnimationsTheme[(*it)->m_theme]->push_back( *it );
-	}	
-	
-	printf("------------------------------------\n");
-	for (int i=0;i<nbThemes;i++){
-		printf("> %d\n", i);
-		for (it = m_listAnimationsTheme[i]->begin(); it != m_listAnimationsTheme[i]->end(); ++it)
-		{
-			printf("  %s\n", (*it)->m_name.c_str());
-		}
-	}
-	printf("------------------------------------\n");
-}
-
 
 //--------------------------------------------------------------
 bool AnimationManager::M_isAutoClear()
