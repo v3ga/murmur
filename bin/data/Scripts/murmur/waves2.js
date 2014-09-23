@@ -20,9 +20,6 @@ this.waveMono = null;
 this.mode = 1; // 0 = one wave for all , 1 = one wave per device
 
 //--------------------------------------------------------------
-function getTheme(){ return THEME_CREATURE; }
-
-//--------------------------------------------------------------
 function WaveManager(anim_)
 {
 	this.anim = anim_;

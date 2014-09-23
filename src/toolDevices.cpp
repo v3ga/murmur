@@ -244,7 +244,14 @@ void toolDevices::updateDeviceUI(Device* pDevice)
 			for (int i=0;i<m_speakersId.size();i++)
 			{
 				ofxUIToggle* pSpeakerToggle = (ofxUIToggle*) mp_canvasDevice->getWidget( m_speakersId[i] );
-				if (pSpeakerToggle){
+				pSpeakerToggle->setValue(false);
+			}
+
+			for (int i=0;i<m_speakersId.size();i++)
+			{
+				ofxUIToggle* pSpeakerToggle = (ofxUIToggle*) mp_canvasDevice->getWidget( m_speakersId[i] );
+				if (pSpeakerToggle)
+				{
 					for (int j=0; j<pDevice->m_listSpeakerIds.size() ;j++){
 						if (pDevice->m_listSpeakerIds[j] == i)
 						{
