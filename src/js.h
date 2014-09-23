@@ -15,12 +15,16 @@ bool setupJS();
 
 ofxJSDeclareFunctionCpp(ofNoise);
 
+/*
 ofxJSDeclareFunctionCpp(loadShader);
 ofxJSDeclareFunctionCpp(beginShader);
 ofxJSDeclareFunctionCpp(endShader);
 ofxJSDeclareFunctionCpp(setUniform1fShader);
 ofxJSDeclareFunctionCpp(setUniform2fShader);
+*/
+
 ofxJSDeclareFunctionCpp(playSound);
+ofxJSDeclareFunctionCpp(getSoundsForAnimation);
 ofxJSDeclareFunctionCpp(setVolumeSound);
 ofxJSDeclareFunctionCpp(setVolumeSoundAll);
 ofxJSDeclareFunctionCpp(setVolumeSoundMainNormalized); // pass value between 0 and 1

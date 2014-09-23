@@ -28,12 +28,12 @@ class Globals
 		static Globals*			instance();
 		oscReceiver*			mp_oscReceiver;
         oscSender*              mp_oscSender;
-		AnimationManager*		mp_animationManager;
 		Timeline*				mp_timeline;
 		testApp*				mp_app;
         DeviceManager*          mp_deviceManager;
-
         bool					m_isAutoReloadScript;
+
+		AnimationManager*		getAnimationManagerForDevice(string deviceId);
 
 	private:
 		static Globals*			smp_instance;

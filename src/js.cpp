@@ -18,17 +18,20 @@ bool setupJS()
 	// Some functions
 	ofxJSDefineFunctionGlobal("ofNoise",						&ofNoise,						3);
 	
+/*
     ofxJSDefineFunctionGlobal("loadShader",						&loadShader,					1);
 	ofxJSDefineFunctionGlobal("beginShader",					&beginShader,					0);
 	ofxJSDefineFunctionGlobal("endShader",						&endShader,						0);
 	ofxJSDefineFunctionGlobal("setUniform1fShader",				&setUniform1fShader,			2);
 	ofxJSDefineFunctionGlobal("setUniform2fShader",				&setUniform2fShader,			3);
+*/
 
-	ofxJSDefineFunctionGlobal("playSound",                      &playSound,                     3);
+	ofxJSDefineFunctionGlobal("playSound",                      &playSound,                     4);
+	ofxJSDefineFunctionGlobal("getSoundsForAnimation",          &getSoundsForAnimation,         2);
     ofxJSDefineFunctionGlobal("setVolumeSound",                 &setVolumeSound,                2);
     ofxJSDefineFunctionGlobal("setVolumeSoundAll",              &setVolumeSoundAll,             1);
     ofxJSDefineFunctionGlobal("setVolumeSoundMainNormalized",   &setVolumeSoundMainNormalized,  1);
-    
+ 
     
 	// Load globals
 	ofxJSScript* pScript = ofxJSLoadFromData("murmur.js", "murmur"); // "exampleId" is used for error reporting
@@ -58,6 +61,8 @@ ofxJSDefineFunctionCpp(ofNoise){
 	
 	return JS_TRUE;
 }
+
+/*
 
 //--------------------------------------------------------------
 ofxJSDefineFunctionCpp(loadShader)
@@ -114,6 +119,7 @@ ofxJSDeclareFunctionCpp(setUniform2fShader)
 	}
 	return JS_FALSE;
 }
+*/
 
 //--------------------------------------------------------------
 ofxJSDeclareFunctionCpp(playSound)
@@ -156,6 +162,37 @@ ofxJSDeclareFunctionCpp(playSound)
     	}
 	}
 
+	return JS_FALSE;
+}
+
+//--------------------------------------------------------------
+ofxJSDeclareFunctionCpp(getSoundsForAnimation)
+{
+	// animation name
+	if (argc==2)
+    {
+		AnimationManager* pAnimManager = GLOBALS->getAnimationManagerForDevice( ofxJSValue_TO_string(argv[0]) );
+		if (pAnimManager)
+		{
+			Animation* pAnimation =  pAnimManager->M_getAnimationByName( ofxJSValue_TO_string(argv[1]) );
+			if (pAnimation)
+			{
+				vector<string>& sounds = pAnimation->m_soundPlayer.m_listSoundNames;
+				jsint nbSounds = (jsint) sounds.size();
+				jsval soundsVal[nbSounds];
+				for (int i=0;i<(int)nbSounds;i++){
+					soundsVal[i] = string_TO_ofxJSValue( sounds[i] );
+				}
+			
+				JSObject* 	pObjArraySounds = JS_NewArrayObject(ofxJSGetContext(), nbSounds, soundsVal);
+				*retVal = OBJECT_TO_JSVAL(pObjArraySounds);
+				return JS_TRUE;
+			}
+
+		}
+
+		return JS_FALSE;
+    }
 	return JS_FALSE;
 }
 
