@@ -18,7 +18,6 @@ Globals* Globals::smp_instance = 0;
 //--------------------------------------------------------------
 Globals::Globals()
 {
-	mp_animationManager = 0;
 	mp_timeline = 0;
 	mp_app = 0;
     mp_oscReceiver = 0;
@@ -33,5 +32,13 @@ Globals* Globals::instance()
 	if (smp_instance == 0)
 		smp_instance = new Globals();
 	return smp_instance; 
+}
+
+//--------------------------------------------------------------
+AnimationManager* Globals::getAnimationManagerForDevice(string deviceId)
+{
+	if (mp_app)
+		return mp_app->getAnimationManagerForDevice(deviceId);
+	return 0;
 }
 

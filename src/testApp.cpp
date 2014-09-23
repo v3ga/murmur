@@ -234,6 +234,26 @@ SurfaceNode* testApp::getSurfaceNode(Surface* pSurface)
 }
 
 //--------------------------------------------------------------
+AnimationManager* testApp::getAnimationManagerForDevice(string deviceId)
+{
+	if (GLOBALS->mp_deviceManager)
+	{
+		return getAnimationManagerForDevice( GLOBALS->mp_deviceManager->getDeviceById(deviceId) );
+	}
+	return 0;
+}
+
+
+//--------------------------------------------------------------
+AnimationManager* testApp::getAnimationManagerForDevice(Device* pDevice)
+{
+	Surface* pSurface = getSurfaceForDevice(pDevice);
+	if (pSurface)
+		return &pSurface->getAnimationManager();
+	return 0;
+}
+
+//--------------------------------------------------------------
 Surface* testApp::getSurfaceForDevice(Device* pDevice)
 {
     // TODO : iterate through a liste of surfaces to find the surface that has the device attached to it

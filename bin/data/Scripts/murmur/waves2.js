@@ -26,7 +26,7 @@ function WaveManager(anim_)
 
 	this.waves = Array();
     this.waveNbPoints = parseInt( Math.random()*10 )+3;
-    this.sndPlayer = new SoundPlayer( new Array("waves1.wav","waves2.wav","waves3.wav","waves4.wav","waves5.wav","waves6.wav","waves7.wav","waves8.wav") );
+    this.sndPlayer = new SoundPlayer( new Array() );
     this.waveRotationSpeed = Math.random()*10.0-10.0;
 	this.waveRotation =  0;
 
@@ -179,16 +179,24 @@ function volAccumEvent(params)
     var w = new Wave(params.x,params.y,this.waveNbPoints);
     w.setDir( Math.random()*this.waveDirAmp-this.waveDirAmp/2, Math.random()*this.waveDirAmp-this.waveDirAmp/2 );
     w.setAgeMax(this.waveAgeMax);
-//	println("params : "+params.x+";"+params.y);
+
 
 	if (this.mode > 0)
 	{
-    	this.mapWaveManager[params.deviceId].sndPlayer.playRandom(0,1,params.deviceId);
-    	this.mapWaveManager[params.deviceId].waves.push(w);
+		with(this.mapWaveManager[params.deviceId])
+		{
+			sndPlayer.setSoundsName( getSoundsForAnimation(params.deviceId, "waves2.js") );
+    		sndPlayer.playRandom(0,1,params.deviceId);
+    		waves.push(w);
+		}
 	}
 	else
 	{
-    	//this.waveMono.sndPlayer.playRandom(0,1);
-    	this.waveMono.waves.push(w);
+		with(this.waveMono)
+		{
+		    sndPlayer.soundsName = getSoundsForAnimation(params.deviceId, "waves2.js");
+    		sndPlayer.playRandom(0,1,params.deviceId);
+	    	waves.push(w);
+		}
 	}
 }

@@ -124,6 +124,7 @@ class Animation
 		AnimationSoundPlayer		m_soundPlayer;
 		vector<string>				m_listSoundNames;
 		virtual void				registerSoundTags		(vector<string>& tags);
+		int							getNbSoundNames			(){return m_listSoundNames.size();}
 		virtual	void				playSound				(string deviceId);
 	
         // Name + paths

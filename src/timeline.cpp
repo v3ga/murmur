@@ -160,7 +160,7 @@ void Timeline::M_init(string filename, float interval)
 
 
 		// add animations every (n) minutes
-		if (strDateEnd!=__EMPTY__ && Globals::instance()->mp_animationManager){
+		if (strDateEnd!=__EMPTY__ && false /* Globals::instance()->mp_animationManager */){
 			Poco::DateTime dateEnd;
 			Poco::DateTimeParser::parse(__DATE_FORMAT__, strDateEnd, dateEnd, timezone);
 			Poco::DateTime dateEvent = now;

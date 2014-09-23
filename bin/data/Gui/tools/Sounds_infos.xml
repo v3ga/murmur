@@ -16,12 +16,12 @@
     <sound file="theme1-20.wav" tags=""></sound>
     <sound file="theme1-4.wav" tags=""></sound>
     <sound file="theme1-8.wav" tags=""></sound>
-    <sound file="waves1.wav" tags="particlesMega2;shaderWave"></sound>
-    <sound file="waves2.wav" tags="particlesMega2;shaderWave"></sound>
-    <sound file="waves3.wav" tags="particlesMega2;shaderWave"></sound>
-    <sound file="waves4.wav" tags="particlesMega2;shaderWave"></sound>
-    <sound file="waves5.wav" tags="particlesMega2;shaderWave"></sound>
-    <sound file="waves6.wav" tags="particlesMega2;shaderWave"></sound>
-    <sound file="waves7.wav" tags="particlesMega2;shaderWave"></sound>
-    <sound file="waves8.wav" tags="particlesMega2;shaderWave"></sound>
+    <sound file="waves1.wav" tags="waves2.js;particlesMega2;shaderWave"></sound>
+    <sound file="waves2.wav" tags="waves2.js;particlesMega2;shaderWave"></sound>
+    <sound file="waves3.wav" tags="waves2.js;particlesMega2;shaderWave"></sound>
+    <sound file="waves4.wav" tags="waves2.js;particlesMega2;shaderWave"></sound>
+    <sound file="waves5.wav" tags="waves2.js;particlesMega2;shaderWave"></sound>
+    <sound file="waves6.wav" tags="waves2.js;particlesMega2;shaderWave"></sound>
+    <sound file="waves7.wav" tags="waves2.js;particlesMega2;shaderWave"></sound>
+    <sound file="waves8.wav" tags="waves2.js;particlesMega2;shaderWave"></sound>
 </sounds>

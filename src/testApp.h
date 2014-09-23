@@ -18,6 +18,8 @@ class DeviceEchoSimulator;
 class DeviceNode;
 class SoundInput;
 class Animation;
+class AnimationManager;
+
 class testApp : public ofBaseApp
 {
 	public:
@@ -99,7 +101,9 @@ class testApp : public ofBaseApp
         void                attachDevicesToSurfaces();
         Surface*            getSurfaceForDevice(Device*);
         Surface*            getSurfaceForDeviceCurrent();
-    
+		AnimationManager*	getAnimationManagerForDevice(Device*);
+		AnimationManager*	getAnimationManagerForDevice(string deviceId);
+ 
         // Scenes
         SceneVisualisation*  mp_sceneVisualisation;
         std::vector<Scene*>  m_listScenes;
