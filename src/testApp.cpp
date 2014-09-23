@@ -118,6 +118,7 @@ void testApp::exit()
     delete mp_deviceManager;
     delete Globals::instance();
     delete Data::instance();
+	SoundManager::destroy();
 
 	printf("[testApp::exit()] end\n");
 }

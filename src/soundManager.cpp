@@ -59,9 +59,29 @@ SoundManager::SoundManager()
 SoundManager::~SoundManager()
 {
 	delete mp_soundMainSpeakers;
+	delete mp_soundMain;
 	mp_soundMainSpeakers = 0;
 	m_nbSoundMainSpeakers = 0;
+
+	map<string,SoundInfo*>::iterator it;
+	for (it = m_mapSoundInfos.begin(); it != m_mapSoundInfos.end() ; ++it){
+		delete it->second;
+	}
+
+/*	vector<SoundPlayer*>::iterator it2;
+	for (it2 = m_listSoundPlayer.begin(); it2 != m_listSoundPlayer.end() ; ++it2){
+		delete *it2;
+	}
+*/
 }
+
+//--------------------------------------------------------------
+void SoundManager::destroy()
+{
+	delete smp_instance;
+	smp_instance = 0;
+}
+
 
 
 //--------------------------------------------------------------

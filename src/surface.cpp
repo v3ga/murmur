@@ -184,22 +184,18 @@ void Surface::setup()
 							if (pAnimation->M_loadScript( (*it).getAbsolutePath().c_str() ))
 							{
 								// Theme + autoclear
-								ofxJSValue retValTheme,retValAutoClear;
-								retValTheme = int_TO_ofxJSValue(1);
+								ofxJSValue retValAutoClear;
 								retValAutoClear = bool_TO_ofxJSValue(true);
 								
 								if (pAnimation->mp_obj)
 								{
-//									ofxJSCallFunctionNameObject_NoArgs_IfExists(pAnimation->mp_obj,"getTheme",		retValTheme);
 									ofxJSCallFunctionNameObject_NoArgs_IfExists(pAnimation->mp_obj,"getAutoClear",	retValAutoClear);
 								}
 								
-								int theme = ofxJSValue_TO_int(retValTheme);
 								bool isAutoClear = ofxJSValue_TO_bool(retValAutoClear);
 								
-								printf("    - js [%s], theme=%d, autoclear=%s\n", (*it).getFileName().c_str(),theme, isAutoClear ? "true" : "false");
+								printf("    - js [%s], autoclear=%s\n", (*it).getFileName().c_str(), isAutoClear ? "true" : "false");
 								
-								pAnimation->M_setTheme(theme);
 								pAnimation->m_isAutoClear = isAutoClear;
 
 								m_animationManager.M_addAnimation(pAnimation);
