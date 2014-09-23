@@ -16,12 +16,12 @@
 <Widget>
     <Kind>2</Kind>
     <Name>waves1.wav</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
     <Name>waves2.wav</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -31,7 +31,7 @@
 <Widget>
     <Kind>2</Kind>
     <Name>waves4.wav</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -41,7 +41,7 @@
 <Widget>
     <Kind>2</Kind>
     <Name>waves6.wav</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -51,5 +51,5 @@
 <Widget>
     <Kind>2</Kind>
     <Name>waves8.wav</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
