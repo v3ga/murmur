@@ -40,7 +40,7 @@ void testApp::setup()
     initJS();
     
     // Load Data
-    Data::instance()->load();
+    DATA->load();
 
     // Sounds
     SoundManager::instance()->setup(m_settings);
