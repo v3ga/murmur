@@ -33,6 +33,7 @@ void Data::load()
     m_imgLogo.setUseTexture(true);
     
     //m_fontHelvetica.loadFont("Fonts/Helvetica.ttf", 0.1/*, true, false, true, 0.03, 0*/);
+    m_font.loadFont("Fonts/FOLDERAL.TTF", 10/*, true, false, true, 0.03, 0*/);
 
     //lt (without dpi), non-full char set, anti aliased, 96 dpi:
 	//bool 		loadFont(string filename, int fontsize, bool _bAntiAliased=true, bool _bFullCharacterSet=false, bool makeContours=false, float simplifyAmt=0.3, int dpi=0);

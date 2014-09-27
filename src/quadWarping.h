@@ -18,9 +18,9 @@ class quadWarpingHandle : public ofxMSAInteractiveObject
 	
 	
 		bool			hitTest	(int x, int y);
-		void			setup	(quadWarping* pParent=0);
+		void			setup	(quadWarping* pParent=0, ofTrueTypeFont* pFont=0);
 		void			update	();
-		void			draw	();
+		void			draw	(int id=-1);
 		void			onPress(int x, int y, int button);
 		void			onDragOver(int x, int y, int button);
 		void			onDragOutside(int x, int y, int button);
@@ -28,10 +28,13 @@ class quadWarpingHandle : public ofxMSAInteractiveObject
 		void 			onReleaseOutside(int x, int y, int button);		// called when mouse releases outside of object after being pressed on object
 	
 		bool			m_isSelected;
+
 	private:
 		ofVec2f			dragDelta;
 		ofVec2f			posNormalized;
 		quadWarping*	mp_parent;
+		ofTrueTypeFont*	mp_font;
+
 };
 
 class quadWarping
@@ -41,7 +44,7 @@ class quadWarping
 
 		void					disableMouseEvents	();
 		void					enableMouseEvents	();
-		void					setup				();
+		void					setup				(ofTrueTypeFont* pFont);
 		void					update				();
 		void					draw				();
 		void					save				(string pathFile);

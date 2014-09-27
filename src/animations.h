@@ -104,6 +104,13 @@ class Animation
 	
 		void					jsCallSoundChanged		();
  
+ 		// Device
+		Device*					getDevice				(string deviceId);
+		bool					updateDevicePosition	(string deviceId, float x, float y); // return true if device point changed on surface
+		virtual	void			onDevicePositionChanged	(string deviceId, float x, float y){}
+
+		map<string, ofVec2f>	m_devicePositions;
+ 
 		// Shader
 		void					M_beginShader			();
 		void					M_endShader				();

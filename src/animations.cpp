@@ -209,15 +209,10 @@ void Animation::registerSoundTags(vector<string>& soundTags)
 //--------------------------------------------------------------
 void Animation::playSound(string deviceId)
 {
-    DeviceManager* pDeviceManager = GLOBALS->mp_deviceManager;
-	if (pDeviceManager)
-	{
-		Device* pDevice = pDeviceManager->getDeviceById(deviceId);
-		if (pDevice)
-			m_soundPlayer.playRandom(pDevice->m_listSpeakerIds);
-	}
+	Device* pDevice = getDevice(deviceId);
+	if (pDevice)
+		m_soundPlayer.playRandom(pDevice->m_listSpeakerIds);
 }
-
 
 //--------------------------------------------------------------
 void Animation::createUISound()
@@ -303,6 +298,39 @@ void Animation::jsCallSoundChanged()
 	  ofxJSCallFunctionNameObject_NoArgs_IfExists(mp_obj, "soundsChanged", retVal);
   }
 }
+
+//--------------------------------------------------------------
+Device* Animation::getDevice(string deviceId)
+{
+    DeviceManager* pDeviceManager = GLOBALS->mp_deviceManager;
+	if (pDeviceManager)
+	{
+		return pDeviceManager->getDeviceById(deviceId);
+	}
+	return 0;
+}
+
+//--------------------------------------------------------------
+bool Animation::updateDevicePosition(string deviceId, float x, float y)
+{
+	bool is = false;
+	if (m_devicePositions.find(deviceId) == m_devicePositions.end())
+	{
+		m_devicePositions[deviceId] = ofVec2f(x,y);
+		is = true;
+	}
+	else
+	{
+		ofVec2f posNow = m_devicePositions[deviceId];
+		if (posNow.x != x || posNow.y != y){
+			is = true;
+			m_devicePositions[deviceId].set(x,y);
+		}
+	}
+
+	return is;
+}
+
 
 //--------------------------------------------------------------
 void Animation::guiEvent(ofxUIEventArgs &e)

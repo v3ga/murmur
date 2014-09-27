@@ -33,7 +33,7 @@ void toolSurfaces::setup()
     int w = ofGetWidth();
     int h = ofGetHeight();
 	
-	m_quadWarping.setup();
+	m_quadWarping.setup(&DATA->m_font);
 }
 
 //--------------------------------------------------------------

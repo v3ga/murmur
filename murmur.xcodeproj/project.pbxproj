@@ -79,6 +79,8 @@
 		F934070A1906B6EC003F4D97 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F93407091906B6EC003F4D97 /* Accelerate.framework */; };
 		F93407211906B89A003F4D97 /* ofxVideoRecorder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F934071C1906B89A003F4D97 /* ofxVideoRecorder.cpp */; };
 		F93F3267189E9EEB00C02161 /* ofxTween.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F93F3265189E9EEB00C02161 /* ofxTween.cpp */; };
+		F94AF63E19D419B70026A5A3 /* animationOrbit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F94AF63C19D419B70026A5A3 /* animationOrbit.cpp */; };
+		F94AF64119D498790026A5A3 /* Boid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F94AF63F19D498790026A5A3 /* Boid.cpp */; };
 		F951EB78195AC0D800056B2A /* ofxQuadWarp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F951EB72195AC0D800056B2A /* ofxQuadWarp.cpp */; };
 		F951EBF8195AC12300056B2A /* opencv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F951EBE4195AC12300056B2A /* opencv.a */; };
 		F951EBF9195AC12300056B2A /* ofxCvColorImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F951EBE7195AC12300056B2A /* ofxCvColorImage.cpp */; };
@@ -404,6 +406,10 @@
 		F934071D1906B89A003F4D97 /* ofxVideoRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxVideoRecorder.h; sourceTree = "<group>"; };
 		F93F3265189E9EEB00C02161 /* ofxTween.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTween.cpp; sourceTree = "<group>"; };
 		F93F3266189E9EEB00C02161 /* ofxTween.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTween.h; sourceTree = "<group>"; };
+		F94AF63C19D419B70026A5A3 /* animationOrbit.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animationOrbit.cpp; sourceTree = "<group>"; };
+		F94AF63D19D419B70026A5A3 /* animationOrbit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = animationOrbit.h; sourceTree = "<group>"; };
+		F94AF63F19D498790026A5A3 /* Boid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Boid.cpp; sourceTree = "<group>"; };
+		F94AF64019D498790026A5A3 /* Boid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Boid.h; sourceTree = "<group>"; };
 		F951EB70195AC0D800056B2A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		F951EB72195AC0D800056B2A /* ofxQuadWarp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxQuadWarp.cpp; sourceTree = "<group>"; };
 		F951EB73195AC0D800056B2A /* ofxQuadWarp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxQuadWarp.h; sourceTree = "<group>"; };
@@ -1778,6 +1784,8 @@
 				F9BC6B59174A616A00633C5C /* animationBox2D.cpp */,
 				F90A221D174FA39A005DE613 /* animationTunnel.h */,
 				F90A221C174FA39A005DE613 /* animationTunnel.cpp */,
+				F94AF63D19D419B70026A5A3 /* animationOrbit.h */,
+				F94AF63C19D419B70026A5A3 /* animationOrbit.cpp */,
 			);
 			name = Animations;
 			sourceTree = "<group>";
@@ -2532,6 +2540,8 @@
 				F951EC08196359E600056B2A /* quadWarping.h */,
 				F9C38AFB1885AAF100219152 /* threadRasp.h */,
 				F9C38AFA1885AAF100219152 /* threadRasp.cpp */,
+				F94AF63F19D498790026A5A3 /* Boid.cpp */,
+				F94AF64019D498790026A5A3 /* Boid.h */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -2753,6 +2763,7 @@
 				F99930F6171989EB00272085 /* ofxEasing.cpp in Sources */,
 				F9AB0BF31940FB0D0020D78A /* toolNetwork.cpp in Sources */,
 				F99930F7171989EB00272085 /* ofxEasingBack.cpp in Sources */,
+				F94AF64119D498790026A5A3 /* Boid.cpp in Sources */,
 				F99930F8171989EB00272085 /* ofxEasingBounce.cpp in Sources */,
 				F92BC4C7189F094600CA158A /* ofxUITextArea.cpp in Sources */,
 				F99930F9171989EB00272085 /* ofxEasingCirc.cpp in Sources */,
@@ -2851,6 +2862,7 @@
 				F9BC6C6D174A621600633C5C /* b2World.cpp in Sources */,
 				F9BC6C6E174A621600633C5C /* b2WorldCallbacks.cpp in Sources */,
 				F92BC4C9189F094600CA158A /* ofxUIToggle.cpp in Sources */,
+				F94AF63E19D419B70026A5A3 /* animationOrbit.cpp in Sources */,
 				F9BC6C6F174A621600633C5C /* b2CircleContact.cpp in Sources */,
 				F9BC6C70174A621600633C5C /* b2Contact.cpp in Sources */,
 				F93407211906B89A003F4D97 /* ofxVideoRecorder.cpp in Sources */,

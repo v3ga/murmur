@@ -14,6 +14,7 @@
 quadWarpingHandle::quadWarpingHandle() : ofxMSAInteractiveObject()
 {
 	mp_parent = 0;
+	mp_font = 0;
 	m_isSelected = false;
 }
 
@@ -24,9 +25,10 @@ bool quadWarpingHandle::hitTest(int tx, int ty)
 }
 
 //--------------------------------------------------------------
-void quadWarpingHandle::setup(quadWarping* pParent)
+void quadWarpingHandle::setup(quadWarping* pParent, ofTrueTypeFont* pFont)
 {
 	mp_parent = pParent;
+	mp_font = pFont;
 
 	setSize(10, 10);
 	disableAllEvents();
@@ -40,7 +42,7 @@ void quadWarpingHandle::update()
 }
 
 //--------------------------------------------------------------
-void quadWarpingHandle::draw()
+void quadWarpingHandle::draw(int index)
 {
 	posNormalized.set( x/ofGetWidth(),  x/ofGetHeight());
 
@@ -49,6 +51,9 @@ void quadWarpingHandle::draw()
 	else
 		ofSetColor(255);
 	ofRect(x-width/2,y-height/2,width,height);
+	if (mp_font){
+		mp_font->drawString(ofToString(index), x+width/2+5,y);
+	}
 }
 
 //--------------------------------------------------------------
@@ -120,11 +125,11 @@ void quadWarping::selectHandle(quadWarpingHandle* p)
 
 
 //--------------------------------------------------------------
-void quadWarping::setup()
+void quadWarping::setup(ofTrueTypeFont* pFont)
 {
 	for (int i=0;i<4;i++)
 	{
-		m_handles[i].setup(this);
+		m_handles[i].setup(this,pFont);
 	}
 }
 
@@ -150,7 +155,7 @@ void quadWarping::draw()
 
 	for (int i=0;i<4;i++)
 	{
-		m_handles[i].draw();
+		m_handles[i].draw(i);
 	}
 	ofPopStyle();
 }

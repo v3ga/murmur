@@ -9,6 +9,8 @@
 #pragma once
 #include "ofMain.h"
 
+#define DATA Data::instance()
+
 class Data
 {
     public:
@@ -21,7 +23,9 @@ class Data
         ofImage                 m_imgLogo;
     
         ofTrueTypeFont          m_fontHelvetica;
-    
+        ofTrueTypeFont          m_font;
+
+ 
     private:
         static Data*            smp_instance;
 };
