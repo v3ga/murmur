@@ -106,6 +106,7 @@ class Animation
  
  		// Device
 		Device*					getDevice				(string deviceId);
+		Device*					getDeviceCurrent		();
 		bool					updateDevicePosition	(string deviceId, float x, float y); // return true if device point changed on surface
 		virtual	void			onDevicePositionChanged	(string deviceId, float x, float y){}
 

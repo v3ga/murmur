@@ -16,6 +16,7 @@ BoidOrbit::BoidOrbit(AnimationOrbit* pAnimation, float x, float y) : Boid(x,y)
 	setSpeedMinMax(1.0,2.0);
 	setForceMax(0.1);
 	m_locationsNbMax = 200;
+	mp_particlePath = 0;
 	for (int i=0;i<m_locationsNbMax;i++)
 	{
 		m_polyline.addVertex( ofVec2f(0.0f,0.0f) );
@@ -198,11 +199,22 @@ void ParticleOrbitEllipse::setRotation(float rot)
 AnimationOrbit::AnimationOrbit(string name) : Animation(name)
 {
 	mp_testParticle = new ParticlePath();
+/*
+	int nbPaths = 3;
+	for (int i=0;i<nbPaths;i++)
+	{
+		ParticlePath* pParticlePath = new ParticlePath();
+		m_particlePaths.push_back( pParticlePath );
+	}
+*/
+
 	for (int i=0;i<100;i++)
 		m_boids.push_back( new BoidOrbit(this,0,0) );
 
 
 	m_isDrawDebug 		= false;
+	m_isFrameBlending	= false;
+	m_frameBlending		= 0.25f;
 
 	m_boidsSeparation 	= 1.5f;
 	m_boidsCohesion		= 1.0f;
@@ -211,6 +223,14 @@ AnimationOrbit::AnimationOrbit(string name) : Animation(name)
 	m_boidsMaxSpeedMax	= 2.0f;
 
 	m_rotationForms		= 20.0f;
+	m_widthForms		= 200.0f;
+	m_heightForms		= 100.0f;
+	
+	mp_labelDeviceId	= 0;
+	mp_sliderFormRot	= 0;
+	mp_sliderFormWidth	= 0;
+	mp_sliderFormHeight	= 0;
+	mp_deviceCurrent	= 0;
 }
 
 //--------------------------------------------------------------
@@ -244,12 +264,31 @@ void AnimationOrbit::VM_update(float dt)
 			pBoid->follow(mp_testParticle->m_pos, m_boids);
 		}
 	}
+
+	// Look for change on Device
+	if (mp_deviceCurrent != getDeviceCurrent())
+	{
+		mp_deviceCurrent = getDeviceCurrent();
+		updateUI();
+	}
+
 }
 
 //--------------------------------------------------------------
 void AnimationOrbit::VM_draw(float w, float h)
 {
-	ofBackground(0);
+	if (m_isFrameBlending)
+	{
+		ofPushStyle();
+		ofFill();
+		ofSetColor(0,m_frameBlending*255.0f);
+		ofRect(0,0,w,h);
+		ofPopStyle();
+	}
+	else{
+		ofBackground(0);
+	}
+
 
 	if (m_isDrawDebug)
 	{
@@ -364,6 +403,9 @@ void AnimationOrbit::createUICustom()
     	mp_UIcanvas->addWidgetDown	( new ofxUISpacer(widthDefault, 1));
 
         mp_UIcanvas->addToggle("draw_debug",	&m_isDrawDebug);
+        mp_UIcanvas->addToggle("trace",			&m_isFrameBlending);
+        mp_UIcanvas->addSlider("trace_level", 	0.0f, 1.0f, &m_frameBlending);
+
 
 	    mp_UIcanvas->addWidgetDown	( new ofxUILabel("Flocking", OFX_UI_FONT_SMALL) );
     	mp_UIcanvas->addWidgetDown	( new ofxUISpacer(widthDefault, 1));
@@ -375,19 +417,20 @@ void AnimationOrbit::createUICustom()
         mp_UIcanvas->addSlider("speed_max", 	1.0f, 3.0f, 2.0f);
         mp_UIcanvas->addSlider("force_max", 	0.0f, 0.2f, 0.1f);
 
-	    mp_UIcanvas->addWidgetDown	( new ofxUILabel("Forms", OFX_UI_FONT_SMALL) );
+	    mp_labelDeviceId = new ofxUILabel("Forms", OFX_UI_FONT_SMALL);
+		mp_UIcanvas->addWidgetDown	( mp_labelDeviceId );
     	mp_UIcanvas->addWidgetDown	( new ofxUISpacer(widthDefault, 1));
-		
-//        mp_UIcanvas->addSlider("width", 	0.0f, 0.2f, 0.1f);
-//        mp_UIcanvas->addSlider("height", 	0.0f, 0.2f, 0.1f);
-        mp_UIcanvas->addSlider("rotation_forms", 	0.0f, 90.0f, &m_rotationForms);
-		
+		mp_sliderFormRot = mp_UIcanvas->addSlider("rotation_forms", 	-90.0f, 90.0f, &m_rotationForms);
+		mp_sliderFormWidth = mp_UIcanvas->addSlider("width_forms", 		10.0f, 500.0f, &m_widthForms);
+		mp_sliderFormHeight = mp_UIcanvas->addSlider("height_forms", 	10.0f, 500.0f, &m_heightForms);
     }
 }
 
 //--------------------------------------------------------------
 ParticleOrbit* AnimationOrbit::getOrbitForDevice(Device* pDevice)
 {
+	if (pDevice)
+		return getOrbitForDevice( pDevice->m_id );
 	return 0;
 }
 
@@ -434,17 +477,38 @@ void AnimationOrbit::guiEvent(ofxUIEventArgs &e)
 	}
     else if (name == "rotation_forms")
 	{
+		ofxUISlider* pSliderFormRot = (ofxUISlider*) e.widget;
+	
+		ParticleOrbitEllipse* pOrbitEllipse = (ParticleOrbitEllipse*) getOrbitForDevice(getDeviceCurrent());
+		if(pOrbitEllipse) pOrbitEllipse->setRotation( pSliderFormRot->getScaledValue() );
+		
+	}
+    else if (name == "width_forms")
+	{
+		ParticleOrbitEllipse* pOrbitEllipse = (ParticleOrbitEllipse*) getOrbitForDevice(getDeviceCurrent());
+		if(pOrbitEllipse) pOrbitEllipse->setWidth( ((ofxUISlider*) e.widget)->getScaledValue() );
+	}
+    else if (name == "height_forms")
+	{
+		ParticleOrbitEllipse* pOrbitEllipse = (ParticleOrbitEllipse*) getOrbitForDevice(getDeviceCurrent());
+		if(pOrbitEllipse) pOrbitEllipse->setHeight( ((ofxUISlider*) e.widget)->getScaledValue() );
 	}
 }
 
+//--------------------------------------------------------------
+void AnimationOrbit::updateUI()
+{
+	ParticleOrbitEllipse* pOrbitEllipse = (ParticleOrbitEllipse*) getOrbitForDevice( getDeviceCurrent() );
 
-/*
-		vector<Boid*>::iterator it = m_boids.begin();
-		for ( ; it != m_boids.end(); ++it)
-		{
-			(*it)->draw();
-			ofEllipse((*it)->location, 5,5);
-		}
+	if (mp_labelDeviceId){
+		Device* pDeviceCurrent = getDeviceCurrent();
+		if (pDeviceCurrent) mp_labelDeviceId->setLabel("Forms for "+pDeviceCurrent->m_id);
+	}
+	
+	if (mp_sliderFormRot && pOrbitEllipse)			mp_sliderFormRot->setValue( pOrbitEllipse->getRotation() );
+	if (mp_sliderFormWidth && pOrbitEllipse)		mp_sliderFormWidth->setValue( pOrbitEllipse->getRadius().x );
+	if (mp_sliderFormHeight && pOrbitEllipse)		mp_sliderFormHeight->setValue( pOrbitEllipse->getRadius().y );
 
-*/
+}
+
 
