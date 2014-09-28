@@ -311,6 +311,18 @@ Device* Animation::getDevice(string deviceId)
 }
 
 //--------------------------------------------------------------
+Device* Animation::getDeviceCurrent()
+{
+    DeviceManager* pDeviceManager = GLOBALS->mp_deviceManager;
+	if (pDeviceManager)
+	{
+		return pDeviceManager->getDeviceCurrent();
+	}
+	return 0;
+}
+
+
+//--------------------------------------------------------------
 bool Animation::updateDevicePosition(string deviceId, float x, float y)
 {
 	bool is = false;
