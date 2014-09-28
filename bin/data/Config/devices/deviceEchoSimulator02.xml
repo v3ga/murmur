@@ -11,7 +11,7 @@
     <timeStandby>6.964285851</timeStandby>
     <sampleVolStandby>0.349999994</sampleVolStandby>
     <surface id="main">
-        <xNorm>0.839843750</xNorm>
-        <yNorm>0.470703125</yNorm>
+        <xNorm>0.767578125</xNorm>
+        <yNorm>0.335937500</yNorm>
     </surface>
 </device>

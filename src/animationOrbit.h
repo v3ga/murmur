@@ -9,9 +9,30 @@
 #pragma once
 
 #include "animations.h"
+#include "Boid.h"
 
 class ParticleOrbit;
 class ParticlePath;
+class AnimationOrbit;
+
+//--------------------------------------------------------------
+class BoidOrbit : public Boid
+{
+	public:
+		BoidOrbit					(AnimationOrbit*, float x, float y);
+
+		void						setSpeedMinMax	(float speedMin, float speedMax);
+		void						setForceMax		(float forceMax);
+	
+		void						follow			(ofVec2f& target, vector<Boid*>& boids);
+		void 						flock			(vector<Boid*>& boids);
+		void						draw			();
+
+		AnimationOrbit*				mp_animation;
+		vector<ofVec2f>				m_locations;
+		int							m_locationsNbMax;
+		ofPolyline					m_polyline;
+};
 
 //--------------------------------------------------------------
 class AnimationOrbit : public Animation
@@ -27,6 +48,7 @@ class AnimationOrbit : public Animation
         virtual	void			VM_exit					();
         virtual void            onNewPacket             (DevicePacket*, string deviceId, float xNorm, float yNorm);
 		virtual	void			createUICustom			();
+				void			guiEvent				(ofxUIEventArgs &e);
 
 				void			drawOrbit				(ParticleOrbit* pOrbit);
 
@@ -37,6 +59,19 @@ class AnimationOrbit : public Animation
 
 		map<string, ParticleOrbit*>				m_orbits; // key is deviceId
 		map<string, ParticleOrbit*>::iterator	m_orbitsIt;
+	
+		bool					m_isDrawDebug;
+
+		vector<Boid*>			m_boids;
+		float					m_boidsSeparation;
+		float					m_boidsCohesion;
+		float					m_boidsAlignement;
+		float					m_boidsMaxSpeedMin;
+		float					m_boidsMaxSpeedMax;
+		float					m_boidsForceMax;
+	
+
+		float					m_rotationForms;
 };
 
 //--------------------------------------------------------------
@@ -49,7 +84,7 @@ class ParticlePath
 		void					setSegment				(int indexA, ParticleOrbit* pA, int indexB, ParticleOrbit* pB);
 		void					update					(float dt);
 
-		ofVec3f					m_pos;
+		ofVec2f					m_pos;
 		float					m_speed;
 
 		ofVec2f					m_A;

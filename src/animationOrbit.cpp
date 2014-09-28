@@ -9,6 +9,86 @@
 #include "animationOrbit.h"
 #include "globals.h"
 
+//--------------------------------------------------------------
+BoidOrbit::BoidOrbit(AnimationOrbit* pAnimation, float x, float y) : Boid(x,y)
+{
+	mp_animation = pAnimation;
+	setSpeedMinMax(1.0,2.0);
+	setForceMax(0.1);
+	m_locationsNbMax = 200;
+	for (int i=0;i<m_locationsNbMax;i++)
+	{
+		m_polyline.addVertex( ofVec2f(0.0f,0.0f) );
+	}
+}
+
+//--------------------------------------------------------------
+void BoidOrbit::setSpeedMinMax(float speedMin, float speedMax)
+{
+	maxspeed = ofRandom(speedMin, speedMax);
+}
+
+//--------------------------------------------------------------
+void BoidOrbit::setForceMax(float forceMax)
+{
+	maxforce = forceMax;
+}
+
+
+
+//--------------------------------------------------------------
+void BoidOrbit::flock(vector<Boid*>& boids)
+{
+
+	if (mp_animation->m_boidsSeparation>0.0f)
+	{
+		ofVec2f sep = separate(boids);   // Separation
+		sep *= mp_animation->m_boidsSeparation;
+		applyForce(sep);
+	}
+	
+	if (mp_animation->m_boidsAlignement>0.0f)
+	{
+		ofVec2f ali = align(boids);      // Alignment
+		ali *= mp_animation->m_boidsAlignement;
+		applyForce(ali);
+	}
+
+	if (mp_animation->m_boidsCohesion>0.0f)
+	{
+		ofVec2f coh = cohesion(boids);   // Cohesion
+		coh *= mp_animation->m_boidsCohesion;
+		applyForce(coh);
+	}
+}
+
+//--------------------------------------------------------------
+void BoidOrbit::follow(ofVec2f& target, vector<Boid*>& boids)
+{
+	applyForce( seek(target) );
+	flock(boids);
+	update(0.0f);
+
+	m_locations.push_back( location );
+	if (m_locations.size()>m_locationsNbMax)
+	{
+		m_locations.erase(m_locations.begin());
+	}
+}
+
+
+//--------------------------------------------------------------
+void BoidOrbit::draw()
+{
+	int nbPoints = m_locations.size();
+	for (int i=0;i<nbPoints;i++)
+	{
+		m_polyline[i].set(m_locations[i]);
+	}
+
+	m_polyline.draw();
+}
+
 
 //--------------------------------------------------------------
 ParticlePath::ParticlePath()
@@ -118,6 +198,19 @@ void ParticleOrbitEllipse::setRotation(float rot)
 AnimationOrbit::AnimationOrbit(string name) : Animation(name)
 {
 	mp_testParticle = new ParticlePath();
+	for (int i=0;i<100;i++)
+		m_boids.push_back( new BoidOrbit(this,0,0) );
+
+
+	m_isDrawDebug 		= false;
+
+	m_boidsSeparation 	= 1.5f;
+	m_boidsCohesion		= 1.0f;
+	m_boidsAlignement	= 1.0f;
+	m_boidsMaxSpeedMin	= 1.0f;
+	m_boidsMaxSpeedMax	= 2.0f;
+
+	m_rotationForms		= 20.0f;
 }
 
 //--------------------------------------------------------------
@@ -140,31 +233,58 @@ void AnimationOrbit::VM_enter()
 void AnimationOrbit::VM_update(float dt)
 {
 	if (mp_testParticle)
+	{
 		mp_testParticle->update(dt);
+
+		vector<Boid*>::iterator it = m_boids.begin();
+		BoidOrbit* pBoid=0;
+		for ( ; it != m_boids.end(); ++it)
+		{
+			pBoid = (BoidOrbit*) *it;
+			pBoid->follow(mp_testParticle->m_pos, m_boids);
+		}
+	}
 }
 
 //--------------------------------------------------------------
 void AnimationOrbit::VM_draw(float w, float h)
 {
 	ofBackground(0);
-	ofPushStyle();
-	for (m_orbitsIt = m_orbits.begin(); m_orbitsIt != m_orbits.end(); ++m_orbitsIt)
+
+	if (m_isDrawDebug)
 	{
-		ParticleOrbit* pOrbit = m_orbitsIt->second;
-		Device* pDevice = getDevice( m_orbitsIt->first );
+		ofPushStyle();
+		for (m_orbitsIt = m_orbits.begin(); m_orbitsIt != m_orbits.end(); ++m_orbitsIt)
+		{
+			ParticleOrbit* pOrbit = m_orbitsIt->second;
+			Device* pDevice = getDevice( m_orbitsIt->first );
 		
-		ofFill();
-		ofSetColor(255,0,0);
-		ofPushMatrix();
-//			ofTranslate( pOrbit->getCenter().x, pOrbit->getCenter().y );
-//			ofEllipse( 0, 0, 10,10 );
-			drawOrbit(pOrbit);
-		ofPopMatrix();
+			ofFill();
+			ofSetColor(255,0,0);
+			ofPushMatrix();
+				drawOrbit(pOrbit);
+			ofPopMatrix();
+		}
 	}
 
-	if (mp_testParticle){
-		ofSetColor(0,0,255);
-		ofEllipse(mp_testParticle->m_pos, 5,5);
+	if (mp_testParticle)
+	{
+		if (m_isDrawDebug)
+		{
+			ofSetColor(0,0,255);
+			ofEllipse(mp_testParticle->m_pos, 5,5);
+		}
+		
+		ofSetColor(0,255,255);
+		vector<Boid*>::iterator it = m_boids.begin();
+		for ( ; it != m_boids.end(); ++it)
+		{
+			(*it)->draw();
+			if (m_isDrawDebug)
+				ofEllipse((*it)->location, 5,5);
+		}
+
+
 	}
 
 	ofPopStyle();
@@ -200,25 +320,34 @@ void AnimationOrbit::onNewPacket(DevicePacket*, string deviceId, float x, float 
 	ParticleOrbit* pOrbit = getOrbitForDevice(deviceId);
 	if (pOrbit == 0)
 	{
+		// Orbit for device 01
 		ParticleOrbitEllipse* pOrbitEllipse =  new ParticleOrbitEllipse();
-		if (deviceId == "deviceEchoSimulator01" || deviceId == "chambreEcho_001"){
-			pOrbitEllipse->setRotation( -20 );
+		if (deviceId == "deviceEchoSimulator01" || deviceId == "chambreEcho_001")
+		{
+			pOrbitEllipse->setRotation( -m_rotationForms );
 
 
 		}
-		if (deviceId == "deviceEchoSimulator02" || deviceId == "chambreEcho_002"){
-			pOrbitEllipse->setRotation( 20 );
+		// Orbit for device 02
+		else if (deviceId == "deviceEchoSimulator02" || deviceId == "chambreEcho_002"){
+			pOrbitEllipse->setRotation( m_rotationForms );
 		}
+		
+		// Set center
 		pOrbitEllipse->setCenter( ofVec3f(x,y,0.0f) );
+
+		// Save in map
 		m_orbits[deviceId] = pOrbitEllipse;
 
 		pOrbit = pOrbitEllipse;
 	}
+
+	// Position of deviceId changed ?
 	if (pOrbit && updateDevicePosition(deviceId,x,y))
 	{
 		pOrbit->setCenter( ofVec3f(x,y) );
-// TEMP
-mp_testParticle->setSegment(0, pOrbit, 1, pOrbit);
+		// TEMP
+		mp_testParticle->setSegment(0, pOrbit, 1, pOrbit);
 	}
 	
 	
@@ -227,7 +356,33 @@ mp_testParticle->setSegment(0, pOrbit, 1, pOrbit);
 //--------------------------------------------------------------
 void AnimationOrbit::createUICustom()
 {
+    if (mp_UIcanvas)
+    {
+		int widthDefault = 320;
 
+	    mp_UIcanvas->addWidgetDown	( new ofxUILabel("Drawing", OFX_UI_FONT_SMALL) );
+    	mp_UIcanvas->addWidgetDown	( new ofxUISpacer(widthDefault, 1));
+
+        mp_UIcanvas->addToggle("draw_debug",	&m_isDrawDebug);
+
+	    mp_UIcanvas->addWidgetDown	( new ofxUILabel("Flocking", OFX_UI_FONT_SMALL) );
+    	mp_UIcanvas->addWidgetDown	( new ofxUISpacer(widthDefault, 1));
+
+        mp_UIcanvas->addSlider("separation", 	0.0f, 1.5f, &m_boidsSeparation);
+        mp_UIcanvas->addSlider("cohesion", 		0.0f, 1.5f, &m_boidsCohesion);
+        mp_UIcanvas->addSlider("alignement", 	0.0f, 1.5f, &m_boidsAlignement);
+        mp_UIcanvas->addSlider("speed_min", 	1.0f, 3.0f, 1.0f);
+        mp_UIcanvas->addSlider("speed_max", 	1.0f, 3.0f, 2.0f);
+        mp_UIcanvas->addSlider("force_max", 	0.0f, 0.2f, 0.1f);
+
+	    mp_UIcanvas->addWidgetDown	( new ofxUILabel("Forms", OFX_UI_FONT_SMALL) );
+    	mp_UIcanvas->addWidgetDown	( new ofxUISpacer(widthDefault, 1));
+		
+//        mp_UIcanvas->addSlider("width", 	0.0f, 0.2f, 0.1f);
+//        mp_UIcanvas->addSlider("height", 	0.0f, 0.2f, 0.1f);
+        mp_UIcanvas->addSlider("rotation_forms", 	0.0f, 90.0f, &m_rotationForms);
+		
+    }
 }
 
 //--------------------------------------------------------------
@@ -243,4 +398,53 @@ ParticleOrbit* AnimationOrbit::getOrbitForDevice(string deviceId)
 		return m_orbits[deviceId];
 	return 0;
 }
+
+//--------------------------------------------------------------
+void AnimationOrbit::guiEvent(ofxUIEventArgs &e)
+{
+	Animation::guiEvent(e);
+    string name = e.widget->getName();
+	
+    if (name == "speed_min" || name == "speed_max")
+    {
+		ofxUISlider* pSliderSpeedMin = (ofxUISlider*) mp_UIcanvas->getWidget("speed_min");
+		ofxUISlider* pSliderSpeedMax = (ofxUISlider*) mp_UIcanvas->getWidget("speed_max");
+		if (pSliderSpeedMin && pSliderSpeedMax)
+		{
+			vector<Boid*>::iterator it = m_boids.begin();
+			BoidOrbit* pBoid=0;
+			for ( ; it != m_boids.end(); ++it)
+			{
+				pBoid = (BoidOrbit*) *it;
+				pBoid->setSpeedMinMax(pSliderSpeedMin->getScaledValue(), pSliderSpeedMax->getScaledValue());
+			}
+		}
+	}
+    else if (name == "force_max")
+	{
+		ofxUISlider* pSliderForceMax = (ofxUISlider*) e.widget;
+
+		vector<Boid*>::iterator it = m_boids.begin();
+		BoidOrbit* pBoid=0;
+		for ( ; it != m_boids.end(); ++it)
+		{
+			pBoid = (BoidOrbit*) *it;
+			pBoid->setForceMax(pSliderForceMax->getScaledValue());
+		}
+	}
+    else if (name == "rotation_forms")
+	{
+	}
+}
+
+
+/*
+		vector<Boid*>::iterator it = m_boids.begin();
+		for ( ; it != m_boids.end(); ++it)
+		{
+			(*it)->draw();
+			ofEllipse((*it)->location, 5,5);
+		}
+
+*/
 
