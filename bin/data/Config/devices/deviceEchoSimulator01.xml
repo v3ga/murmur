@@ -9,9 +9,9 @@
     </soundOutput>
     <enableStandby>1</enableStandby>
     <timeStandby>10.000000000</timeStandby>
-    <sampleVolStandby>0.349999994</sampleVolStandby>
+    <sampleVolStandby>0.320000023</sampleVolStandby>
     <surface id="main">
-        <xNorm>0.101562500</xNorm>
-        <yNorm>0.361328125</yNorm>
+        <xNorm>0.584960938</xNorm>
+        <yNorm>0.597656250</yNorm>
     </surface>
 </device>

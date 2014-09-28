@@ -13,16 +13,20 @@
 
 class Boid
 {
-	Boid			(float x, float y);
+
+	public:
+	Boid					(float x, float y);
 	
-	void			run				(vector<Boid*>& boids);
-	void 			applyForce		(ofVec2f force);
-	void 			flock			(vector<Boid*>& boids);
-	void			update			(float dt);
-	ofVec2f 		seek			(ofVec2f target);
-	ofVec2f 		separate 		(vector<Boid*>& boids);
-	ofVec2f 		align 			(vector<Boid*>& boids);
-  	ofVec2f 		cohesion 		(vector<Boid*>& boids);
+	virtual void			run				(vector<Boid*>& boids);
+	virtual	void			draw			(){}
+
+	virtual void 			applyForce		(ofVec2f force);
+	virtual void 			flock			(vector<Boid*>& boids);
+	virtual void			update			(float dt);
+	virtual ofVec2f 		seek			(ofVec2f target);
+	virtual ofVec2f 		separate 		(vector<Boid*>& boids);
+	virtual ofVec2f 		align 			(vector<Boid*>& boids);
+  	virtual ofVec2f 		cohesion 		(vector<Boid*>& boids);
 
 
 
