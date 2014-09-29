@@ -94,7 +94,7 @@ class Animation
 
         virtual void            saveProperties          (string id);
         virtual void            loadProperties          (string id);
-        string                  getPropertiesFilename   (string id); // id from surface
+        string                  getPropertiesFilename   (string id, bool isExtension=true); // id from surface
     
         // SUPER DIRTY
         static std::map<JSObject*, Animation*> sm_mapJSObj_Anim;

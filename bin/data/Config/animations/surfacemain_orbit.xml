@@ -6,7 +6,7 @@
 <Widget>
     <Kind>2</Kind>
     <Name>trace</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -15,13 +15,18 @@
 </Widget>
 <Widget>
     <Kind>4</Kind>
+    <Name>alpha</Name>
+    <Value>0.589743614</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
     <Name>separation</Name>
-    <Value>1.177884579</Value>
+    <Value>0.408653855</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>cohesion</Name>
-    <Value>0.562500000</Value>
+    <Value>1.254807711</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -46,17 +51,17 @@
 <Widget>
     <Kind>4</Kind>
     <Name>rotation_forms</Name>
-    <Value>20.769235611</Value>
+    <Value>-36.923072815</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>width_forms</Name>
-    <Value>151.346145630</Value>
+    <Value>192.179489136</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>height_forms</Name>
-    <Value>149.775650024</Value>
+    <Value>141.923080444</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
