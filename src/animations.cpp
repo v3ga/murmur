@@ -425,9 +425,9 @@ void Animation::loadProperties(string id)
 }
 
 //--------------------------------------------------------------
-string Animation::getPropertiesFilename(string id)
+string Animation::getPropertiesFilename(string id, bool isExtension)
 {
-    return "Config/animations/"+id+"_"+this->m_name+".xml";
+    return "Config/animations/"+id+"_"+this->m_name+ ( isExtension ? ".xml" : "");
 }
 
 

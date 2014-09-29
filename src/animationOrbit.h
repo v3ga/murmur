@@ -23,8 +23,10 @@ class BoidOrbit : public Boid
 
 		void						setSpeedMinMax	(float speedMin, float speedMax);
 		void						setForceMax		(float forceMax);
+		void						setPath			(ParticlePath* p){mp_particlePath=p;}
 	
 		void						follow			(ofVec2f& target, vector<Boid*>& boids);
+		void						follow			(vector<Boid*>& boids);
 		void 						flock			(vector<Boid*>& boids);
 		void						draw			();
 
@@ -52,6 +54,8 @@ class AnimationOrbit : public Animation
 		virtual	void			createUICustom			();
 				void			guiEvent				(ofxUIEventArgs &e);
 				void			updateUI				();
+				void            saveProperties          (string id);
+				void            loadProperties          (string id);
 	
 				void			drawOrbit				(ParticleOrbit* pOrbit);
 
@@ -76,6 +80,7 @@ class AnimationOrbit : public Animation
 		float					m_boidsMaxSpeedMin;
 		float					m_boidsMaxSpeedMax;
 		float					m_boidsForceMax;
+		float					m_boidsDrawAlpha;
 	
 		float					m_rotationForms, m_widthForms, m_heightForms;
 
@@ -95,7 +100,8 @@ class ParticlePath
 		ParticlePath			();
 
 
-		void					setSegment				(int indexA, ParticleOrbit* pA, int indexB, ParticleOrbit* pB);
+		void					setSegment				(ParticleOrbit* pA, int indexA, ParticleOrbit* pB, int indexB);
+		void					setSegment				(ParticleOrbit* pA, int indexA);
 		void					update					(float dt);
 
 		ofVec2f					m_pos;
@@ -121,6 +127,8 @@ class ParticleOrbit
 				vector<ofVec3f>&getPoints				(){return m_points;}
 				void			setCenter				(ofVec3f center){m_center=center;computePoints();}
 				ofVec3f&		getCenter				(){return m_center;}
+				virtual	void	save					(ofxXmlSettings& settings){}
+				virtual	void	load					(ofxXmlSettings& settings){}
 
 	protected:
 		ofVec3f					m_center;
@@ -141,6 +149,9 @@ class ParticleOrbitEllipse : public ParticleOrbit
 				ofVec2f			getRadius				(){return m_radius;}
 				void			setRotation				(float rot);
 				float			getRotation				(){return m_rot;}
+
+				void			save					(ofxXmlSettings& settings);
+				void			load					(ofxXmlSettings& settings);
 
 	private:
 		ofVec3f					m_offset;
