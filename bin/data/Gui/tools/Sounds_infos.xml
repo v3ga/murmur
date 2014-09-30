@@ -1,8 +1,8 @@
 <sounds>
     <sound file="main.wav" tags=""></sound>
-    <sound file="shader1.wav" tags="bubble"></sound>
+    <sound file="shader1.wav" tags="bubble;orbit"></sound>
     <sound file="shader2.wav" tags=""></sound>
-    <sound file="shader3.wav" tags=""></sound>
+    <sound file="shader3.wav" tags="orbit"></sound>
     <sound file="shader4.wav" tags=""></sound>
     <sound file="shader5.wav" tags=""></sound>
     <sound file="shader6.wav" tags=""></sound>

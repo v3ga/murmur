@@ -106,7 +106,8 @@ ParticlePath::ParticlePath()
 	mp_orbitA = 0;
 	mp_orbitB = 0;
 	
-	m_speed = 50;
+	m_speed 	= 50;
+	m_nbTurns	= 0;
 }
 
 
@@ -131,7 +132,10 @@ void ParticlePath::setSegment(ParticleOrbit* pA, int indexA, ParticleOrbit* pB, 
 void ParticlePath::setSegment(ParticleOrbit* pA, int indexA)
 {
 	if (pA)
+	{
+		if (indexA==0) m_nbTurns++;
 		setSegment(pA, indexA, pA, (indexA+1)%pA->getPoints().size());
+	}
 }
 
 
@@ -159,6 +163,7 @@ ParticleOrbitEllipse::ParticleOrbitEllipse()
 	setRadius( ofVec2f(100.0,50.0) );
 	setOffset( ofVec3f(0.0,0.0,0.0) );
 	setRotation(20.0f);
+//	setReverse(true);
 }
 
 //--------------------------------------------------------------
@@ -169,23 +174,25 @@ void ParticleOrbitEllipse::computePoints()
 	ofVec2f pointEllipse;
 	ofVec3f point;
 	float aR = 0.0f;
-	for (float angle = 0.0f; angle < 360.0f; angle+=30.0f)
-	{
-		aR = ofDegToRad(angle);
-		pointEllipse.set(
-							m_radius.x * cos(aR),
-							m_radius.y * sin(aR)
-						);
+	
 
-		float rotR = ofDegToRad(m_rot);
-		point.set(
-					m_center.x+m_offset.x + pointEllipse.x*cos(rotR) - pointEllipse.y*sin(rotR),
-					m_center.y+m_offset.y + pointEllipse.x*sin(rotR) + pointEllipse.y*cos(rotR)
-		);
+		for (float angle = 0.0f; angle < 360.0f; angle+=30.0f)
+		{
+			aR = ofDegToRad(angle);
+			pointEllipse.set(
+								m_radius.x * cos(aR),
+								m_radius.y * sin(aR)
+							);
+
+			float rotR = ofDegToRad(m_rot);
+			point.set(
+						m_center.x+m_offset.x + pointEllipse.x*cos(rotR) - pointEllipse.y*sin(rotR),
+						m_center.y+m_offset.y + pointEllipse.x*sin(rotR) + pointEllipse.y*cos(rotR)
+			);
 		
-		m_points.push_back( point );
-	}
-
+			m_points.push_back( point );
+		}
+	
 }
 
 //--------------------------------------------------------------
@@ -342,14 +349,6 @@ void AnimationOrbit::VM_draw(float w, float h)
 				drawOrbit(pOrbit);
 			ofPopMatrix();
 		}
-
-		ofSetColor(0,0,255);
-		vector<ParticlePath*>::iterator it = m_particlePaths.begin();
-		for ( ;it != m_particlePaths.end(); ++it)
-		{
-			ofEllipse((*it)->m_pos, 5,5);
-		}
-
 	}
 	
 		ofSetColor(255,255,255, m_boidsDrawAlpha*255.0f);
@@ -360,6 +359,17 @@ void AnimationOrbit::VM_draw(float w, float h)
 			if (m_isDrawDebug)
 				ofEllipse((*it)->location, 5,5);
 		}
+
+	if (m_isDrawDebug)
+	{
+		ofSetColor(0,0,255);
+		vector<ParticlePath*>::iterator it = m_particlePaths.begin();
+		for ( ;it != m_particlePaths.end(); ++it)
+		{
+			ofEllipse((*it)->m_pos, 5,5);
+			ofDrawBitmapString(ofToString( (*it)->getNbTurns() ), (*it)->m_pos.x+10, (*it)->m_pos.y);
+		}
+	}
 
 	ofPopStyle();
 }

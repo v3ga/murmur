@@ -103,6 +103,9 @@ class ParticlePath
 		void					setSegment				(ParticleOrbit* pA, int indexA, ParticleOrbit* pB, int indexB);
 		void					setSegment				(ParticleOrbit* pA, int indexA);
 		void					update					(float dt);
+		int						getNbTurns				(){return m_nbTurns;}
+	
+		int						m_nbTurns;
 
 		ofVec2f					m_pos;
 		float					m_speed;
@@ -127,12 +130,16 @@ class ParticleOrbit
 				vector<ofVec3f>&getPoints				(){return m_points;}
 				void			setCenter				(ofVec3f center){m_center=center;computePoints();}
 				ofVec3f&		getCenter				(){return m_center;}
+				void			setReverse				(bool is){m_isReverse=is;}
+				bool			getReverse				(){return m_isReverse;}
 				virtual	void	save					(ofxXmlSettings& settings){}
 				virtual	void	load					(ofxXmlSettings& settings){}
 
 	protected:
 		ofVec3f					m_center;
 		vector<ofVec3f>			m_points; // relative to local coordinates : origin is (0,0), not the Device point
+		bool					m_isReverse;
+
 };
 
 //--------------------------------------------------------------
