@@ -16,7 +16,7 @@
 <Widget>
     <Kind>22</Kind>
     <Name>Library</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>17</Kind>
@@ -36,7 +36,7 @@
 <Widget>
     <Kind>17</Kind>
     <Name>shader3.wav</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>17</Kind>
@@ -76,7 +76,7 @@
 <Widget>
     <Kind>17</Kind>
     <Name>theme1-17.wav</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>17</Kind>

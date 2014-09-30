@@ -53,6 +53,7 @@ SoundManager::SoundManager()
     m_soundMainVolume       = 1.0f;
 	mp_soundMainSpeakers	= 0;
 	m_nbSoundMainSpeakers	= 0;
+	m_driver				= 0;
 }
 
 //--------------------------------------------------------------
@@ -96,8 +97,12 @@ SoundManager* SoundManager::instance()
 void SoundManager::setup(ofxXmlSettings& settings)
 {
 
-	int driver = settings.getValue("murmur:soundOutput:driver", 0);
-	printf("- setting sound output driver [%d]\n", driver);
+	m_driver = settings.getValue("murmur:soundOutput:driver", 0);
+	printf("- setting sound output driver [%d]\n", m_driver);
+	ofFmodSelectDriver(m_driver);
+
+	m_driver = ofFmodGetDriverSelected();
+	printf("- selected driver is [%d]\n", m_driver);
 
 	int nbOutputs = settings.getValue("murmur:soundOutput:nbSpeakers", 2);
 	printf("- setting sound output for %d speakers\n", nbOutputs);

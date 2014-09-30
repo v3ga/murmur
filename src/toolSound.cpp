@@ -16,6 +16,8 @@ toolSound::toolSound(toolManager* parent) : tool("Sound", parent)
 {
 	mp_canvasSound 		= 0;
 	mp_lblSoundTitle 	= 0;
+	mp_lblSoundInfos	= 0;
+	mp_lblSoundInfos2	= 0;
 	mp_teSoundTags		= 0;
 	mp_soundCurrent		= 0;
 	m_isUpdateLayout	= false;
@@ -133,6 +135,19 @@ void toolSound::createControlsCustom()
 
 	    mp_canvas->addWidgetDown(new ofxUILabel("Sounds", OFX_UI_FONT_LARGE));
 	    mp_canvas->addWidgetDown(new ofxUISpacer(widthDefault, 2));
+
+		
+		string strDriverIndex=""; string sep="";
+		for (int i=0;i<ofFmodGetNumDrivers();i++){ strDriverIndex+= sep+ofToString(i); sep=",";}
+
+		mp_lblSoundInfos 	= new ofxUILabel("> Found " + ofToString(ofFmodGetNumDrivers()) + " sound driver(s): "+strDriverIndex, OFX_UI_FONT_SMALL);
+		mp_lblSoundInfos2 	= new ofxUILabel("> Selected is " + ofToString( SoundManager::instance()->getDriverSelected() )+" (edit in configuration.xml)", OFX_UI_FONT_SMALL);
+
+	    mp_canvas->addWidgetDown(mp_lblSoundInfos);
+	    mp_canvas->addWidgetDown(mp_lblSoundInfos2);
+	    mp_canvas->addWidgetDown(new ofxUISpacer(widthDefault, 1));
+	
+
     	mp_canvas->addWidgetDown(new ofxUIToggle( "activate main sound", GLOBALS->mp_app->isAnimationSequence, dim, dim));
 		mp_canvas->addWidgetDown(new ofxUISlider( "vol. main sound min.", 0.0f, 1.0f, 0.5f, widthDefault-10, dim));
 		mp_canvas->addWidgetDown(new ofxUISlider( "vol. main sound max.", 0.0f, 1.0f, 1.0f, widthDefault-10, dim));
