@@ -54,7 +54,9 @@ class SoundManager
 		SoundInfo*						getSoundInfo(string name);
 		void							addSoundInfo(string name, SoundInfo*);
 		vector<string>					getListSoundsNameWithTag(vector<string>& tags);
+		int								getDriverSelected(){return m_driver;}
 
+		int								m_driver; // relative to FMOD
         float                           m_soundMainVolumeMin;
         float                           m_soundMainVolumeMax;
 		int*							mp_soundMainSpeakers;

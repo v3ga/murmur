@@ -32,6 +32,8 @@ class toolSound : public tool
 		ofxUICanvas*			mp_canvasSound;
 		ofxUILabel*				mp_lblSoundTitle;
 		ofxUITextInput*			mp_teSoundTags;
+		ofxUILabel*				mp_lblSoundInfos;
+		ofxUILabel*				mp_lblSoundInfos2;
 
 		SoundPlayer*			mp_soundCurrent;
 	
