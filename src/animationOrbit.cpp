@@ -85,7 +85,20 @@ void BoidOrbit::follow(vector<Boid*>& boids)
 }
 
 
-
+//--------------------------------------------------------------
+void BoidOrbit::update(float dt)
+{
+	if (mp_animation)
+	{
+		 // Update velocity
+ 		velocity+=acceleration;
+	 	// Limit speed
+ 		velocity.limit(maxspeed /* * mp_animation->m_boidsSpeedFactor*/);
+ 		location+=velocity;
+ 		// Reset accelertion to 0 each cycle
+ 		acceleration.set(0.0f,0.0f);
+	}
+}
 
 //--------------------------------------------------------------
 void BoidOrbit::draw()
@@ -259,6 +272,8 @@ AnimationOrbit::AnimationOrbit(string name) : Animation(name)
 	m_boidsMaxSpeedMax	= 2.0f;
 	m_boidsDrawAlpha	= 1.0f;
 
+	m_boidsSpeedFactor	= 1.0f;
+
 	m_rotationForms		= 20.0f;
 	m_widthForms		= 200.0f;
 	m_heightForms		= 100.0f;
@@ -268,6 +283,8 @@ AnimationOrbit::AnimationOrbit(string name) : Animation(name)
 	mp_sliderFormWidth	= 0;
 	mp_sliderFormHeight	= 0;
 	mp_deviceCurrent	= 0;
+	
+	mp_plotterEnergy	= 0;
 }
 
 //--------------------------------------------------------------
@@ -294,15 +311,33 @@ void AnimationOrbit::VM_enter()
 //--------------------------------------------------------------
 void AnimationOrbit::VM_update(float dt)
 {
-	vector<ParticlePath*>::iterator it = m_particlePaths.begin();
-	for ( ;it != m_particlePaths.end(); ++it)
+	// Energies for devices
+	map<string,float>::iterator itEnergies = m_energies.begin();
+	string deviceId;
+	for ( ; itEnergies != m_energies.end(); ++itEnergies)
 	{
-		(*it)->update(dt);
+	   deviceId = itEnergies->first;
+	   m_energies[deviceId] -= 0.1;
+	   if (m_energies[deviceId] < 0.0f) m_energies[deviceId] = 0.0f;
+	}
+
+	// Update UI
+	Device* pDeviceCurrent = this->getDeviceCurrent();
+	if (pDeviceCurrent && mp_plotterEnergy){
+		mp_plotterEnergy->addPoint( m_energies[deviceId] );
 	}
 
 
-	vector<Boid*>::iterator itBoids = m_boids.begin();
+	// Particles on path
+	vector<ParticlePath*>::iterator it = m_particlePaths.begin();
+	for ( ;it != m_particlePaths.end(); ++it)
+	{
+		(*it)->setSpeed( 50.0f*m_boidsSpeedFactor );
+		(*it)->update(dt);
+	}
 
+	// Boids
+	vector<Boid*>::iterator itBoids = m_boids.begin();
 	BoidOrbit* pBoid=0;
 	for ( ; itBoids != m_boids.end(); ++itBoids)
 	{
@@ -399,8 +434,18 @@ void AnimationOrbit::VM_exit()
 }
 
 //--------------------------------------------------------------
-void AnimationOrbit::onNewPacket(DevicePacket*, string deviceId, float x, float y)
+void AnimationOrbit::onNewPacket(DevicePacket* pDevicePacket, string deviceId, float x, float y)
 {
+	// Nothing ? go out
+    if (pDevicePacket==0) return;
+
+	// For sound playing
+	accumulateVolume(pDevicePacket->m_volume, deviceId);
+
+
+	m_energies[deviceId] += pDevicePacket->m_volume;
+	// ofLog() << m_energies[deviceId];
+
 	// Create Orbit for device
 	ParticleOrbit* pOrbit = getOrbitForDevice(deviceId);
 	if (pOrbit == 0)
@@ -462,6 +507,13 @@ void AnimationOrbit::createUICustom()
         mp_UIcanvas->addSlider("speed_min", 	1.0f, 3.0f, 1.0f);
         mp_UIcanvas->addSlider("speed_max", 	1.0f, 3.0f, 2.0f);
         mp_UIcanvas->addSlider("force_max", 	0.0f, 0.2f, 0.1f);
+        mp_UIcanvas->addSlider("speed_factor", 	0.0f, 1.0f, &m_boidsSpeedFactor);
+	
+	
+		float plotterValues[widthDefault];
+		for (int i=0;i<widthDefault;i++) plotterValues[i]=0.0f;
+		mp_plotterEnergy = new ofxUIValuePlotter(0,0,widthDefault,100,widthDefault, 0.0f,1.0f, plotterValues,"energy");
+		mp_UIcanvas->addWidgetDown( mp_plotterEnergy );
 
 	    mp_labelDeviceId = new ofxUILabel("Forms", OFX_UI_FONT_SMALL);
 		mp_UIcanvas->addWidgetDown	( mp_labelDeviceId );
@@ -629,7 +681,7 @@ void AnimationOrbit::loadProperties(string id)
 							pOrbit->load(extraData);
 
 							// Create Particle which runs along this orbit
-							int nbParticlePaths = 12;
+							int nbParticlePaths = 4;
 							for (int i=0;i<nbParticlePaths;i++)
 							{
 								ParticlePath* pParticlePath = new ParticlePath();

@@ -173,8 +173,10 @@ class AnimationManager
 		Animation*				M_getAnimation			(int index);
 		Animation*				M_getAnimationByName	(string name);
 		Animation*				M_getAnimationByThemeRnd(int theme);
+		Animation*				M_getAnimationCurrent	(){return mp_animationCurrent;}
 		string					M_getAnimationNameRnd	();
 		void					M_addAnimation			(Animation*);
+	
 
 		bool					M_isAutoClear			();
 

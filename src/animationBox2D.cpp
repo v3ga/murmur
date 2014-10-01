@@ -91,7 +91,7 @@ void AnimationBox2D_circles::onNewPacket(DevicePacket* pDevicePacket, string dev
     
 	if (pDevicePacket->m_volume>m_volTrigger)
 	{
-		playSound(deviceId);
+		// playSound(deviceId);
 
 		m_volumeAccumTarget += pDevicePacket->m_volume;
 

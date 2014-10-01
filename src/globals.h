@@ -34,6 +34,7 @@ class Globals
         bool					m_isAutoReloadScript;
 
 		AnimationManager*		getAnimationManagerForDevice(string deviceId);
+		Animation*				getAnimationCurrentForDevice(string deviceId);
 
 	private:
 		static Globals*			smp_instance;

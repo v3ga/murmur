@@ -25,6 +25,7 @@ ofxJSDeclareFunctionCpp(setUniform2fShader);
 
 ofxJSDeclareFunctionCpp(playSound);
 ofxJSDeclareFunctionCpp(getSoundsForAnimation);
+ofxJSDeclareFunctionCpp(playSoundForThisAnimation);
 ofxJSDeclareFunctionCpp(setVolumeSound);
 ofxJSDeclareFunctionCpp(setVolumeSoundAll);
 ofxJSDeclareFunctionCpp(setVolumeSoundMainNormalized); // pass value between 0 and 1
