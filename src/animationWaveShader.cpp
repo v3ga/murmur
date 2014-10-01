@@ -37,6 +37,7 @@ AnimationShaderWave::AnimationShaderWave(string name) : Animation(name)
     m_volume = 0.0f;
 	m_waveIntensity = 0.5f;
 	m_isBlend = true;
+	m_isColor = false;
 }
 
 //--------------------------------------------------------------
@@ -148,17 +149,24 @@ void AnimationShaderWave::onNewPacket(DevicePacket* pDevicePacket, string device
 
 		if (pShaderWave && pDevice)
 		{
-			if (pDevice->isStandUp()){
-				pShaderWave->m_fColor = 0.9f;
-				pShaderWave->m_colorTarget = pShaderWave->m_colorDevice;
-			}else{
-				pShaderWave->m_fColor = 0.2f;
-				pShaderWave->m_colorTarget = pShaderWave->m_colorWhite;
+			pShaderWave->m_anchor.set(x, y);
+		    pShaderWave->m_volume = pDevicePacket->m_volume;
+
+			if (m_isColor)
+			{
+				if (pDevice->isStandUp()){
+					pShaderWave->m_fColor = 0.9f;
+					pShaderWave->m_colorTarget = pShaderWave->m_colorDevice;
+				}else{
+					pShaderWave->m_fColor = 0.2f;
+					pShaderWave->m_colorTarget = pShaderWave->m_colorWhite;
+				}
 			}
-		
-		
-		    pShaderWave->m_anchor.set(x, y);
-	        pShaderWave->m_volume = pDevicePacket->m_volume;
+			else
+			{
+				pShaderWave->m_color.set(1.0f);
+			}
+
 
 	        ofFloatPixels& data = pShaderWave->m_imgSoundInput.getPixelsRef();
     	    int nb = data.size();
@@ -170,6 +178,7 @@ void AnimationShaderWave::onNewPacket(DevicePacket* pDevicePacket, string device
             	data[i*nbChannels+1] 	= data[(i-1)*nbChannels+1];
             	data[i*nbChannels+2] 	= data[(i-1)*nbChannels+2];
 			}
+			
         	data[0] = pShaderWave->m_color.r * pDevicePacket->m_volume;
         	data[1] = pShaderWave->m_color.g * pDevicePacket->m_volume;
         	data[2] = pShaderWave->m_color.b * pDevicePacket->m_volume;
@@ -187,6 +196,8 @@ void AnimationShaderWave::createUICustom()
     {
         mp_UIcanvas->addSlider("intensity", 0.0f, 1.0f, &m_waveIntensity);
         mp_UIcanvas->addToggle("debug enable blend", &m_isBlend);
+        mp_UIcanvas->addToggle("color", &m_isColor);
+
     }
 }
 

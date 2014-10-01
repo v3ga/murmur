@@ -171,7 +171,7 @@ private:
     float                   m_ampRepulsion;
     float                   m_ampAttraction;
 	float					m_particlesSize;
-	
+		
 	map<string, ParticleForce*>	m_mapParticleForce;
 
 };
