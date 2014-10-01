@@ -60,7 +60,7 @@ void AnimationParticlesMega2::createParticles()
         kParticles = 16;
         float padding = 0;
         float maxVelocity = .5;
-        for(int i = 0; i < kParticles * 1024; i++) {
+        for(int i = 0; i < kParticles * 1024; i++) {	
             float x = ofRandom(padding, ofGetWidth() - padding);
             float y = ofRandom(padding, ofGetHeight() - padding);
             float xv = ofRandom(-maxVelocity, maxVelocity);

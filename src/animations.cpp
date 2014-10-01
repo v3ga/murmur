@@ -243,7 +243,7 @@ void Animation::createUISound()
 	for (int i=0; i<nbSounds; i++)
 	{
 		ofxUIToggle* pSoundToggle = new ofxUIToggle(m_listSoundNames[i],false,20,20);
-		if (i%2 == 0)
+		if (i%4 == 0)
 			mp_UIcanvas->addWidgetDown(pSoundToggle);
 		else
 			mp_UIcanvas->addWidgetRight(pSoundToggle);

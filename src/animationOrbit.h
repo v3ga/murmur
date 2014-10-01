@@ -24,6 +24,7 @@ class BoidOrbit : public Boid
 		void						setSpeedMinMax	(float speedMin, float speedMax);
 		void						setForceMax		(float forceMax);
 		void						setPath			(ParticlePath* p){mp_particlePath=p;}
+		void						setLocationsNbMax(int n);
 	
 		void						follow			(ofVec2f& target, vector<Boid*>& boids);
 		void						follow			(vector<Boid*>& boids);
@@ -98,7 +99,7 @@ class AnimationOrbit : public Animation
 		ofxUISlider*			mp_sliderFormWidth;
 		ofxUISlider*			mp_sliderFormHeight;
 	
-		ofxUIValuePlotter*		mp_plotterEnergy;
+		ofxUIMovingGraph*		mp_mgEnergy;
 };
 
 //--------------------------------------------------------------

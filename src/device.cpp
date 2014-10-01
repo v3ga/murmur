@@ -38,6 +38,8 @@ Device::Device(string id, int nbLEDs, float distLEDs)
 	mp_sampleStandBy = 0;
 	m_sampleVolStandby = 0.35f;
 	m_sampleNameStandby = "Sounds/StandBy/theme1-4.wav";
+
+	m_standupTh			= 0.55f;
 }
 
 //--------------------------------------------------------------
@@ -270,13 +272,19 @@ void Device::drawSoundInputVolume(float x, float y)
             m_stateStandbyStr = "active";
         else if (m_stateStandby == EStandby_pre_standby)
             m_stateStandbyStr = "standby (pre)";
-        else if (m_stateStandby == EStandby_standby){
-            m_stateStandbyStr = "standby ";
+        else if (m_stateStandby == EStandby_standby)
+            m_stateStandbyStr = "standby";
+        else if (m_stateStandby == EStandby_standup){
+            m_stateStandbyStr = "standup";
         }
-        
+     
         ofDrawBitmapString(m_stateStandbyStr, x-getWidthSoundInputVolume()/2,y+12);
         ofSetColor(0,255,0);
         float yTh = y+(1.0-m_volHistoryTh)*getHeightSoundInputVolume();
+        ofLine(x-getWidthSoundInputVolume()/2,yTh,x,yTh);
+
+        ofSetColor(0,0,255);
+		yTh = y+(1.0-m_standupTh)*getHeightSoundInputVolume();
         ofLine(x-getWidthSoundInputVolume()/2,yTh,x,yTh);
     }
 }
@@ -411,12 +419,27 @@ void Device::checkForActivity(float dt)
         
         if (m_stateStandby == EStandby_active)
         {
-            if (mp_soundInput && (mp_soundInput->getVolHistoryMeanFiltered() <= m_volHistoryTh))
-            {
-                m_stateStandby = EStandby_pre_standby;
-                m_stateStandbyDuration=0.0f;
-            }
+			if (mp_soundInput)
+			{
+	            if (mp_soundInput->getVolHistoryMeanFiltered() <= m_volHistoryTh)
+    	        {
+        	        m_stateStandby = EStandby_pre_standby;
+            	    m_stateStandbyDuration=0.0f;
+            	}
+				else if (mp_soundInput->getVolHistoryMeanFiltered() >= m_standupTh)
+				{
+        	        m_stateStandby = EStandby_standup;
+				}
+			}
         }
+        else
+        if (m_stateStandby == EStandby_standup)
+        {
+		   if (mp_soundInput && mp_soundInput->getVolHistoryMeanFiltered() < m_standupTh)
+		   {
+			   m_stateStandby = EStandby_active;
+		   }
+		}
         else
         if (m_stateStandby == EStandby_pre_standby)
         {
@@ -453,7 +476,24 @@ void Device::checkForActivity(float dt)
         }
     }
     else
-        m_stateStandby = EStandby_active;
+	{
+		if (m_stateStandby == EStandby_active)
+		{
+			if (mp_soundInput && mp_soundInput->getVolHistoryMeanFiltered() >= this->m_standupTh)
+			{
+		        m_stateStandby = EStandby_standup;
+			}
+		}
+		else if (m_stateStandby == EStandby_standup)
+		{
+			if (mp_soundInput && mp_soundInput->getVolHistoryMeanFiltered() < this->m_standupTh)
+			{
+		        m_stateStandby = EStandby_active;
+			}
+		}
+
+	
+	}
 }
 
 //--------------------------------------------------------------

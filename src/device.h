@@ -57,17 +57,19 @@ class Device
         float               getSoundInputVolumeMax();
         float               getSoundInputVolHistorySize();
 
-        // Activity / Standby
+        // Activity / Standby / Standup
         bool                m_isEnableStandbyMode;
         bool                m_isActive;
         float               m_timeInactivity;
         float               m_volHistoryTh;
         float               m_durationPreStandby;
-    
+		float				m_standupTh;
+ 
         enum{
             EStandby_active              = 0,
             EStandby_pre_standby         = 1,
-            EStandby_standby             = 2
+            EStandby_standby             = 2,
+            EStandby_standup             = 3
         };
     
         int                 m_stateStandby;
@@ -79,7 +81,9 @@ class Device
     
         void                enableStandbyMode(bool is=true);
         void                checkForActivity(float dt);
-    
+		bool				isStandUp(){return m_stateStandby == EStandby_standup;}
+
+ 
         void                setSoundInputVolHistoryTh(float th);
         void                setSoundInputVolHistoryThOSC(float th);
     

@@ -1,15 +1,15 @@
 <orbits>
     <orbit deviceId="deviceEchoSimulator01">
-        <rotation>-36.923072815</rotation>
-        <width>192.179489136</width>
-        <height>141.923080444</height>
+        <rotation>-0.576921701</rotation>
+        <width>193.750000000</width>
+        <height>79.102569580</height>
         <offset_x>0.000000000</offset_x>
         <offset_y>0.000000000</offset_y>
     </orbit>
     <orbit deviceId="deviceEchoSimulator02">
-        <rotation>43.269233704</rotation>
-        <width>234.583343506</width>
-        <height>97.948722839</height>
+        <rotation>0.576921701</rotation>
+        <width>264.423095703</width>
+        <height>77.532051086</height>
         <offset_x>0.000000000</offset_x>
         <offset_y>0.000000000</offset_y>
     </orbit>
