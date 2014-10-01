@@ -42,3 +42,14 @@ AnimationManager* Globals::getAnimationManagerForDevice(string deviceId)
 	return 0;
 }
 
+//--------------------------------------------------------------
+Animation* Globals::getAnimationCurrentForDevice(string deviceId)
+{
+	AnimationManager* pAnimationManager = getAnimationManagerForDevice(deviceId);
+	if (pAnimationManager)
+	{
+		return pAnimationManager->M_getAnimationCurrent();
+	}
+}
+
+

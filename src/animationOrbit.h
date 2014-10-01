@@ -28,6 +28,7 @@ class BoidOrbit : public Boid
 		void						follow			(ofVec2f& target, vector<Boid*>& boids);
 		void						follow			(vector<Boid*>& boids);
 		void 						flock			(vector<Boid*>& boids);
+		void						update			(float dt);
 		void						draw			();
 
 		AnimationOrbit*				mp_animation;
@@ -69,6 +70,8 @@ class AnimationOrbit : public Animation
 		map<string, ParticleOrbit*>				m_orbits; // key is deviceId
 		map<string, ParticleOrbit*>::iterator	m_orbitsIt;
 	
+		map<string, float>						m_energies; // key is deviceId
+	
 		bool					m_isDrawDebug;
 		bool					m_isFrameBlending;
 		float					m_frameBlending;
@@ -81,8 +84,11 @@ class AnimationOrbit : public Animation
 		float					m_boidsMaxSpeedMax;
 		float					m_boidsForceMax;
 		float					m_boidsDrawAlpha;
+		float					m_boidsSpeedFactor; // TEMP, testing
 	
 		float					m_rotationForms, m_widthForms, m_heightForms;
+	
+	
 
 
 	protected:
@@ -91,6 +97,8 @@ class AnimationOrbit : public Animation
 		ofxUISlider*			mp_sliderFormRot;
 		ofxUISlider*			mp_sliderFormWidth;
 		ofxUISlider*			mp_sliderFormHeight;
+	
+		ofxUIValuePlotter*		mp_plotterEnergy;
 };
 
 //--------------------------------------------------------------
@@ -102,6 +110,7 @@ class ParticlePath
 
 		void					setSegment				(ParticleOrbit* pA, int indexA, ParticleOrbit* pB, int indexB);
 		void					setSegment				(ParticleOrbit* pA, int indexA);
+		void					setSpeed				(float s){m_speed=s;}
 		void					update					(float dt);
 		int						getNbTurns				(){return m_nbTurns;}
 	

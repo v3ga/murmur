@@ -28,6 +28,7 @@ bool setupJS()
 
 	ofxJSDefineFunctionGlobal("playSound",                      &playSound,                     4);
 	ofxJSDefineFunctionGlobal("getSoundsForAnimation",          &getSoundsForAnimation,         2);
+	ofxJSDefineFunctionGlobal("playSoundForThisAnimation",      &playSoundForThisAnimation,     1);
     ofxJSDefineFunctionGlobal("setVolumeSound",                 &setVolumeSound,                2);
     ofxJSDefineFunctionGlobal("setVolumeSoundAll",              &setVolumeSoundAll,             1);
     ofxJSDefineFunctionGlobal("setVolumeSoundMainNormalized",   &setVolumeSoundMainNormalized,  1);
@@ -162,6 +163,22 @@ ofxJSDeclareFunctionCpp(playSound)
     	}
 	}
 
+	return JS_FALSE;
+}
+
+//--------------------------------------------------------------
+ofxJSDeclareFunctionCpp(playSoundForThisAnimation)
+{
+	if (argc==1)
+    {
+		string deviceId = ofxJSValue_TO_string(argv[0]);
+		Animation* pAnimation = GLOBALS->getAnimationCurrentForDevice( deviceId );
+		if (pAnimation)
+		{
+			pAnimation->playSound(deviceId);
+			return JS_TRUE;
+		}
+    }
 	return JS_FALSE;
 }
 

@@ -7,7 +7,7 @@ int main()
 {
 	ofAppGlutWindow window;
 //	ofSetupOpenGL(ofxFensterManager::get(), 400, 400, OF_WINDOW);			// <-------- setup the GL context
-	ofSetupOpenGL(&window, 1024, 768, /*OF_FULLSCREEN*/OF_WINDOW);			// <-------- setup the GL context
+	ofSetupOpenGL(&window, 1024, 900, /*OF_FULLSCREEN*/OF_WINDOW);			// <-------- setup the GL context
 //	ofSetupOpenGL(&window, 1061, 524, /*OF_FULLSCREEN*/OF_WINDOW);			// <-------- setup the GL context
 	ofRunApp(new testApp());
 

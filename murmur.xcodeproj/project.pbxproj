@@ -773,23 +773,8 @@
 		F9AB0C081941B0DE0020D78A /* toolVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = toolVideo.h; sourceTree = "<group>"; };
 		F9AB0C0F1947A0FE0020D78A /* Sample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sample.cpp; sourceTree = "<group>"; };
 		F9AB0C101947A0FE0020D78A /* Sample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sample.h; sourceTree = "<group>"; };
-		F9BC6ADD1743BA7E00633C5C /* Class.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Class.js; sourceTree = "<group>"; };
-		F9BC6ADE1743BA7E00633C5C /* Header.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Header.js; sourceTree = "<group>"; };
-		F9BC6AE01743BA7E00633C5C /* Math.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Math.js; sourceTree = "<group>"; };
-		F9BC6AE11743BA7E00633C5C /* Polyline.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Polyline.js; sourceTree = "<group>"; };
-		F9BC6AE21743BA7E00633C5C /* Rect.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Rect.js; sourceTree = "<group>"; };
-		F9BC6AE31743BA7E00633C5C /* Spline.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Spline.js; sourceTree = "<group>"; };
-		F9BC6AE41743BA7E00633C5C /* Vec2.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Vec2.js; sourceTree = "<group>"; };
-		F9BC6AE51743BA7E00633C5C /* Vec3.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Vec3.js; sourceTree = "<group>"; };
 		F9BC6AE71743BA7E00633C5C /* Particle2D.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Particle2D.js; sourceTree = "<group>"; };
 		F9BC6AE81743BA7E00633C5C /* Particle2DMass.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Particle2DMass.js; sourceTree = "<group>"; };
-		F9BC6AEA1743BA7E00633C5C /* README.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
-		F9BC6AEB1743BA7E00633C5C /* Tween.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Tween.js; sourceTree = "<group>"; };
-		F9BC6AED1743BA7E00633C5C /* Tween.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Tween.js; sourceTree = "<group>"; };
-		F9BC6AEF1743BA7E00633C5C /* constraint.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = constraint.js; sourceTree = "<group>"; };
-		F9BC6AF01743BA7E00633C5C /* objects.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = objects.js; sourceTree = "<group>"; };
-		F9BC6AF11743BA7E00633C5C /* vec2.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = vec2.js; sourceTree = "<group>"; };
-		F9BC6AF21743BA7E00633C5C /* verlet.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = verlet.js; sourceTree = "<group>"; };
 		F9BC6AF4174512E000633C5C /* animationsFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animationsFactory.cpp; sourceTree = "<group>"; };
 		F9BC6AF5174512E000633C5C /* animationsFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = animationsFactory.h; sourceTree = "<group>"; };
 		F9BC6AF71745149C00633C5C /* animationWaveShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animationWaveShader.cpp; sourceTree = "<group>"; };
@@ -2160,44 +2145,9 @@
 		F9BC6AD21743BA7E00633C5C /* libraries */ = {
 			isa = PBXGroup;
 			children = (
-				F9BC6AD31743BA7E00633C5C /* fieldkit */,
 				F9BC6AE61743BA7E00633C5C /* murmur */,
-				F9BC6AE91743BA7E00633C5C /* tweening */,
-				F9BC6AEC1743BA7E00633C5C /* tweenjs */,
-				F9BC6AEE1743BA7E00633C5C /* verlet-js */,
 			);
 			path = libraries;
-			sourceTree = "<group>";
-		};
-		F9BC6AD31743BA7E00633C5C /* fieldkit */ = {
-			isa = PBXGroup;
-			children = (
-				F9BC6ADC1743BA7E00633C5C /* src */,
-			);
-			path = fieldkit;
-			sourceTree = "<group>";
-		};
-		F9BC6ADC1743BA7E00633C5C /* src */ = {
-			isa = PBXGroup;
-			children = (
-				F9BC6ADD1743BA7E00633C5C /* Class.js */,
-				F9BC6ADE1743BA7E00633C5C /* Header.js */,
-				F9BC6ADF1743BA7E00633C5C /* math */,
-			);
-			path = src;
-			sourceTree = "<group>";
-		};
-		F9BC6ADF1743BA7E00633C5C /* math */ = {
-			isa = PBXGroup;
-			children = (
-				F9BC6AE01743BA7E00633C5C /* Math.js */,
-				F9BC6AE11743BA7E00633C5C /* Polyline.js */,
-				F9BC6AE21743BA7E00633C5C /* Rect.js */,
-				F9BC6AE31743BA7E00633C5C /* Spline.js */,
-				F9BC6AE41743BA7E00633C5C /* Vec2.js */,
-				F9BC6AE51743BA7E00633C5C /* Vec3.js */,
-			);
-			path = math;
 			sourceTree = "<group>";
 		};
 		F9BC6AE61743BA7E00633C5C /* murmur */ = {
@@ -2211,34 +2161,6 @@
 				F964768918A285210061C848 /* Tunnel.js */,
 			);
 			path = murmur;
-			sourceTree = "<group>";
-		};
-		F9BC6AE91743BA7E00633C5C /* tweening */ = {
-			isa = PBXGroup;
-			children = (
-				F9BC6AEA1743BA7E00633C5C /* README.txt */,
-				F9BC6AEB1743BA7E00633C5C /* Tween.js */,
-			);
-			path = tweening;
-			sourceTree = "<group>";
-		};
-		F9BC6AEC1743BA7E00633C5C /* tweenjs */ = {
-			isa = PBXGroup;
-			children = (
-				F9BC6AED1743BA7E00633C5C /* Tween.js */,
-			);
-			path = tweenjs;
-			sourceTree = "<group>";
-		};
-		F9BC6AEE1743BA7E00633C5C /* verlet-js */ = {
-			isa = PBXGroup;
-			children = (
-				F9BC6AEF1743BA7E00633C5C /* constraint.js */,
-				F9BC6AF01743BA7E00633C5C /* objects.js */,
-				F9BC6AF11743BA7E00633C5C /* vec2.js */,
-				F9BC6AF21743BA7E00633C5C /* verlet.js */,
-			);
-			path = "verlet-js";
 			sourceTree = "<group>";
 		};
 		F9BC6AFA174514D000633C5C /* Config */ = {
