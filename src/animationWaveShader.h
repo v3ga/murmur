@@ -47,6 +47,7 @@ class AnimationShaderWave : public Animation
         float                   m_volume;
 		float					m_waveIntensity;
 		bool					m_isBlend;
+		bool					m_isColor;
 	
 	
 	private:
