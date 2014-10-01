@@ -13,11 +13,19 @@
 class ShaderWave
 {
 	public:
+	
+		ShaderWave				();
 
+		void					update	(float dt);
 
-        ofFloatImage            m_imgSoundInput;
-        ofVec2f                 m_anchor,m_anchorNorm;
-        float                   m_volume;
+       	ofFloatImage            m_imgSoundInput;
+		ofVec2f                	m_anchor,m_anchorNorm;
+        float                  	m_volume;
+
+		ofFloatColor			m_colorWhite;
+		ofFloatColor			m_colorDevice;
+		ofFloatColor			m_color, m_colorTarget;
+		float					m_fColor;
 };
 
 class AnimationShaderWave : public Animation
@@ -39,6 +47,7 @@ class AnimationShaderWave : public Animation
         float                   m_volume;
 		float					m_waveIntensity;
 		bool					m_isBlend;
+	
 	
 	private:
 		map<string, ShaderWave*>	m_mapShaderWaves;

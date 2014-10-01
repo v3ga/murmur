@@ -1,6 +1,6 @@
 bin/data/Exports/
 bin/data/Video
-
+bin/data/Sounds/main.wav
 
 # Some general ignore patterns
 build/

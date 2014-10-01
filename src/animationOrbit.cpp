@@ -35,7 +35,18 @@ void BoidOrbit::setForceMax(float forceMax)
 	maxforce = forceMax;
 }
 
+//--------------------------------------------------------------
+void BoidOrbit::setLocationsNbMax(int n)
+{
+	m_locationsNbMax = n;
+	m_locations.clear();
+	m_polyline.clear();
+	for (int i=0;i<m_locationsNbMax;i++)
+	{
+		m_polyline.addVertex( location );
+	}
 
+}
 
 //--------------------------------------------------------------
 void BoidOrbit::flock(vector<Boid*>& boids)
@@ -284,7 +295,7 @@ AnimationOrbit::AnimationOrbit(string name) : Animation(name)
 	mp_sliderFormHeight	= 0;
 	mp_deviceCurrent	= 0;
 	
-	mp_plotterEnergy	= 0;
+	mp_mgEnergy			= 0;
 }
 
 //--------------------------------------------------------------
@@ -317,14 +328,14 @@ void AnimationOrbit::VM_update(float dt)
 	for ( ; itEnergies != m_energies.end(); ++itEnergies)
 	{
 	   deviceId = itEnergies->first;
-	   m_energies[deviceId] -= 0.1;
+	   m_energies[deviceId] -= 0.5;
 	   if (m_energies[deviceId] < 0.0f) m_energies[deviceId] = 0.0f;
 	}
 
 	// Update UI
 	Device* pDeviceCurrent = this->getDeviceCurrent();
-	if (pDeviceCurrent && mp_plotterEnergy){
-		mp_plotterEnergy->addPoint( m_energies[deviceId] );
+	if (pDeviceCurrent && mp_mgEnergy){
+		mp_mgEnergy->addPoint( m_energies[deviceId] );
 	}
 
 
@@ -501,19 +512,21 @@ void AnimationOrbit::createUICustom()
 	    mp_UIcanvas->addWidgetDown	( new ofxUILabel("Flocking", OFX_UI_FONT_SMALL) );
     	mp_UIcanvas->addWidgetDown	( new ofxUISpacer(widthDefault, 1));
 
+		mp_UIcanvas->addTextInput("number", "number");
+        mp_UIcanvas->addIntSlider("trail_size", 50, 350, 200);
+
         mp_UIcanvas->addSlider("separation", 	0.0f, 1.5f, &m_boidsSeparation);
         mp_UIcanvas->addSlider("cohesion", 		0.0f, 1.5f, &m_boidsCohesion);
         mp_UIcanvas->addSlider("alignement", 	0.0f, 1.5f, &m_boidsAlignement);
-        mp_UIcanvas->addSlider("speed_min", 	1.0f, 3.0f, 1.0f);
-        mp_UIcanvas->addSlider("speed_max", 	1.0f, 3.0f, 2.0f);
+		mp_UIcanvas->addRangeSlider("speed", 	1.0f, 3.0f, 2.0f, 3.0f);
         mp_UIcanvas->addSlider("force_max", 	0.0f, 0.2f, 0.1f);
         mp_UIcanvas->addSlider("speed_factor", 	0.0f, 1.0f, &m_boidsSpeedFactor);
 	
 	
-		float plotterValues[widthDefault];
-		for (int i=0;i<widthDefault;i++) plotterValues[i]=0.0f;
-		mp_plotterEnergy = new ofxUIValuePlotter(0,0,widthDefault,100,widthDefault, 0.0f,1.0f, plotterValues,"energy");
-		mp_UIcanvas->addWidgetDown( mp_plotterEnergy );
+		vector<float> mgValues(widthDefault);
+		for (int i=0;i<widthDefault;i++) mgValues[i]=0.0f;
+		mp_mgEnergy = new ofxUIMovingGraph(0,0,widthDefault,70, mgValues, widthDefault, 0.0f,1.0f, "energy");
+		mp_UIcanvas->addWidgetDown( mp_mgEnergy );
 
 	    mp_labelDeviceId = new ofxUILabel("Forms", OFX_UI_FONT_SMALL);
 		mp_UIcanvas->addWidgetDown	( mp_labelDeviceId );
@@ -545,20 +558,30 @@ void AnimationOrbit::guiEvent(ofxUIEventArgs &e)
 {
 	Animation::guiEvent(e);
     string name = e.widget->getName();
-	
-    if (name == "speed_min" || name == "speed_max")
-    {
-		ofxUISlider* pSliderSpeedMin = (ofxUISlider*) mp_UIcanvas->getWidget("speed_min");
-		ofxUISlider* pSliderSpeedMax = (ofxUISlider*) mp_UIcanvas->getWidget("speed_max");
-		if (pSliderSpeedMin && pSliderSpeedMax)
+
+    if (name == "trail_size")
+	{
+		ofxUIIntSlider* pSliderTrail = (ofxUIIntSlider*) e.widget;
+
+		vector<Boid*>::iterator it = m_boids.begin();
+		BoidOrbit* pBoid=0;
+		for ( ; it != m_boids.end(); ++it)
 		{
-			vector<Boid*>::iterator it = m_boids.begin();
-			BoidOrbit* pBoid=0;
-			for ( ; it != m_boids.end(); ++it)
-			{
-				pBoid = (BoidOrbit*) *it;
-				pBoid->setSpeedMinMax(pSliderSpeedMin->getScaledValue(), pSliderSpeedMax->getScaledValue());
-			}
+			pBoid = (BoidOrbit*) *it;
+			pBoid->setLocationsNbMax( pSliderTrail->getScaledValue() );
+//			pBoid->setSpeedMinMax(pSliderSpeed->getScaledValueLow(), pSliderSpeed->getScaledValueHigh());
+		}
+	}
+    else if (name == "speed")
+	{
+		ofxUIRangeSlider* pSliderSpeed = (ofxUIRangeSlider*) e.widget;
+
+		vector<Boid*>::iterator it = m_boids.begin();
+		BoidOrbit* pBoid=0;
+		for ( ; it != m_boids.end(); ++it)
+		{
+			pBoid = (BoidOrbit*) *it;
+			pBoid->setSpeedMinMax(pSliderSpeed->getScaledValueLow(), pSliderSpeed->getScaledValueHigh());
 		}
 	}
     else if (name == "force_max")

@@ -6,12 +6,12 @@
 <Widget>
     <Kind>2</Kind>
     <Name>trace</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>trace_level</Name>
-    <Value>0.487179488</Value>
+    <Value>0.070512824</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -19,34 +19,40 @@
     <Value>0.451923072</Value>
 </Widget>
 <Widget>
+    <Kind>12</Kind>
+    <Name>number</Name>
+    <Value>number</Value>
+</Widget>
+<Widget>
+    <Kind>42</Kind>
+    <Name>trail_size</Name>
+    <Value>285</Value>
+</Widget>
+<Widget>
     <Kind>4</Kind>
     <Name>separation</Name>
-    <Value>0.000000000</Value>
+    <Value>1.399038434</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>cohesion</Name>
-    <Value>0.000000000</Value>
+    <Value>1.413461566</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>alignement</Name>
-    <Value>0.000000000</Value>
+    <Value>1.173076868</Value>
 </Widget>
 <Widget>
-    <Kind>4</Kind>
-    <Name>speed_min</Name>
-    <Value>2.653846264</Value>
-</Widget>
-<Widget>
-    <Kind>4</Kind>
-    <Name>speed_max</Name>
-    <Value>3.000000000</Value>
+    <Kind>6</Kind>
+    <Name>speed</Name>
+    <HighValue>2.173076868</HighValue>
+    <LowValue>1.371794939</LowValue>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>force_max</Name>
-    <Value>0.200000003</Value>
+    <Value>0.096153848</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -56,17 +62,17 @@
 <Widget>
     <Kind>4</Kind>
     <Name>rotation_forms</Name>
-    <Value>-36.923072815</Value>
+    <Value>-0.576921701</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>width_forms</Name>
-    <Value>192.179489136</Value>
+    <Value>193.750000000</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>height_forms</Name>
-    <Value>141.923080444</Value>
+    <Value>79.102569580</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
