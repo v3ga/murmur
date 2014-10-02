@@ -63,3 +63,28 @@
     <Name>g9.wav</Name>
     <Value>1</Value>
 </Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>v1.wav</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>v2.wav</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>v3.wav</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>v4.wav</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>v5.wav</Name>
+    <Value>0</Value>
+</Widget>

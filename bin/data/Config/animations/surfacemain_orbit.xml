@@ -62,17 +62,17 @@
 <Widget>
     <Kind>4</Kind>
     <Name>rotation_forms</Name>
-    <Value>-0.576921701</Value>
+    <Value>0.576921701</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>width_forms</Name>
-    <Value>193.750000000</Value>
+    <Value>264.423095703</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>height_forms</Name>
-    <Value>79.102569580</Value>
+    <Value>77.532051086</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -143,4 +143,19 @@
     <Kind>2</Kind>
     <Name>p8.wav</Name>
     <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>u1.wav</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>u2.wav</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>u3.wav</Name>
+    <Value>0</Value>
 </Widget>
