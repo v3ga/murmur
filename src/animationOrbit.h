@@ -61,8 +61,9 @@ class AnimationOrbit : public Animation
 	
 				void			drawOrbit				(ParticleOrbit* pOrbit);
 	
-				void			createParticlePathsForOrbit(ParticleOrbit* pOrbit, int nbParticlePaths);
+				void			createParticlePathsForOrbit(ParticleOrbit* pOrbit);
 				void			assignBoidsToPaths		();
+				void			deleteParticlePaths		();
 
 		ParticlePath*			mp_testParticle;
 		vector<ParticlePath*>	m_particlePaths;
@@ -89,11 +90,18 @@ class AnimationOrbit : public Animation
 		float					m_boidsForceMax;
 		float					m_boidsDrawAlpha;
 		float					m_boidsSpeedFactor; // TEMP, testing
+		int						m_boidsNbParticlesPath;
 	
 		float					m_rotationForms, m_widthForms, m_heightForms;
 	
-	
+		enum
+		{
+			boidState_rest				= 0,
+			boidState_excitation		= 1
+		};
 
+		int						m_boidState;
+		float					m_tBoidExcitation;
 
 	protected:
 		Device*					mp_deviceCurrent;
@@ -143,7 +151,7 @@ class ParticleOrbit
 				vector<ofVec3f>&getPoints				(){return m_points;}
 				void			setCenter				(ofVec3f center){m_center=center;computePoints();}
 				ofVec3f&		getCenter				(){return m_center;}
-				void			setReverse				(bool is){m_isReverse=is;}
+				void			setReverse				(bool is);
 				bool			getReverse				(){return m_isReverse;}
 				virtual	void	save					(ofxXmlSettings& settings){}
 				virtual	void	load					(ofxXmlSettings& settings){}
