@@ -367,13 +367,26 @@ void toolSurfaces::dragEvent(ofDragInfo dragInfo)
 	int nbFiles = dragInfo.files.size();
 	if( nbFiles > 0 )
 	{
-		// ofLog() << dragInfo.files[0];
 
 		ofFile fileSrc( dragInfo.files[0] );
 		if (fileSrc.exists())
 		{
-			string fileDstPath = "Images/Surfaces/" + fileSrc.getFileName();
-			if ( ofFile::copyFromTo(fileSrc.getAbsolutePath(), fileDstPath, true, true) )
+			string fileDstPath =  "Images/Surfaces/" + fileSrc.getFileName();
+
+			bool reload = false;
+			if (ofToDataPath( fileDstPath, true) == dragInfo.files[0])
+			{
+				reload = true;
+			}
+			else
+			{
+				if ( ofFile::copyFromTo(fileSrc.getAbsolutePath(), fileDstPath, true, true) )
+				{
+					reload = true;
+				}
+			}
+
+			if ( reload )
 			{
 				if ( loadMask(fileDstPath) )
 				{

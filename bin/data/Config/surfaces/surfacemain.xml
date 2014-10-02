@@ -1,9 +1,9 @@
 <surface id="main">
     <animations type="cpp">
+        <animation>orbit</animation>
         <animation>shaderWave</animation>
         <animation>particlesMega2</animation>
         <animation>box2DCircles</animation>
-        <animation>orbit</animation>
     </animations>
 
     <animations type="js" folder="murmur">

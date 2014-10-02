@@ -36,7 +36,7 @@
 <Widget>
     <Kind>12</Kind>
     <Name>pathMask</Name>
-    <Value>Images/Surfaces/degrade_0.31125.png</Value>
+    <Value>Images/Surfaces/degrade_0.1265.png</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -46,10 +46,10 @@
 <Widget>
     <Kind>2</Kind>
     <Name>quad warping</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
     <Name>draw quad warping</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
