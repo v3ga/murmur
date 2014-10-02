@@ -182,6 +182,13 @@ void ParticlePath::update(float dt)
 
 
 //--------------------------------------------------------------
+void ParticleOrbit::setReverse(bool is)
+{
+	m_isReverse = is;
+	std::reverse(m_points.begin(), m_points.end());
+}
+
+//--------------------------------------------------------------
 ParticleOrbitEllipse::ParticleOrbitEllipse()
 {
 	setRadius( ofVec2f(100.0,50.0) );
@@ -216,8 +223,10 @@ void ParticleOrbitEllipse::computePoints()
 		
 			m_points.push_back( point );
 		}
-	
+
+	//std::reverse(m_points.begin(), m_points.end());
 }
+
 
 //--------------------------------------------------------------
 void ParticleOrbitEllipse::setOffset(ofVec3f offset)
@@ -276,14 +285,14 @@ AnimationOrbit::AnimationOrbit(string name) : Animation(name)
 	m_isFrameBlending	= false;
 	m_frameBlending		= 0.25f;
 
-	m_boidsSeparation 	= 1.5f;
-	m_boidsCohesion		= 1.0f;
-	m_boidsAlignement	= 1.0f;
-	m_boidsMaxSpeedMin	= 1.0f;
-	m_boidsMaxSpeedMax	= 2.0f;
-	m_boidsDrawAlpha	= 1.0f;
-
-	m_boidsSpeedFactor	= 1.0f;
+	m_boidsSeparation 		= 1.5f;
+	m_boidsCohesion			= 1.0f;
+	m_boidsAlignement		= 1.0f;
+	m_boidsMaxSpeedMin		= 1.0f;
+	m_boidsMaxSpeedMax		= 2.0f;
+	m_boidsDrawAlpha		= 1.0f;
+	m_boidsSpeedFactor		= 1.0f;
+	m_boidsNbParticlesPath	= 4;
 
 	m_rotationForms		= 20.0f;
 	m_widthForms		= 200.0f;
@@ -296,6 +305,10 @@ AnimationOrbit::AnimationOrbit(string name) : Animation(name)
 	mp_deviceCurrent	= 0;
 	
 	mp_mgEnergy			= 0;
+
+	m_boidState			= boidState_rest;
+				float			m_tBoidExcitation;
+
 }
 
 //--------------------------------------------------------------
@@ -311,9 +324,24 @@ AnimationOrbit::~AnimationOrbit()
 	{
 		delete *it;
 	}
+	
+	deleteParticlePaths();
 
 }
- 
+
+//--------------------------------------------------------------
+void AnimationOrbit::deleteParticlePaths()
+{
+	vector<ParticlePath*>::iterator it = m_particlePaths.begin();
+	for ( ; it!=m_particlePaths.end(); ++it)
+	{
+		delete *it;
+	}
+
+	m_particlePaths.clear();
+}
+
+
 //--------------------------------------------------------------
 void AnimationOrbit::VM_enter()
 {
@@ -368,6 +396,8 @@ void AnimationOrbit::VM_update(float dt)
 //--------------------------------------------------------------
 void AnimationOrbit::VM_draw(float w, float h)
 {
+	ofEnableAlphaBlending();
+
 	if (m_isFrameBlending)
 	{
 		ofPushStyle();
@@ -418,6 +448,8 @@ void AnimationOrbit::VM_draw(float w, float h)
 	}
 
 	ofPopStyle();
+
+	ofDisableAlphaBlending();
 }
 
 //--------------------------------------------------------------
@@ -483,7 +515,7 @@ void AnimationOrbit::onNewPacket(DevicePacket* pDevicePacket, string deviceId, f
 		pOrbit = pOrbitEllipse;
 
 		// Assign boids to paths
-		createParticlePathsForOrbit(pOrbit,4);
+		createParticlePathsForOrbit(pOrbit);
 
 		// Assign boids to paths
 		assignBoidsToPaths();
@@ -518,15 +550,15 @@ void AnimationOrbit::createUICustom()
 	    mp_UIcanvas->addWidgetDown	( new ofxUILabel("Flocking", OFX_UI_FONT_SMALL) );
     	mp_UIcanvas->addWidgetDown	( new ofxUISpacer(widthDefault, 1));
 
-		mp_UIcanvas->addTextInput("number", "number");
+		mp_UIcanvas->addIntSlider("nbParticlePaths", 		2, 10, &m_boidsNbParticlesPath);
         mp_UIcanvas->addIntSlider("trail_size", 50, 350, 200);
 
         mp_UIcanvas->addSlider("separation", 	0.0f, 1.5f, &m_boidsSeparation);
         mp_UIcanvas->addSlider("cohesion", 		0.0f, 1.5f, &m_boidsCohesion);
         mp_UIcanvas->addSlider("alignement", 	0.0f, 1.5f, &m_boidsAlignement);
-		mp_UIcanvas->addRangeSlider("speed", 	1.0f, 3.0f, 2.0f, 3.0f);
-        mp_UIcanvas->addSlider("force_max", 	0.0f, 0.2f, 0.1f);
-        mp_UIcanvas->addSlider("speed_factor", 	0.0f, 1.0f, &m_boidsSpeedFactor);
+		mp_UIcanvas->addRangeSlider("speed", 	1.0f, 10.0f, 2.0f, 3.0f);
+        mp_UIcanvas->addSlider("force_max", 	0.0f, 1.0f, 0.1f);
+        mp_UIcanvas->addSlider("speed_factor", 	0.0f, 4.0f, &m_boidsSpeedFactor);
 	
 	
 		vector<float> mgValues(widthDefault);
@@ -620,6 +652,22 @@ void AnimationOrbit::guiEvent(ofxUIEventArgs &e)
 		ParticleOrbitEllipse* pOrbitEllipse = (ParticleOrbitEllipse*) getOrbitForDevice(getDeviceCurrent());
 		if(pOrbitEllipse) pOrbitEllipse->setHeight( ((ofxUISlider*) e.widget)->getScaledValue() );
 	}
+	else if (name == "nbParticlePaths")
+	{
+		int nb = ((ofxUISlider*)e.widget)->getScaledValue();
+		if (nb != m_boidsNbParticlesPath)
+		{
+			deleteParticlePaths();
+		
+		
+			map<string,ParticleOrbit*>::iterator it = m_orbits.begin();
+			for ( ; it!=m_orbits.end(); ++it){
+				createParticlePathsForOrbit( it->second );
+			}
+			assignBoidsToPaths();
+		}
+	}
+
 }
 
 //--------------------------------------------------------------
@@ -711,7 +759,7 @@ void AnimationOrbit::loadProperties(string id)
 							pOrbit->load(extraData);
 
 							// Create Particle which runs along this orbit
-							createParticlePathsForOrbit(pOrbit,4);
+							createParticlePathsForOrbit(pOrbit);
 						}
 																
 						extraData.popTag();
@@ -731,17 +779,19 @@ void AnimationOrbit::loadProperties(string id)
 }
 
 
-void AnimationOrbit::createParticlePathsForOrbit(ParticleOrbit* pOrbit, int nbParticlePaths)
+//--------------------------------------------------------------
+void AnimationOrbit::createParticlePathsForOrbit(ParticleOrbit* pOrbit)
 {
-  for (int i=0;i<nbParticlePaths;i++)
+  for (int i=0;i<m_boidsNbParticlesPath;i++)
   {
 	 ParticlePath* pParticlePath = new ParticlePath();
-	 pParticlePath->setSegment(pOrbit, i * (int)pOrbit->getPoints().size() / nbParticlePaths);
+	 pParticlePath->setSegment(pOrbit, i * (int)pOrbit->getPoints().size() / m_boidsNbParticlesPath);
 
 	 m_particlePaths.push_back( pParticlePath );
   }
 }
 
+//--------------------------------------------------------------
 void AnimationOrbit::assignBoidsToPaths()
 {
 	// Assign orbit / point to boid
