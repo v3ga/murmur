@@ -480,8 +480,14 @@ void AnimationOrbit::onNewPacket(DevicePacket* pDevicePacket, string deviceId, f
 
 		// Save in map
 		m_orbits[deviceId] = pOrbitEllipse;
-
 		pOrbit = pOrbitEllipse;
+
+		// Assign boids to paths
+		createParticlePathsForOrbit(pOrbit,4);
+
+		// Assign boids to paths
+		assignBoidsToPaths();
+
 	}
 
 	// Position of deviceId changed ?
@@ -699,22 +705,13 @@ void AnimationOrbit::loadProperties(string id)
 							m_orbits[deviceId] = pOrbit;
 						}
 						
-						if (pOrbit){
+						if (pOrbit)
+						{
 							ofLog() << "- loading extra data for " << deviceId;
 							pOrbit->load(extraData);
 
 							// Create Particle which runs along this orbit
-							int nbParticlePaths = 4;
-							for (int i=0;i<nbParticlePaths;i++)
-							{
-								ParticlePath* pParticlePath = new ParticlePath();
-								pParticlePath->setSegment(pOrbit, i * (int)pOrbit->getPoints().size() / nbParticlePaths);
-
-								m_particlePaths.push_back( pParticlePath );
-							}
-
-
-
+							createParticlePathsForOrbit(pOrbit,4);
 						}
 																
 						extraData.popTag();
@@ -729,19 +726,36 @@ void AnimationOrbit::loadProperties(string id)
 	
 		}
 	}
-
-
-	// Assign orbit / point to boid
-	for (int i=0;i<m_boids.size();i++)
-	{
-		int indexParticlePath = (int) ofRandom(m_particlePaths.size());
-		// Choose a random particle
-		((BoidOrbit*)m_boids[i])->setPath( m_particlePaths[indexParticlePath] );
-	}
-
-
-
+	
+	assignBoidsToPaths();
 }
+
+
+void AnimationOrbit::createParticlePathsForOrbit(ParticleOrbit* pOrbit, int nbParticlePaths)
+{
+  for (int i=0;i<nbParticlePaths;i++)
+  {
+	 ParticlePath* pParticlePath = new ParticlePath();
+	 pParticlePath->setSegment(pOrbit, i * (int)pOrbit->getPoints().size() / nbParticlePaths);
+
+	 m_particlePaths.push_back( pParticlePath );
+  }
+}
+
+void AnimationOrbit::assignBoidsToPaths()
+{
+	// Assign orbit / point to boid
+	if (m_particlePaths.size()>0)
+	{
+		for (int i=0;i<m_boids.size();i++)
+		{
+			int indexParticlePath = (int) ofRandom(m_particlePaths.size());
+			// Choose a random particle
+			((BoidOrbit*)m_boids[i])->setPath( m_particlePaths[indexParticlePath] );
+		}
+	}
+}
+
 
 
 

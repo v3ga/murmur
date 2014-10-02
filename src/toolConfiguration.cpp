@@ -67,13 +67,14 @@ void toolConfiguration::createControlsCustom()
 //--------------------------------------------------------------
 void toolConfiguration::setup()
 {
+	if (m_isLaunchMadMapper)
+	{
+		launchMadMapper();
+	}
+
+
 	if (!GLOBALS->mp_app->isSimulation)
 	{
-		if (m_isLaunchMadMapper)
-		{
-			launchMadMapper();
-		}
-	
 		// Launch Murmur on Raspberry
 		if (m_isLaunchDevices)
 		{

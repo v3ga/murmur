@@ -63,6 +63,8 @@ void Surface::zeroAll()
 	m_durationNoLaunchPacket = 0.0f;
 	m_durationPreStandby = 10.0f;
 	
+	m_fboNbSamples		= 0;
+	
 	setMask(0);
 	m_isDrawMask = false;
 }
@@ -224,9 +226,13 @@ void Surface::setup()
 }
 
 //--------------------------------------------------------------
-void Surface::setDimensions(int w, int h)
+void Surface::setDimensions(int w, int h, int nbSamples)
 {
-	m_fbo.allocate(w,h);
+	m_fboNbSamples = nbSamples;
+	if (m_fboNbSamples > ofFbo::maxSamples())
+		m_fboNbSamples = ofFbo::maxSamples();
+
+	m_fbo.allocate(w,h,GL_RGBA, m_fboNbSamples);
 }
 
 //--------------------------------------------------------------

@@ -60,6 +60,9 @@ class AnimationOrbit : public Animation
 				void            loadProperties          (string id);
 	
 				void			drawOrbit				(ParticleOrbit* pOrbit);
+	
+				void			createParticlePathsForOrbit(ParticleOrbit* pOrbit, int nbParticlePaths);
+				void			assignBoidsToPaths		();
 
 		ParticlePath*			mp_testParticle;
 		vector<ParticlePath*>	m_particlePaths;

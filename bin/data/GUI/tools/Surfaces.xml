@@ -19,6 +19,11 @@
     <Value>300</Value>
 </Widget>
 <Widget>
+    <Kind>42</Kind>
+    <Name>quality</Name>
+    <Value>8</Value>
+</Widget>
+<Widget>
     <Kind>2</Kind>
     <Name>target</Name>
     <Value>0</Value>
