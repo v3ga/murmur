@@ -32,7 +32,9 @@ class Surface
 		void			zeroAll			();
     
         ofFbo&          getOffscreen    (){return m_fbo;}
-        void            setDimensions	(int w, int h);
+        void            setDimensions	(int w, int h, int nbSamples=0);
+		int				getQuality		(){return getNbSamples();}
+		int				getNbSamples	(){return m_fboNbSamples;}
 
         void            setup           ();
         void            update          (float dt);
@@ -89,6 +91,7 @@ class Surface
         string              m_id;
         int                 m_stateActivity;
 		ofFbo               m_fbo;
+		int					m_fboNbSamples;
         AnimationManager    m_animationManager;
         vector<Device*>     m_listDevices;
         ofVec2f             m_devicePoint;

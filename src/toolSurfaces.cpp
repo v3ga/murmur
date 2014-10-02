@@ -12,7 +12,6 @@
 #include "globals.h"
 #include "testApp.h"
 #include "ofxHomographyHelper.h"
-
 //--------------------------------------------------------------
 toolSurfaces::toolSurfaces(toolManager* parent, Surface* surface) : tool("Surfaces", parent)
 {
@@ -77,7 +76,7 @@ void toolSurfaces::createControlsCustom()
     	mp_canvas->addWidgetRight 	( new ofxUITextInput("wFboSurface", "1000" , 40, dim,0,0,fontType));
     	mp_canvas->addWidgetRight	( new ofxUILabel("x", fontType) );
 		mp_canvas->addWidgetRight	( new ofxUITextInput("hFboSurface", "1000" , 40, dim,0,0,fontType));
-
+		mp_canvas->addWidgetDown	( new ofxUIIntSlider("quality", 0 , ofFbo::maxSamples(), 0, widthDefault, dim));
 
     	mp_canvas->addWidgetDown	(new ofxUIToggle("target", false, dim, dim));
     	mp_canvas->addWidgetRight	(new ofxUISlider("target line w", 1.0f, 8.0f, 2.0f, 100, dim ));
@@ -233,14 +232,19 @@ void toolSurfaces::handleEvents(ofxUIEventArgs& e)
     else if (name == "wFboSurface")
     {
 		int wPixels = atoi( ((ofxUITextInput *) e.widget)->getTextString().c_str() );;
-		int hPixels = pSurfaceCurrent->getHeightPixels();
-		pSurfaceCurrent->setDimensions(wPixels,hPixels);
+		pSurfaceCurrent->setDimensions(wPixels,pSurfaceCurrent->getHeightPixels(),pSurfaceCurrent->getQuality());
 	}
     else if (name == "hFboSurface")
     {
-		int wPixels = pSurfaceCurrent->getWidthPixels();
-		int hPixels = atoi( ((ofxUITextInput *) e.widget)->getTextString().c_str() );;
-		pSurfaceCurrent->setDimensions(wPixels,hPixels);
+		int hPixels = atoi( ((ofxUITextInput *) e.widget)->getTextString().c_str() );
+		pSurfaceCurrent->setDimensions(pSurfaceCurrent->getWidthPixels(),hPixels,pSurfaceCurrent->getQuality());
+	}
+	else if (name == "quality")
+	{
+		int fboQuality = pSurfaceCurrent->getQuality();
+		int quality = ((ofxUIIntSlider*)e.widget)->getScaledValue();
+		if (quality != fboQuality)
+			pSurfaceCurrent->setDimensions(pSurfaceCurrent->getWidthPixels(),pSurfaceCurrent->getHeightPixels(), quality);
 	}
     else if (name == "syphon")
 	{

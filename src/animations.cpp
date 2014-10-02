@@ -908,9 +908,7 @@ void AnimationManager::M_drawCanvas(float w, float h)
     ofPushStyle();
 	if (mp_animationCurrent)
 		mp_animationCurrent->VM_draw(w,h);
-    ofEnableBlendMode(OF_BLENDMODE_ALPHA);
     M_drawTransition(w,h);
-    ofDisableBlendMode();
     ofPopStyle();
 }
 
@@ -921,12 +919,14 @@ void AnimationManager::M_drawTransition(float w, float h)
 	// Draw transition
 	if (m_state == STATE_TRANSITION_OUT || m_state == STATE_TRANSITION_IN)
 	{
-		printf("tween=%.2f\n", m_transitionTween.getTarget(0));
+		//printf("tween=%.2f\n", m_transitionTween.getTarget(0));
 	
+	    ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 		ofPushStyle();
 			ofSetColor(0,0,0, 255*m_transitionTween.getTarget(0));
 			ofRect(0,0,w,h);
 		ofPopStyle();
+    ofDisableBlendMode();
 	}
 }
 
