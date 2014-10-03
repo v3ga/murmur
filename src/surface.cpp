@@ -15,7 +15,8 @@
 //--------------------------------------------------------------
 Surface::Surface(string id, int wPixels, int hPixels)
 {
-    printf("[new Surface(%s,%d,%d)]\n", id.c_str(), wPixels, hPixels);
+	OFAPPLOG->begin("Surface::Surface("+id+","+ofToString(wPixels)+","+ofToString(hPixels)+")");
+//    OFAPPLOG->println("[new Surface(%s,%d,%d)]\n", id.c_str(), wPixels, hPixels);
 
     m_id = id;
 	zeroAll();
@@ -24,12 +25,15 @@ Surface::Surface(string id, int wPixels, int hPixels)
 	#if MURMUR_DEFINE_SYPHON
 		m_syphonServer.setName(m_id);
 	#endif
+
+	OFAPPLOG->end();
 }
 
 //--------------------------------------------------------------
 Surface::Surface(string id)
 {
-    printf("[new Surface(%s)]\n", id.c_str());
+	OFAPPLOG->begin("Surface::Surface("+id+")");
+//    printf("[new Surface(%s)]\n", id.c_str());
 
     m_id = id;
 	zeroAll();
@@ -37,6 +41,7 @@ Surface::Surface(string id)
 	#if MURMUR_DEFINE_SYPHON
 		m_syphonServer.setName(m_id);
 	#endif
+	OFAPPLOG->end();
 }
 
 //--------------------------------------------------------------
@@ -119,7 +124,7 @@ void Surface::setRenderTargetLineWidth(float w_)
 //--------------------------------------------------------------
 void Surface::setup()
 {
-	printf("[Surface::setup]\n");
+	OFAPPLOG->begin("Surface::setup");
 
     // Cpp animations
     ofxXmlSettings surfaceSettings;
@@ -133,7 +138,8 @@ void Surface::setup()
 		for (int i=0;i<nbAnimationsTag;i++)
 		{
 			string type = surfaceSettings.getAttribute("animations", "type", "", i);
-			printf(" - type=%s\n", type.c_str());
+			// printf(" - type=%s\n", type.c_str());
+			OFAPPLOG->println("type="+type);
 
 			// ----------------------------------------
 			// CPP
@@ -144,13 +150,15 @@ void Surface::setup()
 				surfaceSettings.pushTag("animations", i);
 
 		        int nbAnimations = surfaceSettings.getNumTags("animation");
-        		printf(" - nbAnimations=%d\n", nbAnimations);
-        		for (int j=0;j<nbAnimations;j++)
+        		//printf(" - nbAnimations=%d\n", nbAnimations);
+        		OFAPPLOG->println("nbAnimations="+ofToString(nbAnimations));
+				for (int j=0;j<nbAnimations;j++)
 				{
             
             		string animName = surfaceSettings.getValue("animation","",j);
-            		printf("    - %s\n", animName.c_str());
-            
+            		//printf("    - %s\n", animName.c_str());
+		            OFAPPLOG->println("  - "+animName);
+			
             		if (animName != "")
 					{
                 		Animation* pAnimation = AnimationsFactory::create( animName );
@@ -172,7 +180,8 @@ void Surface::setup()
 				if (dirScripts.exists())
 				{
 					dirScripts.listDir();
-					printf("    - DIR %s [%d file(s)]\n", dirScripts.path().c_str(),dirScripts.size());
+					// printf("    - DIR %s [%d file(s)]\n", dirScripts.path().c_str(),dirScripts.size());
+					OFAPPLOG->println("    - DIR "+dirScripts.path()+" ["+ofToString( dirScripts.size() )+" file(s)]");
 					
 					vector<ofFile> files = dirScripts.getFiles();
 					vector<ofFile>::iterator it;
@@ -196,7 +205,8 @@ void Surface::setup()
 								
 								bool isAutoClear = ofxJSValue_TO_bool(retValAutoClear);
 								
-								printf("    - js [%s], autoclear=%s\n", (*it).getFileName().c_str(), isAutoClear ? "true" : "false");
+								// printf("    - js [%s], autoclear=%s\n", (*it).getFileName().c_str(), isAutoClear ? "true" : "false");
+								OFAPPLOG->println("    - js ["+(*it).getFileName()+"], autoclear="+(isAutoClear ? "true" : "false"));
 								
 								pAnimation->m_isAutoClear = isAutoClear;
 
@@ -216,13 +226,18 @@ void Surface::setup()
         surfaceSettings.popTag();
     }
     else
-        printf("   - cannot load %s\n", "surfaceMain.xml");
-    
+	{
+        // printf("   - cannot load %s\n", "surfaceMain.xml");
+		OFAPPLOG->println("cannot load 'surfaceMain.xml'");
+    }
+	
 	// Scripts
 	ofDirectory dirScripts("Scripts");
  
     m_animationManager.M_readSettings(surfaceSettings);
     m_animationManager.M_setAnimation(0);
+	
+	OFAPPLOG->end();
 }
 
 //--------------------------------------------------------------

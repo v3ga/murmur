@@ -494,7 +494,6 @@ void AnimationOrbit::onNewPacket(DevicePacket* pDevicePacket, string deviceId, f
 
 
 	m_energies[deviceId] += pDevicePacket->m_volume;
-	// ofLog() << m_energies[deviceId];
 
 	// Create Orbit for device
 	ParticleOrbit* pOrbit = getOrbitForDevice(deviceId);

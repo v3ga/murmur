@@ -86,17 +86,23 @@ void toolConfiguration::setup()
 //--------------------------------------------------------------
 void toolConfiguration::launchDevices()
 {
-	printf("[testApp::launchDevices]\n");
+//	printf("[testApp::launchDevices]\n");
+	OFAPPLOG->begin("toolConfiguration::::launchDevices");
+
 	ofxXmlSettings& settings = GLOBALS->mp_app->m_settings;
 	
 	settings.pushTag("launchDevices");
 	int nbLaunchDevices = settings.getNumTags("ip");
-	printf("    - nbDevices=%d\n", nbLaunchDevices);
+	OFAPPLOG->println("nbDevices="+ofToString(nbLaunchDevices));
 	for (int i=0;i<nbLaunchDevices;i++)
 	{
+		// VERY important
+		// http://unix.stackexchange.com/questions/86247/what-does-ampersand-mean-at-the-end-of-a-shell-script-line
+
 		string strIPMurmur 	= GLOBALS->mp_app->m_settings.getValue("ip", "10.23.108.114", i);
 		string strSSH_kill 	= "ssh pi@" + strIPMurmur + " 'sudo pkill -f murmurRaspberry'";
-		string strSSH_run 	= "ssh pi@" + strIPMurmur + " /home/pi/Dev/C/openFrameworks/examples/myapps/murmurRaspberry/bin/run_murmur.sh";
+		string strSSH_run 	= "ssh pi@" + strIPMurmur + " /home/pi/Dev/C/openFrameworks/examples/myapps/murmurRaspberry/bin/run_murmur.sh &";
+
 
 		threadRasp* pThreadLaunchDevice = new threadRasp();
 		pThreadLaunchDevice->addCommand(strSSH_kill);
@@ -107,23 +113,33 @@ void toolConfiguration::launchDevices()
 	}
 
 	settings.popTag();
+
+	OFAPPLOG->end();
 }
 
 //--------------------------------------------------------------
 void toolConfiguration::launchMadMapper()
 {
-	string pathFileMM = GLOBALS->mp_app->m_settings.getValue("murmur:madmapper", "default.map");
+	OFAPPLOG->begin("toolConfiguration::launchMadMapper");
+
+
+	string pathFileMM = GLOBALS->mp_app->m_settings.getValue("madmapper", "default.map");
 	ofFile file(ofToDataPath("Config/madmapper/"+pathFileMM));
 	if (file.exists())
 	{
 		string command = "open "+file.getAbsolutePath();
 		system(command.c_str());
-	   printf("Launching MadMapper with %s\n", file.getAbsolutePath().c_str());
+	   // printf("Launching MadMapper with %s\n", file.getAbsolutePath().c_str());
+		OFAPPLOG->println("Launching MadMapper with "+file.getAbsolutePath());
+	
 	}
 	else
 	{
-	   printf("Error launching MadMapper with %s\n", file.getAbsolutePath().c_str());
+	   // printf("Error launching MadMapper with %s\n", file.getAbsolutePath().c_str());
+	   OFAPPLOG->println("Error launching MadMapper with "+file.getAbsolutePath());
 	}
+
+	OFAPPLOG->end();
 }
 
 //--------------------------------------------------------------
