@@ -31,6 +31,7 @@ class toolDevices : public tool
 		void					drawUI						();
 		void					handleEvents				(ofxUIEventArgs& e);
 		bool					isHit						(int x, int y);
+		bool					keyPressed					(int key);
 
         DeviceManager*      	mp_deviceManager;
 		vector<string>			m_speakersId;
@@ -44,6 +45,5 @@ class toolDevices : public tool
     	ofxUISlider* 			mp_sliderDeviceVolHistoryTh;
     	ofxUISlider* 			mp_sliderDeviceTimeStandby;
     	ofxUISlider* 			mp_sliderDeviceSampleVolStandby;
-	
 	
 };

@@ -91,7 +91,10 @@ class AnimationOrbit : public Animation
 		float					m_boidsDrawAlpha;
 		float					m_boidsSpeedFactor; // TEMP, testing
 		int						m_boidsNbParticlesPath;
+		float					m_boidsSpeedMin;
+		float					m_boidsSpeedMax;
 	
+		bool					m_reverseForms;
 		float					m_rotationForms, m_widthForms, m_heightForms;
 	
 		enum
@@ -106,6 +109,7 @@ class AnimationOrbit : public Animation
 	protected:
 		Device*					mp_deviceCurrent;
 		ofxUILabel*				mp_labelDeviceId;
+		ofxUIToggle*			mp_toggleFormReverse;
 		ofxUISlider*			mp_sliderFormRot;
 		ofxUISlider*			mp_sliderFormWidth;
 		ofxUISlider*			mp_sliderFormHeight;

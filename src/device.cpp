@@ -707,6 +707,19 @@ void DeviceManager::turnoffDevices()
         (*itDevices)->turnoff();
 }
 
+//--------------------------------------------------------------
+int DeviceManager::indexOf(Device* pDevice)
+{
+	int index=0;
+	for (itDevices = m_listDevices.begin(); itDevices != m_listDevices.end(); ++itDevices)
+	{
+		if (*itDevices == pDevice)
+			return index;
+		index++;
+	}
+	return -1;
+}
+
 
 
 
