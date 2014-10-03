@@ -350,3 +350,33 @@ bool toolDevices::isHit(int x, int y)
 	return ( tool::isHit(x,y) || mp_canvasDevice->isHit(x, y));
 }
 
+//--------------------------------------------------------------
+bool toolDevices::keyPressed(int key)
+{
+ 	int nbDevices = mp_deviceManager->getDevicesNb();
+ 
+	if (key == OF_KEY_LEFT)
+	{
+		if (nbDevices>0)
+		{
+	  		this->selectDeviceWithIndex( (mp_deviceManager->indexOfCurrent()+1)%nbDevices );
+			return true;
+  		}
+	}
+  	else if (key == OF_KEY_RIGHT)
+  	{
+		if (nbDevices>0)
+		{
+			int index = mp_deviceManager->indexOfCurrent()-1;
+			if (index <0){
+				index = nbDevices-1;
+			}
+	  		this->selectDeviceWithIndex( index );
+			return true;
+  		}
+  	}
+
+	return false;
+}
+
+

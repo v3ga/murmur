@@ -129,7 +129,6 @@ void testApp::initDevices()
 	printf("[testApp::initDevices]\n");
     if (isSimulation)
     {
-		m_settings.pushTag("murmur");
 		m_settings.pushTag("simulator");
 		m_settings.pushTag("devices");
 		
@@ -152,7 +151,6 @@ void testApp::initDevices()
 		}
 		m_settings.popTag();
 		m_settings.popTag();
-		m_settings.popTag();
 	
     }
 }
@@ -163,8 +161,8 @@ void testApp::initSimulators()
 {
     if (isSimulation && m_listDeviceSimulator.size()>0 /* && mp_deviceSimulator*/)
     {
-        int deviceSoundInputId = m_settings.getValue("murmur:simulator:soundInput:device", -1);
-        int nbChannels = m_settings.getValue("murmur:simulator:soundInput:nbChannels", 2);
+        int deviceSoundInputId = m_settings.getValue("simulator:soundInput:device", -1);
+        int nbChannels = m_settings.getValue("simulator:soundInput:nbChannels", 2);
         printf("deviceSoundInputId=%d\n",deviceSoundInputId);
         printf("nbChannels=%d\n",nbChannels);
 

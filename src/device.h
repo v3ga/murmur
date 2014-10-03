@@ -173,6 +173,7 @@ class DeviceManager
         ~DeviceManager      ();
 
         void                addDevice           (Device*);
+		int					getDevicesNb		(){return m_listDevices.size();}
         Device*             getDeviceById       (string id);
         void                getDevicesListId    (vector<string>&);
         void                setDeviceCurrent    (Device*);
@@ -180,7 +181,9 @@ class DeviceManager
         Device*             getDeviceCurrent    (){return mp_deviceCurrent;}
         void                saveDevicesXML      (string dir);
 		void				turnoffDevices		();
-    
+		int					indexOf				(Device*);
+ 		int					indexOfCurrent		(){return indexOf(mp_deviceCurrent);}
+	
         vector<Device*>     m_listDevices;
     
     private:

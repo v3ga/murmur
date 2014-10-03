@@ -256,7 +256,9 @@ void ParticleOrbitEllipse::load(ofxXmlSettings& settings)
 	m_rot = settings.getValue("rotation", 0.0f);
 	m_radius.set( settings.getValue("width", 200.0f), settings.getValue("height", 100.0f) );
 	m_offset.set( settings.getValue("offset_x", 0.0f), settings.getValue("offset_y", 0.0f) );
+	setReverse( settings.getValue("reverse", false) );
 
+	ofLog() << "    - m_reverse=" << ofToString(m_isReverse);
 	ofLog() << "    - m_rot=" << m_rot;
 	ofLog() << "    - m_radius=" << m_radius;
 	ofLog() << "    - m_offset=" << m_offset;
@@ -270,6 +272,7 @@ void ParticleOrbitEllipse::save(ofxXmlSettings& settings)
 	settings.addValue("height", m_radius.y);
 	settings.addValue("offset_x", m_offset.x);
 	settings.addValue("offset_y", m_offset.y);
+	settings.addValue("reverse", m_isReverse);
 }
 
 
@@ -293,12 +296,16 @@ AnimationOrbit::AnimationOrbit(string name) : Animation(name)
 	m_boidsDrawAlpha		= 1.0f;
 	m_boidsSpeedFactor		= 1.0f;
 	m_boidsNbParticlesPath	= 4;
+	m_boidsSpeedMin			= 2.0f;
+	m_boidsSpeedMax			= 5.0f;
 
+	m_reverseForms		= false;
 	m_rotationForms		= 20.0f;
 	m_widthForms		= 200.0f;
 	m_heightForms		= 100.0f;
 	
 	mp_labelDeviceId	= 0;
+	mp_toggleFormReverse= 0;
 	mp_sliderFormRot	= 0;
 	mp_sliderFormWidth	= 0;
 	mp_sliderFormHeight	= 0;
@@ -556,9 +563,12 @@ void AnimationOrbit::createUICustom()
         mp_UIcanvas->addSlider("separation", 	0.0f, 1.5f, &m_boidsSeparation);
         mp_UIcanvas->addSlider("cohesion", 		0.0f, 1.5f, &m_boidsCohesion);
         mp_UIcanvas->addSlider("alignement", 	0.0f, 1.5f, &m_boidsAlignement);
-		mp_UIcanvas->addRangeSlider("speed", 	1.0f, 10.0f, 2.0f, 3.0f);
-        mp_UIcanvas->addSlider("force_max", 	0.0f, 1.0f, 0.1f);
+		mp_UIcanvas->addRangeSlider("speed", 	1.0f, 10.0f, &m_boidsSpeedMin, &m_boidsSpeedMax);
+        mp_UIcanvas->addSlider("force_max", 	0.0f, 2.0f, &m_boidsForceMax);
         mp_UIcanvas->addSlider("speed_factor", 	0.0f, 4.0f, &m_boidsSpeedFactor);
+		
+		mp_UIcanvas->addWidgetDown( new ofxUILabelButton("calm", true, 60,16) );
+		mp_UIcanvas->addWidgetRight( new ofxUILabelButton("excited", true, 60,16) );
 	
 	
 		vector<float> mgValues(widthDefault);
@@ -569,6 +579,7 @@ void AnimationOrbit::createUICustom()
 	    mp_labelDeviceId = new ofxUILabel("Forms", OFX_UI_FONT_SMALL);
 		mp_UIcanvas->addWidgetDown	( mp_labelDeviceId );
     	mp_UIcanvas->addWidgetDown	( new ofxUISpacer(widthDefault, 1));
+		mp_toggleFormReverse = mp_UIcanvas->addToggle("reverse_forms", 	&m_reverseForms);
 		mp_sliderFormRot = mp_UIcanvas->addSlider("rotation_forms", 	-90.0f, 90.0f, &m_rotationForms);
 		mp_sliderFormWidth = mp_UIcanvas->addSlider("width_forms", 		10.0f, 500.0f, &m_widthForms);
 		mp_sliderFormHeight = mp_UIcanvas->addSlider("height_forms", 	10.0f, 500.0f, &m_heightForms);
@@ -634,6 +645,14 @@ void AnimationOrbit::guiEvent(ofxUIEventArgs &e)
 			pBoid->setForceMax(pSliderForceMax->getScaledValue());
 		}
 	}
+    else if (name == "reverse_forms")
+	{
+		ofxUIToggle* pToggle = (ofxUIToggle*) e.widget;
+	
+		ParticleOrbitEllipse* pOrbitEllipse = (ParticleOrbitEllipse*) getOrbitForDevice(getDeviceCurrent());
+		if(pOrbitEllipse) pOrbitEllipse->setReverse( pToggle->getValue() );
+		
+	}
     else if (name == "rotation_forms")
 	{
 		ofxUISlider* pSliderFormRot = (ofxUISlider*) e.widget;
@@ -667,6 +686,51 @@ void AnimationOrbit::guiEvent(ofxUIEventArgs &e)
 			assignBoidsToPaths();
 		}
 	}
+	else if (name == "calm")
+	{
+		ofxUILabelButton* pBtn = (ofxUILabelButton*) e.widget;
+		if (pBtn->getValue())
+		{
+			m_boidsSpeedFactor = 1.0f;
+			m_boidsForceMax = 0.2f;
+			m_boidsSpeedMin = 2.0f;
+			m_boidsSpeedMax = 3.0f;
+
+
+			vector<Boid*>::iterator it = m_boids.begin();
+			BoidOrbit* pBoid=0;
+			for ( ; it != m_boids.end(); ++it)
+			{
+				pBoid = (BoidOrbit*) *it;
+				pBoid->setForceMax(m_boidsForceMax);
+				pBoid->setSpeedMinMax(m_boidsSpeedMin, m_boidsSpeedMax);
+			}
+
+		}
+	}
+	else if (name == "excited")
+	{
+		ofxUILabelButton* pBtn = (ofxUILabelButton*) e.widget;
+		if (pBtn->getValue())
+		{
+			m_boidsSpeedFactor = 9.0f;
+			m_boidsForceMax = 1.0f;
+			m_boidsSpeedMin = 9.0f;
+			m_boidsSpeedMax = 10.0f;
+
+
+			vector<Boid*>::iterator it = m_boids.begin();
+			BoidOrbit* pBoid=0;
+			for ( ; it != m_boids.end(); ++it)
+			{
+				pBoid = (BoidOrbit*) *it;
+				pBoid->setForceMax(m_boidsForceMax);
+				pBoid->setSpeedMinMax(m_boidsSpeedMin, m_boidsSpeedMax);
+			}
+
+		}
+	}
+
 
 }
 
@@ -680,6 +744,7 @@ void AnimationOrbit::updateUI()
 		if (pDeviceCurrent) mp_labelDeviceId->setLabel("Forms for "+pDeviceCurrent->m_id);
 	}
 	
+	if (mp_toggleFormReverse && pOrbitEllipse)		mp_toggleFormReverse->setValue( pOrbitEllipse->getReverse() );
 	if (mp_sliderFormRot && pOrbitEllipse)			mp_sliderFormRot->setValue( pOrbitEllipse->getRotation() );
 	if (mp_sliderFormWidth && pOrbitEllipse)		mp_sliderFormWidth->setValue( pOrbitEllipse->getRadius().x );
 	if (mp_sliderFormHeight && pOrbitEllipse)		mp_sliderFormHeight->setValue( pOrbitEllipse->getRadius().y );

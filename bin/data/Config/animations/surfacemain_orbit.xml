@@ -1,7 +1,7 @@
 <Widget>
     <Kind>2</Kind>
     <Name>draw_debug</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -11,27 +11,27 @@
 <Widget>
     <Kind>4</Kind>
     <Name>trace_level</Name>
-    <Value>0.391025633</Value>
+    <Value>0.038461540</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>alpha</Name>
-    <Value>0.467948705</Value>
+    <Value>0.426282048</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>
     <Name>nbParticlePaths</Name>
-    <Value>8</Value>
+    <Value>10</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>
     <Name>trail_size</Name>
-    <Value>350</Value>
+    <Value>50</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>separation</Name>
-    <Value>0.783653855</Value>
+    <Value>1.293269157</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -46,8 +46,8 @@
 <Widget>
     <Kind>6</Kind>
     <Name>speed</Name>
-    <HighValue>9.423076630</HighValue>
-    <LowValue>1.794871569</LowValue>
+    <HighValue>3.000000000</HighValue>
+    <LowValue>2.000000000</LowValue>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -57,22 +57,27 @@
 <Widget>
     <Kind>4</Kind>
     <Name>speed_factor</Name>
-    <Value>3.141025543</Value>
+    <Value>1.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>reverse_forms</Name>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>rotation_forms</Name>
-    <Value>-28.269233704</Value>
+    <Value>16.153850555</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>width_forms</Name>
-    <Value>195.320510864</Value>
+    <Value>248.717956543</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>height_forms</Name>
-    <Value>118.365379333</Value>
+    <Value>105.801277161</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
