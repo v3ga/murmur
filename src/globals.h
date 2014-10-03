@@ -13,6 +13,7 @@
 #include "oscSender.h"
 #include "animations.h"
 #include "timeline.h"
+#include "ofAppLog.h"
 
 #define GLOBALS Globals::instance()
 

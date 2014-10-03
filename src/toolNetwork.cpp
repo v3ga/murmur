@@ -54,7 +54,7 @@ void toolNetwork::handleEvents(ofxUIEventArgs& e)
 	if (name == "Port")
 	{
         m_oscReceiverPort = atoi( ((ofxUITextInput *) e.widget)->getTextString().c_str() );
-		printf("m_oscReceiverPort=%d\n", m_oscReceiverPort);
+		//printf("m_oscReceiverPort=%d\n", m_oscReceiverPort);
 	}
 
 }

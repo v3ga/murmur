@@ -98,7 +98,8 @@ void testApp::setup()
 //--------------------------------------------------------------
 void testApp::exit()
 {
-	printf("[testApp::exit()]\n");
+	// printf("[testApp::exit()]\n");
+	OFAPPLOG->begin("testApp::exit()");
 	
 	
 	m_soundStreamInput.stop();
@@ -120,20 +121,23 @@ void testApp::exit()
     delete Data::instance();
 	SoundManager::destroy();
 
-	printf("[testApp::exit()] end\n");
+	OFAPPLOG->end();
+//	printf("[testApp::exit()] end\n");
 }
 
 //--------------------------------------------------------------
 void testApp::initDevices()
 {
-	printf("[testApp::initDevices]\n");
+	OFAPPLOG->begin("testApp::initDevices()");
+
     if (isSimulation)
     {
 		m_settings.pushTag("simulator");
 		m_settings.pushTag("devices");
 		
 		int nbDevicesSimulator = m_settings.getNumTags("device");
-		printf("  - nbDevicesSimulator=%d\n", nbDevicesSimulator);
+		OFAPPLOG->println("nbDevicesSimulator="+ofToString(nbDevicesSimulator));
+		
 		for (int i=0; i<nbDevicesSimulator ; i++)
 		{
 			m_settings.pushTag("device", i);
@@ -153,18 +157,23 @@ void testApp::initDevices()
 		m_settings.popTag();
 	
     }
+
+	OFAPPLOG->end();
 }
 
 
 //--------------------------------------------------------------
 void testApp::initSimulators()
 {
+	OFAPPLOG->begin("testApp::initSimulators");
+
     if (isSimulation && m_listDeviceSimulator.size()>0 /* && mp_deviceSimulator*/)
     {
         int deviceSoundInputId = m_settings.getValue("simulator:soundInput:device", -1);
         int nbChannels = m_settings.getValue("simulator:soundInput:nbChannels", 2);
-        printf("deviceSoundInputId=%d\n",deviceSoundInputId);
-        printf("nbChannels=%d\n",nbChannels);
+
+        OFAPPLOG->println("deviceSoundInputId="+ofToString(deviceSoundInputId));
+        OFAPPLOG->println("nbChannels="+ofToString(nbChannels));
 
 		m_soundStreamInput.listDevices();
 	    if (deviceSoundInputId>=0)
@@ -189,14 +198,20 @@ void testApp::initSimulators()
 			}
 		}
     }
+	
+	OFAPPLOG->end();
 }
 
 //--------------------------------------------------------------
 void testApp::initSurfaces()
 {
+	OFAPPLOG->begin("testApp::initSurfaces");
+
     // TODO : should have a list here
     mp_surfaceMain = new Surface("main", ofGetWidth(),ofGetHeight());
     mp_surfaceMain->setup();
+
+	OFAPPLOG->end();
 
 }
 
