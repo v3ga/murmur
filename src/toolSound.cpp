@@ -35,6 +35,8 @@ void toolSound::show(bool is)
 //--------------------------------------------------------------
 void toolSound::saveData()
 {
+	OFAPPLOG->begin("toolSound::saveData");
+
 	tool::saveData();
 	ofxXmlSettings infos;
 	infos.addTag("sounds");
@@ -56,10 +58,10 @@ void toolSound::saveData()
 
 	if (infos.saveFile(getSoundInfosPathFile()))
 	{
-
-
-		ofLog() << "saved " << getSoundInfosPathFile();
+		OFAPPLOG->println("saved "+getSoundInfosPathFile());
 	}
+	
+	OFAPPLOG->end();
 }
 
 //--------------------------------------------------------------

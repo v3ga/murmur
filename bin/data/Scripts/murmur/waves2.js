@@ -126,7 +126,7 @@ function eventUI(name, value)
     if (name == "multi")
 	{
 		this.mode = value;
-		println("eventUI, mode="+value);
+		// println("eventUI, mode="+value);
 	}
 }
 

@@ -10,6 +10,7 @@
 #include "device.h"
 #include "soundInput.h"
 #include "ofxXmlSettings.h"
+#include "ofAppLog.h"
 
 //--------------------------------------------------------------
 DevicePacket::DevicePacket()
@@ -517,6 +518,8 @@ void Device::update(float dt)
 //--------------------------------------------------------------
 void Device::loadXML(string dir)
 {
+	OFAPPLOG->begin("Device::loadXML()");
+
     ofxXmlSettings settings;
     string pathFile = getPathXML(dir);
     if ( settings.loadFile(pathFile) )
@@ -524,27 +527,31 @@ void Device::loadXML(string dir)
         string surfaceId = settings.getAttribute("device:surface", "id", "main");
         float xNorm = settings.getValue("device:surface:xNorm", 0.5f);
         float yNorm = settings.getValue("device:surface:yNorm", 0.5f);
-        
-        
-        printf("Device, loaded %s\n", pathFile.c_str());
-        printf("    - volMax=%.3f\n", settings.getValue("device:soundInput:volMax",0.05f));
-        printf("    - volHistoryNb=%d\n", settings.getValue("device:soundInput:volHistoryNb",400));
-        printf("    - volHistoryTh=%.3f\n", settings.getValue("device:soundInput:volHistoryTh",0.1f));
-        printf("    - enableStandby=%s\n", settings.getValue("device:enableStandby",1) ? "true" : "false");
-        printf("    - timeStandby=%.2f\n", settings.getValue("device:timeStandby",10.0f) );
-        printf("    - sampleVolStandby=%.2f\n", settings.getValue("device:sampleVolStandby",0.35f) );
-//        printf("    - nbLEDsStandby=%d\n", settings.getValue("device:nbLEDsStandby",50) );
-//        printf("    - speedStandby=%.2f\n", settings.getValue("device:speedStandby",70.0f) );
-        printf("    - surface=%s (xNorm=%.2f,yNorm=%.2f)\n",surfaceId.c_str(), xNorm, yNorm);
-        
-        setSoundInputVolumeMax( settings.getValue("device:soundInput:volMax",0.05f) );
-        setSoundInputVolHistorySize( settings.getValue("device:soundInput:volHistoryNb",400) );
-        setSoundInputVolHistoryTh( settings.getValue("device:soundInput:volHistoryTh",0.1f) );
-        setEnableStandbyMode( settings.getValue("device:enableStandby",1)==1 ? true : false );
-        setTimeStandby( settings.getValue("device:timeStandby",10.0f) );
+		
+		float 	volMax 			= settings.getValue("device:soundInput:volMax",0.05f);
+		int 	volHistoryNb 	= settings.getValue("device:soundInput:volHistoryNb", 400);
+		float 	volHistoryTh	= settings.getValue("device:soundInput:volHistoryTh",0.1f);
+     	int		enableStandby	= settings.getValue("device:enableStandby",1);
+	 	float 	timeStandby		= settings.getValue("device:timeStandby",10.0f);
+	 	float 	sampleVolStandby= settings.getValue("device:sampleVolStandby",0.35f);
+	 
+		OFAPPLOG->println("Device, loaded "+pathFile);
+		OFAPPLOG->println(" - volMax="+ofToString(volMax));
+		OFAPPLOG->println(" - volHistoryNb="+ofToString(volHistoryNb));
+		OFAPPLOG->println(" - volHistoryTh="+ofToString(volHistoryTh));
+		OFAPPLOG->println(" - enableStandby="+ofToString(timeStandby));
+		OFAPPLOG->println(" - timeStandby="+ofToString(enableStandby));
+		OFAPPLOG->println(" - sampleVolStandby="+ofToString(sampleVolStandby));
+		OFAPPLOG->println(" - surface="+surfaceId+" (xNorm="+ofToString(xNorm)+",yNorm="+ofToString(yNorm)+")");
+     
+        setSoundInputVolumeMax( volMax );
+        setSoundInputVolHistorySize( volHistoryNb );
+        setSoundInputVolHistoryTh( volHistoryTh );
+        setEnableStandbyMode( enableStandby == 1 ? true : false );
+        setTimeStandby( timeStandby );
 //        setNbLEDsStandby( settings.getValue("device:nbLEDsStandby", 50) );
 //        setSpeedStandbyOSC( settings.getValue("device:speedStandby", 70.0) );
-        setSampleVolumeStandby( settings.getValue("device:sampleVolStandby", 0.35f) );
+        setSampleVolumeStandby( sampleVolStandby );
         setPointSurface(xNorm, yNorm);
 
 		settings.pushTag("device");
@@ -554,7 +561,7 @@ void Device::loadXML(string dir)
 		for (int i=0;i<nbSpeakers;i++){
 			int speakerId = settings.getValue("speaker",0,i);
 			addSpeakerId( speakerId );
-	        printf("    - speaker %d added\n",speakerId);
+	        OFAPPLOG->println(" - speaker "+ofToString(speakerId)+" added");
 		}
 		settings.popTag();
 		settings.popTag();
@@ -562,8 +569,11 @@ void Device::loadXML(string dir)
      
     }
     else{
-        printf("Device, error loading %s\n", pathFile.c_str());
+        OFAPPLOG->println("Device, error loading "+pathFile);
     }
+
+
+	OFAPPLOG->end();
 }
 
 

@@ -172,16 +172,18 @@ void toolDevices::drawUI()
 //--------------------------------------------------------------
 void toolDevices::updateListDevices()
 {
+	OFAPPLOG->begin("toolDevices::updateListDevices");
     if (mp_deviceManager && mp_ddlDevices)
     {
         vector<string> listDevicesId;
         mp_deviceManager->getDevicesListId(listDevicesId);
 
-        printf("[toolDevices::guiUpdateListDevices]\n  - %d device(s)\n", (int)listDevicesId.size());
+        OFAPPLOG->println("Device manager has now "+ofToString(listDevicesId.size())+" device(s)");
      
 		mp_ddlDevices->setAutoClose(false);
         mp_ddlDevices->init("Devices",listDevicesId);
     }
+	OFAPPLOG->end();
 }
 
 //--------------------------------------------------------------
