@@ -9,6 +9,7 @@
 #include "quadWarping.h"
 #include "ofxHomographyHelper.h"
 #include "ofxXmlSettings.h"
+#include "ofAppLog.h"
 
 //--------------------------------------------------------------
 quadWarpingHandle::quadWarpingHandle() : ofxMSAInteractiveObject()
@@ -163,6 +164,7 @@ void quadWarping::draw()
 //--------------------------------------------------------------
 void quadWarping::save(string pathFile)
 {
+	OFAPPLOG->begin("quadWarping::save('"+pathFile+"')");
     ofxXmlSettings settings;
 
     settings.addTag("points");
@@ -176,17 +178,19 @@ void quadWarping::save(string pathFile)
 		}
     settings.popTag();
 	
-	ofLog() << "saving " << pathFile;
+	// ofLog() << "saving " << pathFile;
 	settings.save(pathFile);
+	
+	OFAPPLOG->end();
 }
 
 //--------------------------------------------------------------
 void quadWarping::load(string pathFile)
 {
+	OFAPPLOG->begin("quadWarping::load('"+pathFile+"')");
+
     ofxXmlSettings settings;
 	
-	ofLog() << "quadWarping::load(), file=" << pathFile;
- 
 	if ( settings.loadFile(pathFile.c_str()) )
     {
 		settings.pushTag("points");
@@ -199,10 +203,10 @@ void quadWarping::load(string pathFile)
 				if (i==3){ yDefault = 1.0f;}
 
 				// settings.pushTag("p",i);
-				float x = settings.getAttribute("p","x",xDefault,i);
-				float y = settings.getAttribute("p","y",yDefault,i);
+				float x = ofClamp(settings.getAttribute("p","x",xDefault,i), 0.0f, 1.0f);
+				float y = ofClamp(settings.getAttribute("p","y",yDefault,i), 0.0f, 1.0f);
 				
-				ofLog() << "  x=" << x << "| y=" << y;
+				OFAPPLOG->println(" ["+ofToString(i)+"] x="+ofToString(x)+";y="+ofToString(y));
 
 				m_handles[i].setPos(
 									x * ofGetWidth(),
@@ -212,6 +216,8 @@ void quadWarping::load(string pathFile)
 			}
 		settings.popTag();
 	}
+	
+	OFAPPLOG->end();
 }
 
 //--------------------------------------------------------------

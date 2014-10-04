@@ -8,7 +8,7 @@
 
 #include "soundManager.h"
 #include "ofxSoundPlayerMultiOutput.h"
-
+#include "ofAppLog.h"
 
 
 //--------------------------------------------------------------
@@ -96,16 +96,17 @@ SoundManager* SoundManager::instance()
 //--------------------------------------------------------------
 void SoundManager::setup(ofxXmlSettings& settings)
 {
+	OFAPPLOG->begin("SoundManager::setup()");
 
 	m_driver = settings.getValue("murmur:soundOutput:driver", 0);
-	printf("- setting sound output driver [%d]\n", m_driver);
+	OFAPPLOG->println(" - setting sound output driver ["+ofToString(m_driver)+"]");
 	ofFmodSelectDriver(m_driver);
 
 	m_driver = ofFmodGetDriverSelected();
-	printf("- selected driver is [%d]\n", m_driver);
+	OFAPPLOG->println(" - selected driver is "+ofToString(m_driver));
 
 	int nbOutputs = settings.getValue("murmur:soundOutput:nbSpeakers", 2);
-	printf("- setting sound output for %d speakers\n", nbOutputs);
+	OFAPPLOG->println(" - setting sound output for "+ofToString(nbOutputs)+" speaker(s)");
 	ofFmodSetNumOutputs( nbOutputs );
 
 		settings.pushTag("murmur");
@@ -116,31 +117,33 @@ void SoundManager::setup(ofxXmlSettings& settings)
 		for (int i=0;i<nbSpeakers;i++)
 		{
 			mp_soundMainSpeakers[i] = settings.getValue("speaker",0,i);
-	        printf("- adding for sound main speaker [%d]\n", i);
+			OFAPPLOG->println(" - adding for sound main speaker ["+ofToString(i)+"]");
 		}
 		m_nbSoundMainSpeakers = nbSpeakers;
 		settings.popTag();
 		settings.popTag();
 
 	string soundMainFile = settings.getAttribute("murmur:soundOutput:soundMain","file", "main.wav");
-	printf("- sound main is [%s]\n", soundMainFile.c_str());
+	OFAPPLOG->println(" - sound main is '"+soundMainFile+"'");
 
 
 	ofDirectory dirSounds("Sounds");
 	if (dirSounds.exists())
 	{
 		dirSounds.listDir();
-		printf("DIR %s [%d file(s)]\n", dirSounds.path().c_str(),dirSounds.size());
-        
+		OFAPPLOG->println(" - DIR is '"+dirSounds.path()+"' ["+ofToString(dirSounds.size())+" file(s)]");
+     
 		vector<ofFile> files = dirSounds.getFiles();
 		vector<ofFile>::iterator it;
+		string strFileNames = "";
+		string strFileNamesSep = "";
 		for (it = files.begin(); it != files.end(); ++it)
         {
             if ((*it).getExtension() == "mp3" || (*it).getExtension() == "wav")
 			{
                 string filename = (*it).getFileName();
 
-                printf("- [%s]\n", filename.c_str());
+                strFileNames += strFileNamesSep + filename;
                 
                 SoundPlayer* pSoundPlayer = new SoundPlayer(filename);
                 pSoundPlayer->loadSound( "Sounds/"+filename );
@@ -148,11 +151,16 @@ void SoundManager::setup(ofxXmlSettings& settings)
                 pSoundPlayer->setMultiPlay(true);
 
                 m_listSoundPlayer.push_back( pSoundPlayer );
+
+				strFileNamesSep = ", ";
             }
         }
-    }
 
+		OFAPPLOG->println(" - FILES are '"+strFileNames+"'");
+    }
 	mp_soundMain = getSoundPlayer(soundMainFile);
+
+	OFAPPLOG->end();
 }
 
 //--------------------------------------------------------------

@@ -20,9 +20,7 @@ class Data
 
         ofImage                 m_imgSilhouette;
         ofImage                 m_imgLedLight; // TODO
-        ofImage                 m_imgLogo;
-    
-        ofTrueTypeFont          m_fontHelvetica;
+ 
         ofTrueTypeFont          m_font;
 
  

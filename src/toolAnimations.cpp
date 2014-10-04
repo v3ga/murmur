@@ -153,7 +153,7 @@ void toolAnimations::handleEvents(ofxUIEventArgs& e)
     if (name == "activate sequence")
     {
 		pSurfaceCurrent->setTimelineActive( ((ofxUIToggle *) e.widget)->getValue() );
-		ofLog() << "toggle activate sequence";
+		// ofLog() << "toggle activate sequence";
     }
     else if (name == "animation duration (s)")
     {

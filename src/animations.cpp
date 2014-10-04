@@ -136,33 +136,36 @@ void Animation::M_zeroAll()
 //--------------------------------------------------------------
 bool Animation::M_loadScript(const char* s)
 {
+	OFAPPLOG->begin("Animation::M_loadScript");
 //	printf("M_loadScript() > path='%s'\n", s);
 	string pathAbs = s;
 	if (pathAbs != "")
 	{
 		mp_script = ofxJSLoad(pathAbs,"___tmpScript___");
-		if (mp_script){
-
-//			if (ofxJSEval(mp_script))
+		if (mp_script)
+		{
 			if (ofxJSEvalOnObject(mp_script, mp_obj))
 			{
-//				printf("OK > evaluated '%s'\n", s);
-				//ofxJSValue retVal;
+				OFAPPLOG->println("OK evaluated '"+ofToString(s)+"'");
+				OFAPPLOG->end();
 				return true;
 			}
 			else{
-				printf("ERROR > cannot eval script '%s'\n", s);
+				OFAPPLOG->println("ERROR cannot eval script '"+ofToString(s)+"'");
 				M_deleteScript();
 			}
 		}
 		else{
-			printf("ERROR > cannot load script '%s'\n", s);
+			OFAPPLOG->println("ERROR cannot load script '"+ofToString(s)+"'");
 			M_deleteScript();
 		}
 	}
 	else
-		printf("ERROR > path for script is empty...\n");
+	{
+		OFAPPLOG->println("ERROR cpath for script '"+ofToString(s)+"' is empty..." );
+	}
 
+	OFAPPLOG->end();
 	return false;
 }
 
@@ -631,7 +634,7 @@ void Animation::accumulateVolume(float volume, string deviceId)
 		pVolumeAccum->setTriggerInCb( sOnVolumAccumEvent, (void*) this);
 		m_mapDeviceVolumAccum[deviceId] = pVolumeAccum;
 		
-		ofLog() << "creating volumeAccum instance for "<<deviceId;
+		// ofLog() << "creating volumeAccum instance for "<<deviceId;
 	}
 	else{
 		pVolumeAccum = it->second;
@@ -948,24 +951,28 @@ bool AnimationManager::M_reloadScript()
 //--------------------------------------------------------------
 void AnimationManager::M_readSettings(ofxXmlSettings& settings)
 {
+	OFAPPLOG->begin("AnimationManager::M_readSettings");
+
     settings.pushTag("surface");
     settings.pushTag("timeline");
     
     
     int nbAnimations = settings.getNumTags("animation");
-    printf("AnimationManager >>> nbAnimations=%d\n", nbAnimations);
+    OFAPPLOG->println("nbAnimations="+ofToString(nbAnimations));
     for (int i=0;i<nbAnimations;i++)
     {
         string animName = settings.getValue("animation","",i);
         
         if (animName != "" && M_getAnimationByName(animName) != 0){
-            printf("- %s\n", animName.c_str());
+		    OFAPPLOG->println(animName);
             m_listAnimationsInfos.push_back( AnimationInfo(animName) );
         }
     }
 
     settings.popTag();
     settings.popTag();
+
+	OFAPPLOG->end();
 }
 
 //--------------------------------------------------------------
@@ -979,7 +986,7 @@ void AnimationManager::M_changeState(int newState)
 			m_transitionTween.start();
 			m_state = newState;
 			
-			printf("STATE_PLAY > STATE_TRANSITION_OUT\n");
+			// printf("STATE_PLAY > STATE_TRANSITION_OUT\n");
 		}
 	}
 	else
@@ -998,7 +1005,7 @@ void AnimationManager::M_changeState(int newState)
 			}
 			m_state = newState;
 		
-			printf("STATE_TRANSITION_OUT > STATE_TRANSITION_IN\n");
+			// printf("STATE_TRANSITION_OUT > STATE_TRANSITION_IN\n");
 		}
 	}
 	else
@@ -1007,7 +1014,7 @@ void AnimationManager::M_changeState(int newState)
 		if (newState == STATE_PLAY)
 		{
 			m_state = newState;
-			printf("STATE_TRANSITION_IN > STATE_PLAY\n");
+			// printf("STATE_TRANSITION_IN > STATE_PLAY\n");
 		}
 	}
 }
