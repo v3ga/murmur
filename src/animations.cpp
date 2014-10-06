@@ -953,14 +953,17 @@ bool AnimationManager::M_editScript()
 {
 	if (mp_animationCurrent && mp_animationCurrent->M_isScript()){
 		ofLVOpenProgram(mp_animationCurrent->m_pathAbsScript);
+		return true;
 	}
+	return false;
 }
 
 //--------------------------------------------------------------
 bool AnimationManager::M_reloadScript()
 {
-	if (mp_animationCurrent)
+	if (mp_animationCurrent && mp_animationCurrent->M_isScript())
 		return mp_animationCurrent->M_reloadScript();
+	return false;
 }
 
 //--------------------------------------------------------------

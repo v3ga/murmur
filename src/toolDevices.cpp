@@ -272,6 +272,7 @@ void toolDevices::updateDeviceUI(Device* pDevice)
 //--------------------------------------------------------------
 void toolDevices::handleEvents(ofxUIEventArgs& e)
 {
+
     Device* pDeviceCurrent = mp_deviceManager->getDeviceCurrent();
 	if (pDeviceCurrent == 0) return;
 
@@ -279,11 +280,12 @@ void toolDevices::handleEvents(ofxUIEventArgs& e)
 
     if (name == "Devices")
     {
-		ofLog()  <<  "ddl Devices";
+
         ofxUIDropDownList *ddlist = (ofxUIDropDownList *) e.widget;
         vector<ofxUIWidget *> &selected = ddlist->getSelected();
         if (selected.size()==1)
             selectDevice( selected[0]->getName() );
+
     }
 	else if (name == "mute sound input")
 	{

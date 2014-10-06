@@ -89,8 +89,7 @@ void oscReceiver::update()
                         if (Globals::instance()->mp_app->isSimulation == false)
                         {
                             int nbLEDs = m_oscMessage.getNumArgs() - indexArg; // WARNING with this
-                            printf("> New Device found ! id=%s, nbLEDs=%d\n", deviceId.c_str(), nbLEDs);
-
+							OFAPPLOG->println("> New Device found ! id='"+deviceId+"'");
                             
                             DeviceEcho* pDeviceEcho = new DeviceEcho(deviceId, nbLEDs, 4.0f/float(nbLEDs-1));
                             pDeviceEcho->setupSenderOSC(m_oscMessage.getRemoteIp(), 1235);

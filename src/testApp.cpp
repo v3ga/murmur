@@ -344,9 +344,6 @@ void testApp::initJS()
 	int err = ofxJSInitialize();
     if (err == 0)
 	{
-		// Log
-		// ofxJSPrintCallback((void*)this, logJS);
-
 		// Create some new functions
         setupJS();
 	}

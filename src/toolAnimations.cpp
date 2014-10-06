@@ -19,7 +19,7 @@ toolAnimations::toolAnimations(toolManager* parent) : tool("Animations", parent)
 	mp_consoleJs		= 0;
 	mp_animationUI		= 0;
 	
-	m_listLogJsMax		= 20;
+	m_listLogJsMax		= 17;
 	m_isEnableDrawCallback = true;
 }
 
@@ -29,6 +29,10 @@ void toolAnimations::setup()
 {
 	OFAPPLOG->begin("toolAnimations::setup()");
 	showAnimationCurrentProperties();
+
+	OFAPPLOG->println("- setting log for JS");
+	ofxJSPrintCallback((void*)this, toolAnimations::logJS);
+
 	OFAPPLOG->end();
 }
 
@@ -174,12 +178,22 @@ void toolAnimations::handleEvents(ofxUIEventArgs& e)
     }
     else if (name == "Reload")
     {
-		pSurfaceCurrent->getAnimationManager().M_reloadScript();
-    }
+		ofxUILabelButton* pButton = (ofxUILabelButton*) e.widget;
+		if (pButton->getValue()){
+			bool didIt = pSurfaceCurrent->getAnimationManager().M_reloadScript();
+    		if (didIt == false)
+				logJS(this, "This anim. is not reloadable ;-)");
+    	}
+	}
     else if (name == "Edit")
     {
-		pSurfaceCurrent->getAnimationManager().M_editScript();
-    }
+		ofxUILabelButton* pButton = (ofxUILabelButton*) e.widget;
+		if (pButton->getValue()){
+			bool didIt = pSurfaceCurrent->getAnimationManager().M_editScript();
+    		if (didIt == false)
+				logJS(this, "This anim. is not editable ;-)");
+		}
+	}
 
 }
 
