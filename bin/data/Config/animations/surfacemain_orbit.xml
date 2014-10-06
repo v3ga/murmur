@@ -1,17 +1,17 @@
 <Widget>
     <Kind>2</Kind>
     <Name>draw_debug</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
     <Name>trace</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>trace_level</Name>
-    <Value>0.038461540</Value>
+    <Value>0.381410271</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -31,7 +31,7 @@
 <Widget>
     <Kind>4</Kind>
     <Name>separation</Name>
-    <Value>1.293269157</Value>
+    <Value>1.197115421</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
