@@ -712,8 +712,24 @@ void AnimationManager::M_setAnimation(Animation* pAnimation, string args)
 }
 
 //--------------------------------------------------------------
+void AnimationManager::M_setAnimationDirect(int index, string args)
+{
+	OFAPPLOG->begin("AnimationManager::M_setAnimationDirect()");
+	OFAPPLOG->println("-index="+ofToString(index));
+	OFAPPLOG->println("-state="+ofToString(m_state));
+	Animation* pAnimation = M_getAnimation(index);
+	if (pAnimation)
+	{
+		OFAPPLOG->println("-animation name='"+pAnimation->m_name+"'");
+		M_setAnimationDirect(pAnimation->m_name, args);
+	}
+	OFAPPLOG->end();
+}
+
+//--------------------------------------------------------------
 void AnimationManager::M_setAnimationDirect(string name, string args)
 {
+
 	vector<Animation*>::iterator it;
 	for (it = m_listAnimations.begin(); it != m_listAnimations.end(); ++it){
 		if (name == (*it)->m_name){
@@ -722,6 +738,7 @@ void AnimationManager::M_setAnimationDirect(string name, string args)
 		}
 	}
 }
+
 
 //--------------------------------------------------------------
 bool AnimationManager::M_isTransiting()
@@ -738,8 +755,6 @@ void AnimationManager::M_changeAnimation(Animation* pAnimationNext, string args)
 	{
 		if (mp_animationCurrent)
 			mp_animationCurrent->VM_exit();
-
-        //SoundManager::instance()->stopAll();
 
 		mp_animationCurrent = pAnimationNext;
 		mp_animationCurrent->VM_setArgs(args);
@@ -879,9 +894,9 @@ bool AnimationManager::M_isAutoClear()
 void AnimationManager::M_update(float dt)
 {
 	// Update current animation
-	if (mp_animationCurrent)
+	if (mp_animationCurrent){
 		mp_animationCurrent->VM_update(dt);
-		
+	}
 		
 	// Update transition tween
 	if (m_state == STATE_TRANSITION_OUT || m_state == STATE_TRANSITION_IN)
@@ -922,7 +937,7 @@ void AnimationManager::M_drawTransition(float w, float h)
 	// Draw transition
 	if (m_state == STATE_TRANSITION_OUT || m_state == STATE_TRANSITION_IN)
 	{
-		//printf("tween=%.2f\n", m_transitionTween.getTarget(0));
+		// printf("tween=%.2f\n", m_transitionTween.getTarget(0));
 	
 	    ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 		ofPushStyle();

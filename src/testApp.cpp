@@ -83,10 +83,11 @@ void testApp::setup()
 	initSimulators();
 
 	// setup
-	if (pToolAnimations)		pToolAnimations->createControlsAnimations(mp_surfaceMain);
 	if (pToolConfiguration)		pToolConfiguration->setup();
+	if (pToolAnimations)		pToolAnimations->createControlsAnimations(mp_surfaceMain);
 	if (pToolDevices)			pToolDevices->setup();
 	if (pToolSurfaces)			pToolSurfaces->setup();
+	if (pToolAnimations)		pToolAnimations->setup();
 	
 	// GO
 	ofSetVerticalSync(true);
@@ -495,26 +496,43 @@ void testApp::audioIn(float * input, int bufferSize, int nChannels)
 //--------------------------------------------------------------
 void testApp::setViewSimulation(bool is)
 {
+	OFAPPLOG->begin("testApp::setViewSimulation()");
+
 	toolSurfaces* pToolSurfaces = (toolSurfaces*) toolManager.getTool("Surfaces");
+
+	OFAPPLOG->println("- isViewSimulation="+ofToString(is));
+	OFAPPLOG->println("- isShowDevicePointSurfaces="+ofToString(isShowDevicePointSurfaces));
+	OFAPPLOG->println("- pToolSurfaces="+ofToString(pToolSurfaces == 0 ? "NULL" : "valid pointer"));
+	if (pToolSurfaces)
+		OFAPPLOG->println("- pToolSurfaces->m_isDrawHandles="+ofToString(pToolSurfaces->m_isDrawHandles));
 
 	isViewSimulation = is;
 	if (isViewSimulation)
 	{
 		ofShowCursor();
-	}else
+		OFAPPLOG->println("- showing cursor");
+	}
+	else
 	{
-		if (isShowDevicePointSurfaces || (pToolSurfaces && pToolSurfaces->m_isDrawHandles) )
+		if (isShowDevicePointSurfaces || (pToolSurfaces && pToolSurfaces->m_isDrawHandles) ){
+			OFAPPLOG->println("- showing cursor");
 			ofShowCursor();
-		else
+		}
+		else{
 			ofHideCursor();
+			OFAPPLOG->println("- hiding cursor");
+		}
 	}
 
 	toolManager.enableDrawCallback( isViewSimulation );
+	OFAPPLOG->end();
 }
 
 //--------------------------------------------------------------
 void testApp::keyPressed(int key)
 {
+	OFAPPLOG->begin("testApp::keyPressed()");
+	OFAPPLOG->println("-key='"+ofToString(key)+"'");
 	toolConfiguration* 	pToolConfiguration 	= (toolConfiguration*) 		toolManager.getTool("Configuration");
 	toolAnimations* 	pToolAnimations 	= (toolAnimations*) 		toolManager.getTool("Animations");
 	
@@ -546,6 +564,7 @@ void testApp::keyPressed(int key)
 			}
 		}
 	}
+	OFAPPLOG->end();
 }
 
 //--------------------------------------------------------------

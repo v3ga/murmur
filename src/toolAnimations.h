@@ -18,6 +18,7 @@ class toolAnimations : public tool
 		toolAnimations			(toolManager* parent);
 
 	
+		void							setup						();
 		void							createControlsCustom		();
 		void							createControlsAnimations	(Surface*);
 		void							handleEvents				(ofxUIEventArgs& e);
@@ -32,6 +33,7 @@ class toolAnimations : public tool
 
 		void							updateDeviceAnimationTitle	();
 		void							showAnimationPropsAll		(bool is=true);
+		void							showAnimationCurrentProperties();
 
 		ofxUILabel* 					mp_lblAnimDirJs;
 		ofxUILabel* 					mp_lblAnimTitle;

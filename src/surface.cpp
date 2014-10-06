@@ -96,10 +96,13 @@ string Surface::getStateActivity()
 //--------------------------------------------------------------
 void Surface::setTimelineActive(bool is)
 {
+	OFAPPLOG->begin("Surface::setTimelineActive("+ofToString(is)+")");
     m_isTimelineActive = is;
     m_timeAnimation = 0.0f;
     m_animationManager.m_animationInfoIndex = 0;
-    m_animationManager.setAnimationTimelineNext();
+ 	if (is)
+		m_animationManager.setAnimationTimelineNext();
+	OFAPPLOG->end();
 }
 
 //--------------------------------------------------------------
@@ -233,9 +236,10 @@ void Surface::setup()
 	
 	// Scripts
 	ofDirectory dirScripts("Scripts");
- 
     m_animationManager.M_readSettings(surfaceSettings);
-    m_animationManager.M_setAnimation(0);
+	
+	OFAPPLOG->println("setting animation index 0");
+	m_animationManager.M_setAnimationDirect(0);
 	
 	OFAPPLOG->end();
 }
@@ -367,7 +371,7 @@ void Surface::update(float dt)
     if (m_isTimelineActive)
     {
         m_timeAnimation += dt;
-        //printf("tAnim=%.2f / tAnimDuration=%.2f\n", m_timeAnimation, m_durationAnimation);
+        // printf("tAnim=%.2f / tAnimDuration=%.2f\n", m_timeAnimation, m_durationAnimation);
         
         if (m_timeAnimation>=m_durationAnimation && !m_animationManager.M_isTransiting())
         {

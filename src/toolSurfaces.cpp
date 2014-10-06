@@ -19,7 +19,7 @@ toolSurfaces::toolSurfaces(toolManager* parent, Surface* surface) : tool("Surfac
 	mp_surfaceMain			= surface;
 	mp_mask					= 0;
 	mp_maskUI 				= 0;
-	m_isDrawHandles			= true;
+	m_isDrawHandles			= false;
 	
 	setView					(VIEW_NORMAL);
 }

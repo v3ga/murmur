@@ -87,8 +87,9 @@ class Surface
 		float			m_timeStandby;
 		float			m_durationPreStandby;
 	
+
+        string           m_id;
     private:
-        string              m_id;
         int                 m_stateActivity;
 		ofFbo               m_fbo;
 		int					m_fboNbSamples;
