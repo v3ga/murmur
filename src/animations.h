@@ -161,7 +161,10 @@ class AnimationManager
 		void					M_setAnimation			(int index, string args="");
 		void					M_setAnimation			(string name, string args="");
 		void					M_setAnimation			(Animation*, string args="");
+
+		void					M_setAnimationDirect	(int index, string args="");
 		void					M_setAnimationDirect	(string name, string args="");
+	
     
         void                    gotoAnimationNext       ();
         void                    gotoAnimationPrev       ();

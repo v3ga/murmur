@@ -23,6 +23,15 @@ toolAnimations::toolAnimations(toolManager* parent) : tool("Animations", parent)
 	m_isEnableDrawCallback = true;
 }
 
+
+//--------------------------------------------------------------
+void toolAnimations::setup()
+{
+	OFAPPLOG->begin("toolAnimations::setup()");
+	showAnimationCurrentProperties();
+	OFAPPLOG->end();
+}
+
 //--------------------------------------------------------------
 void toolAnimations::show(bool is)
 {
@@ -184,21 +193,8 @@ void toolAnimations::showPrevAnimation()
         if (pSurfaceCurrent)
         {
             pSurfaceCurrent->getAnimationManager().gotoAnimationPrev();
-            updateDeviceAnimationTitle();
-        
-            // Show animation interface
-            showAnimationPropsAll(false);
-            if (!pSurfaceCurrent->isTimelineActive())
-            {
-                Animation* pAnimationCurrent = pSurfaceCurrent->getAnimationManager().mp_animationCurrent;
-				if (pAnimationCurrent){
-					mp_animationUI = pAnimationCurrent->getUI();
-					mp_animationUI->setVisible( mp_canvas->isVisible() && m_isEnableDrawCallback );
-					// ofLog() << (mp_canvas->isVisible() ? "true" : "false") <<  "  -  " << (m_isEnableDrawCallback ? "true" : "false");
-				 }
-            }
+			showAnimationCurrentProperties();
         }
-
 }
 
 //--------------------------------------------------------------
@@ -213,19 +209,8 @@ void toolAnimations::showNextAnimation()
 		// Goto next animation
 		pSurfaceCurrent->getAnimationManager().gotoAnimationNext();
 
-		// Update Title
-		updateDeviceAnimationTitle();
-
 		// Show animation interface
-		showAnimationPropsAll(false);
-		if (!pSurfaceCurrent->isTimelineActive())
-		{
-			Animation* pAnimationCurrent = pSurfaceCurrent->getAnimationManager().mp_animationCurrent;
-			if (pAnimationCurrent){
-				mp_animationUI = pAnimationCurrent->getUI();
-				mp_animationUI->setVisible(mp_canvas->isVisible() && m_isEnableDrawCallback);
-			 }
-		}
+		showAnimationCurrentProperties();
 	}
 
 }
@@ -267,6 +252,42 @@ void toolAnimations::showAnimationPropsAll(bool is)
     }
     
 //    mp_guiAnimProps = 0;
+}
+
+//--------------------------------------------------------------
+void toolAnimations::showAnimationCurrentProperties()
+{
+	OFAPPLOG->begin("toolAnimations::showAnimationCurrentProperties()");
+   showAnimationPropsAll(false);
+
+	// Check for tool surfaces
+	toolSurfaces* pToolSurfaces = (toolSurfaces*) mp_toolManager->getTool("Surfaces");
+	if (pToolSurfaces == 0){
+		OFAPPLOG->end();
+		return;
+	}
+ 		
+
+	// Change device informations info
+	updateDeviceAnimationTitle();
+
+	// Show animation canvas
+   Surface* pSurfaceCurrent = pToolSurfaces->getSurfaceForDeviceCurrent();
+   if (pSurfaceCurrent && !pSurfaceCurrent->isTimelineActive())
+   {
+	   OFAPPLOG->println("- surface current is '"+pSurfaceCurrent->m_id+"'");
+   
+	   Animation* pAnimationCurrent = pSurfaceCurrent->getAnimationManager().mp_animationCurrent;
+	   if (pAnimationCurrent){
+		   OFAPPLOG->println("- animation on the surface is '"+pAnimationCurrent->m_name+"'");
+
+		   mp_animationUI = pAnimationCurrent->getUI();
+		   mp_animationUI->setVisible(mp_canvas->isVisible() && m_isEnableDrawCallback);
+		}else{
+		   OFAPPLOG->println("- no animation was set...");
+		}
+   }
+   OFAPPLOG->end();
 }
 
 //--------------------------------------------------------------

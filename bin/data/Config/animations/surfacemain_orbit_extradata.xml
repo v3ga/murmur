@@ -5,7 +5,7 @@
         <height>50.000000000</height>
         <offset_x>0.000000000</offset_x>
         <offset_y>0.000000000</offset_y>
-        <reverse>32</reverse>
+        <reverse>1</reverse>
     </orbit>
     <orbit deviceId="deviceEchoSimulator02">
         <rotation>16.153850555</rotation>
@@ -13,6 +13,6 @@
         <height>50.000000000</height>
         <offset_x>0.000000000</offset_x>
         <offset_y>0.000000000</offset_y>
-        <reverse>160</reverse>
+        <reverse>1</reverse>
     </orbit>
 </orbits>

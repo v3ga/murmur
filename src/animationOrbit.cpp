@@ -785,6 +785,8 @@ void AnimationOrbit::saveProperties(string id)
 //--------------------------------------------------------------
 void AnimationOrbit::loadProperties(string id)
 {
+	OFAPPLOG->begin("AnimationOrbit::loadProperties()");
+	OFAPPLOG->println("- id="+id);
 	Animation::loadProperties(id);
 
 	ofxXmlSettings extraData;
@@ -819,7 +821,7 @@ void AnimationOrbit::loadProperties(string id)
 						
 						if (pOrbit)
 						{
-							ofLog() << "- loading extra data for " << deviceId;
+							OFAPPLOG->println("- loading extra data for '" + deviceId + "'");
 							pOrbit->load(extraData);
 
 							// Create Particle which runs along this orbit
@@ -840,6 +842,7 @@ void AnimationOrbit::loadProperties(string id)
 	}
 	
 	assignBoidsToPaths();
+	OFAPPLOG->end();
 }
 
 

@@ -34,6 +34,8 @@ toolConfiguration::~toolConfiguration()
 		delete (*it);
 	}
 }
+
+
 //--------------------------------------------------------------
 void toolConfiguration::createControlsCustom()
 {
@@ -72,7 +74,6 @@ void toolConfiguration::setup()
 		launchMadMapper();
 	}
 
-
 	if (GLOBALS->mp_app->isSimulation == false)
 	{
 		// Launch Murmur on Raspberry
@@ -81,6 +82,9 @@ void toolConfiguration::setup()
 			launchDevices();
 		}
 	}
+
+	// Dirty
+	setViewSimulation( isViewSimulation );
 }
 
 //--------------------------------------------------------------
@@ -183,6 +187,7 @@ void toolConfiguration::updateUI()
 //--------------------------------------------------------------
 void toolConfiguration::handleEvents(ofxUIEventArgs& e)
 {
+	OFAPPLOG->begin("toolConfiguration::handleEvents()");
     string name = e.widget->getName();
 
 	if (name == "View simulation")
@@ -193,6 +198,7 @@ void toolConfiguration::handleEvents(ofxUIEventArgs& e)
     else if (name == "Show device points")
     {
         GLOBALS->mp_app->isShowDevicePointSurfaces = ((ofxUIToggle *) e.widget)->getValue();
+		OFAPPLOG->println("isShowDevicePointSurfaces="+ofToString(isShowDevicePointSurfaces));
     }
 	else if (name == "Launch madmapper @ start")
 	{
@@ -208,10 +214,12 @@ void toolConfiguration::handleEvents(ofxUIEventArgs& e)
 	{
 		m_isFullscreen = ((ofxUIToggle *) e.widget)->getValue();
 		ofSetFullscreen( m_isFullscreen );
+		OFAPPLOG->println("setting fullscreen="+ofToString(m_isFullscreen));
 	}
 	else
 	if (name == "Edit configuration.xml")
 	{
 		ofLVOpenProgram(ofToDataPath("configuration.xml"));
 	}
+	OFAPPLOG->end();
 }

@@ -29,7 +29,7 @@ void toolSound::show(bool is)
 {
 	tool::show(is);
 	if (mp_canvasSound)
-		mp_canvasSound->setVisible(is);
+		if (mp_soundCurrent) mp_canvasSound->setVisible(is);
 }
 
 //--------------------------------------------------------------
@@ -151,7 +151,6 @@ void toolSound::createControlsCustom()
 	
 
     	mp_canvas->addWidgetDown(new ofxUIToggle( "activate main sound", GLOBALS->mp_app->isAnimationSequence, dim, dim));
-		mp_canvas->addWidgetDown(new ofxUISlider( "vol. main sound min.", 0.0f, 1.0f, 0.5f, widthDefault-10, dim));
 		mp_canvas->addWidgetDown(new ofxUISlider( "vol. main sound max.", 0.0f, 1.0f, 1.0f, widthDefault-10, dim));
 
 		ofxUIDropDownList* mp_ddlSounds = new ofxUIDropDownList("Library", SoundManager::instance()->getListSoundsName(),widthDefault,0,0,OFX_UI_FONT_SMALL);
@@ -162,14 +161,14 @@ void toolSound::createControlsCustom()
      	ofxUIRectangle* pRectSoundList = mp_canvas->getRect();
         mp_canvasSound = new ofxUICanvas(pRectSoundList->getX()+pRectSoundList->getWidth()+10, pRectSoundList->getY(), widthDefault, 300);
 
-		mp_lblSoundTitle = new ofxUILabel("", OFX_UI_FONT_LARGE);
+		mp_lblSoundTitle = new ofxUILabel("_", OFX_UI_FONT_LARGE);
 		mp_teSoundTags = new ofxUITextInput("tags","",widthDefault,50);
 		mp_canvasSound->addWidgetDown(mp_lblSoundTitle);
 	    mp_canvasSound->addWidgetDown(new ofxUISpacer(widthDefault, 2));
 		mp_canvasSound->addWidgetDown(mp_teSoundTags);
-		mp_canvasSound->setVisible(false);
 
 		mp_canvasSound->autoSizeToFitWidgets();
+		mp_canvasSound->setVisible(false);
 		ofAddListener(mp_canvasSound->newGUIEvent, this, &toolSound::handleEvents);
 	}
 }
@@ -217,15 +216,11 @@ void toolSound::handleEvents(ofxUIEventArgs& e)
     {
         SoundManager::instance()->activateSoundMain( ((ofxUIToggle *) e.widget)->getValue() );
     }
-    else if (name == "vol. main sound min.")
+    else if (name == "vol. main sound")
     {
         float value = ((ofxUISlider *) e.widget)->getScaledValue();
         SoundManager::instance()->m_soundMainVolumeMin = value;
         SoundManager::instance()->setVolumeSoundMain(value);
-    }
-    else if (name == "vol. main sound max.")
-    {
-        SoundManager::instance()->m_soundMainVolumeMax = ((ofxUISlider *) e.widget)->getScaledValue();
     }
     else if (name == "Library")
     {
