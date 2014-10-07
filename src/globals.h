@@ -16,6 +16,7 @@
 #include "ofAppLog.h"
 
 #define GLOBALS Globals::instance()
+#define LOG_MESSAGE_OSC(message,isIn) GLOBALS->logMessageOSC(message,isIn)
 
 class testApp;
 class DeviceManager;
@@ -33,6 +34,8 @@ class Globals
 		testApp*				mp_app;
         DeviceManager*          mp_deviceManager;
         bool					m_isAutoReloadScript;
+
+		void					logMessageOSC				(const ofxOscMessage&, bool isIn=true);
 
 		AnimationManager*		getAnimationManagerForDevice(string deviceId);
 		Animation*				getAnimationCurrentForDevice(string deviceId);

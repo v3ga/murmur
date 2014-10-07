@@ -45,5 +45,8 @@ class toolDevices : public tool
     	ofxUISlider* 			mp_sliderDeviceVolHistoryTh;
     	ofxUISlider* 			mp_sliderDeviceTimeStandby;
     	ofxUISlider* 			mp_sliderDeviceSampleVolStandby;
+
+    	ofxUIToggle* 			mp_toggleDeviceEnableStandup;
+		ofxUISlider*			mp_sliderStandupVol;
 	
 };

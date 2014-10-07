@@ -294,6 +294,7 @@ AnimationOrbit::AnimationOrbit(string name) : Animation(name)
 	m_boidsMaxSpeedMin		= 1.0f;
 	m_boidsMaxSpeedMax		= 2.0f;
 	m_boidsDrawAlpha		= 1.0f;
+	m_boidsDrawLineWidth	= 1.0f;
 	m_boidsSpeedFactor		= 1.0f;
 	m_boidsNbParticlesPath	= 4;
 	m_boidsSpeedMin			= 2.0f;
@@ -435,6 +436,7 @@ void AnimationOrbit::VM_draw(float w, float h)
 	}
 	
 		ofSetColor(255,255,255, m_boidsDrawAlpha*255.0f);
+		ofSetLineWidth(m_boidsDrawLineWidth);
 		vector<Boid*>::iterator it = m_boids.begin();
 		for ( ; it != m_boids.end(); ++it)
 		{
@@ -551,12 +553,13 @@ void AnimationOrbit::createUICustom()
         mp_UIcanvas->addToggle("trace",			&m_isFrameBlending);
         mp_UIcanvas->addSlider("trace_level", 	0.0f, 1.0f, &m_frameBlending);
         mp_UIcanvas->addSlider("alpha", 		0.0f, 1.0f, &m_boidsDrawAlpha);
+        mp_UIcanvas->addSlider("line_width", 	1.0f, 4.0f, &m_boidsDrawLineWidth);
 
 
 	    mp_UIcanvas->addWidgetDown	( new ofxUILabel("Flocking", OFX_UI_FONT_SMALL) );
     	mp_UIcanvas->addWidgetDown	( new ofxUISpacer(widthDefault, 1));
 
-		mp_UIcanvas->addIntSlider("nbParticlePaths", 		2, 10, &m_boidsNbParticlesPath);
+		mp_UIcanvas->addIntSlider("nbParticlePaths", 		2, 20, &m_boidsNbParticlesPath);
         mp_UIcanvas->addIntSlider("trail_size", 50, 350, 200);
 
         mp_UIcanvas->addSlider("separation", 	0.0f, 1.5f, &m_boidsSeparation);

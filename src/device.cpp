@@ -11,6 +11,7 @@
 #include "soundInput.h"
 #include "ofxXmlSettings.h"
 #include "ofAppLog.h"
+#include "globals.h"
 
 //--------------------------------------------------------------
 DevicePacket::DevicePacket()
@@ -40,6 +41,7 @@ Device::Device(string id, int nbLEDs, float distLEDs)
 	m_sampleVolStandby = 0.35f;
 	m_sampleNameStandby = "Sounds/StandBy/theme1-4.wav";
 
+	m_isEnableStandup	= false;
 	m_standupTh			= 0.55f;
 }
 
@@ -94,11 +96,13 @@ void Device::setSoundInputVolumeMax(float v)
 {
     // printf("setVolumeMax, v=%.3f\n", v);
     ofxOscMessage m;
-    m.setAddress( OSC_ADDRESS_SET_DEVICE_PROP );
+	m.setAddress( OSC_ADDRESS_SET_DEVICE_PROP );
     m.addStringArg(m_id);
     m.addStringArg("volMax");
     m.addFloatArg(v);
     m_oscSender.sendMessage(m);
+
+	LOG_MESSAGE_OSC(m,false);
 
     m_soundInputVolEmpiricalMax = v;
 }
@@ -113,6 +117,8 @@ void Device::setSoundInputVolHistorySize(int nb)
     m.addStringArg("volHistorySize");
     m.addIntArg(nb);
     m_oscSender.sendMessage(m);
+
+	LOG_MESSAGE_OSC(m,false);
 
     m_soundInputVolHistorySize = nb;
 }
@@ -146,7 +152,9 @@ void Device::setSoundInputVolHistoryTh(float th)
     m.addStringArg("volHistoryTh");
     m.addFloatArg(th);
     m_oscSender.sendMessage(m);
-    
+
+	LOG_MESSAGE_OSC(m,false);
+ 
     m_volHistoryTh = th;
 }
 
@@ -174,6 +182,8 @@ void Device::setEnableStandbyMode(bool is)
     m.addStringArg("enableStandbyMode");
     m.addIntArg(is ? 1 : 0);
     m_oscSender.sendMessage(m);
+
+	LOG_MESSAGE_OSC(m,false);
 
     enableStandbyMode(is);
 }
@@ -229,7 +239,9 @@ void Device::setTimeStandby(float v)
     m.addStringArg("timeStandby");
     m.addFloatArg(v);
     m_oscSender.sendMessage(m);
-    
+
+	LOG_MESSAGE_OSC(m,false);
+ 
     m_timeStandby = v;
 }
 
@@ -248,6 +260,8 @@ void Device::setSampleVolumeStandby(float v)
     m.addStringArg("sampleVolStandby");
     m.addFloatArg(v);
     m_oscSender.sendMessage(m);
+
+	LOG_MESSAGE_OSC(m,false);
 	
 	m_sampleVolStandby = v;
 }
@@ -260,6 +274,50 @@ void Device::setSampleVolumeStandbyOSC(float v)
     }
 }
 
+//--------------------------------------------------------------
+void Device::setEnableStandup(bool is)
+{
+    ofxOscMessage m;
+    m.setAddress( OSC_ADDRESS_SET_DEVICE_PROP );
+    m.addStringArg(m_id);
+    m.addStringArg("enableStandup");
+    m.addIntArg(is ? 1 : 0);
+    m_oscSender.sendMessage(m);
+
+	LOG_MESSAGE_OSC(m,false);
+	
+	m_isEnableStandup = is;
+}
+
+//--------------------------------------------------------------
+void Device::setEnableStandupOSC(bool is)
+{
+	m_isEnableStandup = is;
+}
+
+
+//--------------------------------------------------------------
+void Device::setStandupVol(float v)
+{
+    ofxOscMessage m;
+    m.setAddress( OSC_ADDRESS_SET_DEVICE_PROP );
+    m.addStringArg(m_id);
+    m.addStringArg("volStandup");
+    m.addFloatArg(v);
+    m_oscSender.sendMessage(m);
+	
+	LOG_MESSAGE_OSC(m,false);
+	
+	m_standupTh = v;
+}
+
+//--------------------------------------------------------------
+void Device::setStandupVolOSC(float v)
+{
+	m_standupTh = v;
+}
+
+
 
 //--------------------------------------------------------------
 void Device::drawSoundInputVolume(float x, float y)
@@ -268,7 +326,6 @@ void Device::drawSoundInputVolume(float x, float y)
         mp_soundInput->drawVolume(x,y);
         ofSetColor(255);
 
-//        printf("%.2f / %.2f\n", m_stateStandbyDuration, m_timeStandby);;
         if (m_stateStandby == EStandby_active)
             m_stateStandbyStr = "active";
         else if (m_stateStandby == EStandby_pre_standby)
@@ -429,7 +486,8 @@ void Device::checkForActivity(float dt)
             	}
 				else if (mp_soundInput->getVolHistoryMeanFiltered() >= m_standupTh)
 				{
-        	        m_stateStandby = EStandby_standup;
+					if (m_isEnableStandup)
+	        	        m_stateStandby = EStandby_standup;
 				}
 			}
         }
@@ -456,7 +514,7 @@ void Device::checkForActivity(float dt)
                 m_stateStandby = EStandby_standby;
                 m_stateStandbyDuration=0.0f;
 				resetStandBy();
-                ofLog() << "> Entering standby\n";
+                // ofLog() << "> Entering standby\n";
             }
         }
         else
@@ -482,7 +540,8 @@ void Device::checkForActivity(float dt)
 		{
 			if (mp_soundInput && mp_soundInput->getVolHistoryMeanFiltered() >= this->m_standupTh)
 			{
-		        m_stateStandby = EStandby_standup;
+				if (m_isEnableStandup)
+		        	m_stateStandby = EStandby_standup;
 			}
 		}
 		else if (m_stateStandby == EStandby_standup)
@@ -534,6 +593,8 @@ void Device::loadXML(string dir)
      	int		enableStandby	= settings.getValue("device:enableStandby",1);
 	 	float 	timeStandby		= settings.getValue("device:timeStandby",10.0f);
 	 	float 	sampleVolStandby= settings.getValue("device:sampleVolStandby",0.35f);
+     	int		enableStandup	= settings.getValue("device:enableStandup",1);
+	 	float 	volStandup		= settings.getValue("device:volStandup",0.5f);
 	 
 		OFAPPLOG->println("Device, loaded "+pathFile);
 		OFAPPLOG->println(" - volMax="+ofToString(volMax));
@@ -542,6 +603,8 @@ void Device::loadXML(string dir)
 		OFAPPLOG->println(" - enableStandby="+ofToString(timeStandby));
 		OFAPPLOG->println(" - timeStandby="+ofToString(enableStandby));
 		OFAPPLOG->println(" - sampleVolStandby="+ofToString(sampleVolStandby));
+		OFAPPLOG->println(" - enableStandup="+ofToString(enableStandup));
+		OFAPPLOG->println(" - volStandup="+ofToString(volStandup));
 		OFAPPLOG->println(" - surface="+surfaceId+" (xNorm="+ofToString(xNorm)+",yNorm="+ofToString(yNorm)+")");
      
         setSoundInputVolumeMax( volMax );
@@ -549,9 +612,9 @@ void Device::loadXML(string dir)
         setSoundInputVolHistoryTh( volHistoryTh );
         setEnableStandbyMode( enableStandby == 1 ? true : false );
         setTimeStandby( timeStandby );
-//        setNbLEDsStandby( settings.getValue("device:nbLEDsStandby", 50) );
-//        setSpeedStandbyOSC( settings.getValue("device:speedStandby", 70.0) );
         setSampleVolumeStandby( sampleVolStandby );
+		setEnableStandup( enableStandup );
+		setStandupVol( volStandup );
         setPointSurface(xNorm, yNorm);
 
 		settings.pushTag("device");
@@ -599,17 +662,19 @@ void Device::saveXML(string dir)
         settings.popTag();
 
 
-    settings.addValue("enableStandby", getEnableStandbyMode() ? 1 : 0);
-    settings.addValue("timeStandby", m_timeStandby);
-//    settings.addValue("nbLEDsStandby", getNbLEDsStandby());
-//    settings.addValue("speedStandby", getSpeedStandby());
-    settings.addValue("sampleVolStandby", getSampleVolStandby());
+    settings.addValue("enableStandby", 		getEnableStandbyMode() ? 1 : 0);
+    settings.addValue("timeStandby", 		m_timeStandby);
+    settings.addValue("sampleVolStandby", 	getSampleVolStandby());
+    settings.addValue("enableStandby", 		getEnableStandup() ? 1 : 0);
+
+    settings.addValue("enableStandup", 		getEnableStandup() ? 1 : 0);
+    settings.addValue("volStandup", 		getStandupVol());
  
     settings.addTag("surface");
     settings.setAttribute("surface", "id", "main", 0);
     settings.pushTag("surface");
-        settings.addValue("xNorm", m_pointSurface.x);
-        settings.addValue("yNorm", m_pointSurface.y);
+        settings.addValue("xNorm", 			m_pointSurface.x);
+        settings.addValue("yNorm", 			m_pointSurface.y);
     settings.popTag();
    
  

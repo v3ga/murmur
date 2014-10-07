@@ -10,6 +10,7 @@
 #include "globals.h"
 #include "testApp.h"
 #include "device.h"
+#include "toolNetwork.h"
 
 
 //--------------------------------------------------------------
@@ -32,6 +33,13 @@ Globals* Globals::instance()
 	if (smp_instance == 0)
 		smp_instance = new Globals();
 	return smp_instance; 
+}
+
+
+//--------------------------------------------------------------
+void Globals::logMessageOSC(const ofxOscMessage& message, bool isIn)
+{
+	toolNetwork::logMessageOSC(message, isIn);
 }
 
 //--------------------------------------------------------------

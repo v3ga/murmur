@@ -25,9 +25,10 @@ toolDevices::toolDevices(toolManager* parent, DeviceManager* manager) : tool("De
 	mp_toggleDeviceEnableStandby = 0;
 	mp_sliderDeviceVolHistoryTh = 0;
 	mp_sliderDeviceTimeStandby = 0;
-//	mp_sliderDeviceNbLEDsStandby = 0;
-//	mp_sliderDeviceSpeedStandby = 0;
 	mp_sliderDeviceSampleVolStandby = 0;
+
+	mp_toggleDeviceEnableStandup = 0;
+	mp_sliderStandupVol = 0;
 }
 
 //--------------------------------------------------------------
@@ -117,13 +118,10 @@ void toolDevices::createControlsCustomFinalize()
     mp_sliderDeviceVolHistoryTh = new ofxUISlider( "Vol. history standby", 0.0f, 0.75f, 0.5f, widthDefault-10, dim );
     mp_sliderDeviceTimeStandby = new ofxUISlider("Time standby", 5.0f, 60.0f, 10.0f, widthDefault-10, dim );
 	mp_sliderDeviceSampleVolStandby = new ofxUISlider( "Sample vol. standby", 0.0f, 1.0f, 0.35f, widthDefault-10, dim );
-//    mp_sliderDeviceNbLEDsStandby = new ofxUISlider( "Nb LEDs standby", 10, 100, 50.0f, widthDefault-10, dim );
-//    mp_sliderDeviceSpeedStandby = new ofxUISlider( "Speed standby", 40, 360, 70.0f, widthDefault-10, dim );
  
 	mp_canvasDevice->addWidgetDown(mp_sliderDeviceVolMax);
 	mp_canvasDevice->addWidgetDown(mp_sliderDeviceVolHistorySize);
 
-//    mp_canvasDevice->addWidgetDown(new ofxUILabel("> Stand by", fontType));
     mp_canvasDevice->addWidgetDown(new ofxUILabel("Stand by", OFX_UI_FONT_MEDIUM));
     mp_canvasDevice->addWidgetDown(new ofxUISpacer(widthDefault, 1));
 
@@ -131,8 +129,18 @@ void toolDevices::createControlsCustomFinalize()
 	mp_canvasDevice->addWidgetDown(mp_sliderDeviceVolHistoryTh);
 	mp_canvasDevice->addWidgetDown(mp_sliderDeviceTimeStandby);
 	mp_canvasDevice->addWidgetDown(mp_sliderDeviceSampleVolStandby);
-//	mp_canvasDevice->addWidgetDown(mp_sliderDeviceNbLEDsStandby);
-//	mp_canvasDevice->addWidgetDown(mp_sliderDeviceSpeedStandby);
+
+    mp_canvasDevice->addWidgetDown(new ofxUILabel("Stand up", OFX_UI_FONT_MEDIUM));
+    mp_canvasDevice->addWidgetDown(new ofxUISpacer(widthDefault, 1));
+	
+
+    mp_toggleDeviceEnableStandup = new ofxUIToggle("Enable standup", true, dim, dim);
+	mp_sliderStandupVol = new ofxUISlider("Vol. stand up", 0.5f, 1.0f, 0.5f, widthDefault-10, dim );
+
+
+	mp_canvasDevice->addWidgetDown( mp_toggleDeviceEnableStandup );
+	mp_canvasDevice->addWidgetDown( mp_sliderStandupVol );
+
 	
     mp_canvasDevice->addWidgetDown(new ofxUILabel("Speakers", OFX_UI_FONT_MEDIUM));
     mp_canvasDevice->addWidgetDown(new ofxUISpacer(widthDefault, 1));
@@ -155,6 +163,17 @@ void toolDevices::createControlsCustomFinalize()
 	mp_canvasDevice->autoSizeToFitWidgets();
 	
 	ofAddListener(mp_canvasDevice->newGUIEvent, this, &toolDevices::handleEvents);
+
+/* REMOVED
+
+//    mp_sliderDeviceNbLEDsStandby = new ofxUISlider( "Nb LEDs standby", 10, 100, 50.0f, widthDefault-10, dim );
+//    mp_sliderDeviceSpeedStandby = new ofxUISlider( "Speed standby", 40, 360, 70.0f, widthDefault-10, dim );
+//    mp_canvasDevice->addWidgetDown(new ofxUILabel("> Stand by", fontType));
+//	mp_canvasDevice->addWidgetDown(mp_sliderDeviceNbLEDsStandby);
+//	mp_canvasDevice->addWidgetDown(mp_sliderDeviceSpeedStandby);
+
+*/
+
 }
 
 //--------------------------------------------------------------
@@ -240,6 +259,7 @@ void toolDevices::updateDeviceUI(Device* pDevice)
         if (mp_toggleDeviceEnableStandby) mp_toggleDeviceEnableStandby->setValue( pDevice->getEnableStandbyMode() );
         if (mp_sliderDeviceTimeStandby) mp_sliderDeviceTimeStandby->setValue( pDevice->getTimeStandby() );
         if (mp_sliderDeviceSampleVolStandby) mp_sliderDeviceSampleVolStandby->setValue( pDevice->getSampleVolStandby() );
+		if (mp_sliderStandupVol) mp_sliderStandupVol->setValue( pDevice->getStandupVol() );
 
 		if (mp_canvasDevice)
 		{
@@ -324,10 +344,15 @@ void toolDevices::handleEvents(ofxUIEventArgs& e)
             pDeviceCurrent->setSampleVolumeStandby( ((ofxUISlider *) e.widget)->getScaledValue() );
         }
     }
-    else if (name == "Speed standby")
+    else if (name == "Enable standup")
+    {
+        if (pDeviceCurrent)
+            pDeviceCurrent->setEnableStandup( ((ofxUIToggle *) e.widget)->getValue() );
+	}
+    else if (name == "Vol. stand up")
     {
         if (pDeviceCurrent){
- //           pDeviceCurrent->setSpeedStandby( ((ofxUISlider *) e.widget)->getScaledValue() );
+			pDeviceCurrent->setStandupVol( ((ofxUISlider *) e.widget)->getScaledValue() );
         }
     }
 	else
