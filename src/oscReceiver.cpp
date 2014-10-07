@@ -22,6 +22,8 @@ void oscReceiver::update()
 		while(getNextMessage(&m_oscMessage))
 		{
             int indexArg = 0;
+			
+			LOG_MESSAGE_OSC(m_oscMessage,true);
 
             if (m_oscMessage.getAddress() == OSC_ADDRESS_SET_DEVICE_PROP)
             {
@@ -62,16 +64,10 @@ void oscReceiver::update()
                         pDevice->setSampleVolumeStandbyOSC( m_oscMessage.getArgAsFloat(indexArg) );
 					}
                     else
-                    if (propName == "nbLEDsStandby")
-                    {
-                        // pDevice->setNbLEDsStandbyOSC( m_oscMessage.getArgAsInt32(indexArg) );
-                    }
-                    else
-                    if (propName == "speedStandby")
-                    {
-                        // pDevice->setSpeedStandbyOSC( m_oscMessage.getArgAsFloat(indexArg) );
-                    }
-                    
+                    if (propName == "volStandup")
+					{
+                        pDevice->setStandupVolOSC( m_oscMessage.getArgAsFloat(indexArg) );
+					}
                 }
             }
             else

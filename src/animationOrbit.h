@@ -89,6 +89,7 @@ class AnimationOrbit : public Animation
 		float					m_boidsMaxSpeedMax;
 		float					m_boidsForceMax;
 		float					m_boidsDrawAlpha;
+		float					m_boidsDrawLineWidth;
 		float					m_boidsSpeedFactor; // TEMP, testing
 		int						m_boidsNbParticlesPath;
 		float					m_boidsSpeedMin;

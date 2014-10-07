@@ -63,6 +63,8 @@ class Device
         float               m_timeInactivity;
         float               m_volHistoryTh;
         float               m_durationPreStandby;
+	
+		bool				m_isEnableStandup;
 		float				m_standupTh;
  
         enum{
@@ -99,9 +101,16 @@ class Device
         float               getTimeStandby(){return m_timeStandby;}
 		float				getSampleVolStandby(){return m_sampleVolStandby;}
 
+		bool				getEnableStandup			(){return m_isEnableStandup;}
+		void				setEnableStandup			(bool is);
+		void				setEnableStandupOSC			(bool is);
+
 		void				setSampleVolumeStandby		(float v);
 		void				setSampleVolumeStandbyOSC	(float v);
-
+	
+		float				getStandupVol				(){return m_standupTh;}
+		void				setStandupVol				(float v);
+		void				setStandupVolOSC			(float v);
  
 		virtual	void		mute(bool is=true){if(mp_soundInput) mp_soundInput->mute(is);}
 

@@ -1,63 +1,68 @@
 <Widget>
     <Kind>2</Kind>
     <Name>draw_debug</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
     <Name>trace</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>trace_level</Name>
-    <Value>0.381410271</Value>
+    <Value>0.022435898</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>alpha</Name>
-    <Value>0.426282048</Value>
+    <Value>0.528846145</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>line_width</Name>
+    <Value>4.000000000</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>
     <Name>nbParticlePaths</Name>
-    <Value>10</Value>
+    <Value>15</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>
     <Name>trail_size</Name>
-    <Value>50</Value>
+    <Value>185</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>separation</Name>
-    <Value>1.197115421</Value>
+    <Value>1.500000000</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>cohesion</Name>
-    <Value>0.100961544</Value>
+    <Value>0.000000000</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>alignement</Name>
-    <Value>0.365384609</Value>
+    <Value>0.009615385</Value>
 </Widget>
 <Widget>
     <Kind>6</Kind>
     <Name>speed</Name>
-    <HighValue>3.000000000</HighValue>
-    <LowValue>2.000000000</LowValue>
+    <HighValue>10.000000000</HighValue>
+    <LowValue>9.000000000</LowValue>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>force_max</Name>
-    <Value>0.200000003</Value>
+    <Value>1.000000000</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>speed_factor</Name>
-    <Value>1.000000000</Value>
+    <Value>4.000000000</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -67,17 +72,17 @@
 <Widget>
     <Kind>4</Kind>
     <Name>rotation_forms</Name>
-    <Value>-16.153850555</Value>
+    <Value>-19.615386963</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>width_forms</Name>
-    <Value>100.000000000</Value>
+    <Value>495.288482666</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>height_forms</Name>
-    <Value>50.000000000</Value>
+    <Value>375.929504395</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
