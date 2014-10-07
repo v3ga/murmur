@@ -59,7 +59,7 @@ void AnimationShaderWave::VM_enter()
 //--------------------------------------------------------------
 void AnimationShaderWave::VM_update(float dt)
 {
-    SoundManager::instance()->setVolumeSoundMainNormalized(m_volume);
+    //SoundManager::instance()->setVolumeSoundMainNormalized(m_volume);
 
 	map<string, ShaderWave*>::iterator it = m_mapShaderWaves.begin();
 	for ( ; it!=m_mapShaderWaves.end(); ++it )

@@ -151,7 +151,7 @@ void toolSound::createControlsCustom()
 	
 
     	mp_canvas->addWidgetDown(new ofxUIToggle( "activate main sound", GLOBALS->mp_app->isAnimationSequence, dim, dim));
-		mp_canvas->addWidgetDown(new ofxUISlider( "vol. main sound max.", 0.0f, 1.0f, 1.0f, widthDefault-10, dim));
+		mp_canvas->addWidgetDown(new ofxUISlider( "vol. main sound", 0.0f, 1.0f, 1.0f, widthDefault-10, dim));
 
 		ofxUIDropDownList* mp_ddlSounds = new ofxUIDropDownList("Library", SoundManager::instance()->getListSoundsName(),widthDefault,0,0,OFX_UI_FONT_SMALL);
 		mp_ddlSounds->open();
@@ -219,7 +219,7 @@ void toolSound::handleEvents(ofxUIEventArgs& e)
     else if (name == "vol. main sound")
     {
         float value = ((ofxUISlider *) e.widget)->getScaledValue();
-        SoundManager::instance()->m_soundMainVolumeMin = value;
+//        SoundManager::instance()->m_soundMainVolumeMin = value;
         SoundManager::instance()->setVolumeSoundMain(value);
     }
     else if (name == "Library")

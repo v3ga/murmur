@@ -502,13 +502,12 @@ void AnimationOrbit::onNewPacket(DevicePacket* pDevicePacket, string deviceId, f
 	if (pOrbit == 0)
 	{
 		ParticleOrbitEllipse* pOrbitEllipse =  new ParticleOrbitEllipse();
+		// loadProperties("surfacemain");
 
 		// Orbit properties for device 01
 		if (deviceId == "deviceEchoSimulator01" || deviceId == "chambreEcho_001")
 		{
 			pOrbitEllipse->setRotation( -m_rotationForms );
-
-
 		}
 		// Orbit properties  for device 02
 		else if (deviceId == "deviceEchoSimulator02" || deviceId == "chambreEcho_002"){
@@ -521,6 +520,9 @@ void AnimationOrbit::onNewPacket(DevicePacket* pDevicePacket, string deviceId, f
 		// Save in map
 		m_orbits[deviceId] = pOrbitEllipse;
 		pOrbit = pOrbitEllipse;
+		
+		// Load properties
+		loadPropertiesOrbit(deviceId);
 
 		// Assign boids to paths
 		createParticlePathsForOrbit(pOrbit);
@@ -786,30 +788,23 @@ void AnimationOrbit::saveProperties(string id)
 }
 
 //--------------------------------------------------------------
-void AnimationOrbit::loadProperties(string id)
+void AnimationOrbit::loadPropertiesOrbit(string deviceId)
 {
-	OFAPPLOG->begin("AnimationOrbit::loadProperties()");
-	OFAPPLOG->println("- id="+id);
-	Animation::loadProperties(id);
-
-	ofxXmlSettings extraData;
-	if ( extraData.loadFile( getPropertiesFilename(id,false)+"_extradata.xml" ) )
-	{
 		// Loop through device
 		DeviceManager* pDeviceManager = GLOBALS->mp_deviceManager;
 		if (pDeviceManager)
 		{
-		    extraData.pushTag("orbits");
-			int nbTagOrbits = extraData.getNumTags("orbit");
+		    m_extraData.pushTag("orbits");
+			int nbTagOrbits = m_extraData.getNumTags("orbit");
 			for (int i=0;i<pDeviceManager->m_listDevices.size();i++)
 			{
 				Device* pDevice = pDeviceManager->m_listDevices[i];
 				for (int j=0; j<nbTagOrbits; j++ )
 				{
-					string deviceId = extraData.getAttribute("orbit", "deviceId", "???", j);
+					string deviceId = m_extraData.getAttribute("orbit", "deviceId", "???", j);
 					if (deviceId == pDevice->m_id)
 					{
-						extraData.pushTag("orbit", j);
+						m_extraData.pushTag("orbit", j);
 						
 						// Factory here ?
 						ParticleOrbitEllipse* pOrbit = 0;
@@ -825,26 +820,35 @@ void AnimationOrbit::loadProperties(string id)
 						if (pOrbit)
 						{
 							OFAPPLOG->println("- loading extra data for '" + deviceId + "'");
-							pOrbit->load(extraData);
+							pOrbit->load(m_extraData);
 
 							// Create Particle which runs along this orbit
 							createParticlePathsForOrbit(pOrbit);
 						}
 																
-						extraData.popTag();
+						m_extraData.popTag();
 						break;
 					}
 				}
 			}
-			extraData.popTag();
+			m_extraData.popTag();
 
 
-		
-	
 		}
+}
+
+//--------------------------------------------------------------
+void AnimationOrbit::loadProperties(string id)
+{
+	OFAPPLOG->begin("AnimationOrbit::loadProperties()");
+	OFAPPLOG->println("- id="+id);
+	Animation::loadProperties(id);
+
+	string filename = getPropertiesFilename(id,false)+"_extradata.xml";
+	if ( m_extraData.loadFile(filename) );
+	{
+		OFAPPLOG->println("- loaded "+filename);
 	}
-	
-	assignBoidsToPaths();
 	OFAPPLOG->end();
 }
 

@@ -58,6 +58,7 @@ class AnimationOrbit : public Animation
 				void			updateUI				();
 				void            saveProperties          (string id);
 				void            loadProperties          (string id);
+				void			loadPropertiesOrbit		(string deviceId);
 	
 				void			drawOrbit				(ParticleOrbit* pOrbit);
 	
@@ -116,6 +117,8 @@ class AnimationOrbit : public Animation
 		ofxUISlider*			mp_sliderFormHeight;
 	
 		ofxUIMovingGraph*		mp_mgEnergy;
+	
+		ofxXmlSettings			m_extraData;
 };
 
 //--------------------------------------------------------------

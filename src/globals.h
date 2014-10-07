@@ -37,6 +37,7 @@ class Globals
 
 		void					logMessageOSC				(const ofxOscMessage&, bool isIn=true);
 
+		Surface*				getSurfaceMain();
 		AnimationManager*		getAnimationManagerForDevice(string deviceId);
 		Animation*				getAnimationCurrentForDevice(string deviceId);
 

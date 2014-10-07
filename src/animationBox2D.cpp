@@ -8,6 +8,8 @@
 
 #include "animationBox2D.h"
 #include "globals.h"
+#include "surface.h"
+
 
 //--------------------------------------------------------------
 AnimationBox2D::AnimationBox2D(string name) : Animation(name)
@@ -15,6 +17,11 @@ AnimationBox2D::AnimationBox2D(string name) : Animation(name)
     m_volumeAccum = 0.0f;
     m_volumeAccumTarget = 0.0f;
     m_isBox2DCreated = false;
+	
+	m_isLeftWall 	= true;
+	m_isRightWall	= true;
+	m_isTopWall		= true;
+	m_isBottomWall	= true;
 }
 
 //--------------------------------------------------------------
@@ -25,11 +32,74 @@ void AnimationBox2D::createBox2D(float gx, float gy, float fps, bool isBounds, o
         m_box2d.init();
         m_box2d.setGravity(gx, gy);
         if (isBounds)
-            m_box2d.createBounds(bounds);
+			createBounds(bounds);
         m_box2d.setFPS(fps);
     
         m_isBox2DCreated = true;
     }
+}
+
+//--------------------------------------------------------------
+void AnimationBox2D::createBounds(ofRectangle bounds)
+{
+	if (!m_box2d.bWorldCreated) return;
+	
+	if (m_box2d.ground)
+		m_box2d.world->DestroyBody( m_box2d.ground );
+
+	b2BodyDef bd;
+	bd.position.Set(0, 0);
+	m_box2d.ground = m_box2d.world->CreateBody(&bd);
+	
+	b2PolygonShape shape;
+	
+	ofRectangle rec(bounds.x/OFX_BOX2D_SCALE, bounds.y/OFX_BOX2D_SCALE, bounds.width/OFX_BOX2D_SCALE, bounds.height/OFX_BOX2D_SCALE);
+	
+	//right wall
+	if (m_isRightWall)
+	{
+		shape.SetAsEdge(b2Vec2(rec.x+rec.width, rec.y), b2Vec2(rec.x+rec.width, rec.y+rec.height));
+		m_box2d.ground->CreateFixture(&shape, 0.0f);
+	}
+	
+	//left wall
+	if (m_isLeftWall)
+	{
+		shape.SetAsEdge(b2Vec2(rec.x, rec.y), b2Vec2(rec.x, rec.y+rec.height));
+		m_box2d.ground->CreateFixture(&shape, 0.0f);
+	}
+	
+	// top wall
+	if (m_isTopWall)
+	{
+		shape.SetAsEdge(b2Vec2(rec.x, rec.y), b2Vec2(rec.x+rec.width, rec.y));
+		m_box2d.ground->CreateFixture(&shape, 0.0f);
+	}
+	
+	// bottom wall
+	if (m_isBottomWall)
+	{
+		shape.SetAsEdge(b2Vec2(rec.x, rec.y+rec.height), b2Vec2(rec.x+rec.width, rec.y+rec.height));
+		m_box2d.ground->CreateFixture(&shape, 0.0f);
+	}
+
+}
+
+
+//--------------------------------------------------------------
+void AnimationBox2D::guiEvent(ofxUIEventArgs &e)
+{
+
+	string name = e.getName();
+	if (name == "left wall" || name == "right wall" || name == "top wall" || name == "bottom wall")
+	{
+		Surface* pSurfaceMain = GLOBALS->getSurfaceMain();
+		if (pSurfaceMain)
+		{
+			createBox2D(0,0*10,30,true,ofRectangle(0, 0, pSurfaceMain->getWidthPixels(), pSurfaceMain->getHeightPixels()));
+			createBounds( ofRectangle(0.0f,0.0f,pSurfaceMain->getWidthPixels(),pSurfaceMain->getHeightPixels()) ); // TEMP, should be relative to surface
+		}
+	}
 }
 
 //--------------------------------------------------------------
@@ -57,8 +127,7 @@ void AnimationBox2D_circles::VM_update(float dt)
 //--------------------------------------------------------------
 void AnimationBox2D_circles::VM_draw(float w, float h)
 {
-    createBox2D(0,0*10,30,true,ofRectangle(0, 0, w, h));
-    
+ 
     ofBackground(0);
     ofPushStyle();
     ofxBox2dCircle circle;
@@ -127,11 +196,16 @@ void AnimationBox2D_circles::createUICustom()
 {
     if (mp_UIcanvas)
     {
-        mp_UIcanvas->addSlider("gravity", -10.0f, 10.0f, &m_gravity);
-        mp_UIcanvas->addSlider("vol. trigger", 0.0f, 1.0f, &m_volTrigger);
-        mp_UIcanvas->addSlider("obj. size min", 10, 20, &m_sizeMin);
-        mp_UIcanvas->addSlider("obj. size max", 10, 50, &m_sizeMax);
-        mp_UIcanvas->addSlider("obj. number", 100, 500, &m_nbObjects);
+        mp_UIcanvas->addSlider("gravity", 			-10.0f, 10.0f, 	&m_gravity);
+        mp_UIcanvas->addSlider("vol. trigger", 		0.0f, 1.0f, 	&m_volTrigger);
+        mp_UIcanvas->addSlider("obj. size min", 	10, 20, 		&m_sizeMin);
+        mp_UIcanvas->addSlider("obj. size max", 	10, 50, 		&m_sizeMax);
+        mp_UIcanvas->addSlider("obj. number", 		100, 500, 		&m_nbObjects);
+
+        mp_UIcanvas->addToggle("left wall", 	&m_isLeftWall);
+        mp_UIcanvas->addToggle("right wall", 	&m_isRightWall);
+        mp_UIcanvas->addToggle("top wall", 		&m_isTopWall);
+        mp_UIcanvas->addToggle("bottom wall", 	&m_isBottomWall);
     }
 }
 
