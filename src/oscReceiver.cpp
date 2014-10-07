@@ -104,8 +104,8 @@ void oscReceiver::update()
                             // Update interface
                          
 							//Globals::instance()->mp_app->guiMarkUpdateLayout();
-                            Globals::instance()->mp_app->guiUpdateListDevices();
-                            Globals::instance()->mp_app->selectDevice(pDeviceEcho->m_id);
+                            //Globals::instance()->mp_app->guiUpdateListDevices();
+                            //Globals::instance()->mp_app->selectDevice(pDeviceEcho->m_id);
                         
                             // TODO : Send configuration parameters to it (if any)
                         }

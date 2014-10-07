@@ -1,7 +1,7 @@
 <Widget>
     <Kind>4</Kind>
     <Name>gravity</Name>
-    <Value>0.000000000</Value>
+    <Value>0.448718071</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -22,6 +22,26 @@
     <Kind>4</Kind>
     <Name>obj. number</Name>
     <Value>280.769226074</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>left wall</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>right wall</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>top wall</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>bottom wall</Name>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>

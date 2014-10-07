@@ -38,6 +38,5 @@
     <!-- Raspberry -->
     <launchDevices>
         <ip>192.168.1.52</ip>
-        <ip>192.168.1.53</ip>
     </launchDevices>
 </murmur>

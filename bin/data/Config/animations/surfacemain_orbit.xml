@@ -1,7 +1,7 @@
 <Widget>
     <Kind>2</Kind>
     <Name>draw_debug</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -16,7 +16,7 @@
 <Widget>
     <Kind>4</Kind>
     <Name>alpha</Name>
-    <Value>0.528846145</Value>
+    <Value>0.355769217</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -31,7 +31,7 @@
 <Widget>
     <Kind>42</Kind>
     <Name>trail_size</Name>
-    <Value>185</Value>
+    <Value>134</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -72,17 +72,17 @@
 <Widget>
     <Kind>4</Kind>
     <Name>rotation_forms</Name>
-    <Value>-19.615386963</Value>
+    <Value>4.038462639</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>width_forms</Name>
-    <Value>495.288482666</Value>
+    <Value>289.551300049</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>height_forms</Name>
-    <Value>375.929504395</Value>
+    <Value>314.679504395</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>

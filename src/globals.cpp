@@ -42,6 +42,14 @@ void Globals::logMessageOSC(const ofxOscMessage& message, bool isIn)
 	toolNetwork::logMessageOSC(message, isIn);
 }
 
+
+//--------------------------------------------------------------
+Surface* Globals::getSurfaceMain()
+{
+	if (mp_app) return mp_app->mp_surfaceMain;
+	return ;
+}
+
 //--------------------------------------------------------------
 AnimationManager* Globals::getAnimationManagerForDevice(string deviceId)
 {

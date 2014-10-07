@@ -50,9 +50,14 @@ void toolDevices::selectDeviceWithIndex(int index)
 //--------------------------------------------------------------
 void toolDevices::show(bool is)
 {
+	OFAPPLOG->begin("toolDevices::show()");
+
 	tool::show(is);
 	if (mp_canvasDevice)
+	{
 		mp_canvasDevice->setVisible(is);
+	}
+	OFAPPLOG->end();
 }
 
 //--------------------------------------------------------------
@@ -161,19 +166,9 @@ void toolDevices::createControlsCustomFinalize()
 	
 
 	mp_canvasDevice->autoSizeToFitWidgets();
+	mp_canvasDevice->setVisible(false);
 	
 	ofAddListener(mp_canvasDevice->newGUIEvent, this, &toolDevices::handleEvents);
-
-/* REMOVED
-
-//    mp_sliderDeviceNbLEDsStandby = new ofxUISlider( "Nb LEDs standby", 10, 100, 50.0f, widthDefault-10, dim );
-//    mp_sliderDeviceSpeedStandby = new ofxUISlider( "Speed standby", 40, 360, 70.0f, widthDefault-10, dim );
-//    mp_canvasDevice->addWidgetDown(new ofxUILabel("> Stand by", fontType));
-//	mp_canvasDevice->addWidgetDown(mp_sliderDeviceNbLEDsStandby);
-//	mp_canvasDevice->addWidgetDown(mp_sliderDeviceSpeedStandby);
-
-*/
-
 }
 
 //--------------------------------------------------------------
