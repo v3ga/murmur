@@ -21,6 +21,10 @@ BoidOrbit::BoidOrbit(AnimationOrbit* pAnimation, float x, float y) : Boid(x,y)
 	{
 		m_polyline.addVertex( ofVec2f(0.0f,0.0f) );
 	}
+
+	m_cohesionGroup		= 1.0f;
+	m_separationGroup	= 1.0f;
+	m_alignmentGroup	= 1.0f;
 }
 
 //--------------------------------------------------------------
@@ -55,21 +59,21 @@ void BoidOrbit::flock(vector<Boid*>& boids)
 	if (mp_animation->m_boidsSeparation>0.0f)
 	{
 		ofVec2f sep = separate(boids);   // Separation
-		sep *= mp_animation->m_boidsSeparation;
+		sep *= m_separationGroup * mp_animation->m_boidsSeparation;
 		applyForce(sep);
 	}
 	
 	if (mp_animation->m_boidsAlignement>0.0f)
 	{
 		ofVec2f ali = align(boids);      // Alignment
-		ali *= mp_animation->m_boidsAlignement;
+		ali *= m_alignmentGroup * mp_animation->m_boidsAlignement;
 		applyForce(ali);
 	}
 
 	if (mp_animation->m_boidsCohesion>0.0f)
 	{
 		ofVec2f coh = cohesion(boids);   // Cohesion
-		coh *= mp_animation->m_boidsCohesion;
+		coh *= m_cohesionGroup * mp_animation->m_boidsCohesion;
 		applyForce(coh);
 	}
 }
@@ -123,6 +127,109 @@ void BoidOrbit::draw()
 	m_polyline.draw();
 }
 
+//--------------------------------------------------------------
+BoidGroup::BoidGroup()
+{
+	reset();
+	excite();
+}
+
+
+//--------------------------------------------------------------
+void BoidGroup::update(float dt)
+{
+	if (m_boidState == boidState_rest)
+	{
+		m_tBoidState += dt;
+	}
+	else if (m_boidState == boidState_excitation)
+	{
+		m_tBoidState += dt;
+		if (m_tBoidState >= m_tBoidExcitationMax)
+		{
+			// calm();
+		}
+	}
+
+
+	m_fExcitation += (m_fExcitationTarget-m_fExcitation) * m_fExcitationRise * dt;
+
+	float boidsSpeedFactor = ofLerp(1.0f,9.0f,m_fExcitation);
+	float boidsForceMax = ofLerp(0.2f,1.0f,m_fExcitation);
+	float boidsSpeedMin = ofLerp(2.0f,9.0f,m_fExcitation);
+	float boidsSpeedMax = ofLerp(3.0f,10.0f,m_fExcitation);
+
+	vector<Boid*>::iterator it = m_boids.begin();
+	BoidOrbit* pBoid=0;
+	for ( ; it != m_boids.end(); ++it)
+	{
+		pBoid = (BoidOrbit*) *it;
+		pBoid->setForceMax(boidsForceMax);
+		pBoid->setSpeedMinMax(boidsSpeedMin, boidsSpeedMax);
+
+		pBoid->m_separationGroup = m_separationGroup;
+		pBoid->m_alignmentGroup = m_alignmentGroup;
+		pBoid->m_cohesionGroup = m_cohesionGroup;
+
+	}
+
+}
+
+//--------------------------------------------------------------
+void BoidGroup::calm()
+{
+	//if (m_boidState == boidState_excitation)
+	{
+		// ofLog() << "---- CALM ...";
+
+		m_tBoidState = 0.0f;
+		m_fExcitationTarget = 0.0f;
+		m_fExcitationRise = 0.8f;
+		if (mp_particleOrbit)
+		{
+//			mp_particleOrbit->setScale(1.0f);
+//			mp_particleOrbit->setRadius(m_radiusOrbitOriginal);
+		}
+
+
+		if (ofRandom(1.0f)<=0.5f)
+			m_separationGroup 	= ofRandom(0.25f,0.5f);
+		else
+			m_separationGroup 	= ofRandom(0.5f,0.75f);
+		
+		m_cohesionGroup 	= 0.0f;
+		m_alignmentGroup 	= 0.0f;
+
+		m_boidState = boidState_rest;
+	}
+
+}
+
+//--------------------------------------------------------------
+void BoidGroup::excite()
+{
+	//if (m_boidState == boidState_rest)
+	{
+		// ofLog() << "++++ EXCITE !!!!";
+	
+		m_tBoidState = 0.0f;
+//		m_fExcitation = 1.0f;
+		m_fExcitationTarget = 1.0f;
+		m_fExcitationRise = 1.8f;
+		if (mp_particleOrbit)
+		{
+//			m_radiusOrbitOriginal = mp_particleOrbit->getRadius();
+//			mp_particleOrbit->setScale(4.0f);
+		}
+
+		m_separationGroup 	= 1.0f;
+		m_cohesionGroup 	= ofRandom(0.0f,1.0f);
+		m_alignmentGroup 	= ofRandom(0.0f,1.0f);
+
+		m_boidState = boidState_excitation;
+	}
+}
+
 
 //--------------------------------------------------------------
 ParticlePath::ParticlePath()
@@ -167,6 +274,10 @@ void ParticlePath::setSegment(ParticleOrbit* pA, int indexA)
 void ParticlePath::update(float dt)
 {
 	if (mp_orbitA == 0) return;
+	
+	m_A = mp_orbitA->getPoints()[m_indexA];
+	m_B = mp_orbitB->getPoints()[m_indexB];
+	m_u = (m_B-m_A).normalized();
 
 	m_pos += m_u*m_speed*dt;
 
@@ -179,6 +290,15 @@ void ParticlePath::update(float dt)
 		}
 	}
 }
+
+//--------------------------------------------------------------
+string ParticlePath::getOrbitId()
+{
+	if (mp_orbitA)
+		return mp_orbitA->getId();
+	return "__unknown__";
+}
+
 
 
 //--------------------------------------------------------------
@@ -194,6 +314,7 @@ ParticleOrbitEllipse::ParticleOrbitEllipse()
 	setRadius( ofVec2f(100.0,50.0) );
 	setOffset( ofVec3f(0.0,0.0,0.0) );
 	setRotation(20.0f);
+	setScale(1.0f);
 //	setReverse(true);
 }
 
@@ -211,8 +332,8 @@ void ParticleOrbitEllipse::computePoints()
 		{
 			aR = ofDegToRad(angle);
 			pointEllipse.set(
-								m_radius.x * cos(aR),
-								m_radius.y * sin(aR)
+								m_scale*m_radius.x * cos(aR),
+								m_scale*m_radius.y * sin(aR)
 							);
 
 			float rotR = ofDegToRad(m_rot);
@@ -249,6 +370,12 @@ void ParticleOrbitEllipse::setRotation(float rot)
 	computePoints();
 }
 
+//--------------------------------------------------------------
+void ParticleOrbitEllipse::setScale(float s)
+{
+	m_scale = s;
+	computePoints();
+}
 
 //--------------------------------------------------------------
 void ParticleOrbitEllipse::load(ofxXmlSettings& settings)
@@ -274,6 +401,7 @@ void ParticleOrbitEllipse::save(ofxXmlSettings& settings)
 	settings.addValue("offset_y", m_offset.y);
 	settings.addValue("reverse", m_isReverse);
 }
+
 
 
 //--------------------------------------------------------------
@@ -312,11 +440,9 @@ AnimationOrbit::AnimationOrbit(string name) : Animation(name)
 	mp_sliderFormHeight	= 0;
 	mp_deviceCurrent	= 0;
 	
+	m_deviceVolumeSpeed = 0.3f;
+	
 	mp_mgEnergy			= 0;
-
-	m_boidState			= boidState_rest;
-				float			m_tBoidExcitation;
-
 }
 
 //--------------------------------------------------------------
@@ -359,6 +485,7 @@ void AnimationOrbit::VM_enter()
 void AnimationOrbit::VM_update(float dt)
 {
 	// Energies for devices
+/*	
 	map<string,float>::iterator itEnergies = m_energies.begin();
 	string deviceId;
 	for ( ; itEnergies != m_energies.end(); ++itEnergies)
@@ -373,7 +500,13 @@ void AnimationOrbit::VM_update(float dt)
 	if (pDeviceCurrent && mp_mgEnergy){
 		mp_mgEnergy->addPoint( m_energies[deviceId] );
 	}
+*/
 
+	map<string,float>::iterator itDeviceVol = m_deviceVolumeTarget.begin();
+	for ( ; itDeviceVol != m_deviceVolumeTarget.end(); ++itDeviceVol)
+	{
+		m_deviceVolume[itDeviceVol->first] += (itDeviceVol->second - m_deviceVolume[itDeviceVol->first])*m_deviceVolumeSpeed;
+	}
 
 	// Particles on path
 	vector<ParticlePath*>::iterator it = m_particlePaths.begin();
@@ -390,6 +523,13 @@ void AnimationOrbit::VM_update(float dt)
 	{
 		pBoid = (BoidOrbit*) *itBoids;
 		pBoid->follow(m_boids);
+	}
+
+	// Groups
+	map<string, BoidGroup*>::iterator itBoidGroups = m_boidsForDevice.begin();
+	for (;itBoidGroups!=m_boidsForDevice.end();++itBoidGroups)
+	{
+		itBoidGroups->second->update(dt);
 	}
 
 	// Look for change on Device
@@ -494,8 +634,11 @@ void AnimationOrbit::onNewPacket(DevicePacket* pDevicePacket, string deviceId, f
 	// For sound playing
 	accumulateVolume(pDevicePacket->m_volume, deviceId);
 
-
 	m_energies[deviceId] += pDevicePacket->m_volume;
+	m_deviceVolumeTarget[deviceId] = pDevicePacket->m_volume;
+	
+	if (m_deviceVolume.find(deviceId) == m_deviceVolume.end())
+		m_deviceVolume[deviceId] = pDevicePacket->m_volume;
 
 	// Create Orbit for device
 	ParticleOrbit* pOrbit = getOrbitForDevice(deviceId);
@@ -520,6 +663,7 @@ void AnimationOrbit::onNewPacket(DevicePacket* pDevicePacket, string deviceId, f
 		// Save in map
 		m_orbits[deviceId] = pOrbitEllipse;
 		pOrbit = pOrbitEllipse;
+		pOrbit->setId(deviceId);
 		
 		// Load properties
 		loadPropertiesOrbit(deviceId);
@@ -531,14 +675,40 @@ void AnimationOrbit::onNewPacket(DevicePacket* pDevicePacket, string deviceId, f
 		assignBoidsToPaths();
 
 	}
+	if (pOrbit)
+	{
+		BoidGroup* pGroup = getBoidsForDevice(deviceId);
+		if (pGroup)
+		{
+			if (m_deviceVolume[deviceId] >= 0.4f)
+			{
+				pGroup->excite();
+			}
+			else
+			{
+				pGroup->calm();
+			}
+		}
+		
+		
+		pOrbit->setScale( 1.0f+m_deviceVolume[deviceId]*4.0f );
+	}
 
 	// Position of deviceId changed ?
 	if (pOrbit && updateDevicePosition(deviceId,x,y))
 	{
 		pOrbit->setCenter( ofVec3f(x,y) );
 	}
-	
-	
+}
+
+
+//--------------------------------------------------------------
+void AnimationOrbit::onVolumAccumEvent(string deviceId)
+{
+	BoidGroup* pBoidGroup = getBoidsForDevice(deviceId);
+	if (pBoidGroup){
+//		pBoidGroup->excite();
+	}
 }
 
 //--------------------------------------------------------------
@@ -573,12 +743,16 @@ void AnimationOrbit::createUICustom()
 		
 		mp_UIcanvas->addWidgetDown( new ofxUILabelButton("calm", true, 60,16) );
 		mp_UIcanvas->addWidgetRight( new ofxUILabelButton("excited", true, 60,16) );
+
+        mp_UIcanvas->addSlider("t_excitation", 	0.0f, 2.0f, 1.0f);
+        mp_UIcanvas->addSlider("deviceVolSpeed", 0.1f, 2.0f, &m_deviceVolumeSpeed);
+
 	
-	
-		vector<float> mgValues(widthDefault);
+/*		vector<float> mgValues(widthDefault);
 		for (int i=0;i<widthDefault;i++) mgValues[i]=0.0f;
 		mp_mgEnergy = new ofxUIMovingGraph(0,0,widthDefault,70, mgValues, widthDefault, 0.0f,1.0f, "energy");
 		mp_UIcanvas->addWidgetDown( mp_mgEnergy );
+*/
 
 	    mp_labelDeviceId = new ofxUILabel("Forms", OFX_UI_FONT_SMALL);
 		mp_UIcanvas->addWidgetDown	( mp_labelDeviceId );
@@ -603,6 +777,14 @@ ParticleOrbit* AnimationOrbit::getOrbitForDevice(string deviceId)
 {
 	if (m_orbits.find(deviceId) != m_orbits.end())
 		return m_orbits[deviceId];
+	return 0;
+}
+
+//--------------------------------------------------------------
+BoidGroup* AnimationOrbit::getBoidsForDevice(string deviceId)
+{
+	//if (m_boidsForDevice.find(deviceId) != m_boidsForDevice.end())
+		return m_boidsForDevice[deviceId];
 	return 0;
 }
 
@@ -680,14 +862,25 @@ void AnimationOrbit::guiEvent(ofxUIEventArgs &e)
 		int nb = ((ofxUISlider*)e.widget)->getScaledValue();
 		if (nb != m_boidsNbParticlesPath)
 		{
+			// Delete all the particle on paths
 			deleteParticlePaths();
 		
-		
+			// Create particles on paths
 			map<string,ParticleOrbit*>::iterator it = m_orbits.begin();
 			for ( ; it!=m_orbits.end(); ++it){
 				createParticlePathsForOrbit( it->second );
 			}
+			
+			// Assign boids to particles paths
 			assignBoidsToPaths();
+		}
+	}
+	else if (name == "t_excitation")
+	{
+		map<string,BoidGroup*>::iterator it = m_boidsForDevice.begin();
+		for ( ;it != m_boidsForDevice.end(); ++it)
+		{
+			it->second->m_tBoidExcitationMax = ((ofxUISlider*)e.widget)->getScaledValue();
 		}
 	}
 	else if (name == "calm")
@@ -695,7 +888,7 @@ void AnimationOrbit::guiEvent(ofxUIEventArgs &e)
 		ofxUILabelButton* pBtn = (ofxUILabelButton*) e.widget;
 		if (pBtn->getValue())
 		{
-			m_boidsSpeedFactor = 1.0f;
+/*			m_boidsSpeedFactor = 1.0f;
 			m_boidsForceMax = 0.2f;
 			m_boidsSpeedMin = 2.0f;
 			m_boidsSpeedMax = 3.0f;
@@ -709,7 +902,7 @@ void AnimationOrbit::guiEvent(ofxUIEventArgs &e)
 				pBoid->setForceMax(m_boidsForceMax);
 				pBoid->setSpeedMinMax(m_boidsSpeedMin, m_boidsSpeedMax);
 			}
-
+*/
 		}
 	}
 	else if (name == "excited")
@@ -717,7 +910,7 @@ void AnimationOrbit::guiEvent(ofxUIEventArgs &e)
 		ofxUILabelButton* pBtn = (ofxUILabelButton*) e.widget;
 		if (pBtn->getValue())
 		{
-			m_boidsSpeedFactor = 9.0f;
+/*			m_boidsSpeedFactor = 9.0f;
 			m_boidsForceMax = 1.0f;
 			m_boidsSpeedMin = 9.0f;
 			m_boidsSpeedMax = 10.0f;
@@ -733,9 +926,10 @@ void AnimationOrbit::guiEvent(ofxUIEventArgs &e)
 			}
 
 		}
+*/
+
 	}
-
-
+	}
 }
 
 //--------------------------------------------------------------
@@ -814,6 +1008,7 @@ void AnimationOrbit::loadPropertiesOrbit(string deviceId)
 						}
 						else{
 							pOrbit = new ParticleOrbitEllipse();
+							pOrbit->setId(deviceId);
 							m_orbits[deviceId] = pOrbit;
 						}
 						
@@ -859,6 +1054,7 @@ void AnimationOrbit::createParticlePathsForOrbit(ParticleOrbit* pOrbit)
   for (int i=0;i<m_boidsNbParticlesPath;i++)
   {
 	 ParticlePath* pParticlePath = new ParticlePath();
+	 ofLog() << "**** " << pOrbit->getId();
 	 pParticlePath->setSegment(pOrbit, i * (int)pOrbit->getPoints().size() / m_boidsNbParticlesPath);
 
 	 m_particlePaths.push_back( pParticlePath );
@@ -868,16 +1064,65 @@ void AnimationOrbit::createParticlePathsForOrbit(ParticleOrbit* pOrbit)
 //--------------------------------------------------------------
 void AnimationOrbit::assignBoidsToPaths()
 {
+	OFAPPLOG->begin("AnimationOrbit::assignBoidsToPaths()");
+
 	// Assign orbit / point to boid
 	if (m_particlePaths.size()>0)
 	{
+		BoidOrbit* pBoid=0;
 		for (int i=0;i<m_boids.size();i++)
 		{
+			// Boid pointer
+			pBoid = (BoidOrbit*)m_boids[i];
+		
+			// Index of particle path
 			int indexParticlePath = (int) ofRandom(m_particlePaths.size());
+
 			// Choose a random particle
-			((BoidOrbit*)m_boids[i])->setPath( m_particlePaths[indexParticlePath] );
+			ParticlePath* pParticlePath = m_particlePaths[indexParticlePath];
+			pBoid->setPath( pParticlePath );
+			pBoid->setParentId( pParticlePath->getOrbitId() );
+			
+			// ofLog() << pParticlePath->getOrbitId();
 		}
+
+
+		// Group them now
+		map<string,BoidGroup*>::iterator it = m_boidsForDevice.begin();
+		for ( ; it!=m_boidsForDevice.end(); ++it)
+		{
+			delete it->second;
+		}
+		m_boidsForDevice.clear();
+		
+		for (int i=0;i<m_boids.size();i++)
+		{
+			// Boid pointer
+			pBoid = (BoidOrbit*)m_boids[i];
+
+			// Find the group (or create it)
+			BoidGroup* pBoidGroup = 0;
+			if (m_boidsForDevice.find(pBoid->m_parentId) == m_boidsForDevice.end()){
+				pBoidGroup = new BoidGroup();
+				pBoidGroup->setParticleOrbit( getOrbitForDevice(pBoid->m_parentId) );
+				OFAPPLOG->println("- creating group '"+pBoid->m_parentId+"'");
+				m_boidsForDevice[pBoid->m_parentId] = pBoidGroup;
+			}
+			else{
+				pBoidGroup = m_boidsForDevice[pBoid->m_parentId];
+			}
+			
+			// Insert boid inside
+			if (pBoidGroup){
+				pBoidGroup->add(pBoid);
+			}
+		}
+
 	}
+
+	OFAPPLOG->println("- nb boids groups="+ofToString(m_boidsForDevice.size()));
+
+	OFAPPLOG->end();
 }
 
 
