@@ -28,7 +28,6 @@ class AnimationBox2D : public Animation
         void            		createBox2D(float gx, float gy, float fps, bool isBounds, ofRectangle bounds);
 		void					createBounds(ofRectangle bounds);
         bool            		m_isBox2DCreated;
-        AnimationSoundPlayer 	m_soundPlayer;
 
 		bool					m_isLeftWall,m_isRightWall,m_isTopWall,m_isBottomWall;
 };
@@ -43,6 +42,7 @@ class AnimationBox2D_circles : public AnimationBox2D
         virtual void			VM_update				(float dt);
         virtual void			VM_draw					(float w, float h);
         virtual void            onNewPacket             (DevicePacket*, string deviceId, float x, float y);
+		virtual void			onVolumAccumEvent		(string deviceId);
 
         virtual void            createUICustom          ();
 		virtual	void			registerSoundTags		(vector<string>& soundTags);

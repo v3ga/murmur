@@ -89,6 +89,7 @@ void AnimationBox2D::createBounds(ofRectangle bounds)
 //--------------------------------------------------------------
 void AnimationBox2D::guiEvent(ofxUIEventArgs &e)
 {
+	Animation::guiEvent(e);
 
 	string name = e.getName();
 	if (name == "left wall" || name == "right wall" || name == "top wall" || name == "bottom wall")
@@ -115,8 +116,16 @@ AnimationBox2D_circles::AnimationBox2D_circles(string name ) : AnimationBox2D(na
 }
 
 //--------------------------------------------------------------
+void AnimationBox2D_circles::onVolumAccumEvent(string deviceId)
+{
+	Animation::onVolumAccumEvent(deviceId);
+}
+
+//--------------------------------------------------------------
 void AnimationBox2D_circles::VM_update(float dt)
 {
+//	ofLog() << m_listSoundNames.size();
+
     if (m_isBox2DCreated){
         m_box2d.setGravity(0.0f, m_gravity);
         m_box2d.update();
