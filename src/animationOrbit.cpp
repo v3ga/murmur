@@ -705,6 +705,8 @@ void AnimationOrbit::onNewPacket(DevicePacket* pDevicePacket, string deviceId, f
 //--------------------------------------------------------------
 void AnimationOrbit::onVolumAccumEvent(string deviceId)
 {
+	Animation::onVolumAccumEvent(deviceId);
+
 	BoidGroup* pBoidGroup = getBoidsForDevice(deviceId);
 	if (pBoidGroup){
 //		pBoidGroup->excite();
@@ -1054,7 +1056,7 @@ void AnimationOrbit::createParticlePathsForOrbit(ParticleOrbit* pOrbit)
   for (int i=0;i<m_boidsNbParticlesPath;i++)
   {
 	 ParticlePath* pParticlePath = new ParticlePath();
-	 ofLog() << "**** " << pOrbit->getId();
+	// ofLog() << "**** " << pOrbit->getId();
 	 pParticlePath->setSegment(pOrbit, i * (int)pOrbit->getPoints().size() / m_boidsNbParticlesPath);
 
 	 m_particlePaths.push_back( pParticlePath );

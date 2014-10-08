@@ -48,7 +48,8 @@ void AnimationSoundPlayer::playRandom(vector<int>& listSpeakers)
 //--------------------------------------------------------------
 void AnimationSoundPlayer::playRandom(int* speakers, int nbSpeakers)
 {
-//	ofLog() << m_listSoundNames.size();
+	ofLog() << "playing random sounds with " << m_listSoundNames.size() << " sounds";
+
     if (m_listSoundNames.size()>=2)
     {
         int rndIndex = -1;
@@ -196,8 +197,8 @@ void Animation::createUI()
         ofxJSCallFunctionNameObject_NoArgs_IfExists(mp_obj,"createUI",retVal);
     }
     
-    createUICustom();
 	createUISound();
+    createUICustom();
 
     ofAddListener(mp_UIcanvas->newGUIEvent, this, &Animation::guiEvent);
 }
@@ -214,7 +215,9 @@ void Animation::playSound(string deviceId)
 {
 	Device* pDevice = getDevice(deviceId);
 	if (pDevice)
+	{
 		m_soundPlayer.playRandom(pDevice->m_listSpeakerIds);
+	}
 }
 
 //--------------------------------------------------------------
@@ -383,7 +386,7 @@ void Animation::guiEvent(ofxUIEventArgs &e)
 			for (int i=0; i<m_listSoundNames.size(); i++){
 				ofxUIToggle* pSoundToggle = (ofxUIToggle*) mp_UIcanvas->getWidget( m_listSoundNames[i] );
 				if (pSoundToggle->getValue()){
-					// ofLog() << m_name << " / " << listSoundNames[i];
+//					 ofLog() << m_name << " / " << m_listSoundNames[i];
 					m_soundPlayer.add( m_listSoundNames[i] );
 				}
 			}
@@ -634,7 +637,7 @@ void Animation::accumulateVolume(float volume, string deviceId)
 		pVolumeAccum->setTriggerInCb( sOnVolumAccumEvent, (void*) this);
 		m_mapDeviceVolumAccum[deviceId] = pVolumeAccum;
 		
-		// ofLog() << "creating volumeAccum instance for "<<deviceId;
+		 ofLog() << "creating volumeAccum instance for "<<deviceId;
 	}
 	else{
 		pVolumeAccum = it->second;
