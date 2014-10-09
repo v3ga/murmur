@@ -85,7 +85,6 @@ void AnimationBox2D::createBounds(ofRectangle bounds)
 
 }
 
-
 //--------------------------------------------------------------
 void AnimationBox2D::guiEvent(ofxUIEventArgs &e)
 {
@@ -106,6 +105,8 @@ void AnimationBox2D::guiEvent(ofxUIEventArgs &e)
 //--------------------------------------------------------------
 AnimationBox2D_circles::AnimationBox2D_circles(string name ) : AnimationBox2D(name)
 {
+	OFAPPLOG->begin("AnimationBox2D_circles() constructor");
+	
     m_gravity = 0.0f;
     m_isCircleInflating = false;
     m_circleSize = 0.0f;
@@ -113,18 +114,25 @@ AnimationBox2D_circles::AnimationBox2D_circles(string name ) : AnimationBox2D(na
     m_sizeMin = 10;
     m_sizeMax = 30;
     m_nbObjects = 400;
+	
+	loadColors();
+	
+	OFAPPLOG->end();
 }
 
 //--------------------------------------------------------------
 void AnimationBox2D_circles::onVolumAccumEvent(string deviceId)
 {
 	Animation::onVolumAccumEvent(deviceId);
+	m_colorDevice[deviceId] = chooseRandomColor();
 }
+
+
 
 //--------------------------------------------------------------
 void AnimationBox2D_circles::VM_update(float dt)
 {
-//	ofLog() << m_listSoundNames.size();
+	updateUIVolume();
 
     if (m_isBox2DCreated){
         m_box2d.setGravity(0.0f, m_gravity);
@@ -145,7 +153,14 @@ void AnimationBox2D_circles::VM_draw(float w, float h)
         circle = m_listCircles[i];
         
 		ofFill();
-		ofSetColor(255);
+		if (m_isColor)
+		{
+			ofSetColor( m_listCirclesColor[i] );
+		}
+		else
+		{
+			ofSetColor(255);
+		}
         ofEllipse(circle.getPosition().x, circle.getPosition().y, circle.getRadius()*2,circle.getRadius()*2);
     }
 
@@ -183,10 +198,14 @@ void AnimationBox2D_circles::onNewPacket(DevicePacket* pDevicePacket, string dev
             circle.setVelocity( ofRandom(-0.5,0.5), ofRandom(-0.5,0.5) );
             
             m_listCircles.push_back(circle);
+			m_listCirclesColor.push_back( m_colorDevice[deviceId] );
 
             if (m_listCircles.size() > (int)m_nbObjects) {
                 m_listCircles.begin()->destroy();
                 m_listCircles.erase(m_listCircles.begin());
+				
+				m_listCirclesColor.erase(m_listCirclesColor.begin());
+				
             }
             
             m_volumeAccumTarget = 0;
@@ -205,6 +224,8 @@ void AnimationBox2D_circles::createUICustom()
 {
     if (mp_UIcanvas)
     {
+        mp_UIcanvas->addToggle("color", 			&m_isColor);
+
         mp_UIcanvas->addSlider("gravity", 			-10.0f, 10.0f, 	&m_gravity);
         mp_UIcanvas->addSlider("vol. trigger", 		0.0f, 1.0f, 	&m_volTrigger);
         mp_UIcanvas->addSlider("obj. size min", 	10, 20, 		&m_sizeMin);

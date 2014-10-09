@@ -39,6 +39,7 @@ class AnimationShaderWave : public Animation
         virtual void			VM_update				(float dt);
         virtual void			VM_draw					(float w, float h);
         virtual	void			VM_exit					();
+		virtual	void			onVolumAccumEvent		(string deviceId);
         virtual void            onNewPacket             (DevicePacket*, string deviceId, float xNorm, float yNorm);
 		virtual	void			createUICustom			();
 
@@ -47,9 +48,11 @@ class AnimationShaderWave : public Animation
         float                   m_volume;
 		float					m_waveIntensity;
 		bool					m_isBlend;
-		bool					m_isColor;
 	
 	
 	private:
 		map<string, ShaderWave*>	m_mapShaderWaves;
+		map<string, bool>			m_mapVolMeanAbove;
+
+
 };

@@ -15,6 +15,7 @@
 #include "ofxXmlSettings.h"
 #include "deviceInfo.h"
 #include "ofxUI.h"
+#include "ofxUIMovingGraphThreshold.h"
 #include "volumeAccum.h"
 
 
@@ -80,10 +81,12 @@ class Animation
     
         // UI
         ofxUICanvas*            mp_UIcanvas;
-	
+		ofxUIMovingGraphThreshold* mp_UIVolumeTh;
+		ofxUILabel*				 mp_lblVolValues;
 
         virtual void            setUICanvas             (ofxUICanvas* p){mp_UIcanvas=p;}
         virtual void            createUI                ();
+		virtual	void			createUIVolume			();
 		virtual	void			createUISound			();
         virtual void            createUICustom          (){};
 				ofxUICanvas*	getUI					();
@@ -91,11 +94,13 @@ class Animation
         virtual ofxUICanvas*    hideUI                  ();
         virtual void            guiEvent                (ofxUIEventArgs &e);
 		virtual	bool			guiEventTogglesSound	(string name);
+				void			updateUIVolume			();
 
         virtual void            saveProperties          (string id);
         virtual void            loadProperties          (string id);
         string                  getPropertiesFilename   (string id, bool isExtension=true); // id from surface
-    
+
+ 
         // SUPER DIRTY
         static std::map<JSObject*, Animation*> sm_mapJSObj_Anim;
 
@@ -126,6 +131,8 @@ class Animation
 		map<string, VolumeAccum*>	m_mapDeviceVolumAccum;
 		static void					sOnVolumAccumEvent		(void*,VolumeAccum*);
 		virtual void				onVolumAccumEvent		(string deviceId);
+ 
+		float						m_volValuesMeanTh;
 	
 		// Sound player
 		AnimationSoundPlayer		m_soundPlayer;
@@ -135,20 +142,25 @@ class Animation
 		virtual	void				playSound				(string deviceId);
 	
         // Name + paths
-		string					m_name;
-		string					m_pathAbsScript;
-		ofxJSScript*			mp_script;
+		string						m_name;
+		string						m_pathAbsScript;
+		ofxJSScript*				mp_script;
 
 		// TODO : SAFE with this ?
-		JSObject*				mp_obj;
+		JSObject*					mp_obj;
 
-		bool					m_isAutoReloadScript;
-		float					m_tReloadScript;
-		Poco::Timestamp			m_timestampFileScript;
+		bool						m_isAutoReloadScript;
+		float						m_tReloadScript;
+		Poco::Timestamp				m_timestampFileScript;
 		
-		bool					m_isAutoClear;
-		
+		bool						m_isAutoClear;
 
+		// Color
+		bool						m_isColor;
+		vector<ofColor>				m_colors;
+		map<string, ofColor>		m_colorDevice;
+		void						loadColors			();
+		ofColor						chooseRandomColor	();
 };
 
 

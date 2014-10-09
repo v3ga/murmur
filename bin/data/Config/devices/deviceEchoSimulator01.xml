@@ -6,7 +6,6 @@
     </soundInput>
     <soundOutput>
         <speaker>0</speaker>
-        <speaker>1</speaker>
     </soundOutput>
     <enableStandby>1</enableStandby>
     <timeStandby>10.000000000</timeStandby>
@@ -15,7 +14,7 @@
     <enableStandup>0</enableStandup>
     <volStandup>0.572580636</volStandup>
     <surface id="main">
-        <xNorm>0.507812500</xNorm>
-        <yNorm>0.485677093</yNorm>
+        <xNorm>0.167968750</xNorm>
+        <yNorm>0.519531250</yNorm>
     </surface>
 </device>

@@ -5,13 +5,16 @@
         <volHistoryTh>0.229838714</volHistoryTh>
     </soundInput>
     <soundOutput>
-        <speaker>0</speaker>
+        <speaker>1</speaker>
     </soundOutput>
     <enableStandby>0</enableStandby>
     <timeStandby>6.964285851</timeStandby>
     <sampleVolStandby>0.349999994</sampleVolStandby>
+    <enableStandby>1</enableStandby>
+    <enableStandup>1</enableStandup>
+    <volStandup>0.500000000</volStandup>
     <surface id="main">
-        <xNorm>0.761718750</xNorm>
-        <yNorm>0.565104187</yNorm>
+        <xNorm>0.789062500</xNorm>
+        <yNorm>0.528645813</yNorm>
     </surface>
 </device>
