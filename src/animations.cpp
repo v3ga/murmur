@@ -132,6 +132,11 @@ void Animation::M_zeroAll()
 	mp_obj			= 0;
 	m_isAutoClear	= true;
     mp_UIcanvas     = 0;
+	mp_UIVolumeTh	= 0;
+	m_volValuesMeanTh = 0.5f;
+	mp_lblVolValues = 0;
+	
+	m_isColor		= false;
 }
 
 //--------------------------------------------------------------
@@ -192,11 +197,11 @@ void Animation::createUI()
     
     if (mp_UIcanvas && mp_obj)
     {
-		
         ofxJSValue retVal;
         ofxJSCallFunctionNameObject_NoArgs_IfExists(mp_obj,"createUI",retVal);
     }
-    
+ 
+	createUIVolume();
 	createUISound();
     createUICustom();
 
@@ -217,6 +222,23 @@ void Animation::playSound(string deviceId)
 	if (pDevice)
 	{
 		m_soundPlayer.playRandom(pDevice->m_listSpeakerIds);
+	}
+}
+
+
+//--------------------------------------------------------------
+void Animation::createUIVolume()
+{
+	if (mp_UIcanvas)
+	{
+		vector<float> zeros;
+		zeros.assign(300, 0.0f);
+		mp_UIVolumeTh = new ofxUIMovingGraphThreshold(ANIM_UI_WIDTH_DEFAULT,100, zeros, 300, 0.0f, 1.0f, "volValues");
+
+		mp_lblVolValues = new ofxUILabel("lblVolValues", "values for device ##",OFX_UI_FONT_SMALL);
+		mp_UIcanvas->addWidgetDown( mp_lblVolValues );
+		mp_UIcanvas->addWidgetDown( mp_UIVolumeTh );
+		mp_UIcanvas->addWidgetDown( new ofxUISlider("volValuesMeanTh", 0.0f,1.0f, &m_volValuesMeanTh, ANIM_UI_WIDTH_DEFAULT, 16) );
 	}
 }
 
@@ -543,6 +565,35 @@ void Animation::M_deleteScript()
 	}
 }
 
+
+//--------------------------------------------------------------
+void Animation::updateUIVolume()
+{
+	if (mp_UIcanvas && mp_UIVolumeTh)
+	{
+		mp_UIVolumeTh->setThreshold( m_volValuesMeanTh );
+	
+		Device* pDeviceCurrent = getDeviceCurrent();
+		if (pDeviceCurrent)
+		{
+
+			if (mp_lblVolValues)
+				mp_lblVolValues->setLabel("values for "+pDeviceCurrent->m_id);
+
+			if (m_mapDeviceVolumAccum.find(pDeviceCurrent->m_id) != m_mapDeviceVolumAccum.end())
+			{
+				VolumeAccum* pVolumeAccum = m_mapDeviceVolumAccum[pDeviceCurrent->m_id];
+				if (pVolumeAccum && pVolumeAccum->m_valueHistory.size()>0)
+				{
+					mp_UIVolumeTh->setBuffer( pVolumeAccum->m_valueHistory );
+					mp_UIVolumeTh->setValue( pVolumeAccum->m_valueMean );
+
+				}
+			}
+		}
+	}
+}
+
 //--------------------------------------------------------------
 void Animation::VM_update(float dt)
 {
@@ -663,6 +714,59 @@ void Animation::onNewPacket(DevicePacket* pPacket, string deviceId, float xNorm,
         ofxJSCallFunctionNameObject_IfExists(mp_obj,"onNewPacket", args,4,retVal);
     }
 }
+
+
+
+
+//--------------------------------------------------------------
+void Animation::loadColors()
+{
+	OFAPPLOG->begin("Animation::loadColors()");
+	string pathColorSettings = "Config/animations/__colors__.xml";
+	
+	ofxXmlSettings colorSettings;
+
+
+	if (colorSettings.load(pathColorSettings))
+	{
+		OFAPPLOG->println("- loaded "+pathColorSettings);
+		colorSettings.pushTag("colors");
+	    int nbColors = colorSettings.getNumTags("color");
+	    OFAPPLOG->println("- nb colors="+ofToString(nbColors));
+    	for (int i=0;i<nbColors;i++)
+    	{
+        	string colorHex = ofToLower(colorSettings.getValue("color", "#FFFFFF",i));
+			ofColor color = ofColor::fromHex( ofHexToInt(colorHex) );
+
+
+			OFAPPLOG->println("    - color["+ofToString(i)+"] = "+colorHex+"/"+ofToString(color));
+
+
+			m_colors.push_back(color  );
+		}
+
+		colorSettings.popTag();
+	}
+	else
+	{
+		OFAPPLOG->println(OF_LOG_ERROR, "- error loading "+pathColorSettings);
+	}
+	
+	OFAPPLOG->end();
+}
+
+//--------------------------------------------------------------
+ofColor Animation::chooseRandomColor()
+{
+	if (m_colors.size()>0)
+	{
+		int index = (int) ofRandom(0, m_colors.size());
+		if (index>=m_colors.size()) index = 0;
+		return m_colors[index];
+	}
+	return ofColor(255);
+}
+
 
 #define ____________AnimationManager____________
 

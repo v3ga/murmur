@@ -50,12 +50,15 @@ void toolDevices::selectDeviceWithIndex(int index)
 //--------------------------------------------------------------
 void toolDevices::show(bool is)
 {
-	OFAPPLOG->begin("toolDevices::show()");
+	OFAPPLOG->begin("toolDevices::show("+ofToString(is)+")");
 
 	tool::show(is);
 	if (mp_canvasDevice)
 	{
-		mp_canvasDevice->setVisible(is);
+		if (is && mp_deviceManager->getDeviceCurrent())
+			mp_canvasDevice->setVisible(is);
+		else
+			mp_canvasDevice->setVisible(is);
 	}
 	OFAPPLOG->end();
 }
@@ -189,14 +192,17 @@ void toolDevices::updateListDevices()
 	OFAPPLOG->begin("toolDevices::updateListDevices");
     if (mp_deviceManager && mp_ddlDevices)
     {
+		mp_ddlDevices->clearToggles();
+	
         vector<string> listDevicesId;
         mp_deviceManager->getDevicesListId(listDevicesId);
 
         OFAPPLOG->println("Device manager has now "+ofToString(listDevicesId.size())+" device(s)");
      
 		mp_ddlDevices->setAutoClose(false);
-        mp_ddlDevices->init("Devices",listDevicesId);
-    }
+        //mp_ddlDevices->init("Devices",listDevicesId);
+		mp_ddlDevices->addToggles(listDevicesId);
+	}
 	OFAPPLOG->end();
 }
 

@@ -19,10 +19,14 @@ class VolumeAccum
         VolumeAccum             ();
 	
 		string					m_deviceId;
-    
-        float                   m_value;
+	
+        float                   m_value;			// accumulated value
         float                   m_valueTriggerIn;
         float                   m_valueTriggerOut;
+
+ 		vector<float>			m_valueHistory;		// history of volumes
+		int						m_valueHistoryMax;	// number of history values
+		float					m_valueMean;		// mean value for history values
 
         int                     m_state;
 

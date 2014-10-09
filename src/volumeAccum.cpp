@@ -13,6 +13,11 @@ VolumeAccum::VolumeAccum()
     m_state = STATE_WAVE_OUT;
     m_valueTriggerIn = 0.3f;
     m_valueTriggerOut = 0.1f;
+	
+	m_valueHistoryMax = 300;
+	m_valueMean = 0.0f;
+	m_value = 0.0f;
+	
 }
 
 void VolumeAccum::setTriggerInCb(cbTriggerIn pFunc, void* pUserData)
@@ -23,6 +28,25 @@ void VolumeAccum::setTriggerInCb(cbTriggerIn pFunc, void* pUserData)
 
 void VolumeAccum::add(float volume)
 {
+	// Add value
+	if( m_valueHistory.size() >= m_valueHistoryMax ){
+		m_valueHistory.erase(m_valueHistory.end()-1, m_valueHistory.end());
+	}
+	m_valueHistory.insert( m_valueHistory.begin(), volume );
+
+	// Compute mean value
+	int nb = m_valueHistory.size();
+	if (nb>0)
+	{
+		m_valueMean = 0.0f;
+		for (int i=0;i<nb;i++)
+		{
+			m_valueMean += m_valueHistory[i];
+		}
+		m_valueMean /= (float)nb;
+	}
+
+	// State
     if (m_state == STATE_WAVE_INSIDE)
     {
         if (volume <= m_valueTriggerOut)
@@ -43,4 +67,4 @@ void VolumeAccum::add(float volume)
         }
     }
     
-}
+   }

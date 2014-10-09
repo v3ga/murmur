@@ -17,6 +17,7 @@ ShaderWave::ShaderWave()
 	m_colorDevice.set(1.0f,0.0f,0.0f);
 	m_colorTarget = m_color = m_colorWhite;
 	m_fColor = 0.8f;
+	
 }
 
 
@@ -38,6 +39,9 @@ AnimationShaderWave::AnimationShaderWave(string name) : Animation(name)
 	m_waveIntensity = 0.5f;
 	m_isBlend = true;
 	m_isColor = false;
+	
+		loadColors();
+
 }
 
 //--------------------------------------------------------------
@@ -59,7 +63,7 @@ void AnimationShaderWave::VM_enter()
 //--------------------------------------------------------------
 void AnimationShaderWave::VM_update(float dt)
 {
-    //SoundManager::instance()->setVolumeSoundMainNormalized(m_volume);
+	updateUIVolume();
 
 	map<string, ShaderWave*>::iterator it = m_mapShaderWaves.begin();
 	for ( ; it!=m_mapShaderWaves.end(); ++it )
@@ -123,6 +127,13 @@ void AnimationShaderWave::VM_exit()
     
 }
 
+
+//--------------------------------------------------------------
+void AnimationShaderWave::onVolumAccumEvent(string deviceId)
+{
+	Animation::onVolumAccumEvent(deviceId);
+}
+
 //--------------------------------------------------------------
 void AnimationShaderWave::onNewPacket(DevicePacket* pDevicePacket, string deviceId, float x, float y)
 {
@@ -154,13 +165,51 @@ void AnimationShaderWave::onNewPacket(DevicePacket* pDevicePacket, string device
 
 			if (m_isColor)
 			{
-				if (pDevice->isStandUp()){
+				VolumeAccum* pVolumAccum = m_mapDeviceVolumAccum[deviceId];
+				if (pVolumAccum)
+				{
+					if (pVolumAccum->m_valueMean >= m_volValuesMeanTh)
+					{
+						//ofLog() << deviceId << " here+++";
+						if (m_mapVolMeanAbove[deviceId] == false)
+						{
+							m_mapVolMeanAbove[deviceId] = true;
+							ofColor color = chooseRandomColor();
+
+							pShaderWave->m_fColor = 0.9f;
+							pShaderWave->m_colorTarget = ofFloatColor( (float)color.r/255.0f,  (float)color.g/255.0f, (float)color.b/255.0f);
+							
+							ofLog() << " - changing color for '"+deviceId+"' = "+ofToString(pShaderWave->m_colorTarget);
+						}
+					}
+					else
+					{
+					//ofLog()  << deviceId << " here--";
+						if (m_mapVolMeanAbove[deviceId] == true)
+						{
+							m_mapVolMeanAbove[deviceId] = false;
+
+
+							pShaderWave->m_fColor = 0.2f;
+							pShaderWave->m_colorTarget = pShaderWave->m_colorWhite;
+						
+							ofLog() << " - changing color for '"+deviceId+"' = "+ofToString(pShaderWave->m_colorTarget);
+						}
+					
+					}
+	
+				}
+				
+
+/*				if (pDevice->isStandUp()){
 					pShaderWave->m_fColor = 0.9f;
 					pShaderWave->m_colorTarget = pShaderWave->m_colorDevice;
 				}else{
 					pShaderWave->m_fColor = 0.2f;
 					pShaderWave->m_colorTarget = pShaderWave->m_colorWhite;
 				}
+*/
+
 			}
 			else
 			{

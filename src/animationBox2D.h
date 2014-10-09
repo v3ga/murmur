@@ -25,10 +25,10 @@ class AnimationBox2D : public Animation
         float           		m_volumeAccumTarget;
 
         ofxBox2d				m_box2d;			  //	the box2d world
-        void            		createBox2D(float gx, float gy, float fps, bool isBounds, ofRectangle bounds);
-		void					createBounds(ofRectangle bounds);
-        bool            		m_isBox2DCreated;
+        void            		createBox2D			(float gx, float gy, float fps, bool isBounds, ofRectangle bounds);
+		void					createBounds		(ofRectangle bounds);
 
+        bool            		m_isBox2DCreated;
 		bool					m_isLeftWall,m_isRightWall,m_isTopWall,m_isBottomWall;
 };
 
@@ -48,6 +48,7 @@ class AnimationBox2D_circles : public AnimationBox2D
 		virtual	void			registerSoundTags		(vector<string>& soundTags);
 
         vector<ofxBox2dCircle>  m_listCircles;
+		vector<ofColor>			m_listCirclesColor;
         float                   m_gravity;
         bool                    m_isCircleInflating;
         float                   m_circleSize;
