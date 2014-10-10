@@ -188,7 +188,8 @@ void testApp::initSimulators()
 		for ( ; it != m_listDeviceSimulator.end() ; ++it)
 		{
 			DeviceEchoSimulator* pDeviceSim = *it;
-			if (pDeviceSim){
+			if (pDeviceSim)
+			{
 //		        pDeviceSim->startSoundInput(deviceSoundInputId,nbChannels);
 		        pDeviceSim->startSoundInput(nbChannels);
         		pDeviceSim->loadXML("Config/devices/");
@@ -463,20 +464,7 @@ void testApp::guiUpdateViewSimulation()
 */
 }
 
-//--------------------------------------------------------------
-void testApp::guiShowAnimationPropsAll(bool is)
-{
-    Surface* pSurfaceCurrent = getSurfaceForDeviceCurrent();
-    if (pSurfaceCurrent)
-    {
-        vector<Animation*>& listAnimations = pSurfaceCurrent->getAnimationManager().m_listAnimations;
-        vector<Animation*>::iterator it = listAnimations.begin();
-        for ( ; it!= listAnimations.end() ; ++it)
-            (*it)->showUI(is);
-    }
-    
-//    mp_guiAnimProps = 0;
-}
+
 
 //--------------------------------------------------------------
 void testApp::audioIn(float * input, int bufferSize, int nChannels)

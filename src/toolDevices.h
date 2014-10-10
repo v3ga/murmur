@@ -11,6 +11,7 @@
 #include "tool.h"
 #include "device.h"
 
+class ofxUIMovingGraphThreshold;
 class toolDevices : public tool
 {
 	public:
@@ -48,5 +49,7 @@ class toolDevices : public tool
 
     	ofxUIToggle* 			mp_toggleDeviceEnableStandup;
 		ofxUISlider*			mp_sliderStandupVol;
+ 
+		ofxUIMovingGraphThreshold* mp_graphSoundValues;
 	
 };

@@ -48,7 +48,7 @@ void AnimationSoundPlayer::playRandom(vector<int>& listSpeakers)
 //--------------------------------------------------------------
 void AnimationSoundPlayer::playRandom(int* speakers, int nbSpeakers)
 {
-	ofLog() << "playing random sounds with " << m_listSoundNames.size() << " sounds";
+	// ofLog() << "playing random sounds with " << m_listSoundNames.size() << " sounds";
 
     if (m_listSoundNames.size()>=2)
     {
@@ -291,7 +291,7 @@ ofxUICanvas* Animation::showUI(bool is)
 {
     if (mp_UIcanvas){
         mp_UIcanvas->setVisible(is);
-//        printf(">>> Animation::showUI() for %s", m_name.c_str());
+		// OFAPPLOG->println(" animation::showUI("+ofToString(is)+") for '"+this->m_name+"'");
     }
     return mp_UIcanvas;
 }

@@ -15,6 +15,7 @@ ofxUIMovingGraphThreshold::ofxUIMovingGraphThreshold(float x, float y, float w, 
 {
 	setThreshold(0.0f);
 	m_value = 0.0f;
+	setState("");
 }
 
 //--------------------------------------------------------------
@@ -23,6 +24,7 @@ ofxUIMovingGraphThreshold::ofxUIMovingGraphThreshold(float w, float h, vector<fl
 {
 	setThreshold(0.0f);
 	m_value = 0.0f;
+	setState("");
 }
 
 //--------------------------------------------------------------
@@ -59,6 +61,12 @@ void ofxUIMovingGraphThreshold::drawFill()
 	float yVal = ofMap(m_value, getMin(), getMax(), scale, -scale);
 	ofSetColor(200,200,0);
 	ofLine(0,yVal,rect->getWidth(),yVal);
+	
+	if (m_state != "")
+	{
+		ofSetColor(255);
+		ofDrawBitmapString(m_state, 5, -scale+13);
+	}
 
 
 	ofPopMatrix();
