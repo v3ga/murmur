@@ -19,8 +19,10 @@ class ofxUIMovingGraphThreshold : public ofxUIMovingGraph
 		virtual void 		drawFill		();
 				void		setThreshold	(float value);
 				void		setValue		(float value){m_value = value;}
+				void		setState		(string s){m_state = s;}
 
 	private:
 		float				m_thresholdValue;
 		float				m_value;
+		string				m_state;
 };

@@ -29,6 +29,8 @@ toolDevices::toolDevices(toolManager* parent, DeviceManager* manager) : tool("De
 
 	mp_toggleDeviceEnableStandup = 0;
 	mp_sliderStandupVol = 0;
+	
+	mp_graphSoundValues = 0;
 }
 
 //--------------------------------------------------------------
@@ -118,6 +120,8 @@ void toolDevices::createControlsCustomFinalize()
 	if (GLOBALS->mp_app->isSimulation)
 	{
 		mp_canvasDevice->addWidgetDown( new ofxUIToggle("mute sound input", false, dim, dim) );
+
+		// mp_graphSoundValues = new ofxUIMovingGraphThreshold("soundInputValues", );
 	}
  
     mp_sliderDeviceVolMax = new ofxUISlider("Vol. max", 0.005f, 0.04f, 0.02f, widthDefault-10, dim );

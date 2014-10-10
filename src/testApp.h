@@ -52,7 +52,6 @@ class testApp : public ofBaseApp
 //		void				updateControls();
         void                showControls(bool is=true);
         void                guiUpdateViewSimulation();
-        void                guiShowAnimationPropsAll(bool is=true);
 		void				guiMarkUpdateLayout(){m_isUpdateLayout=true;}
     
         map<Animation*, ofxUICanvas*> 	m_mapAnimationUI;
