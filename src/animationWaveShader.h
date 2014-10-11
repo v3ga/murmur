@@ -17,6 +17,7 @@ class ShaderWave
 		ShaderWave				();
 
 		void					update	(float dt);
+		void					setSize	(int w);
 
        	ofFloatImage            m_imgSoundInput;
 		ofVec2f                	m_anchor,m_anchorNorm;
@@ -42,13 +43,15 @@ class AnimationShaderWave : public Animation
 		virtual	void			onVolumAccumEvent		(string deviceId);
         virtual void            onNewPacket             (DevicePacket*, string deviceId, float xNorm, float yNorm);
 		virtual	void			createUICustom			();
+		virtual	void			guiEvent				(ofxUIEventArgs &e);
+				void			setSizeVolumeTexture	();
 
         ofFloatImage            m_imgSoundInput;
         ofVec2f                 m_anchor,m_anchorNorm;
         float                   m_volume;
 		float					m_waveIntensity;
 		bool					m_isBlend;
-	
+		int						m_waveVolumeTexture;
 	
 	private:
 		map<string, ShaderWave*>	m_mapShaderWaves;
