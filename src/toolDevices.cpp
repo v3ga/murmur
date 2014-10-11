@@ -121,6 +121,7 @@ void toolDevices::createControlsCustomFinalize()
 	{
 		mp_canvasDevice->addWidgetDown( new ofxUIToggle("mute sound input", false, dim, dim) );
 
+		// TODO : link with sound input buffer size
 		// mp_graphSoundValues = new ofxUIMovingGraphThreshold("soundInputValues", );
 	}
  

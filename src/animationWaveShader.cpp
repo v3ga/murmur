@@ -33,15 +33,39 @@ void ShaderWave::update(float dt)
 }
 
 //--------------------------------------------------------------
+void ShaderWave::setSize(int w)
+{
+	if (w<100) w=100;
+
+	if(m_imgSoundInput.width != w)
+	{
+		m_imgSoundInput.getPixelsRef().allocate(w,1,3);
+		ofFloatPixels& data = m_imgSoundInput.getPixelsRef();
+
+		int nb = data.size();
+		int nbChannels = data.getNumChannels();
+		nb /= nbChannels;
+        for (int i=nb-1;i>=1;i--)
+		{
+        	data[i*nbChannels] 		= 0.0f;
+            data[i*nbChannels+1] 	= 0.0f;
+            data[i*nbChannels+2] 	= 0.0f;
+		}
+	}
+}
+
+
+//--------------------------------------------------------------
 AnimationShaderWave::AnimationShaderWave(string name) : Animation(name)
 {
     m_volume = 0.0f;
 	m_waveIntensity = 0.5f;
 	m_isBlend = true;
 	m_isColor = false;
-	
-		loadColors();
+	m_waveVolumeTexture = 1200;
 
+	
+	loadColors();
 }
 
 //--------------------------------------------------------------
@@ -148,7 +172,7 @@ void AnimationShaderWave::onNewPacket(DevicePacket* pDevicePacket, string device
 
 		if ( it == m_mapShaderWaves.end()){
 			pShaderWave = new ShaderWave();
-			pShaderWave->m_imgSoundInput.getPixelsRef().allocate(600, 1, 3);
+			pShaderWave->setSize(m_waveVolumeTexture);
 
 	   		m_mapShaderWaves[deviceId] = pShaderWave;
 		}
@@ -199,16 +223,6 @@ void AnimationShaderWave::onNewPacket(DevicePacket* pDevicePacket, string device
 					}
 	
 				}
-				
-
-/*				if (pDevice->isStandUp()){
-					pShaderWave->m_fColor = 0.9f;
-					pShaderWave->m_colorTarget = pShaderWave->m_colorDevice;
-				}else{
-					pShaderWave->m_fColor = 0.2f;
-					pShaderWave->m_colorTarget = pShaderWave->m_colorWhite;
-				}
-*/
 
 			}
 			else
@@ -243,11 +257,37 @@ void AnimationShaderWave::createUICustom()
 {
     if (mp_UIcanvas)
     {
+		mp_UIcanvas->addIntSlider("sizeTexture", 400,1500, &m_waveVolumeTexture);
         mp_UIcanvas->addSlider("intensity", 0.0f, 1.0f, &m_waveIntensity);
         mp_UIcanvas->addToggle("debug enable blend", &m_isBlend);
         mp_UIcanvas->addToggle("color", &m_isColor);
 
     }
 }
+
+//--------------------------------------------------------------
+void AnimationShaderWave::setSizeVolumeTexture()
+{
+	map<string,ShaderWave*>::iterator it = m_mapShaderWaves.begin();
+	for (; it!=m_mapShaderWaves.end(); ++it)
+	{
+		it->second->setSize(m_waveVolumeTexture);
+	}
+}
+
+
+//--------------------------------------------------------------
+void AnimationShaderWave::guiEvent(ofxUIEventArgs &e)
+{
+	Animation::guiEvent(e);
+	
+	string name = e.getName();
+	if (name == "sizeTexture")
+	{
+		m_waveVolumeTexture = ((ofxUIIntSlider*)e.widget)->getScaledValue();
+		setSizeVolumeTexture();
+	}
+}
+
 
 

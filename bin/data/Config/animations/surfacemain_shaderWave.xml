@@ -79,6 +79,11 @@
     <Value>0</Value>
 </Widget>
 <Widget>
+    <Kind>42</Kind>
+    <Name>sizeTexture</Name>
+    <Value>1330</Value>
+</Widget>
+<Widget>
     <Kind>4</Kind>
     <Name>intensity</Name>
     <Value>0.717948735</Value>
