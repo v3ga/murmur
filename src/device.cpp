@@ -48,8 +48,13 @@ Device::Device(string id, int nbLEDs, float distLEDs)
 //--------------------------------------------------------------
 Device::~Device()
 {
-    delete mp_soundInput;
+	Sample::lock();
 	delete mp_sampleStandBy;
+	mp_sampleStandBy = 0;
+	if (mp_soundInput) mp_soundInput->setSample(0);
+	Sample::unlock();
+
+    delete mp_soundInput;
 }
 
 //--------------------------------------------------------------
@@ -213,6 +218,8 @@ float Device::getSoundInputVolHistorySize()
 //--------------------------------------------------------------
 void Device::resetStandBy()
 {
+	if (mp_soundInput==0) return;
+
 	Sample::lock();
 
 	if (mp_sampleStandBy)
@@ -229,6 +236,7 @@ void Device::resetStandBy()
 	{
 		delete mp_sampleStandBy;
 		mp_sampleStandBy = 0;
+		mp_soundInput->setSample(0);
 	}
 	Sample::unlock();
 }
