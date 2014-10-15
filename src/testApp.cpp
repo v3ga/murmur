@@ -352,6 +352,7 @@ void testApp::initJS()
 //--------------------------------------------------------------
 void testApp::update()
 {
+
 	// dt
 	float dt = (float) ofGetLastFrameTime();
 

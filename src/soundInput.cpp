@@ -264,6 +264,8 @@ void SoundInput::audioIn(float * input, int bufferSize, int nChannels)
 	}
 	else
 	{
+		// lock the mutex from audio thread
+		Sample::lock();
 		if (mp_sample)
 		{
 			// Feed audioIn with our own data from sample
@@ -285,7 +287,9 @@ void SoundInput::audioIn(float * input, int bufferSize, int nChannels)
 			
 			// Process
 			processAudio(m_sampleData,bufferSize,nbChannelsSample);
+
 		}
+		Sample::unlock();
 	}
 }
 

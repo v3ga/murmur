@@ -213,6 +213,8 @@ float Device::getSoundInputVolHistorySize()
 //--------------------------------------------------------------
 void Device::resetStandBy()
 {
+	Sample::lock();
+
 	if (mp_sampleStandBy)
 	{
 		delete mp_sampleStandBy;
@@ -228,6 +230,7 @@ void Device::resetStandBy()
 		delete mp_sampleStandBy;
 		mp_sampleStandBy = 0;
 	}
+	Sample::unlock();
 }
 
 //--------------------------------------------------------------
@@ -470,6 +473,8 @@ void Device::enableStandbyMode(bool is)
 //--------------------------------------------------------------
 void Device::checkForActivity(float dt)
 {
+	if (mp_soundInput == 0) return;
+
 
     if (m_isEnableStandbyMode)
     {
@@ -477,24 +482,21 @@ void Device::checkForActivity(float dt)
         
         if (m_stateStandby == EStandby_active)
         {
-			if (mp_soundInput)
-			{
-	            if (mp_soundInput->getVolHistoryMeanFiltered() <= m_volHistoryTh)
-    	        {
-        	        m_stateStandby = EStandby_pre_standby;
-            	    m_stateStandbyDuration=0.0f;
-            	}
-				else if (mp_soundInput->getVolHistoryMeanFiltered() >= m_standupTh)
-				{
-					if (m_isEnableStandup)
-	        	        m_stateStandby = EStandby_standup;
-				}
-			}
+		   if (mp_soundInput->getVolHistoryMeanFiltered() <= m_volHistoryTh)
+		   {
+			   m_stateStandby = EStandby_pre_standby;
+			   m_stateStandbyDuration=0.0f;
+		   }
+		   else if (mp_soundInput->getVolHistoryMeanFiltered() >= m_standupTh)
+		   {
+			   if (m_isEnableStandup)
+				   m_stateStandby = EStandby_standup;
+		   }
         }
         else
         if (m_stateStandby == EStandby_standup)
         {
-		   if (mp_soundInput && mp_soundInput->getVolHistoryMeanFiltered() < m_standupTh)
+		   if (mp_soundInput->getVolHistoryMeanFiltered() < m_standupTh)
 		   {
 			   m_stateStandby = EStandby_active;
 		   }
@@ -508,37 +510,41 @@ void Device::checkForActivity(float dt)
                 m_stateStandby = EStandby_active;
                 m_stateStandbyDuration=0.0f;
             }
-
-            if (m_stateStandbyDuration>=m_timeStandby)
-            {
-                m_stateStandby = EStandby_standby;
-                m_stateStandbyDuration=0.0f;
-				resetStandBy();
+			else
+			{
+	            if (m_stateStandbyDuration>=m_timeStandby)
+    	        {
+        	        m_stateStandby = EStandby_standby;
+            	    m_stateStandbyDuration=0.0f;
+					resetStandBy();
                 // ofLog() << "> Entering standby\n";
-            }
-        }
+            	}
+        	}
+		}
         else
         if (m_stateStandby == EStandby_standby)
         {
+			Sample::lock();
 			bool isSampleFinished = false;
 			if (mp_sampleStandBy && !mp_sampleStandBy->getIsPlaying())
 				isSampleFinished = true;
 		
-            if (mp_soundInput && (isSampleFinished || mp_soundInput->getVolHistoryMeanFiltered() > m_volHistoryTh))
+            if (isSampleFinished || mp_soundInput->getVolHistoryMeanFiltered() > m_volHistoryTh)
             {
                 m_stateStandby = EStandby_pre_standby;
                 m_stateStandbyDuration=0.0f;
 				
-				if (mp_soundInput)
-					mp_soundInput->setSample(0);
+				mp_soundInput->setSample(0);
+
             }
+			Sample::unlock();
         }
     }
     else
 	{
 		if (m_stateStandby == EStandby_active)
 		{
-			if (mp_soundInput && mp_soundInput->getVolHistoryMeanFiltered() >= this->m_standupTh)
+			if (mp_soundInput->getVolHistoryMeanFiltered() >= this->m_standupTh)
 			{
 				if (m_isEnableStandup)
 		        	m_stateStandby = EStandby_standup;
@@ -546,7 +552,7 @@ void Device::checkForActivity(float dt)
 		}
 		else if (m_stateStandby == EStandby_standup)
 		{
-			if (mp_soundInput && mp_soundInput->getVolHistoryMeanFiltered() < this->m_standupTh)
+			if (mp_soundInput->getVolHistoryMeanFiltered() < this->m_standupTh)
 			{
 		        m_stateStandby = EStandby_active;
 			}
