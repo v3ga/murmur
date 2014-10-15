@@ -2,6 +2,20 @@
 #include "ofMain.h"
 
 
+ofMutex Sample::sm_mutex;
+
+
+void Sample::lock()
+{
+	sm_mutex.lock();
+}
+
+void Sample::unlock()
+{
+	sm_mutex.unlock();
+}
+
+
 Sample::~Sample()
 {
     //delete myPath;

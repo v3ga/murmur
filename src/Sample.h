@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include "ofMain.h"
 
 typedef struct {
 	double minL;
@@ -20,6 +21,11 @@ class Sample  {
 
 
 public:
+	
+	static ofMutex sm_mutex;
+	static void lock();
+	static void unlock();
+
 
     // constructors/desctructor
     ~Sample();
