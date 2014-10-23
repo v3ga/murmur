@@ -146,7 +146,7 @@ void Sample::generateWaveForm(vector<MiniMaxima> * _waveForm)
 
 void Sample::drawWaveForm(int _x, int _y, int _w, int _h, vector<MiniMaxima> * _waveForm)
 {
-
+/*
 	float waveFormZoomX = (float)_waveForm->size()/(float)_w;
 
 	glPushMatrix();
@@ -182,6 +182,7 @@ void Sample::drawWaveForm(int _x, int _y, int _w, int _h, vector<MiniMaxima> * _
     }
 
 	glPopMatrix();
+*/
 }
 
 void Sample::stop()
