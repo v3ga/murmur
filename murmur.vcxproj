@@ -1,0 +1,407 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7FD42DF7-442E-479A-BA76-D0022F99702A}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>murmur</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>bin\</OutDir>
+    <IntDir>obj\$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)_debug</TargetName>
+    <LinkIncremental>true</LinkIncremental>
+    <GenerateManifest>true</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>bin\</OutDir>
+    <IntDir>obj\$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);XP_WIN</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxOsc\libs;..\..\..\addons\ofxOsc\src;..\..\..\addons\ofxOsc\libs\oscpack;..\..\..\addons\ofxOsc\libs\oscpack\src;..\..\..\addons\ofxOsc\libs\oscpack\src\ip;..\..\..\addons\ofxOsc\libs\oscpack\src\ip\posix;..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32;..\..\..\addons\ofxOsc\libs\oscpack\src\osc;..\..\..\addons\ofxXmlSettings\libs;..\..\..\addons\ofxXmlSettings\src;..\..\..\addons\ofxBox2d\libs;..\..\..\addons\ofxBox2d\src;..\..\..\addons\ofxJavascript\libs;..\..\..\addons\ofxJavascript\src;..\..\..\addons\ofxJavascript\libs\javascript;..\..\..\addons\ofxJavascript\libs\javascript\include;..\..\..\addons\ofxJavascript\libs\javascript\lib;..\..\..\addons\ofxJavascript\libs\javascript\lib\win32;..\..\..\addons\ofxJavascript\src\js;..\..\..\addons\ofxMSACore\libs;..\..\..\addons\ofxMSACore\src;..\..\..\addons\ofxMSAInterpolator\libs;..\..\..\addons\ofxMSAInterpolator\src;..\..\..\addons\ofxMSAObjCPointer\libs;..\..\..\addons\ofxMSAObjCPointer\src;..\..\..\addons\ofxMSAPhysics\libs;..\..\..\addons\ofxMSAPhysics\src;..\..\..\addons\ofxTween\libs;..\..\..\addons\ofxTween\src;..\..\..\addons\ofxTween\src\Easings;..\..\..\addons\ofxUI\libs;..\..\..\addons\ofxUI\src;..\..\..\addons\ofxToolManager\src</AdditionalIncludeDirectories>
+      <CompileAs>CompileAsCpp</CompileAs>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);XP_WIN</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxOsc\libs;..\..\..\addons\ofxOsc\src;..\..\..\addons\ofxOsc\libs\oscpack;..\..\..\addons\ofxOsc\libs\oscpack\src;..\..\..\addons\ofxOsc\libs\oscpack\src\ip;..\..\..\addons\ofxOsc\libs\oscpack\src\ip\posix;..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32;..\..\..\addons\ofxOsc\libs\oscpack\src\osc;..\..\..\addons\ofxXmlSettings\libs;..\..\..\addons\ofxXmlSettings\src;..\..\..\addons\ofxBox2d\libs;..\..\..\addons\ofxBox2d\src;..\..\..\addons\ofxJavascript\libs;..\..\..\addons\ofxJavascript\src;..\..\..\addons\ofxJavascript\libs\javascript;..\..\..\addons\ofxJavascript\libs\javascript\include;..\..\..\addons\ofxJavascript\libs\javascript\lib;..\..\..\addons\ofxJavascript\libs\javascript\lib\win32;..\..\..\addons\ofxJavascript\src\js;..\..\..\addons\ofxMSACore\libs;..\..\..\addons\ofxMSACore\src;..\..\..\addons\ofxMSAInterpolator\libs;..\..\..\addons\ofxMSAInterpolator\src;..\..\..\addons\ofxMSAObjCPointer\libs;..\..\..\addons\ofxMSAObjCPointer\src;..\..\..\addons\ofxMSAPhysics\libs;..\..\..\addons\ofxMSAPhysics\src;..\..\..\addons\ofxTween\libs;..\..\..\addons\ofxTween\src;..\..\..\addons\ofxTween\src\Easings;..\..\..\addons\ofxUI\libs;..\..\..\addons\ofxUI\src;..\..\..\addons\ofxToolManager\src</AdditionalIncludeDirectories>
+      <CompileAs>CompileAsCpp</CompileAs>
+    </ClCompile>
+    <Link>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\addons\ofxMSAInteractiveObject\src\ofxMSAInteractiveObject.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxToolManager\src\tool.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\testApp.cpp" />
+    <ClCompile Include="src\animationBox2D.cpp" />
+    <ClCompile Include="src\animationOrbit.cpp" />
+    <ClCompile Include="src\animationParticlesMega.cpp" />
+    <ClCompile Include="src\animationParticlesMega2.cpp" />
+    <ClCompile Include="src\animations.cpp" />
+    <ClCompile Include="src\animationsFactory.cpp" />
+    <ClCompile Include="src\animationTunnel.cpp" />
+    <ClCompile Include="src\animationWaveShader.cpp" />
+    <ClCompile Include="src\Boid.cpp" />
+    <ClCompile Include="src\data.cpp" />
+    <ClCompile Include="src\device.cpp" />
+    <ClCompile Include="src\deviceEcho.cpp" />
+    <ClCompile Include="src\deviceEchoSimulator.cpp" />
+    <ClCompile Include="src\deviceInfo.cpp" />
+    <ClCompile Include="src\deviceNode.cpp" />
+    <ClCompile Include="src\globals.cpp" />
+    <ClCompile Include="src\js.cpp" />
+    <ClCompile Include="src\ofAppLog.cpp" />
+    <ClCompile Include="src\ofxUIMovingGraphThreshold.cpp" />
+    <ClCompile Include="src\oscDefs.cpp" />
+    <ClCompile Include="src\oscReceiver.cpp" />
+    <ClCompile Include="src\oscSender.cpp" />
+    <ClCompile Include="src\quadWarping.cpp" />
+    <ClCompile Include="src\Sample.cpp" />
+    <ClCompile Include="src\scene.cpp" />
+    <ClCompile Include="src\sceneNode.cpp" />
+    <ClCompile Include="src\sceneVisualisation.cpp" />
+    <ClCompile Include="src\silhouetteNode.cpp" />
+    <ClCompile Include="src\soundInput.cpp" />
+    <ClCompile Include="src\soundManager.cpp" />
+    <ClCompile Include="src\surface.cpp" />
+    <ClCompile Include="src\surfaceNode.cpp" />
+    <ClCompile Include="src\threadRasp.cpp" />
+    <ClCompile Include="src\timeline.cpp" />
+    <ClCompile Include="src\toolAnimations.cpp" />
+    <ClCompile Include="src\toolConfiguration.cpp" />
+    <ClCompile Include="src\toolDevices.cpp" />
+    <ClCompile Include="src\toolNetwork.cpp" />
+    <ClCompile Include="src\toolScene.cpp" />
+    <ClCompile Include="src\toolSound.cpp" />
+    <ClCompile Include="src\toolSurfaces.cpp" />
+    <ClCompile Include="src\toolVideo.cpp" />
+    <ClCompile Include="src\utils.cpp" />
+    <ClCompile Include="src\volumeAccum.cpp" />
+    <ClCompile Include="src\windowAnim.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscBundle.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscMessage.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscParameterSync.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscReceiver.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscSender.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\IpEndpointName.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\posix\NetworkingUtils.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\posix\UdpSocket.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32\NetworkingUtilsWin.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32\UdpSocketWin.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscOutboundPacketStream.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscPrintReceivedElements.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscReceivedElements.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscTypes.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlerror.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlparser.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxJavascript\src\ofxJavascript.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxJavascript\src\ofxJSGlobalFunc.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxJavascript\src\ofxJSImage.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxJavascript\src\ofxJSOfConstants.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxJavascript\src\ofxJSOpenGL.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxJavascript\src\ofxJSScript.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxJavascript\src\ofxJSTrueTypeFont.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxJavascript\src\ofxJSUtils.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxMSACore\src\MSACoreGL.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxMSAObjCPointer\src\MSAObjCPointer.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxTween\src\Easings\ofxEasing.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxTween\src\Easings\ofxEasingBack.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxTween\src\Easings\ofxEasingBounce.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxTween\src\Easings\ofxEasingCirc.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxTween\src\Easings\ofxEasingCubic.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxTween\src\Easings\ofxEasingElastic.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxTween\src\Easings\ofxEasingExpo.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxTween\src\Easings\ofxEasingLinear.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxTween\src\Easings\ofxEasingQuad.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxTween\src\Easings\ofxEasingQuart.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxTween\src\Easings\ofxEasingQuint.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxTween\src\Easings\ofxEasingSine.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxTween\src\ofxTween.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\addons\ofxMSAInteractiveObject\src\ofxMSAInteractiveObject.h" />
+    <ClInclude Include="..\..\..\addons\ofxToolManager\src\tool.h" />
+    <ClInclude Include="src\testApp.h" />
+    <ClInclude Include="src\animationBox2D.h" />
+    <ClInclude Include="src\animationOrbit.h" />
+    <ClInclude Include="src\animationParticlesMega.h" />
+    <ClInclude Include="src\animationParticlesMega2.h" />
+    <ClInclude Include="src\animations.h" />
+    <ClInclude Include="src\animationsFactory.h" />
+    <ClInclude Include="src\animationTunnel.h" />
+    <ClInclude Include="src\animationWaveShader.h" />
+    <ClInclude Include="src\Boid.h" />
+    <ClInclude Include="src\data.h" />
+    <ClInclude Include="src\device.h" />
+    <ClInclude Include="src\deviceEcho.h" />
+    <ClInclude Include="src\deviceEchoSimulator.h" />
+    <ClInclude Include="src\deviceInfo.h" />
+    <ClInclude Include="src\deviceNode.h" />
+    <ClInclude Include="src\globals.h" />
+    <ClInclude Include="src\js.h" />
+    <ClInclude Include="src\murmur.h" />
+    <ClInclude Include="src\ofAppLog.h" />
+    <ClInclude Include="src\ofxUIMovingGraphThreshold.h" />
+    <ClInclude Include="src\oscDefs.h" />
+    <ClInclude Include="src\oscReceiver.h" />
+    <ClInclude Include="src\oscSender.h" />
+    <ClInclude Include="src\quadWarping.h" />
+    <ClInclude Include="src\Sample.h" />
+    <ClInclude Include="src\scene.h" />
+    <ClInclude Include="src\sceneNode.h" />
+    <ClInclude Include="src\sceneVisualisation.h" />
+    <ClInclude Include="src\silhouetteNode.h" />
+    <ClInclude Include="src\soundInput.h" />
+    <ClInclude Include="src\soundManager.h" />
+    <ClInclude Include="src\surface.h" />
+    <ClInclude Include="src\surfaceNode.h" />
+    <ClInclude Include="src\threadRasp.h" />
+    <ClInclude Include="src\timeline.h" />
+    <ClInclude Include="src\toolAnimations.h" />
+    <ClInclude Include="src\toolConfiguration.h" />
+    <ClInclude Include="src\toolDevices.h" />
+    <ClInclude Include="src\toolNetwork.h" />
+    <ClInclude Include="src\tools.h" />
+    <ClInclude Include="src\toolScene.h" />
+    <ClInclude Include="src\toolSound.h" />
+    <ClInclude Include="src\toolSurfaces.h" />
+    <ClInclude Include="src\toolVideo.h" />
+    <ClInclude Include="src\utils.h" />
+    <ClInclude Include="src\volumeAccum.h" />
+    <ClInclude Include="src\windowAnim.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOsc.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscArg.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscBundle.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscMessage.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscParameterSync.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscReceiver.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscSender.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\IpEndpointName.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\NetworkingUtils.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\PacketListener.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\TimerListener.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\UdpSocket.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\MessageMappingOscPacketListener.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscException.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscHostEndianness.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscOutboundPacketStream.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscPacketListener.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscPrintReceivedElements.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscReceivedElements.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscTypes.h" />
+    <ClInclude Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.h" />
+    <ClInclude Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\src\ofxJavascript.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\src\ofxJSGlobalFunc.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\src\ofxJSImage.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\src\ofxJSOpenGL.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\src\ofxJSScript.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\src\ofxJSTrueTypeFont.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\src\ofxJSUtils.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsapi.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsarena.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsarray.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsatom.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsautocfg.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsautokw.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsbit.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsbool.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsclist.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jscntxt.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jscompat.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsconfig.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jscpucfg.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsdate.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsdbgapi.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsdhash.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsdtoa.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsemit.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsexn.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsfile.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsfun.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsgc.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jshash.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsinterp.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jslibmath.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jslock.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jslong.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsmath.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsnum.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsobj.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsopcode.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsosdep.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsotypes.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsparse.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsprf.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsprvtd.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jspubtd.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsregexp.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsscan.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsscope.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsscript.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsstddef.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsstr.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jstypes.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsutil.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsxdrapi.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\jsxml.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\prmjtime.h" />
+    <ClInclude Include="..\..\..\addons\ofxJavascript\libs\javascript\include\resource.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSACore\src\MSACore-Cinder.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSACore\src\MSACore-OF.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSACore\src\MSACore.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSACore\src\MSACoreCommon.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSACore\src\MSACoreGL.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSACore\src\MSACoreMath.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAInterpolator\src\MSAInterpolationTypes.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAInterpolator\src\MSAInterpolator.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAInterpolator\src\MSAInterpolator1D.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAInterpolator\src\MSAInterpolator2D.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAInterpolator\src\MSAInterpolator3D.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAInterpolator\src\MSAInterpolatorT.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAObjCPointer\src\MSAObjCPointer.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysics.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysics2D.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysics3D.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsAttraction.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsCallbacks.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsConstraint.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsDataRecorder.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsParams.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsParticle.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsParticleDrawer.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsParticleUpdater.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsSector.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsSpring.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsWorld.h" />
+    <ClInclude Include="..\..\..\addons\ofxTween\src\Easings\easing_terms_of_use.html" />
+    <ClInclude Include="..\..\..\addons\ofxTween\src\Easings\ofxEasing.h" />
+    <ClInclude Include="..\..\..\addons\ofxTween\src\Easings\ofxEasingBack.h" />
+    <ClInclude Include="..\..\..\addons\ofxTween\src\Easings\ofxEasingBounce.h" />
+    <ClInclude Include="..\..\..\addons\ofxTween\src\Easings\ofxEasingCirc.h" />
+    <ClInclude Include="..\..\..\addons\ofxTween\src\Easings\ofxEasingCubic.h" />
+    <ClInclude Include="..\..\..\addons\ofxTween\src\Easings\ofxEasingElastic.h" />
+    <ClInclude Include="..\..\..\addons\ofxTween\src\Easings\ofxEasingExpo.h" />
+    <ClInclude Include="..\..\..\addons\ofxTween\src\Easings\ofxEasingLinear.h" />
+    <ClInclude Include="..\..\..\addons\ofxTween\src\Easings\ofxEasingQuad.h" />
+    <ClInclude Include="..\..\..\addons\ofxTween\src\Easings\ofxEasingQuart.h" />
+    <ClInclude Include="..\..\..\addons\ofxTween\src\Easings\ofxEasingQuint.h" />
+    <ClInclude Include="..\..\..\addons\ofxTween\src\Easings\ofxEasingSine.h" />
+    <ClInclude Include="..\..\..\addons\ofxTween\src\ofxTween.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUI.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUI2DPad.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIBaseDraws.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIBiLabelSlider.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIButton.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUICanvas.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUICircleSlider.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUICustomImageButton.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIDropDownList.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIEventArgs.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIFPS.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIFPSSlider.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIImage.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIImageButton.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIImageSampler.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIImageSlider.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIImageToggle.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUILabel.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUILabelButton.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUILabelToggle.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIMinimalSlider.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIMovingGraph.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIMultiImageButton.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIMultiImageSlider.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIMultiImageToggle.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUINumberDialer.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIRadio.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIRangeSlider.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIRectangle.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIRotarySlider.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIScrollableCanvas.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUISlider.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUISpacer.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUISpectrum.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUITextArea.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUITextInput.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIToggle.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIToggleMatrix.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIWaveform.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIWidget.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIWidgetWithLabel.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">
+      <Project>{5837595d-aca9-485c-8e76-729040ce4b0b}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="icon.rc">
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/D_DEBUG %(AdditionalOptions)</AdditionalOptions>
+    </ResourceCompile>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>
