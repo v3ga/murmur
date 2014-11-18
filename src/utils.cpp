@@ -28,10 +28,12 @@ bool ofLVOpenProgram(string pathAbsFile)
         #endif
         
         #ifdef TARGET_WIN32
+#if false
                 // http://msdn.microsoft.com/en-us/library/bb762153%28VS.85%29.aspx
                 HWND hwnd = WindowFromDC(wglGetCurrentDC());
                 return ((int)ShellExecute(hwnd, "open", pathAbsFile.c_str(),0,0,SW_SHOWNORMAL))>32;
-        #endif
+#endif
+#endif
 
         return false;
 }
