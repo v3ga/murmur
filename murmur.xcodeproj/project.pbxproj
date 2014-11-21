@@ -78,6 +78,7 @@
 		F93407081906B6DE003F4D97 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F93407071906B6DE003F4D97 /* Carbon.framework */; };
 		F934070A1906B6EC003F4D97 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F93407091906B6EC003F4D97 /* Accelerate.framework */; };
 		F93407211906B89A003F4D97 /* ofxVideoRecorder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F934071C1906B89A003F4D97 /* ofxVideoRecorder.cpp */; };
+		F935C2721A1C9245001EBD51 /* deviceEcho.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9993396171B659100272085 /* deviceEcho.cpp */; };
 		F93F3267189E9EEB00C02161 /* ofxTween.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F93F3265189E9EEB00C02161 /* ofxTween.cpp */; };
 		F94AF63E19D419B70026A5A3 /* animationOrbit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F94AF63C19D419B70026A5A3 /* animationOrbit.cpp */; };
 		F94AF64119D498790026A5A3 /* Boid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F94AF63F19D498790026A5A3 /* Boid.cpp */; };
@@ -154,7 +155,6 @@
 		F999338F171B5E5600272085 /* oscReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F999338D171B5E5600272085 /* oscReceiver.cpp */; };
 		F9993392171B605600272085 /* oscSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9993390171B605600272085 /* oscSender.cpp */; };
 		F9993395171B654900272085 /* deviceEchoSimulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9993393171B654900272085 /* deviceEchoSimulator.cpp */; };
-		F9993398171B659200272085 /* deviceEcho.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9993396171B659100272085 /* deviceEcho.cpp */; };
 		F999339C171C870200272085 /* soundInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F999339A171C870200272085 /* soundInput.cpp */; };
 		F99DFCD817DCB3B6003AE52C /* Syphon.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = F9E11C4517C3A2F000AD3DFD /* Syphon.framework */; };
 		F9AB0BEF1940FA760020D78A /* tool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9AB0BED1940FA760020D78A /* tool.cpp */; };
@@ -2725,7 +2725,6 @@
 				F999338F171B5E5600272085 /* oscReceiver.cpp in Sources */,
 				F9993392171B605600272085 /* oscSender.cpp in Sources */,
 				F9993395171B654900272085 /* deviceEchoSimulator.cpp in Sources */,
-				F9993398171B659200272085 /* deviceEcho.cpp in Sources */,
 				F999339C171C870200272085 /* soundInput.cpp in Sources */,
 				F96B924A172EB518007B1CFF /* surfaceNode.cpp in Sources */,
 				F92BC4AD189F094600CA158A /* ofxUIFPS.cpp in Sources */,
@@ -2814,6 +2813,7 @@
 				F9BC6C79174A621700633C5C /* b2LineJoint.cpp in Sources */,
 				F9AB0C021940FBF00020D78A /* toolSurfaces.cpp in Sources */,
 				F9BC6C7A174A621700633C5C /* b2MouseJoint.cpp in Sources */,
+				F935C2721A1C9245001EBD51 /* deviceEcho.cpp in Sources */,
 				F9BC6C7B174A621700633C5C /* b2PrismaticJoint.cpp in Sources */,
 				F9BC6C7C174A621700633C5C /* b2PulleyJoint.cpp in Sources */,
 				F951EBF9195AC12300056B2A /* ofxCvColorImage.cpp in Sources */,

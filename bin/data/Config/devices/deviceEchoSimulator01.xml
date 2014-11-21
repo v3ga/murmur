@@ -8,7 +8,7 @@
         <speaker>0</speaker>
     </soundOutput>
     <enableStandby>1</enableStandby>
-    <timeStandby>10.000000000</timeStandby>
+    <timeStandby>5.000000000</timeStandby>
     <sampleVolStandby>0.290322572</sampleVolStandby>
     <enableStandby>0</enableStandby>
     <enableStandup>0</enableStandup>

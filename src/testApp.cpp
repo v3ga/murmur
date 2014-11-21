@@ -105,16 +105,17 @@ void testApp::exit()
 	
 	m_soundStreamInput.stop();
 
+    if (mp_surfaceMain)
+        mp_surfaceMain->saveAnimationsProperties();
+
+	toolManager.saveData();
+
     if (mp_deviceManager)
 	{
         mp_deviceManager->saveDevicesXML("Config/devices/");
 		mp_deviceManager->turnoffDevices();
 	}
 
-    if (mp_surfaceMain)
-        mp_surfaceMain->saveAnimationsProperties();
-
-	toolManager.saveData();
 	
     delete mp_sceneVisualisation;
     delete mp_deviceManager;
