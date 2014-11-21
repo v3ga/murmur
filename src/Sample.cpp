@@ -232,9 +232,15 @@ double Sample::update()
     if(soundStatus & PAUSED) return 0;
     if(!getIsLoaded()) return 0;
 
+	short* buffer = (short *)myData;
+
+	if (buffer == 0) {
+		ofLog(OF_LOG_WARNING, "Sample::update(), buffer=0");
+		return 0;
+	}
+
     long length=getLength();
 	double remainder;
-	short* buffer = (short *)myData;
 	position=(position+speed);
 	remainder = position - (long) position;
 
