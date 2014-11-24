@@ -54,4 +54,10 @@ function VolumeAccum()
         }
 */
     }
+
+    this.setValueTriggerIn = function(value)
+    {
+        this.valueTriggerIn = value;
+    }
+
 }

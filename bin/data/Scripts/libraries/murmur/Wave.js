@@ -76,4 +76,12 @@ function Wave(x,y, nbPoints)
 		gl.End();
 	}
 
+	//--------------------------------------------------------------
+	this.isTooOld = function()
+	{
+		return (this.age>=this.ageMax);
+	}
+
+
+
 }

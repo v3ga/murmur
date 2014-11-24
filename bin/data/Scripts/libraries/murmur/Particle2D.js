@@ -9,7 +9,7 @@ function Particle2D(x,y)
 	this.x = x;
 	this.y = y;
 	this.age = 0;
-	this.ageMax = Math.random()*5+1; // secondes
+	this.ageMax = Math.random()*3+1; // secondes
 	this.diameter = Math.random()*50+10;
 
 	this.vMax = 150;
