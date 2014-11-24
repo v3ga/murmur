@@ -561,6 +561,7 @@
 		F96B92841731A8A2007B1CFF /* oscDefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = oscDefs.h; sourceTree = "<group>"; };
 		F96B928B173692C8007B1CFF /* silhouetteNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = silhouetteNode.cpp; sourceTree = "<group>"; };
 		F96B928C173692C8007B1CFF /* silhouetteNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = silhouetteNode.h; sourceTree = "<group>"; };
+		F96DE59A1A207229007AD329 /* scene.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = scene.xml; path = Config/scene.xml; sourceTree = "<group>"; };
 		F96FBE8E19794D8600E58A6F /* ofAppLog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofAppLog.cpp; sourceTree = "<group>"; };
 		F96FBE8F19794D8600E58A6F /* ofAppLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofAppLog.h; sourceTree = "<group>"; };
 		F97A3ED019E6E66B0048A6A7 /* ofxUIMovingGraphThreshold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxUIMovingGraphThreshold.cpp; sourceTree = "<group>"; };
@@ -909,7 +910,6 @@
 		F9BC6D1C174DEF5C00633C5C /* volumeAccum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = volumeAccum.h; sourceTree = "<group>"; };
 		F9C38AFA1885AAF100219152 /* threadRasp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = threadRasp.cpp; sourceTree = "<group>"; };
 		F9C38AFB1885AAF100219152 /* threadRasp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = threadRasp.h; sourceTree = "<group>"; };
-		F9C38AFE188689EE00219152 /* configuration.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = configuration.xml; sourceTree = "<group>"; };
 		F9DC7C1C19CA16F500682D1A /* ofxJSSoundPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxJSSoundPlayer.cpp; sourceTree = "<group>"; };
 		F9DC7C1D19CA16F500682D1A /* ofxJSSoundPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxJSSoundPlayer.h; sourceTree = "<group>"; };
 		F9DC7C1E19CA16F500682D1A /* ofxJSVideoGrabber.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxJSVideoGrabber.cpp; sourceTree = "<group>"; };
@@ -2169,8 +2169,8 @@
 		F9BC6AFA174514D000633C5C /* Config */ = {
 			isa = PBXGroup;
 			children = (
+				F96DE59A1A207229007AD329 /* scene.xml */,
 				F964768518A25C900061C848 /* surfaces */,
-				F9C38AFE188689EE00219152 /* configuration.xml */,
 			);
 			name = Config;
 			sourceTree = "<group>";
