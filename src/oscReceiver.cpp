@@ -116,12 +116,18 @@ void oscReceiver::update()
                     {
                         pDevice->onReceivePacketBegin();
                         
-                        int nbPackets = m_oscMessage.getNumArgs() - indexArg; // TODO : Be careful with this
+                        int nbPackets = (m_oscMessage.getNumArgs() - 1)/4; // TODO : Be careful with this
                         for (int i=0;i<nbPackets;i++)
                         {
                             m_packetTemp.m_volume = m_oscMessage.getArgAsFloat(indexArg++);
                             // TODO : Other arguments to decode here
-                            
+//							if (m_oscMessage.getNumArgs()>=3)
+							{
+								 m_packetTemp.m_color.setHue( m_oscMessage.getArgAsFloat(indexArg++) );
+								 m_packetTemp.m_color.setSaturation( m_oscMessage.getArgAsFloat(indexArg++) );
+								 m_packetTemp.m_color.setBrightness( m_oscMessage.getArgAsFloat(indexArg++) );
+							}
+							
                             // Send to device
                             pDevice->onReceivePacket(&m_packetTemp);
 

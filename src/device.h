@@ -20,7 +20,10 @@ class DevicePacket
         DevicePacket         ();
 
         void                  copy(DevicePacket* pPacket);
+		void				  computeColor(const ofColor& deviceColor);
+	
         float                 m_volume;
+		ofColor				  m_color;
 };
 
 
@@ -130,7 +133,10 @@ class Device
 
         // OSC
         oscSender           m_oscSender;
-    
+ 
+		// Color of LEDs
+		ofColor				m_color;
+	
         // Packets
         vector<DevicePacket*>   m_listPackets;
         virtual void        sampleSoundInput();

@@ -23,6 +23,15 @@ DevicePacket::DevicePacket()
 void DevicePacket::copy(DevicePacket* pPacket)
 {
     m_volume = pPacket->m_volume;
+	m_color = pPacket->m_color;
+}
+
+//--------------------------------------------------------------
+void DevicePacket::computeColor(const ofColor& deviceColor)
+{
+	m_color.setHue(deviceColor.getHue());
+	m_color.setSaturation(deviceColor.getSaturation());
+	m_color.setBrightness(m_volume*255.0f);
 }
 
 //--------------------------------------------------------------
@@ -43,6 +52,8 @@ Device::Device(string id, int nbLEDs, float distLEDs)
 
 	m_isEnableStandup	= false;
 	m_standupTh			= 0.55f;
+	
+	m_color.setHsb(200, 255, 255);
 }
 
 //--------------------------------------------------------------
@@ -427,6 +438,7 @@ void Device::sampleSoundInput()
             indexSample = nbVolHistorySize-1;
         
         m_listPackets[i]->m_volume = mp_soundInput->getVolHistory()[(int)indexSample]; // Nearest sampling
+		m_listPackets[i]->computeColor(m_color);
 
         indexSample += stepSample;
     }
@@ -443,6 +455,9 @@ void Device::sendPacketsOSC()
     for (int i=0;i<nbPackets;i++)
     {
 		m.addFloatArg(m_listPackets[i]->m_volume);
+		m.addFloatArg(m_listPackets[i]->m_color.getHue());
+		m.addFloatArg(m_listPackets[i]->m_color.getSaturation());
+		m.addFloatArg(m_listPackets[i]->m_color.getBrightness());
     }
     m_oscSender.sendMessage(m);
 }

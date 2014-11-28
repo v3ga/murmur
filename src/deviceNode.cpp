@@ -112,8 +112,9 @@ void DeviceNode::customDraw()
         glRotatef(angle, rx, ry, 0.0);
         float size  = ofMap(spring->getStrength(), SPRING_MIN_STRENGTH, SPRING_MAX_STRENGTH, SPRING_MIN_WIDTH, SPRING_MAX_WIDTH);
         
-        ofSetColor(255,255,255,255);
         boxSize = ofMap(mp_device->m_listPackets[nbPackets-1-i]->m_volume,0.0f,1.0f, 0.0f*maxBoxSize, maxBoxSize);
+        ofSetColor(mp_device->m_listPackets[nbPackets-1-i]->m_color,255);
+
         ofBox(boxSize);
         glPopMatrix();
 
