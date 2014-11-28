@@ -109,9 +109,14 @@ void DeviceEcho::updateLEDs()
         {
             pDevicePacket = m_listPackets[i];
             
+/*
             m_spiColors[i][0] = pDevicePacket->m_volume*255.0f;
             m_spiColors[i][1] = pDevicePacket->m_volume*255.0f;
             m_spiColors[i][2] = pDevicePacket->m_volume*255.0f;
+*/
+            m_spiColors[i][0] = pDevicePacket->m_color[0];
+            m_spiColors[i][1] = pDevicePacket->m_color[1];
+            m_spiColors[i][2] = pDevicePacket->m_color[2];
         }
         
         // Tranforms colors -> uint_8 buffer
