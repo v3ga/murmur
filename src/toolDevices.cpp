@@ -143,7 +143,7 @@ void toolDevices::createControlsCustomFinalize()
 	mp_canvasDevice->addWidgetDown(mp_sliderDeviceTimeStandby);
 	mp_canvasDevice->addWidgetDown(mp_sliderDeviceSampleVolStandby);
 
-    mp_canvasDevice->addWidgetDown(new ofxUILabel("Stand up", OFX_UI_FONT_MEDIUM));
+/*    mp_canvasDevice->addWidgetDown(new ofxUILabel("Stand up", OFX_UI_FONT_MEDIUM));
     mp_canvasDevice->addWidgetDown(new ofxUISpacer(widthDefault, 1));
 	
 
@@ -153,6 +153,12 @@ void toolDevices::createControlsCustomFinalize()
 
 	mp_canvasDevice->addWidgetDown( mp_toggleDeviceEnableStandup );
 	mp_canvasDevice->addWidgetDown( mp_sliderStandupVol );
+*/
+
+    mp_canvasDevice->addWidgetDown(new ofxUILabel("Color", OFX_UI_FONT_MEDIUM));
+    mp_canvasDevice->addWidgetDown(new ofxUISpacer(widthDefault, 1));
+	mp_canvasDevice->addWidgetDown(new ofxUISlider("hue",0,255,127,widthDefault-10,dim));
+	mp_canvasDevice->addWidgetDown(new ofxUISlider("saturation", 0,255,127,widthDefault-10,dim));
 
 	
     mp_canvasDevice->addWidgetDown(new ofxUILabel("Speakers", OFX_UI_FONT_MEDIUM));
@@ -172,6 +178,7 @@ void toolDevices::createControlsCustomFinalize()
 			mp_canvasDevice->addWidgetRight(pSpeakerToggle);
 	}
 	
+
 
 	mp_canvasDevice->autoSizeToFitWidgets();
 	mp_canvasDevice->setVisible(false);
@@ -359,6 +366,18 @@ void toolDevices::handleEvents(ofxUIEventArgs& e)
     {
         if (pDeviceCurrent){
 			pDeviceCurrent->setStandupVol( ((ofxUISlider *) e.widget)->getScaledValue() );
+        }
+    }
+    else if (name == "hue")
+    {
+        if (pDeviceCurrent){
+			pDeviceCurrent->setColorHue( ((ofxUISlider *) e.widget)->getScaledValue() );
+        }
+    }
+    else if (name == "saturation")
+    {
+        if (pDeviceCurrent){
+			pDeviceCurrent->setColorSaturation( ((ofxUISlider *) e.widget)->getScaledValue() );
         }
     }
 	else
