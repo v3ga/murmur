@@ -53,7 +53,9 @@ Device::Device(string id, int nbLEDs, float distLEDs)
 	m_isEnableStandup	= false;
 	m_standupTh			= 0.55f;
 	
-	m_color.setHsb(200, 255, 255);
+	m_color.setHsb(200, 255, 255); // Brightness not used as set by packets
+	m_colorMode = colorMode_manual;
+	m_colorSpeedOscillation = 10.0f;
 }
 
 //--------------------------------------------------------------
@@ -89,6 +91,58 @@ void Device::setPointSurface(float xNorm, float yNorm)
     m_pointSurface.set(xNorm,yNorm);
 }
 
+//--------------------------------------------------------------
+void Device::setColorHueSaturation(float h, float s)
+{
+	setColorHue(h);
+	setColorSaturation(s);
+
+    ofxOscMessage m;
+	m.setAddress( OSC_ADDRESS_SET_DEVICE_PROP );
+    m.addStringArg(m_id);
+    m.addStringArg("color");
+	m.addFloatArg(m_color.getHue());
+	m.addFloatArg(m_color.getSaturation());
+    m_oscSender.sendMessage(m);
+}
+
+void Device::setColorHue(float h)
+{
+	float s = m_color.getSaturation();
+	m_color.setHue(h);
+
+	ofLog() << m_color;
+    ofxOscMessage m;
+	m.setAddress( OSC_ADDRESS_SET_DEVICE_PROP );
+    m.addStringArg(m_id);
+    m.addStringArg("color");
+	m.addFloatArg(m_color.getHue());
+	m.addFloatArg(m_color.getSaturation());
+    m_oscSender.sendMessage(m);
+}
+
+void Device::setColorSaturation(float s)
+{
+	m_color.setSaturation(s);
+
+	
+	ofLog() << m_color;
+
+    ofxOscMessage m;
+	m.setAddress( OSC_ADDRESS_SET_DEVICE_PROP );
+    m.addStringArg(m_id);
+    m.addStringArg("color");
+	m.addFloatArg(m_color.getHue());
+	m.addFloatArg(m_color.getSaturation());
+    m_oscSender.sendMessage(m);
+}
+
+//--------------------------------------------------------------
+void Device::setColorHueSaturationOSC(float h, float s)
+{
+	m_color.setHue(h);
+	m_color.setSaturation(h);
+}
 
 //--------------------------------------------------------------
 float Device::getWidthSoundInputVolume()

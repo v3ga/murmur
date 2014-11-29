@@ -2,14 +2,14 @@
     <soundInput>
         <volMax>0.039999999</volMax>
         <volHistoryNb>84.000000000</volHistoryNb>
-        <volHistoryTh>0.285483867</volHistoryTh>
+        <volHistoryTh>0.096774191</volHistoryTh>
     </soundInput>
     <soundOutput>
         <speaker>0</speaker>
     </soundOutput>
-    <enableStandby>1</enableStandby>
+    <enableStandby>0</enableStandby>
     <timeStandby>5.000000000</timeStandby>
-    <sampleVolStandby>0.290322572</sampleVolStandby>
+    <sampleVolStandby>0.638709664</sampleVolStandby>
     <enableStandby>0</enableStandby>
     <enableStandup>0</enableStandup>
     <volStandup>0.572580636</volStandup>

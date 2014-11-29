@@ -23,7 +23,7 @@ class DevicePacket
 		void				  computeColor(const ofColor& deviceColor);
 	
         float                 m_volume;
-		ofColor				  m_color;
+		ofColor		  	      m_color;
 };
 
 
@@ -135,7 +135,22 @@ class Device
         oscSender           m_oscSender;
  
 		// Color of LEDs
+		void				setColorHueSaturation		(float h, float s);
+		void				setColorHue					(float h);
+		void				setColorSaturation			(float s);
+		void				setColorHueSaturationOSC	(float h, float s);
+		void				setColorSpeedOscillation	(float speed);
+
 		ofColor				m_color;
+		int					m_colorMode;
+		float				m_colorSpeedOscillation; // phase for cos oscillation , unit is degrees/s
+		ofColor				m_colorOscillation1,m_colorOscillation2;
+
+		enum
+		{
+			colorMode_manual		= 0,	// set color directly
+			colorMode_oscillation	= 1		// oscillation between two m_colorOscillation1 & m_colorOscillation2
+		};
 	
         // Packets
         vector<DevicePacket*>   m_listPackets;
