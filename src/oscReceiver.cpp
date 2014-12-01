@@ -93,7 +93,7 @@ void oscReceiver::update()
                         // TODO : type ? -> factory
                         if (Globals::instance()->mp_app->isSimulation == false)
                         {
-                            int nbLEDs = m_oscMessage.getNumArgs() - indexArg; // WARNING with this
+                            int nbLEDs = (m_oscMessage.getNumArgs() - indexArg)/4; // WARNING with this
 							OFAPPLOG->println("> New Device found ! id='"+deviceId+"'");
                             
                             DeviceEcho* pDeviceEcho = new DeviceEcho(deviceId, nbLEDs, 4.0f/float(nbLEDs-1));

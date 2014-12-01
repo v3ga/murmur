@@ -1,7 +1,7 @@
 <murmur>
 	<simulator>
         <!-- Activate or not simulation -->
-        <enable>1</enable>
+        <enable>0</enable>
 
         <!-- Sound input for simulators -->
         <soundInput>
