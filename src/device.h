@@ -21,6 +21,7 @@ class DevicePacket
 
         void                  copy(DevicePacket* pPacket);
 		void				  computeColor(const ofColor& deviceColor);
+		void				  computeColor(const float* deviceColor);
 	
         float                 m_volume;
 		ofColor		  	      m_color;
@@ -142,14 +143,16 @@ class Device
 		void				setColorSpeedOscillation	(float speed);
 
 		ofColor				m_color;
+		float				m_colorHsv[3];
 		int					m_colorMode;
 		float				m_colorSpeedOscillation; // phase for cos oscillation , unit is degrees/s
 		ofColor				m_colorOscillation1,m_colorOscillation2;
 
 		enum
 		{
-			colorMode_manual		= 0,	// set color directly
-			colorMode_oscillation	= 1		// oscillation between two m_colorOscillation1 & m_colorOscillation2
+			colorMode_grey				= 0,	// set color directly
+			colorMode_manual_hsb		= 1,	// set color directly
+			colorMode_oscillation_hsb	= 2		// oscillation between two m_colorOscillation1 & m_colorOscillation2
 		};
 	
         // Packets

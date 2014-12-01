@@ -140,7 +140,7 @@ void toolAnimations::logJS(void* pData, const string& message)
    toolAnimations* pThis = (toolAnimations*) pData;
    if (pThis && pThis->mp_consoleJs)
    {
-		pThis->m_listLogJs.insert(pThis->m_listLogJs.begin(), message);
+		pThis->m_listLogJs.insert(pThis->m_listLogJs.end(), message);
 		if (pThis->m_listLogJs.size() > pThis->m_listLogJsMax){
 			pThis->m_listLogJs.pop_back();
 		}

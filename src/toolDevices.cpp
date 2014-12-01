@@ -27,10 +27,17 @@ toolDevices::toolDevices(toolManager* parent, DeviceManager* manager) : tool("De
 	mp_sliderDeviceTimeStandby = 0;
 	mp_sliderDeviceSampleVolStandby = 0;
 
+	mp_sliderColorManualHue = 0;
+	mp_sliderColorManualSaturation = 0;
+	mp_spacerColorManualHsb = 0;
+
 	mp_toggleDeviceEnableStandup = 0;
 	mp_sliderStandupVol = 0;
+
 	
 	mp_graphSoundValues = 0;
+	
+	mp_canvasColorMode = 0;
 }
 
 //--------------------------------------------------------------
@@ -157,8 +164,24 @@ void toolDevices::createControlsCustomFinalize()
 
     mp_canvasDevice->addWidgetDown(new ofxUILabel("Color", OFX_UI_FONT_MEDIUM));
     mp_canvasDevice->addWidgetDown(new ofxUISpacer(widthDefault, 1));
-	mp_canvasDevice->addWidgetDown(new ofxUISlider("hue",0,255,127,widthDefault-10,dim));
-	mp_canvasDevice->addWidgetDown(new ofxUISlider("saturation", 0,255,127,widthDefault-10,dim));
+
+//	mp_canvasColorMode = new ofxUICanvas(0,0,widthDefault,300);
+	mp_sliderColorManualHue 		= new ofxUISlider("hue",			1,254,127,(widthDefault-10)/2,dim);
+	mp_sliderColorManualSaturation 	= new ofxUISlider("saturation", 	1,254,127,(widthDefault-10)/2,dim);
+
+	mp_spacerColorManualHsb = new ofxUISpacer(0,0,widthDefault,dim/2,"toto");
+
+
+	mp_canvasDevice->addWidgetDown(mp_spacerColorManualHsb);
+	mp_canvasDevice->addWidgetDown(mp_sliderColorManualHue);
+	mp_canvasDevice->addWidgetRight(mp_sliderColorManualSaturation);
+
+	mp_spacerColorManualHsb->setToggleColor(true);
+	mp_spacerColorManualHsb->setDrawFill(true);
+	mp_spacerColorManualHsb->setColorFill( ofxUIColor(255,0,255) );
+
+	//mp_canvasColorMode->autoSizeToFitWidgets();
+	//mp_canvasDevice->addWidgetDown(mp_canvasColorMode);
 
 	
     mp_canvasDevice->addWidgetDown(new ofxUILabel("Speakers", OFX_UI_FONT_MEDIUM));
@@ -196,6 +219,19 @@ void toolDevices::drawUI()
 		pDeviceCurrent->drawSoundInputVolume( 0.5f*(ofGetWidth()) ,ofGetHeight()-pDeviceCurrent->getHeightSoundInputVolume());
     }
 	ofPopStyle();
+}
+
+//--------------------------------------------------------------
+void toolDevices::updateUI()
+{
+    Device* pDeviceCurrent = mp_deviceManager->getDeviceCurrent();
+	if (pDeviceCurrent)
+	{
+		if (mp_spacerColorManualHsb)
+		{
+			 mp_spacerColorManualHsb->setColorFill( ofColor::fromHsb(pDeviceCurrent->m_colorHsv[0], pDeviceCurrent->m_colorHsv[1], 255.0f) );
+		}
+	}
 }
 
 //--------------------------------------------------------------
@@ -273,6 +309,8 @@ void toolDevices::updateDeviceUI(Device* pDevice)
         if (mp_sliderDeviceTimeStandby) mp_sliderDeviceTimeStandby->setValue( pDevice->getTimeStandby() );
         if (mp_sliderDeviceSampleVolStandby) mp_sliderDeviceSampleVolStandby->setValue( pDevice->getSampleVolStandby() );
 		if (mp_sliderStandupVol) mp_sliderStandupVol->setValue( pDevice->getStandupVol() );
+		if (mp_sliderColorManualHue) mp_sliderColorManualHue->setValue( pDevice->m_colorHsv[0] );
+		if (mp_sliderColorManualSaturation) mp_sliderColorManualSaturation->setValue( pDevice->m_colorHsv[1] );
 
 		if (mp_canvasDevice)
 		{
@@ -298,6 +336,7 @@ void toolDevices::updateDeviceUI(Device* pDevice)
 		}
 
 		 updateDeviceAnimationTitle();
+		 updateUI();
     }
 }
 
@@ -372,12 +411,14 @@ void toolDevices::handleEvents(ofxUIEventArgs& e)
     {
         if (pDeviceCurrent){
 			pDeviceCurrent->setColorHue( ((ofxUISlider *) e.widget)->getScaledValue() );
+			updateUI();
         }
     }
     else if (name == "saturation")
     {
         if (pDeviceCurrent){
 			pDeviceCurrent->setColorSaturation( ((ofxUISlider *) e.widget)->getScaledValue() );
+			updateUI();
         }
     }
 	else

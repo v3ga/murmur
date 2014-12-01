@@ -74,7 +74,8 @@ void oscReceiver::update()
 						float hue = m_oscMessage.getArgAsFloat(indexArg++);
 						float sat = m_oscMessage.getArgAsFloat(indexArg);
                         pDevice->setColorHueSaturationOSC(hue,sat);
-						ofLog() << hue << ',' << sat;
+
+						// ofLog() << "(hue,sat)=" << hue << ',' << sat;
 					}
                 }
             }

@@ -5,7 +5,7 @@
 
         <!-- Sound input for simulators -->
         <soundInput>
-            <device>1</device>
+            <device>0</device>
             <nbChannels>1</nbChannels>
         </soundInput>
         

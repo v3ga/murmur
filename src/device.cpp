@@ -35,6 +35,14 @@ void DevicePacket::computeColor(const ofColor& deviceColor)
 }
 
 //--------------------------------------------------------------
+void DevicePacket::computeColor(const float* deviceColor)
+{
+//	m_color = ofColor::fromHsb(deviceColor[0],deviceColor[1],m_volume*255.0f);
+	m_color.setHsb(deviceColor[0],deviceColor[1],m_volume*255.0f);
+}
+
+
+//--------------------------------------------------------------
 Device::Device(string id, int nbLEDs, float distLEDs)
 {
     mp_soundInput = 0;
@@ -54,7 +62,7 @@ Device::Device(string id, int nbLEDs, float distLEDs)
 	m_standupTh			= 0.55f;
 	
 	m_color.setHsb(200, 255, 255); // Brightness not used as set by packets
-	m_colorMode = colorMode_manual;
+	m_colorMode = colorMode_manual_hsb;
 	m_colorSpeedOscillation = 10.0f;
 }
 
@@ -108,10 +116,14 @@ void Device::setColorHueSaturation(float h, float s)
 
 void Device::setColorHue(float h)
 {
-	float s = m_color.getSaturation();
-	m_color.setHue(h);
+	// OFAPPLOG->begin("Device::setColorHue("+ofToString(h)+")");
 
-	ofLog() << m_color;
+	m_color.setHue(h);
+	m_colorHsv[0]=h;
+
+	// OFAPPLOG->println("m_color.getHue()="+ofToString(m_color.getHue()));
+	// OFAPPLOG->println("m_color.getSaturation()="+ofToString(m_color.getSaturation()));
+
     ofxOscMessage m;
 	m.setAddress( OSC_ADDRESS_SET_DEVICE_PROP );
     m.addStringArg(m_id);
@@ -119,14 +131,21 @@ void Device::setColorHue(float h)
 	m.addFloatArg(m_color.getHue());
 	m.addFloatArg(m_color.getSaturation());
     m_oscSender.sendMessage(m);
+
+	// OFAPPLOG->end();
 }
 
 void Device::setColorSaturation(float s)
 {
-	m_color.setSaturation(s);
+	//OFAPPLOG->begin("Device::setColorSaturation("+ofToString(s)+")");
 
-	
-	ofLog() << m_color;
+
+	m_color.setSaturation(s);
+	m_colorHsv[1]=s;
+
+	//OFAPPLOG->println("m_color.getHue()="+ofToString(m_color.getHue()));
+	//OFAPPLOG->println("m_color.getSaturation()="+ofToString(m_color.getSaturation()));
+
 
     ofxOscMessage m;
 	m.setAddress( OSC_ADDRESS_SET_DEVICE_PROP );
@@ -135,6 +154,8 @@ void Device::setColorSaturation(float s)
 	m.addFloatArg(m_color.getHue());
 	m.addFloatArg(m_color.getSaturation());
     m_oscSender.sendMessage(m);
+	
+	//OFAPPLOG->end();
 }
 
 //--------------------------------------------------------------
@@ -142,6 +163,9 @@ void Device::setColorHueSaturationOSC(float h, float s)
 {
 	m_color.setHue(h);
 	m_color.setSaturation(h);
+	
+	m_colorHsv[0]=h;
+	m_colorHsv[1]=s;
 }
 
 //--------------------------------------------------------------
@@ -492,7 +516,8 @@ void Device::sampleSoundInput()
             indexSample = nbVolHistorySize-1;
         
         m_listPackets[i]->m_volume = mp_soundInput->getVolHistory()[(int)indexSample]; // Nearest sampling
-		m_listPackets[i]->computeColor(m_color);
+//		m_listPackets[i]->computeColor(m_color);
+		m_listPackets[i]->computeColor(m_colorHsv);
 
         indexSample += stepSample;
     }
@@ -670,14 +695,18 @@ void Device::loadXML(string dir)
         float xNorm = settings.getValue("device:surface:xNorm", 0.5f);
         float yNorm = settings.getValue("device:surface:yNorm", 0.5f);
 		
-		float 	volMax 			= settings.getValue("device:soundInput:volMax",0.05f);
-		int 	volHistoryNb 	= settings.getValue("device:soundInput:volHistoryNb", 400);
-		float 	volHistoryTh	= settings.getValue("device:soundInput:volHistoryTh",0.1f);
-     	int		enableStandby	= settings.getValue("device:enableStandby",1);
-	 	float 	timeStandby		= settings.getValue("device:timeStandby",10.0f);
-	 	float 	sampleVolStandby= settings.getValue("device:sampleVolStandby",0.35f);
-     	int		enableStandup	= settings.getValue("device:enableStandup",1);
-	 	float 	volStandup		= settings.getValue("device:volStandup",0.5f);
+		float 	volMax 				= settings.getValue("device:soundInput:volMax",0.05f);
+		int 	volHistoryNb 		= settings.getValue("device:soundInput:volHistoryNb", 400);
+		float 	volHistoryTh		= settings.getValue("device:soundInput:volHistoryTh",0.1f);
+     	int		enableStandby		= settings.getValue("device:enableStandby",1);
+	 	float 	timeStandby			= settings.getValue("device:timeStandby",10.0f);
+	 	float 	sampleVolStandby	= settings.getValue("device:sampleVolStandby",0.35f);
+     	int		enableStandup		= settings.getValue("device:enableStandup",1);
+	 	float 	volStandup			= settings.getValue("device:volStandup",0.5f);
+
+		float	colorManualHsb[2];
+		colorManualHsb[0]			= settings.getValue("device:color:colorMode_manual_hsb:hue", 		127.0f);
+		colorManualHsb[1]			= settings.getValue("device:color:colorMode_manual_hsb:saturation", 	127.0f);
 	 
 		OFAPPLOG->println("Device, loaded "+pathFile);
 		OFAPPLOG->println(" - volMax="+ofToString(volMax));
@@ -689,16 +718,18 @@ void Device::loadXML(string dir)
 		OFAPPLOG->println(" - enableStandup="+ofToString(enableStandup));
 		OFAPPLOG->println(" - volStandup="+ofToString(volStandup));
 		OFAPPLOG->println(" - surface="+surfaceId+" (xNorm="+ofToString(xNorm)+",yNorm="+ofToString(yNorm)+")");
-     
+		OFAPPLOG->println(" - colorManualHsb, (hue="+ofToString(colorManualHsb[0])+", saturation="+ofToString(colorManualHsb[1])+")");
+	 
         setSoundInputVolumeMax( volMax );
         setSoundInputVolHistorySize( volHistoryNb );
         setSoundInputVolHistoryTh( volHistoryTh );
         setEnableStandbyMode( enableStandby == 1 ? true : false );
         setTimeStandby( timeStandby );
         setSampleVolumeStandby( sampleVolStandby );
-		setEnableStandup( enableStandup );
+		// setEnableStandup( enableStandup );
 		setStandupVol( volStandup );
         setPointSurface(xNorm, yNorm);
+		setColorHueSaturation(colorManualHsb[0],colorManualHsb[1]);
 
 		settings.pushTag("device");
 		settings.pushTag("soundOutput");
@@ -744,15 +775,23 @@ void Device::saveXML(string dir)
             settings.addValue("speaker", m_listSpeakerIds[i]);
         settings.popTag();
 
+        settings.addTag("color");
+        settings.pushTag("color");
+			settings.addTag("colorMode_manual_hsb");
+			settings.pushTag("colorMode_manual_hsb");
+				settings.addValue("hue", 			m_colorHsv[0]);
+				settings.addValue("saturation", 	m_colorHsv[1]);
+			settings.popTag();
+        settings.popTag();
 
     settings.addValue("enableStandby", 		getEnableStandbyMode() ? 1 : 0);
     settings.addValue("timeStandby", 		m_timeStandby);
     settings.addValue("sampleVolStandby", 	getSampleVolStandby());
     settings.addValue("enableStandby", 		getEnableStandup() ? 1 : 0);
-
+/*
     settings.addValue("enableStandup", 		getEnableStandup() ? 1 : 0);
     settings.addValue("volStandup", 		getStandupVol());
- 
+*/
     settings.addTag("surface");
     settings.setAttribute("surface", "id", "main", 0);
     settings.pushTag("surface");
