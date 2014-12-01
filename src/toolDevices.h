@@ -29,6 +29,7 @@ class toolDevices : public tool
 		void					selectDeviceWithIndex		(int index);
 		void					updateDeviceAnimationTitle	();
 		void					updateDeviceUI				(Device*);
+		void					updateUI					();
 		void					drawUI						();
 		void					handleEvents				(ofxUIEventArgs& e);
 		bool					isHit						(int x, int y);
@@ -47,9 +48,15 @@ class toolDevices : public tool
     	ofxUISlider* 			mp_sliderDeviceTimeStandby;
     	ofxUISlider* 			mp_sliderDeviceSampleVolStandby;
 
+		ofxUISlider*			mp_sliderColorManualHue;
+		ofxUISlider*			mp_sliderColorManualSaturation;
+		ofxUISpacer*			mp_spacerColorManualHsb;
+
     	ofxUIToggle* 			mp_toggleDeviceEnableStandup;
 		ofxUISlider*			mp_sliderStandupVol;
  
 		ofxUIMovingGraphThreshold* mp_graphSoundValues;
+
+		ofxUICanvas*			mp_canvasColorMode;
 	
 };

@@ -11,6 +11,8 @@
 #include "globals.h"
 #include "soundManager.h"
 #include "device.h"
+#include "tool.h"
+#include "toolDevices.h"
 
 //--------------------------------------------------------------
 bool setupJS()
@@ -32,6 +34,9 @@ bool setupJS()
     ofxJSDefineFunctionGlobal("setVolumeSound",                 &setVolumeSound,                2);
     ofxJSDefineFunctionGlobal("setVolumeSoundAll",              &setVolumeSoundAll,             1);
     ofxJSDefineFunctionGlobal("setVolumeSoundMainNormalized",   &setVolumeSoundMainNormalized,  1);
+
+    ofxJSDefineFunctionGlobal("setDeviceColorHueSaturation",   	&setDeviceColorHueSaturation,   3);
+ 
  
     
 	// Load globals
@@ -219,7 +224,9 @@ ofxJSDeclareFunctionCpp(setVolumeSound)
 	if (argc==2)
     {
         SoundManager::instance()->setVolume( ofxJSValue_TO_string(argv[0]),  ofxJSValue_TO_float(argv[1]));
+		return JS_TRUE;
     }
+	return JS_FALSE;
 }
 
 
@@ -229,7 +236,9 @@ ofxJSDeclareFunctionCpp(setVolumeSoundAll)
 	if (argc==1)
     {
         SoundManager::instance()->setVolumeAll( ofxJSValue_TO_float(argv[0]) );
+		return JS_TRUE;
     }
+	return JS_FALSE;
 }
 
 //--------------------------------------------------------------
@@ -238,5 +247,38 @@ ofxJSDeclareFunctionCpp(setVolumeSoundMainNormalized)
 	if (argc==1)
     {
         SoundManager::instance()->setVolumeSoundMainNormalized( ofxJSValue_TO_float(argv[0]) );
+		return JS_TRUE;
     }
+	return JS_FALSE;
 }
+
+//--------------------------------------------------------------
+ofxJSDeclareFunctionCpp(setDeviceColorHueSaturation)
+{
+	if (argc==3)
+    {
+		DeviceManager* pDeviceManager = GLOBALS->mp_deviceManager;
+		if (pDeviceManager)
+		{
+			string deviceId = ofxJSValue_TO_string(argv[0]);
+			Device* pDevice = pDeviceManager->getDeviceById( deviceId );
+			if (pDevice)
+			{
+				float h = ofxJSValue_TO_float( argv[1] );
+				float s = ofxJSValue_TO_float( argv[2] );
+				pDevice->setColorHueSaturation(h,s);
+				
+				// Update UI on toolDevices
+				toolDevices* pToolDevices = (toolDevices*) toolManager::instance()->getTool("Devices");
+				if (pToolDevices){
+					pToolDevices->updateUI();
+				}
+			 
+				return JS_TRUE;
+			}
+		}
+    }
+	return JS_FALSE;
+}
+
+

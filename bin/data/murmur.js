@@ -21,12 +21,31 @@ this.deviceManager = {};
 function Device(id)
 {
     this.id = id;
+    this.accroche = {x:0,y:0};
+    this.volume = 0;
     this.volumeAccum = new VolumeAccum();
-    
+
+    this.setAccroche = function(x,y)
+    {
+        this.accroche.x = x;
+        this.accroche.y = y;
+    }
+
+    this.setColorHueSaturation = function(hue, saturation)
+    {
+        setDeviceColorHueSaturation(this.id, hue, saturation);    
+    }
+
+    this.setVolume = function(volume)
+    {
+        this.volume = volume;        
+    }
+
     this.accumVolume = function(volume, fEvent)
     {
         this.volumeAccum.add(volume, fEvent);
     }
+
 }
 
 // --------------------------------------------------------
@@ -35,10 +54,13 @@ function getDevice(id)
     if (deviceManager[id]==null){
         deviceManager[id] = new Device(id);
         println(">>> new Device (js) : "+id);
+        if (typeof deviceManager[id].onCreate == 'function'){
+            println("   - calling 'onCreate'");
+            deviceManager[id].onCreate();
+        }
     }
     return deviceManager[id];
 }
-
 
 
 // --------------------------------------------------------

@@ -7,12 +7,16 @@
     <soundOutput>
         <speaker>0</speaker>
     </soundOutput>
+    <color>
+        <colorMode_manual_hsb>
+            <hue>0.000000000</hue>
+            <saturation>255.000000000</saturation>
+        </colorMode_manual_hsb>
+    </color>
     <enableStandby>0</enableStandby>
     <timeStandby>5.000000000</timeStandby>
     <sampleVolStandby>0.638709664</sampleVolStandby>
     <enableStandby>0</enableStandby>
-    <enableStandup>0</enableStandup>
-    <volStandup>0.572580636</volStandup>
     <surface id="main">
         <xNorm>0.505859375</xNorm>
         <yNorm>0.526041687</yNorm>
