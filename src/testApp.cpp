@@ -192,7 +192,7 @@ void testApp::initSimulators()
 			if (pDeviceSim)
 			{
 //		        pDeviceSim->startSoundInput(deviceSoundInputId,nbChannels);
-		        pDeviceSim->startSoundInput(nbChannels);
+		        pDeviceSim->startSoundInput(nbChannels); // will not create an input stream
         		pDeviceSim->loadXML("Config/devices/");
 				
 				DeviceNode* pDeviceSimNode = mp_sceneVisualisation->getDeviceNode(pDeviceSim);

@@ -7,14 +7,18 @@
     <soundOutput>
         <speaker>1</speaker>
     </soundOutput>
-    <enableStandby>1</enableStandby>
+    <color>
+        <colorMode_manual_hsb>
+            <hue>63.822654724</hue>
+            <saturation>50.193748474</saturation>
+        </colorMode_manual_hsb>
+    </color>
+    <enableStandby>0</enableStandby>
     <timeStandby>5.000000000</timeStandby>
     <sampleVolStandby>0.349999994</sampleVolStandby>
-    <enableStandby>1</enableStandby>
-    <enableStandup>1</enableStandup>
-    <volStandup>0.500000000</volStandup>
+    <enableStandby>0</enableStandby>
     <surface id="main">
-        <xNorm>0.789062500</xNorm>
-        <yNorm>0.528645813</yNorm>
+        <xNorm>0.467773438</xNorm>
+        <yNorm>0.451822907</yNorm>
     </surface>
 </device>

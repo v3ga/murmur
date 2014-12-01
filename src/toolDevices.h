@@ -29,7 +29,7 @@ class toolDevices : public tool
 		void					selectDeviceWithIndex		(int index);
 		void					updateDeviceAnimationTitle	();
 		void					updateDeviceUI				(Device*);
-		void					updateUI					();
+		void					updateDeviceColorUI			();
 		void					drawUI						();
 		void					handleEvents				(ofxUIEventArgs& e);
 		bool					isHit						(int x, int y);

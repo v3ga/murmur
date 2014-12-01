@@ -222,15 +222,14 @@ void toolDevices::drawUI()
 }
 
 //--------------------------------------------------------------
-void toolDevices::updateUI()
+void toolDevices::updateDeviceColorUI()
 {
     Device* pDeviceCurrent = mp_deviceManager->getDeviceCurrent();
 	if (pDeviceCurrent)
 	{
-		if (mp_spacerColorManualHsb)
-		{
-			 mp_spacerColorManualHsb->setColorFill( ofColor::fromHsb(pDeviceCurrent->m_colorHsv[0], pDeviceCurrent->m_colorHsv[1], 255.0f) );
-		}
+		if (mp_spacerColorManualHsb)   		mp_spacerColorManualHsb->setColorFill( ofColor::fromHsb(pDeviceCurrent->m_colorHsv[0], pDeviceCurrent->m_colorHsv[1], 255.0f) );
+		if (mp_sliderColorManualHue)		mp_sliderColorManualHue->setValue(pDeviceCurrent->m_colorHsv[0]);
+		if (mp_sliderColorManualSaturation)	mp_sliderColorManualSaturation->setValue(pDeviceCurrent->m_colorHsv[1]);
 	}
 }
 
@@ -336,7 +335,7 @@ void toolDevices::updateDeviceUI(Device* pDevice)
 		}
 
 		 updateDeviceAnimationTitle();
-		 updateUI();
+		 updateDeviceColorUI();
     }
 }
 
@@ -411,14 +410,14 @@ void toolDevices::handleEvents(ofxUIEventArgs& e)
     {
         if (pDeviceCurrent){
 			pDeviceCurrent->setColorHue( ((ofxUISlider *) e.widget)->getScaledValue() );
-			updateUI();
+			updateDeviceColorUI();
         }
     }
     else if (name == "saturation")
     {
         if (pDeviceCurrent){
 			pDeviceCurrent->setColorSaturation( ((ofxUISlider *) e.widget)->getScaledValue() );
-			updateUI();
+			updateDeviceColorUI();
         }
     }
 	else

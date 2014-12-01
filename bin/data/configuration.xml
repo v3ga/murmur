@@ -16,13 +16,16 @@
                 <nbLEDs>158</nbLEDs>
                 <length>4.0</length>
             </device>
-			<!--
             <device>
                 <id>deviceEchoSimulator02</id>
                 <nbLEDs>158</nbLEDs>
                 <length>4.0</length>
             </device>
-			-->
+            <device>
+                <id>deviceEchoSimulator03</id>
+                <nbLEDs>158</nbLEDs>
+                <length>4.0</length>
+            </device>
         </devices>
     </simulator>
 

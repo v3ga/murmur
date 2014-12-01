@@ -29,8 +29,9 @@ ofxJSDeclareFunctionCpp(playSoundForThisAnimation);
 ofxJSDeclareFunctionCpp(setVolumeSound);
 ofxJSDeclareFunctionCpp(setVolumeSoundAll);
 ofxJSDeclareFunctionCpp(setVolumeSoundMainNormalized); // pass value between 0 and 1
-ofxJSDeclareFunctionCpp(setDeviceColorHueSaturation); // pass value between 0 and 1
 
+ofxJSDeclareFunctionCpp(setDeviceColorHueSaturation);
+ofxJSDeclareFunctionCpp(setDeviceColor);
 
 
 static char s_jsStringBuffer[2048];
