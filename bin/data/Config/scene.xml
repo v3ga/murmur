@@ -2,14 +2,17 @@
 
 	<silhouettes>
 		<silhouette device="deviceEchoSimulator01">
-			<position x="0.0" y="0.0" z="4.0"/>
+			<position x="-2.0" y="0.0" z="4.5"/>
 		</silhouette>
 
-		<!--
 		<silhouette device="deviceEchoSimulator02">
+			<position x="0.0" y="0.0" z="4.5"/>
+		</silhouette>
+
+		<silhouette device="deviceEchoSimulator03">
 			<position x="2.0" y="0.0" z="4.5"/>
 		</silhouette>
-		-->
+
 	</silhouettes>
 
 </scene>

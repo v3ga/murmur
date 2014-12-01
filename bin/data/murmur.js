@@ -36,6 +36,11 @@ function Device(id)
         setDeviceColorHueSaturation(this.id, hue, saturation);    
     }
 
+    this.setDeviceColor = function()
+    {
+        setDeviceColor(this.id);
+    }
+
     this.setVolume = function(volume)
     {
         this.volume = volume;        

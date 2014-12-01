@@ -87,7 +87,7 @@ void DeviceNode::customDraw()
 	physics.update();
     
     DevicePacket* pPacket=0;
-    float   maxBoxSize = 0.075f;
+    float   maxBoxSize = 0.055f;
     float   boxSize = 0.0f;
     int nbPackets = mp_device->getNbLEDs();
 

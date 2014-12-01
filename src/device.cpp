@@ -109,14 +109,14 @@ void Device::setColorHueSaturation(float h, float s)
 	m.setAddress( OSC_ADDRESS_SET_DEVICE_PROP );
     m.addStringArg(m_id);
     m.addStringArg("color");
-	m.addFloatArg(m_color.getHue());
-	m.addFloatArg(m_color.getSaturation());
+	m.addFloatArg(m_colorHsv[0]);
+	m.addFloatArg(m_colorHsv[1]);
     m_oscSender.sendMessage(m);
 }
 
 void Device::setColorHue(float h)
 {
-	// OFAPPLOG->begin("Device::setColorHue("+ofToString(h)+")");
+	//OFAPPLOG->begin("Device::setColorHue("+ofToString(h)+")");
 
 	m_color.setHue(h);
 	m_colorHsv[0]=h;
@@ -128,11 +128,11 @@ void Device::setColorHue(float h)
 	m.setAddress( OSC_ADDRESS_SET_DEVICE_PROP );
     m.addStringArg(m_id);
     m.addStringArg("color");
-	m.addFloatArg(m_color.getHue());
-	m.addFloatArg(m_color.getSaturation());
+	m.addFloatArg(m_colorHsv[0]);
+	m.addFloatArg(m_colorHsv[1]);
     m_oscSender.sendMessage(m);
 
-	// OFAPPLOG->end();
+	//OFAPPLOG->end();
 }
 
 void Device::setColorSaturation(float s)
@@ -465,7 +465,7 @@ void Device::startSoundInput(int nbChannels)
     {
         // Create sound input
         mp_soundInput = new SoundInput();
-        mp_soundInput->setup(nbChannels);
+        mp_soundInput->setup(nbChannels); // do not create an audio stream
     }
 }
 

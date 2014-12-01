@@ -36,6 +36,7 @@ bool setupJS()
     ofxJSDefineFunctionGlobal("setVolumeSoundMainNormalized",   &setVolumeSoundMainNormalized,  1);
 
     ofxJSDefineFunctionGlobal("setDeviceColorHueSaturation",   	&setDeviceColorHueSaturation,   3);
+    ofxJSDefineFunctionGlobal("setDeviceColor",   				&setDeviceColor,   				1);
  
  
     
@@ -271,7 +272,7 @@ ofxJSDeclareFunctionCpp(setDeviceColorHueSaturation)
 				// Update UI on toolDevices
 				toolDevices* pToolDevices = (toolDevices*) toolManager::instance()->getTool("Devices");
 				if (pToolDevices){
-					pToolDevices->updateUI();
+					pToolDevices->updateDeviceColorUI();
 				}
 			 
 				return JS_TRUE;
@@ -281,4 +282,20 @@ ofxJSDeclareFunctionCpp(setDeviceColorHueSaturation)
 	return JS_FALSE;
 }
 
-
+//--------------------------------------------------------------
+ofxJSDeclareFunctionCpp(setDeviceColor)
+{
+	if (argc==1)
+	{
+		DeviceManager* pDeviceManager = GLOBALS->mp_deviceManager;
+		if (pDeviceManager)
+		{
+			string deviceId = ofxJSValue_TO_string(argv[0]);
+			Device* pDevice = pDeviceManager->getDeviceById( deviceId );
+			if (pDevice)
+			{
+				ofSetColor( ofColor::fromHsb(pDevice->m_colorHsv[0],pDevice->m_colorHsv[1],255) );
+			}
+		}
+	}
+}

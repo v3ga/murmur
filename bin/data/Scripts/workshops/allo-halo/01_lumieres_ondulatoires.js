@@ -7,7 +7,7 @@ Device.prototype.colorA  			= {hue:0,saturation:0};
 Device.prototype.colorB  			= {hue:0,saturation:0};
 Device.prototype.color  			= {hue:0,saturation:0};
 Device.prototype.colorPhase 		= Math.random()*360.0;
-Device.prototype.colorPhaseSpeed 	= Math.random()*50.0+40; // degrés par seconde
+Device.prototype.colorPhaseSpeed 	= Math.random()*20.0+10; // degrés par seconde
 Device.prototype.time 				= 0;
 
 Device.prototype.onCreate = function()
@@ -15,13 +15,18 @@ Device.prototype.onCreate = function()
 	// Choisit les couleurs en fonction de l'id
 	if (this.id == "deviceEchoSimulator01")
 	{
-		this.colorA = {hue:127, saturation:255};
+		this.colorA = {hue:60, saturation:255};
 		this.colorB = {hue:255, saturation:255};
 	}
-	else
+	else if (this.id == "deviceEchoSimulator02")
 	{
-		this.colorA = {hue:Math.random()*230+25, saturation:255};
-		this.colorB = {hue:Math.random()*230+25, saturation:255};
+		this.colorA = {hue:60, saturation:40};
+		this.colorB = {hue:120, saturation:200};
+	}
+	else if (this.id == "deviceEchoSimulator03")
+	{
+		this.colorA = {hue:60, saturation:100};
+		this.colorB = {hue:120, saturation:255};
 	}
 }
 
@@ -56,8 +61,7 @@ function update(dt)
 	// Pour chaque device
 	for (var deviceId in deviceManager)
 	{
-		var device = getDevice(deviceId);
-		device.update(dt);
+		getDevice(deviceId).update(dt);
 	}
 }
 
@@ -73,6 +77,16 @@ function update(dt)
 function draw(w,h)
 {
 	of.Background(0,0,0);
+	for (var deviceId in deviceManager)
+	{
+		var device = getDevice(deviceId);
+
+		of.PushMatrix();
+		of.Translate(device.accroche.x, device.accroche.y,0);
+		device.setDeviceColor();
+		of.Rect(0-150,0-150,300,300);
+		of.PopMatrix();
+	}
 }
 
 //--------------------------------------------------------------
