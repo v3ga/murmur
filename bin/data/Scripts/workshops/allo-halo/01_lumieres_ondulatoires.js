@@ -13,7 +13,7 @@ Device.prototype.time 				= 0;
 Device.prototype.onCreate = function()
 {
 	// Choisit les couleurs en fonction de l'id
-	if (this.id == "deviceEchoSimulator01")
+	if (this.id == "deviceEchoSimulator01" || this.id == "chambreEcho_002")
 	{
 		this.colorA = {hue:60, saturation:255};
 		this.colorB = {hue:255, saturation:255};

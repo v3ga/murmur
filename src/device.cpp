@@ -37,8 +37,8 @@ void DevicePacket::computeColor(const ofColor& deviceColor)
 //--------------------------------------------------------------
 void DevicePacket::computeColor(const float* deviceColor)
 {
-//	m_color = ofColor::fromHsb(deviceColor[0],deviceColor[1],m_volume*255.0f);
-	m_color.setHsb(deviceColor[0],deviceColor[1],m_volume*255.0f);
+	m_color = ofColor::fromHsb(deviceColor[0],deviceColor[1],m_volume*255.0f);
+//	m_color.setHsb(deviceColor[0],deviceColor[1],m_volume*255.0f);
 }
 
 
@@ -102,8 +102,11 @@ void Device::setPointSurface(float xNorm, float yNorm)
 //--------------------------------------------------------------
 void Device::setColorHueSaturation(float h, float s)
 {
-	setColorHue(h);
-	setColorSaturation(s);
+	m_colorHsv[0]=h;
+	m_colorHsv[1]=s;
+
+	m_color.setHue(h);
+	m_color.setSaturation(s);
 
     ofxOscMessage m;
 	m.setAddress( OSC_ADDRESS_SET_DEVICE_PROP );
@@ -151,8 +154,8 @@ void Device::setColorSaturation(float s)
 	m.setAddress( OSC_ADDRESS_SET_DEVICE_PROP );
     m.addStringArg(m_id);
     m.addStringArg("color");
-	m.addFloatArg(m_color.getHue());
-	m.addFloatArg(m_color.getSaturation());
+	m.addFloatArg(m_colorHsv[0]);
+	m.addFloatArg(m_colorHsv[1]);
     m_oscSender.sendMessage(m);
 	
 	//OFAPPLOG->end();
@@ -161,11 +164,12 @@ void Device::setColorSaturation(float s)
 //--------------------------------------------------------------
 void Device::setColorHueSaturationOSC(float h, float s)
 {
+	m_colorHsv[0]=h;
+	m_colorHsv[1]=s;
+
 	m_color.setHue(h);
 	m_color.setSaturation(h);
 	
-	m_colorHsv[0]=h;
-	m_colorHsv[1]=s;
 }
 
 //--------------------------------------------------------------
