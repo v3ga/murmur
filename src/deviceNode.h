@@ -23,8 +23,17 @@ class DeviceNode : public ofNode
         void                        customDraw                  ();
         Device*                     getDevice                   (){return mp_device;}
 		string						getDeviceId					(){if (mp_device) return mp_device->m_id; return "???";}
-    
+
+		void						setDrawLights				(bool is=true);
+ 
     protected:
         Device*                     mp_device;
         msa::physics::World3D		physics;
+ 
+
+		int							m_drawFlags;
+		enum
+		{
+			E_drawLights			= 0x01
+		};
 };

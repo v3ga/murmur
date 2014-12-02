@@ -2,31 +2,32 @@
 // 
 // http://gaite-lyrique.net/atelier/allo-halo-courts-circuits-lumineux
 //
+// Les champs marqués d'une '*' peuvent être modifiés
 
 Device.prototype.colorA  			= {hue:0,saturation:0};
 Device.prototype.colorB  			= {hue:0,saturation:0};
 Device.prototype.color  			= {hue:0,saturation:0};
-Device.prototype.colorPhase 		= Math.random()*360.0;
-Device.prototype.colorPhaseSpeed 	= Math.random()*20.0+10; // degrés par seconde
+Device.prototype.colorPhase 		= Math.random()*360.0;	 // * 	
+Device.prototype.colorPhaseSpeed 	= Math.random()*20.0+10; // * (vitesse d'oscillation de la couleur)
 Device.prototype.time 				= 0;
 
 Device.prototype.onCreate = function()
 {
 	// Choisit les couleurs en fonction de l'id
-	if (this.id == "deviceEchoSimulator01" || this.id == "chambreEcho_002")
+	if (this.id == "deviceEchoSimulator01" || this.id == "chambreEcho_001")
 	{
-		this.colorA = {hue:60, saturation:255};
-		this.colorB = {hue:255, saturation:255};
+		this.colorA = {hue:60, saturation:255}; 	// *
+		this.colorB = {hue:255, saturation:255};	// *
 	}
-	else if (this.id == "deviceEchoSimulator02")
+	else if (this.id == "deviceEchoSimulator02" || this.id == "chambreEcho_002")
 	{
-		this.colorA = {hue:60, saturation:40};
-		this.colorB = {hue:120, saturation:200};
+		this.colorA = {hue:60, saturation:40};		// *
+		this.colorB = {hue:120, saturation:200};	// *
 	}
-	else if (this.id == "deviceEchoSimulator03")
+	else if (this.id == "deviceEchoSimulator03" || this.id == "chambreEcho_003")
 	{
-		this.colorA = {hue:60, saturation:100};
-		this.colorB = {hue:120, saturation:255};
+		this.colorA = {hue:60, saturation:100};		// *
+		this.colorB = {hue:120, saturation:255};	// *
 	}
 }
 
@@ -35,6 +36,8 @@ Device.prototype.update = function(dt)
 	this.time += dt;
 
 	var angle = this.colorPhaseSpeed*this.time + this.colorPhase;
+	if (angle>=360.0) angle -= 360.0;
+
 	var cos_angleRad = Math.sin( of.DegToRad(angle) );
 
 	this.color.hue = of.Map( cos_angleRad,-1,1,this.colorA.hue,this.colorB.hue );

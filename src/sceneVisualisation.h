@@ -27,7 +27,9 @@ class SceneVisualisation : public Scene
         void        createDeviceNode    ( Device* pDevice, SurfaceNode* );
         void        addDeviceNode       ( DeviceNode*, SurfaceNode* pSurfaceNode);
         void        addSurfaceNode      ( SurfaceNode* );
-		
+ 		DeviceNode*	getDeviceNodeFor	( Device* pDevice );
+ 
+ 
 		ofVec3f		getPositionForSilhouette(string deviceId);
 
     

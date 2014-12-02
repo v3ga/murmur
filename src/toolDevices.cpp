@@ -11,6 +11,7 @@
 #include "testApp.h"
 #include "toolSurfaces.h"
 #include "toolAnimations.h"
+#include "toolScene.h"
 #include "ofxSoundPlayerMultiOutput.h"
 
 //--------------------------------------------------------------
@@ -266,6 +267,11 @@ void toolDevices::selectDevice(string id)
         
             // Data
             updateDeviceUI(pDevice);
+
+			// Inform tool Scene
+			toolScene* pToolScene = (toolScene*)toolManager::instance()->getTool("Scene");
+			if (pToolScene)
+				pToolScene->onDeviceChanged();
         }
     }
 }

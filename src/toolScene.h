@@ -18,9 +18,15 @@ class toolScene : public tool
 		toolScene				(toolManager* parent, SceneVisualisation*);
 	
 		void					createControlsCustom();
+
 		SceneVisualisation*		getScene			(){return mp_sceneVisualisation;}
 		SurfaceNode*			getSurfaceNode		(Surface* pSurface);
 		void					handleEvents		(ofxUIEventArgs& e);
+		void					onDeviceChanged		();
+
+	private:
+		void					setDeviceCurrentNodeDrawLights	();
 
 		SceneVisualisation*		mp_sceneVisualisation;
+		bool					m_isDrawDeviceLightCurrent;
 };
