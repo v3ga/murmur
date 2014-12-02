@@ -18,6 +18,7 @@
 DeviceNode::DeviceNode(Device* pDevice) : ofNode(),
 mp_device(pDevice)
 {
+	setDrawLights();
 }
 
 //--------------------------------------------------------------
@@ -80,6 +81,17 @@ void DeviceNode::createChain(ofVec3f ptAttach, ofVec3f dir)
 }
 
 //--------------------------------------------------------------
+void DeviceNode::setDrawLights(bool is)
+{
+	if (is){
+		m_drawFlags |= E_drawLights;
+	}
+	else{
+		m_drawFlags &= ~E_drawLights;
+	}
+}
+
+//--------------------------------------------------------------
 void DeviceNode::customDraw()
 {
     if (mp_device==0) return;
@@ -100,23 +112,28 @@ void DeviceNode::customDraw()
         A = a->getPosition();
         B = b->getPosition();
         
-        ofVec3f vec = b->getPosition() - a->getPosition();
-        float dist = vec.length();
-        float angle = acos( vec.z / dist ) * RAD_TO_DEG;
-        if(vec.z <= 0 ) angle = -angle;
-        float rx = -vec.y * vec.z;
-        float ry =  vec.x * vec.z;
-        
-        glPushMatrix();
-        glTranslatef(a->getPosition().x, a->getPosition().y, a->getPosition().z);
-        glRotatef(angle, rx, ry, 0.0);
-        float size  = ofMap(spring->getStrength(), SPRING_MIN_STRENGTH, SPRING_MAX_STRENGTH, SPRING_MIN_WIDTH, SPRING_MAX_WIDTH);
-        
-        boxSize = ofMap(mp_device->m_listPackets[nbPackets-1-i]->m_volume,0.0f,1.0f, 0.0f*maxBoxSize, maxBoxSize);
-        ofSetColor(mp_device->m_listPackets[nbPackets-1-i]->m_color,255);
 
-        ofBox(boxSize);
-        glPopMatrix();
+		if (m_drawFlags & E_drawLights)
+		{
+// ofLog()<<"drawing lights for " << mp_device->getID();
+	        ofVec3f vec = b->getPosition() - a->getPosition();
+    	    float dist = vec.length();
+        	float angle = acos( vec.z / dist ) * RAD_TO_DEG;
+        	if(vec.z <= 0 ) angle = -angle;
+        	float rx = -vec.y * vec.z;
+        	float ry =  vec.x * vec.z;
+        
+        	glPushMatrix();
+        	glTranslatef(a->getPosition().x, a->getPosition().y, a->getPosition().z);
+        	glRotatef(angle, rx, ry, 0.0);
+        	float size  = ofMap(spring->getStrength(), SPRING_MIN_STRENGTH, SPRING_MAX_STRENGTH, SPRING_MIN_WIDTH, SPRING_MAX_WIDTH);
+        
+        	boxSize = ofMap(mp_device->m_listPackets[nbPackets-1-i]->m_volume,0.0f,1.0f, 0.0f*maxBoxSize, maxBoxSize);
+        	ofSetColor(mp_device->m_listPackets[nbPackets-1-i]->m_color,255);
+
+        	ofBox(boxSize);
+        	glPopMatrix();
+		}
 
         ofPushStyle();
         ofSetColor(50,50,50,200);

@@ -42,6 +42,7 @@ void SceneVisualisation::loadSettings()
 	m_settings.loadFile("Config/scene.xml");
 }
 
+
 //--------------------------------------------------------------
 ofVec3f SceneVisualisation::getPositionForSilhouette(string deviceId_)
 {
@@ -103,6 +104,17 @@ void SceneVisualisation::addDeviceNode(DeviceNode* pDeviceNode, SurfaceNode* pSu
     pDeviceNode->setPositionNodeSoundInput( ofVec3f(posSilhouette.x, posSilhouette.y+0.9f*pSilhouette->getHeight(), posSilhouette.z-0.1f ) );
 }
 
+//--------------------------------------------------------------
+DeviceNode*	SceneVisualisation::getDeviceNodeFor(Device* pDevice)
+{
+	vector<DeviceNode*>::iterator it = m_listDeviceNodes.begin();
+	for ( ; it != m_listDeviceNodes.end(); ++it)
+	{
+		if ((*it)->getDevice() == pDevice)
+			return (*it);
+	}
+	return 0;
+}
 
 //--------------------------------------------------------------
 void SceneVisualisation::addSurfaceNode(SurfaceNode* pSurfaceNode)
