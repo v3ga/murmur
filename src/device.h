@@ -167,6 +167,7 @@ class Device
         virtual void        onReceivePacketEnd();
     
         DevicePacket*       getLastPacket(){return m_listPackets[m_nbLEDs-1];}
+ 		bool				m_isUpdatingPacket;
  
 	
         // Sound input
