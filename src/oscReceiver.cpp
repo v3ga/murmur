@@ -80,6 +80,26 @@ void oscReceiver::update()
                 }
             }
             else
+            if (m_oscMessage.getAddress() == OSC_ADDRESS_SEND_PACKETS_BEGIN)
+            {
+				string deviceId = m_oscMessage.getArgAsString(indexArg++);
+                Device* pDevice = pDeviceManager->getDeviceById( deviceId );
+				if (pDevice)
+				{
+					pDevice->onReceivePacketBegin();
+				}
+			}
+            else
+            if (m_oscMessage.getAddress() == OSC_ADDRESS_SEND_PACKETS_END)
+            {
+				string deviceId = m_oscMessage.getArgAsString(indexArg++);
+                Device* pDevice = pDeviceManager->getDeviceById( deviceId );
+				if (pDevice)
+				{
+					pDevice->onReceivePacketEnd();
+				}
+			}
+            else
             if (m_oscMessage.getAddress() == OSC_ADDRESS_SEND_PACKETS)
             {
                 if (pDeviceManager)
@@ -123,7 +143,7 @@ void oscReceiver::update()
                     // Decode new message
                     if (pDevice)
                     {
-                        pDevice->onReceivePacketBegin();
+                        // pDevice->onReceivePacketBegin();
                         
                         int nbPackets = (m_oscMessage.getNumArgs() - 1)/4; // TODO : Be careful with this
                         for (int i=0;i<nbPackets;i++)
@@ -142,7 +162,7 @@ void oscReceiver::update()
 
                         }
 
-                        pDevice->onReceivePacketEnd();
+                        //pDevice->onReceivePacketEnd();
 
                         // Get the surface of device and update animation
                         Surface* pSurface = Globals::instance()->mp_app->getSurfaceForDevice(pDevice);

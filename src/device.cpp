@@ -64,6 +64,8 @@ Device::Device(string id, int nbLEDs, float distLEDs)
 	m_color.setHsb(200, 255, 255); // Brightness not used as set by packets
 	m_colorMode = colorMode_manual_hsb;
 	m_colorSpeedOscillation = 10.0f;
+	
+	m_isUpdatingPacket = false;
 }
 
 //--------------------------------------------------------------
@@ -530,32 +532,64 @@ void Device::sampleSoundInput()
 //--------------------------------------------------------------
 void Device::sendPacketsOSC()
 {
-    ofxOscMessage m;
-    m.setAddress( OSC_ADDRESS_SEND_PACKETS );
-    m.addStringArg(m_id);
+	int nbLEDsUpdate = 160;
+	int nbOSCMessages = m_nbLEDs / nbLEDsUpdate;
+	int nbLEDsRest = m_nbLEDs % nbLEDsUpdate;
+	if (nbLEDsRest > 0){
+		nbOSCMessages += 1;
+	}
 
-    int nbPackets = m_listPackets.size();
-    for (int i=0;i<nbPackets;i++)
-    {
-		m.addFloatArg(m_listPackets[i]->m_volume);
-		m.addFloatArg(m_listPackets[i]->m_color.getHue());
-		m.addFloatArg(m_listPackets[i]->m_color.getSaturation());
-		m.addFloatArg(m_listPackets[i]->m_color.getBrightness());
-    }
-    m_oscSender.sendMessage(m);
+
+	// BEGIN SENDING PACKETS
+    ofxOscMessage m_begin;
+    m_begin.setAddress( OSC_ADDRESS_SEND_PACKETS_BEGIN );
+    m_begin.addStringArg(m_id);
+    m_oscSender.sendMessage(m_begin);
+
+	
+	// SENDING PACKETS
+	int offsetPackets = 0;
+	int offset = 0;
+	for (int i=0;i<nbOSCMessages;i++)
+	{
+		offset = offsetPackets+i;
+
+	    ofxOscMessage m;
+    	m.setAddress( OSC_ADDRESS_SEND_PACKETS );
+    	m.addStringArg(m_id);
+
+    	int nbPackets = (nbLEDsRest && i == nbOSCMessages-1) ?  nbLEDsRest : nbLEDsUpdate;
+    	for (int i=0;i<nbPackets;i++)
+    	{
+			m.addFloatArg(m_listPackets[offset]->m_volume);
+			m.addFloatArg(m_listPackets[offset]->m_color.getHue());
+			m.addFloatArg(m_listPackets[offset]->m_color.getSaturation());
+			m.addFloatArg(m_listPackets[offset]->m_color.getBrightness());
+    	}
+    	m_oscSender.sendMessage(m);
+
+		offsetPackets += nbLEDsUpdate;
+	}
+
+	// END SENDING PACKETS
+    ofxOscMessage m_end;
+    m_end.setAddress( OSC_ADDRESS_SEND_PACKETS_END );
+    m_end.addStringArg(m_id);
+    m_oscSender.sendMessage(m_end);
 }
 
 //--------------------------------------------------------------
 void Device::onReceivePacketBegin()
 {
     m_indexPacketReceived = 0;
+	m_isUpdatingPacket = true;
 }
 
 
 //--------------------------------------------------------------
 void Device::onReceivePacket(DevicePacket* pPacket)
 {
-    if (m_indexPacketReceived<m_listPackets.size())
+    if (m_isUpdatingPacket && m_indexPacketReceived<m_listPackets.size())
     {
         m_listPackets[m_indexPacketReceived]->copy(pPacket);
         m_indexPacketReceived++;
@@ -565,6 +599,7 @@ void Device::onReceivePacket(DevicePacket* pPacket)
 //--------------------------------------------------------------
 void Device::onReceivePacketEnd()
 {
+	m_isUpdatingPacket = false;
 }
 
 //--------------------------------------------------------------

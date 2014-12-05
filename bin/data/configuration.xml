@@ -13,17 +13,17 @@
         <devices>
             <device>
                 <id>deviceEchoSimulator01</id>
-                <nbLEDs>158</nbLEDs>
+                <nbLEDs>160</nbLEDs>
                 <length>4.0</length>
             </device>
             <device>
                 <id>deviceEchoSimulator02</id>
-                <nbLEDs>158</nbLEDs>
+                <nbLEDs>160</nbLEDs>
                 <length>4.0</length>
             </device>
             <device>
                 <id>deviceEchoSimulator03</id>
-                <nbLEDs>158</nbLEDs>
+                <nbLEDs>160</nbLEDs>
                 <length>4.0</length>
             </device>
         </devices>
