@@ -22,6 +22,7 @@ class toolSound : public tool
 	
 		void					createControlsCustom	();
 		void					update					();
+		void					drawUI					();
 		void					handleEvents			(ofxUIEventArgs& e);
 		void 					show					(bool is);
 		void					loadData				();

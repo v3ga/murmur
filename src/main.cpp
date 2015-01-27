@@ -1,19 +1,35 @@
 #include "ofMain.h"
 #include "testApp.h"
-#include "ofAppGlutWindow.h"
 
-//========================================================================
+#if MURMUR_MULTI_WINDOWS
+	#include "ofxMultiGLFWWindow.h"
+	#include "ofGLProgrammableRenderer.cpp"
+#else
+	#include "ofAppGlutWindow.h"
+#endif
+
+
 int main()
 {
-	ofAppGlutWindow window;
-//	ofSetupOpenGL(ofxFensterManager::get(), 400, 400, OF_WINDOW);			// <-------- setup the GL context
-	ofSetupOpenGL(&window, 1024, 900, /*OF_FULLSCREEN*/OF_WINDOW);			// <-------- setup the GL context
-//	ofSetupOpenGL(&window, 1061, 524, /*OF_FULLSCREEN*/OF_WINDOW);			// <-------- setup the GL context
-	ofRunApp(new testApp());
+	#if MURMUR_MULTI_WINDOWS
 
-	// this kicks off the running of my app
-	// can be OF_WINDOW or OF_FULLSCREEN
-	// pass in width and height too:
-	// ofRunFensterApp(new testApp());
+    ofSetCurrentRenderer(ofGLProgrammableRenderer::TYPE);
+
+    ofxMultiGLFWWindow glfw;
+    glfw.setOpenGLVersion(3,2); // must be set
+
+    glfw.windowCount = 2;
+	ofSetupOpenGL(&glfw,1024,900,OF_WINDOW);
+
+
+
+	#else
+
+	ofAppGlutWindow window;
+	ofSetupOpenGL(&window, 1024, 900, /*OF_FULLSCREEN*/OF_WINDOW);			// <-------- setup the GL context
+
+	#endif
+
+	ofRunApp(new testApp());
 }
 

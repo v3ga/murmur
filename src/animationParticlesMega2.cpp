@@ -37,6 +37,7 @@ AnimationParticlesMega2::AnimationParticlesMega2(string name) : Animation(name)
     m_ampAttraction = 10.0;
 	
 	m_particlesSize = 1.0f;
+	m_particlesPos = 0;
 }
 
 
@@ -46,6 +47,9 @@ AnimationParticlesMega2::~AnimationParticlesMega2()
 	map<string,ParticleForce*>::iterator it = m_mapParticleForce.begin();
 	for ( ; it != m_mapParticleForce.end() ; ++it)
 		delete it->second;
+
+	delete[] m_particlesPos;
+	m_particlesPos = 0;
 }
 
 //--------------------------------------------------------------
@@ -60,14 +64,30 @@ void AnimationParticlesMega2::createParticles()
         kParticles = 16;
         float padding = 0;
         float maxVelocity = .5;
-        for(int i = 0; i < kParticles * 1024; i++) {	
+
+		if (m_particlesPos)
+		{
+			delete[] m_particlesPos;
+			m_particlesPos = 0;
+		}
+		m_particlesPos = new ofVec3f[kParticles * 1024];
+
+        for(int i = 0; i < kParticles * 1024; i++) {
             float x = ofRandom(padding, ofGetWidth() - padding);
             float y = ofRandom(padding, ofGetHeight() - padding);
             float xv = ofRandom(-maxVelocity, maxVelocity);
             float yv = ofRandom(-maxVelocity, maxVelocity);
-            Particle particle(x, y, xv, yv);
+
+			m_particlesPos[i].set(x,y);
+
+
+            Particle particle(m_particlesPos+i, xv, yv);
             particleSystem.add(particle);
+
+
         }
+
+		m_particlesVbo.setVertexData(m_particlesPos, kParticles * 1024, GL_DYNAMIC_DRAW);
 
         timeStep = 1;
         lineOpacity = 128;
@@ -139,7 +159,8 @@ void AnimationParticlesMega2::VM_draw(float w, float h)
     if (!m_isParticlesInit) return;
     
     particleSystem.setTimeStep(timeStep);
-    
+ 
+	m_particlesVbo.updateVertexData(m_particlesPos, kParticles*1024);
     
 	ofEnableAlphaBlending();
 	ofSetColor(255, 255, 255, lineOpacity);
@@ -174,7 +195,9 @@ void AnimationParticlesMega2::VM_draw(float w, float h)
         
     particleSystem.update();
 	ofSetColor(255, 255, 255, pointOpacity);
-	particleSystem.draw();
+//	particleSystem.draw();
+	glPointSize(particleSystem.getParticleSize());
+	m_particlesVbo.draw(GL_POINTS,0,kParticles*1024);
 	ofDisableAlphaBlending();
     
 /*	ofSetColor(255, 255, 255);
@@ -265,7 +288,7 @@ Particle& ParticleSystem::operator[](unsigned i) {
 }
 
 vector<Particle*> ParticleSystem::getNeighbors(Particle& particle, float radius) {
-	return getNeighbors(particle.x, particle.y, radius);
+	return getNeighbors(particle.mp_pos->x, particle.mp_pos->y, radius);
 }
 
 vector<Particle*> ParticleSystem::getNeighbors(float x, float y, float radius) {
@@ -280,8 +303,8 @@ vector<Particle*> ParticleSystem::getNeighbors(float x, float y, float radius) {
 	maxrsq = radius * radius;
 	for(int i = 0; i < n; i++) {
 		Particle& cur = *region[i];
-		xd = cur.x - x;
-		yd = cur.y - y;
+		xd = cur.mp_pos->x - x;
+		yd = cur.mp_pos->y - y;
 		rsq = xd * xd + yd * yd;
 		if(rsq < maxrsq)
 			neighbors.push_back(region[i]);
@@ -321,8 +344,8 @@ void ParticleSystem::setupForces() {
 	for(int i = 0; i < n; i++) {
 		Particle& cur = particles[i];
 		cur.resetForce();
-		xBin = ((unsigned) cur.x) >> k;
-		yBin = ((unsigned) cur.y) >> k;
+		xBin = ((unsigned) cur.mp_pos->x) >> k;
+		yBin = ((unsigned) cur.mp_pos->y) >> k;
 		bin = yBin * xBins + xBin;
 		if(xBin < xBins && yBin < yBins)
 			bins[bin].push_back(&cur);
@@ -330,7 +353,7 @@ void ParticleSystem::setupForces() {
 }
 
 void ParticleSystem::addRepulsionForce(const Particle& particle, float radius, float scale) {
-	addRepulsionForce(particle.x, particle.y, radius, scale);
+	addRepulsionForce(particle.mp_pos->x, particle.mp_pos->y, radius, scale);
 }
 
 void ParticleSystem::addRepulsionForce(float x, float y, float radius, float scale) {
@@ -338,7 +361,7 @@ void ParticleSystem::addRepulsionForce(float x, float y, float radius, float sca
 }
 
 void ParticleSystem::addAttractionForce(const Particle& particle, float radius, float scale) {
-	addAttractionForce(particle.x, particle.y, radius, scale);
+	addAttractionForce(particle.mp_pos->x, particle.mp_pos->y, radius, scale);
 }
 
 void ParticleSystem::addAttractionForce(float x, float y, float radius, float scale) {
@@ -346,7 +369,7 @@ void ParticleSystem::addAttractionForce(float x, float y, float radius, float sc
 }
 
 void ParticleSystem::addForce(const Particle& particle, float radius, float scale) {
-	addForce(particle.x, particle.y, radius, -scale);
+	addForce(particle.mp_pos->x, particle.mp_pos->y, radius, -scale);
 }
 
 void ParticleSystem::addForce(float targetX, float targetY, float radius, float scale) {
@@ -382,8 +405,8 @@ void ParticleSystem::addForce(float targetX, float targetY, float radius, float 
 			int n = curBin.size();
 			for(int i = 0; i < n; i++) {
 				Particle& curParticle = *(curBin[i]);
-				xd = curParticle.x - targetX;
-				yd = curParticle.y - targetY;
+				xd = curParticle.mp_pos->x - targetX;
+				yd = curParticle.mp_pos->y - targetY;
 				length = xd * xd + yd * yd;
 				if(length > 0 && length < maxrsq) {
 #ifdef DRAW_FORCES
@@ -424,6 +447,7 @@ void ParticleSystem::update() {
 	int n = particles.size();
 	for(int i = 0; i < n; i++)
 		particles[i].updatePosition(timeStep);
+
 }
 
 void ParticleSystem::draw() {
@@ -435,4 +459,5 @@ void ParticleSystem::draw() {
 		particles[i].draw();
 	glEnd();
 	glDisable(GL_POINT_SPRITE);
+
 }

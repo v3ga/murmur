@@ -53,6 +53,7 @@ void toolNetwork::createControlsCustom()
 
 
 		mp_canvas->autoSizeToFitWidgets();
+		mp_canvas->disableAppDrawCallback();
 	}
 }
 

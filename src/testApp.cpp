@@ -13,6 +13,12 @@
 #include "animations.h"
 
 #include "tools.h"
+#include "toolALB.h"
+
+
+#if MURMUR_MULTI_WINDOWS
+#include "ofxMultiGLFWWindow.h"
+#endif
 
 //--------------------------------------------------------------
 void testApp::setup()
@@ -35,6 +41,35 @@ void testApp::setup()
     // Globals
     Globals::instance()->mp_app = this;
     Globals::instance()->mp_deviceManager = mp_deviceManager;
+
+	// Multi-windows
+	#if MURMUR_MULTI_WINDOWS
+    mp_glfw = (ofxMultiGLFWWindow*)ofGetWindowPtr();
+    // vector of windows, count set in main
+    mp_windows = &mp_glfw->windows;
+
+    mp_glfw->setWindow(mp_windows->at(0));    // set window pointer
+    mp_glfw->initializeWindow();       // initialize events (mouse, keyboard, etc) on window (optional)
+    ofSetWindowPosition(0, 0);    // business as usual...
+    ofSetWindowShape(1024, 900);
+    ofSetWindowTitle("Murmur");
+
+	int xSurface = m_settings.getValue("murmur:windows:surface:x", 0);
+	int ySurface = m_settings.getValue("murmur:windows:surface:y", 0);
+	int wSurface = m_settings.getValue("murmur:windows:surface:w", 800);
+	int hSurface = m_settings.getValue("murmur:windows:surface:h", 600);
+
+	OFAPPLOG->println(" - window surface ("+ofToString(xSurface)+","+ofToString(ySurface)+","+ofToString(wSurface)+","+ofToString(hSurface)+")");
+
+
+    mp_glfw->setWindow(mp_windows->at(1));    // set window pointer
+    mp_glfw->initializeWindow();       // initialize events (mouse, keyboard, etc) on window (optional)
+    ofSetWindowPosition(xSurface, ySurface);    // business as usual...
+    ofSetWindowShape(wSurface, hSurface);
+    ofSetWindowTitle("Surface");
+
+    mp_glfw->setWindow(mp_windows->at(0));
+	#endif
 	
     // Initialize JS
     initJS();
@@ -61,6 +96,7 @@ void testApp::setup()
 	toolDevices*		pToolDevices		= new toolDevices(&toolManager, mp_deviceManager);
 	toolNetwork* 		pToolNetwork 		= new toolNetwork(&toolManager);
 	toolSurfaces*		pToolSurfaces		= new toolSurfaces(&toolManager, mp_surfaceMain);
+	toolALB*			pToolALB			= new toolALB(&toolManager);
 
 	toolManager.addTool( pToolConfiguration );
 	toolManager.addTool( new toolNetwork(&toolManager) );
@@ -69,6 +105,7 @@ void testApp::setup()
 	toolManager.addTool( pToolAnimations );
 	toolManager.addTool( new toolScene(&toolManager, mp_sceneVisualisation) );
 	toolManager.addTool( new toolSound(&toolManager) );
+	toolManager.addTool( pToolALB );
 
 	toolManager.setLogo("murmur_logo.png");
 	toolManager.setFontName("Fonts/NewMedia Fett.ttf");
@@ -88,6 +125,7 @@ void testApp::setup()
 	if (pToolDevices)			pToolDevices->setup();
 	if (pToolSurfaces)			pToolSurfaces->setup();
 	if (pToolAnimations)		pToolAnimations->setup();
+	if (pToolALB)				pToolALB->setup();
 	
 	// GO
 	ofSetVerticalSync(true);
@@ -388,27 +426,50 @@ void testApp::update()
 //--------------------------------------------------------------
 void testApp::draw()
 {
-    if (isViewSimulation)
-    {
-        // Draw Scene
-        if (mp_sceneVisualisation)
-            mp_sceneVisualisation->draw();
+	#if MURMUR_MULTI_WINDOWS
+    m_windowIndex = mp_glfw->getWindowIndex();
+	if (m_windowIndex==0)
+	{
+	#endif
+	
+	 if (isViewSimulation)
+	 {
+		// Draw simulation ?
+		 toolScene* pToolScene = (toolScene*) toolManager.getTool("Scene");
 
-		if (m_isUpdateLayout)
-		{
-			guiUpdateListDevices();
-			m_isUpdateLayout = false;
-		}
-		
-		toolManager.drawUI();
-    }
-	else
-    {
-		toolSurfaces* pToolSurfaces = (toolSurfaces*) toolManager.getTool("Surfaces");
-		if (pToolSurfaces){
-			pToolSurfaces->draw();
-		}
-    }
+
+		 // Draw Scene
+		 if (mp_sceneVisualisation && pToolScene->isDrawScene())
+			 mp_sceneVisualisation->draw();
+
+		 if (m_isUpdateLayout)
+		 {
+			 guiUpdateListDevices();
+			 m_isUpdateLayout = false;
+		 }
+		 
+		 toolManager.drawUI();
+	 }
+	 else
+	 {
+		 toolSurfaces* pToolSurfaces = (toolSurfaces*) toolManager.getTool("Surfaces");
+		 if (pToolSurfaces){
+			 pToolSurfaces->draw();
+		 }
+	 }
+
+	#if MURMUR_MULTI_WINDOWS
+	}
+	else if (m_windowIndex == 1)
+	{
+		ofBackground(50);
+		 toolSurfaces* pToolSurfaces = (toolSurfaces*) toolManager.getTool("Surfaces");
+		 if (pToolSurfaces){
+			 pToolSurfaces->draw();
+		 }
+
+	}
+	#endif
 }
 
 //--------------------------------------------------------------
@@ -511,15 +572,31 @@ void testApp::setViewSimulation(bool is)
 		}
 	}
 
-	toolManager.enableDrawCallback( isViewSimulation );
+//	toolManager.enableDrawCallback( isViewSimulation );
+	if (isViewSimulation)
+	{
+		toolManager.showUI();
+	}
+	else
+	{
+		toolManager.hideUI();
+	}
+	
 	OFAPPLOG->end();
 }
 
 //--------------------------------------------------------------
 void testApp::keyPressed(int key)
 {
+	#if MURMUR_MULTI_WINDOWS
+    if (mp_glfw->getEventWindow() == mp_windows->at(0))
+	{
+	#endif
+
+	
 	OFAPPLOG->begin("testApp::keyPressed()");
 	OFAPPLOG->println("-key='"+ofToString(key)+"'");
+	
 	toolConfiguration* 	pToolConfiguration 	= (toolConfiguration*) 		toolManager.getTool("Configuration");
 	toolAnimations* 	pToolAnimations 	= (toolAnimations*) 		toolManager.getTool("Animations");
 	
@@ -552,21 +629,41 @@ void testApp::keyPressed(int key)
 		}
 	}
 	OFAPPLOG->end();
+
+	#if MURMUR_MULTI_WINDOWS
+	}
+	else
+	{
+		if (key == 'f')
+			ofToggleFullscreen();
+	}
+	#endif
+
 }
 
 //--------------------------------------------------------------
 void testApp::keyReleased(int key){
+	#if MURMUR_MULTI_WINDOWS
+    if (mp_glfw->getEventWindow() != mp_windows->at(0)) return;
+	#endif
 
 }
 
 //--------------------------------------------------------------
 void testApp::mouseMoved(int x, int y){
+	#if MURMUR_MULTI_WINDOWS
+    if (mp_glfw->getEventWindow() != mp_windows->at(0)) return;
+	#endif
 
 }
 
 //--------------------------------------------------------------
 void testApp::mouseDragged(int x, int y, int button)
 {
+	#if MURMUR_MULTI_WINDOWS
+    if (mp_glfw->getEventWindow() != mp_windows->at(0)) return;
+	#endif
+
     if (isViewSimulation)
     {
         if (m_isUserControls) return;
@@ -579,6 +676,10 @@ void testApp::mouseDragged(int x, int y, int button)
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button)
 {
+	#if MURMUR_MULTI_WINDOWS
+    if (mp_glfw->getEventWindow() != mp_windows->at(0)) return;
+	#endif
+
 	if (isViewSimulation)
 	{
         m_isUserControls = toolManager.isHit(x,y);

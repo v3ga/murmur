@@ -127,13 +127,14 @@ void AnimationShaderWave::VM_draw(float w, float h)
     	m_shader.setUniform1f("intensityWave", m_waveIntensity);
     	m_shader.setUniformTexture("texWave", pShaderWave->m_imgSoundInput.getTextureReference(), 0);
 
-    	glBegin(GL_QUADS);
+/*    	glBegin(GL_QUADS);
         	glVertex3f(0,0,0);
         	glVertex3f(w,0,0);
         	glVertex3f(w,h,0);
         	glVertex3f(0,h,0);
     	glEnd();
-    
+ */
+ 		ofRect(0,0,w,h);
     
     	m_shader.end();
     	pShaderWave->m_imgSoundInput.unbind();

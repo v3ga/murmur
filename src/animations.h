@@ -17,6 +17,7 @@
 #include "ofxUI.h"
 #include "ofxUIMovingGraphThreshold.h"
 #include "volumeAccum.h"
+#include "ofxJSONElement.h"
 
 
 struct AnimationTheme
@@ -78,7 +79,9 @@ class Animation
 		
 		bool					M_isScript				(){return mp_script!=0;}
 
-    
+		// Export to string
+		virtual string			toString				(){return "";}
+
         // UI
         ofxUICanvas*            mp_UIcanvas;
 		ofxUIMovingGraphThreshold* mp_UIVolumeTh;

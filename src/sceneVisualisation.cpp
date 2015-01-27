@@ -172,44 +172,34 @@ void SceneVisualisation::update(float dt)
 void SceneVisualisation::draw()
 {
 	ofBackground(70,70,70);
-	glEnable(GL_DEPTH_TEST);
 
-    
-    
-	m_cam.setPosition( m_camPosition );
+	m_cam.setPosition(m_camPosition);
     SurfaceNode* pSurfaceNodeMain = m_listSurfaceNodes[0];
     if (pSurfaceNodeMain){
-//		printf("%.2f %.2f %.2f\n",pSurfaceNodeMain->getPositionCenter().x, pSurfaceNodeMain->getPositionCenter().y, pSurfaceNodeMain->getPositionCenter().z);
         m_cam.lookAt(pSurfaceNodeMain->getPositionCenter());
 	}
     else{
-//		printf("*");
         m_cam.lookAt(ofVec3f(0,0,0));
 	}
 	m_cam.begin();
     
-    ofEnableBlendMode(OF_BLENDMODE_ALPHA);
-    ofPushMatrix();
+	glEnable(GL_DEPTH_TEST);
+
+	ofEnableAlphaBlending();
+	ofPushMatrix();
     ofSetColor(255,255,255,25);
     ofRotateZ(90);
     ofDrawGridPlane(5.0f, 20.0f);
     ofPopMatrix();
     ofDisableBlendMode();
 
-/*
-    float l = 1.0f;
-    ofSetColor(255,0,0);ofLine(0,0,0, l,0,0);
-    ofSetColor(0,255,0);ofLine(0,0,0, 0,l,0);
-    ofSetColor(0,0,255);ofLine(0,0,0, 0,0,l);
-*/
     ofSetColor(255);
-
 
     vector<SurfaceNode*>::iterator itSurface = m_listSurfaceNodes.begin();
     for(; itSurface != m_listSurfaceNodes.end(); ++itSurface)
         (*itSurface)->draw();
 
-    ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+	ofEnableAlphaBlending();
     vector<DeviceNode*>::iterator itDevice = m_listDeviceNodes.begin();
     for(; itDevice != m_listDeviceNodes.end(); ++itDevice)
         (*itDevice)->draw();
@@ -217,8 +207,8 @@ void SceneVisualisation::draw()
     vector<SilhouetteNode*>::iterator itSilhouette = m_listSilhouetteNodes.begin();
     for(; itSilhouette != m_listSilhouetteNodes.end(); ++itSilhouette)
         (*itSilhouette)->draw();
-    
     ofDisableBlendMode();
+
     m_cam.end();
     
 	glDisable(GL_DEPTH_TEST);

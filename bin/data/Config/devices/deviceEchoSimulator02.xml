@@ -9,8 +9,8 @@
     </soundOutput>
     <color>
         <colorMode_manual_hsb>
-            <hue>100.111587524</hue>
-            <saturation>146.964248657</saturation>
+            <hue>119.568626404</hue>
+            <saturation>198.849670410</saturation>
         </colorMode_manual_hsb>
     </color>
     <enableStandby>0</enableStandby>
@@ -18,7 +18,7 @@
     <sampleVolStandby>0.349999994</sampleVolStandby>
     <enableStandby>0</enableStandby>
     <surface id="main">
-        <xNorm>0.467773438</xNorm>
-        <yNorm>0.451822907</yNorm>
+        <xNorm>0.679382384</xNorm>
+        <yNorm>0.540569186</yNorm>
     </surface>
 </device>

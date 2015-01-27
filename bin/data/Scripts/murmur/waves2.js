@@ -67,22 +67,19 @@ function WaveManager(anim_)
 			  w1a = w1.getAlpha();
 			  w2a = w2.getAlpha();
 			  nbPoints = w1.points.length;
-			  gl.Begin(GL_LINES);
-			  //println("wave "+i+" & wave "+(i+1));
+			  // gl.Begin(GL_LINES);
 			  for (var j=0;j<nbPoints;j++)
 			  {
-				  p1 = w1.points[j];
-				  p2 = w2.points[j];
-				//   println("p1:"+p1.x+"-"+p1.y);
-				//   println("p2:"+p2.x+"-"+p2.y);
+				p1 = w1.points[j];
+				p2 = w2.points[j];
 				if (p2.x>0)
 				{
-
-				  gl.Color4(1,1,1,w1a);gl.Vertex2(p1.x,p1.y);
-				  gl.Color4(1,1,1,w2a);gl.Vertex2(p2.x,p2.y);
-			  	}
+				  // gl.Color4(1,1,1,w1a);gl.Vertex2(p1.x,p1.y);
+				  // gl.Color4(1,1,1,w2a);gl.Vertex2(p2.x,p2.y);
+				  of.Line(p1.x,p1.y, p2.x,p2.y);
+				}
 			  }
-			  gl.End();
+			  // gl.End();
 		  }
 	  }
 	

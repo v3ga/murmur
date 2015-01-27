@@ -23,10 +23,12 @@ class toolScene : public tool
 		SurfaceNode*			getSurfaceNode		(Surface* pSurface);
 		void					handleEvents		(ofxUIEventArgs& e);
 		void					onDeviceChanged		();
+		bool					isDrawScene			(){return m_isDrawScene;}
 
 	private:
 		void					setDeviceCurrentNodeDrawLights	();
 
 		SceneVisualisation*		mp_sceneVisualisation;
 		bool					m_isDrawDeviceLightCurrent;
+		bool					m_isDrawScene;
 };

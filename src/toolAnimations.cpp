@@ -36,19 +36,33 @@ void toolAnimations::setup()
 	OFAPPLOG->end();
 }
 
+
+//--------------------------------------------------------------
+void toolAnimations::drawUI()
+{
+	tool::drawUI();
+	if (mp_animationUI)
+		mp_animationUI->draw();
+}
+
 //--------------------------------------------------------------
 void toolAnimations::show(bool is)
 {
-	tool::show(is);
 	if (is == false)
 		showAnimationPropsAll(false);
 	if (mp_animationUI && is)
+	{
 		mp_animationUI->setVisible(true);
+		mp_animationUI->disableAppDrawCallback();
+	}
+	tool::show(is);
+
 }
 
 //--------------------------------------------------------------
 void  toolAnimations::enableDrawCallback(bool is)
 {
+/*
 	// Call parent
 	tool::enableDrawCallback(is);
 	if (mp_animationUI){
@@ -61,6 +75,8 @@ void  toolAnimations::enableDrawCallback(bool is)
 		}
 	}
 	m_isEnableDrawCallback = is;
+*/
+
 }
 
 
@@ -100,6 +116,7 @@ void toolAnimations::createControlsCustom()
 		mp_canvas->addWidgetDown(mp_consoleJs);
 
 		mp_canvas->autoSizeToFitWidgets();
+		mp_canvas->disableAppDrawCallback();
 
 	}
 }
@@ -125,6 +142,7 @@ void toolAnimations::createControlsAnimations(Surface* pSurface)
             
             pAnimCanvas->autoSizeToFitWidgets();
             pAnimCanvas->setVisible(false);
+			pAnimCanvas->disableAppDrawCallback();
             
             m_mapAnimationUI[pAnim] = pAnimCanvas;
         }
@@ -298,6 +316,7 @@ void toolAnimations::showAnimationCurrentProperties()
 
 		   mp_animationUI = pAnimationCurrent->getUI();
 		   mp_animationUI->setVisible(mp_canvas->isVisible() && m_isEnableDrawCallback);
+		   mp_animationUI->disableAppDrawCallback();
 		}else{
 		   OFAPPLOG->println("- no animation was set...");
 		}

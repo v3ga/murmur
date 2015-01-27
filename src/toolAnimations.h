@@ -19,6 +19,7 @@ class toolAnimations : public tool
 
 	
 		void							setup						();
+		void							drawUI						();
 		void							createControlsCustom		();
 		void							createControlsAnimations	(Surface*);
 		void							handleEvents				(ofxUIEventArgs& e);

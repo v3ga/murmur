@@ -890,7 +890,7 @@ void AnimationOrbit::guiEvent(ofxUIEventArgs &e)
 		ofxUILabelButton* pBtn = (ofxUILabelButton*) e.widget;
 		if (pBtn->getValue())
 		{
-/*			m_boidsSpeedFactor = 1.0f;
+			m_boidsSpeedFactor = 1.0f;
 			m_boidsForceMax = 0.2f;
 			m_boidsSpeedMin = 2.0f;
 			m_boidsSpeedMax = 3.0f;
@@ -904,7 +904,7 @@ void AnimationOrbit::guiEvent(ofxUIEventArgs &e)
 				pBoid->setForceMax(m_boidsForceMax);
 				pBoid->setSpeedMinMax(m_boidsSpeedMin, m_boidsSpeedMax);
 			}
-*/
+
 		}
 	}
 	else if (name == "excited")
@@ -912,7 +912,7 @@ void AnimationOrbit::guiEvent(ofxUIEventArgs &e)
 		ofxUILabelButton* pBtn = (ofxUILabelButton*) e.widget;
 		if (pBtn->getValue())
 		{
-/*			m_boidsSpeedFactor = 9.0f;
+			m_boidsSpeedFactor = 9.0f;
 			m_boidsForceMax = 1.0f;
 			m_boidsSpeedMin = 9.0f;
 			m_boidsSpeedMax = 10.0f;
@@ -928,9 +928,8 @@ void AnimationOrbit::guiEvent(ofxUIEventArgs &e)
 			}
 
 		}
-*/
 
-	}
+
 	}
 }
 
