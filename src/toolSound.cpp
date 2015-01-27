@@ -29,7 +29,10 @@ void toolSound::show(bool is)
 {
 	tool::show(is);
 	if (mp_canvasSound)
-		if (mp_soundCurrent) mp_canvasSound->setVisible(is);
+	{
+		mp_canvasSound->setVisible(is);
+		mp_canvasSound->disableAppDrawCallback();
+	}
 }
 
 //--------------------------------------------------------------
@@ -194,10 +197,25 @@ void toolSound::update()
 					mp_teSoundTags->setTextString("");
 			}
 
+
+			if (mp_canvasSound)
+			{
+				mp_canvasSound->setVisible(true);
+				mp_canvasSound->disableAppDrawCallback();
+			}
+
 		}
 	
 		m_isUpdateLayout = false;
 	}
+}
+
+//--------------------------------------------------------------
+void toolSound::drawUI()
+{
+	tool::drawUI();
+	if (mp_canvasSound)
+		mp_canvasSound->draw();
 }
 
 
@@ -231,7 +249,8 @@ void toolSound::handleEvents(ofxUIEventArgs& e)
 			// Get sound current
 			string soundName = selected[0]->getName();
 			mp_soundCurrent = SoundManager::instance()->getSoundPlayer(soundName);
-					
+
+			
 			// Update Layout
 			updateLayout();
 		}

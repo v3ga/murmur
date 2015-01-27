@@ -69,6 +69,8 @@ void toolDevices::show(bool is)
 			mp_canvasDevice->setVisible(is);
 		else
 			mp_canvasDevice->setVisible(is);
+
+		mp_canvasDevice->disableAppDrawCallback();
 	}
 	OFAPPLOG->end();
 }
@@ -76,6 +78,7 @@ void toolDevices::show(bool is)
 //--------------------------------------------------------------
 void  toolDevices::enableDrawCallback(bool is)
 {
+/*
 	tool::enableDrawCallback(is);
 	if (mp_canvasDevice){
 		if (is){
@@ -86,6 +89,7 @@ void  toolDevices::enableDrawCallback(bool is)
 			mp_canvasDevice->disableMouseEventCallbacks();
 		}
 	}
+*/
 }
 
 //--------------------------------------------------------------
@@ -213,6 +217,11 @@ void toolDevices::createControlsCustomFinalize()
 //--------------------------------------------------------------
 void toolDevices::drawUI()
 {
+	tool::drawUI();
+	if (mp_canvasDevice)
+		mp_canvasDevice->draw();
+
+
 	ofPushStyle();
 	Device* pDeviceCurrent = mp_deviceManager->getDeviceCurrent();
 	if (pDeviceCurrent)

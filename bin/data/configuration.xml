@@ -5,7 +5,7 @@
 
         <!-- Sound input for simulators -->
         <soundInput>
-            <device>0</device>
+            <device>1</device>
             <nbChannels>1</nbChannels>
         </soundInput>
         
@@ -21,13 +21,26 @@
                 <nbLEDs>160</nbLEDs>
                 <length>4.0</length>
             </device>
+<!--
             <device>
                 <id>deviceEchoSimulator03</id>
                 <nbLEDs>160</nbLEDs>
                 <length>4.0</length>
             </device>
+-->
         </devices>
     </simulator>
+
+	   <!-- Windows -->
+	   <windows>
+		   <surface>
+			   <x>1024</x>
+			   <y>0</y>
+			   <w>800</w>
+			   <h>600</h>
+		   </surface>
+	   </windows>
+
 
 	<!-- Sound output -->
 	<soundOutput>

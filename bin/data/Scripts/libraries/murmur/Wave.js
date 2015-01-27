@@ -66,14 +66,17 @@ function Wave(x,y, nbPoints)
 	//--------------------------------------------------------------
 	this.draw = function()
 	{
-		var p;
-		gl.Begin(GL_LINE_LOOP);
+		var p1,p2;
+		// gl.Begin(GL_LINE_LOOP);
+		
 		for (var i=0;i<this.points.length;i++)
 		{
-			p = this.points[i];
-			gl.Vertex2(p.x, p.y);
+			p1 = this.points[i];
+			p2 = this.points[(i+1)%this.points.length];
+			of.Line(p1.x,p1.y,p2.x,p2.y);
+			//gl.Vertex2(p.x, p.y);
 		}
-		gl.End();
+		// gl.End();
 	}
 
 	//--------------------------------------------------------------

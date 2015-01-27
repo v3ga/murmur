@@ -14,6 +14,7 @@ toolScene::toolScene(toolManager* parent, SceneVisualisation* scene) : tool("Sce
 {
 	mp_sceneVisualisation = scene;
 	m_isDrawDeviceLightCurrent = true;
+	m_isDrawScene = true;
 }
 	
 //--------------------------------------------------------------
@@ -29,6 +30,7 @@ void toolScene::createControlsCustom()
     	mp_canvas->addWidgetDown( new ofxUISpacer(widthDefault, 2) );
 
 		mp_canvas->addWidgetDown( new ofxUIToggle("draw lights for current device only", &m_isDrawDeviceLightCurrent,dim, dim) );
+		mp_canvas->addWidgetDown( new ofxUIToggle("draw scene", &m_isDrawScene,dim, dim) );
 
 		mp_canvas->autoSizeToFitWidgets();
 	}

@@ -13,6 +13,7 @@
 class Particle
 {
 public:
+	ofVec3f* mp_pos;
 	float x, y;
 	float xv, yv;
 	float xf, yf;
@@ -21,12 +22,22 @@ public:
     x(_x), y(_y),
     xv(_xv), yv(_yv) {
 	}
+
+	Particle(ofVec3f* pPos,
+             float _xv = 0, float _yv = 0) :
+    xv(_xv), yv(_yv)
+	{
+		mp_pos = pPos;
+	}
+
 	void updatePosition(float timeStep) {
 		// f = ma, m = 1, f = a, v = int(a)
 		xv += xf;
 		yv += yf;
-		x += xv * timeStep;
-		y += yv * timeStep;
+//		x += xv * timeStep;
+//		y += yv * timeStep;
+		mp_pos->x += xv * timeStep;
+		mp_pos->y += yv * timeStep;
 	}
 	void resetForce() {
 		xf = 0;
@@ -35,22 +46,29 @@ public:
 	void bounceOffWalls(float left, float top, float right, float bottom, float damping = .3) {
 		bool collision = false;
         
-		if (x > right){
-			x = right;
+//		if (x > right){
+		if (mp_pos->x > right){
+			mp_pos->x = right;//x = right;
 			xv *= -1;
 			collision = true;
-		} else if (x < left){
-			x = left;
+//		} else if (x < left){
+		} else if (mp_pos->x < left){
+//			x = left;
+			mp_pos->x = left;
 			xv *= -1;
 			collision = true;
 		}
         
-		if (y > bottom){
-			y = bottom;
+//		if (y > bottom){
+		if (mp_pos->y > bottom){
+//			y = bottom;
+			mp_pos->y = bottom;
 			yv *= -1;
 			collision = true;
-		} else if (y < top){
-			y = top;
+//		} else if (y < top){
+		} else if (mp_pos->y < top){
+//			y = top;
+			mp_pos->y = top;
 			yv *= -1;
 			collision = true;
 		}
@@ -104,7 +122,8 @@ public:
 	void update();
 	
 	void setParticleSize(float s_){particleSize = s_;}
-    
+	float getParticleSize(){return particleSize;}
+ 
 	void draw();
 };
 
@@ -173,5 +192,7 @@ private:
 	float					m_particlesSize;
 		
 	map<string, ParticleForce*>	m_mapParticleForce;
-
+	ofVbo					m_particlesVbo;
+	ofVec3f*				m_particlesPos;
+	
 };

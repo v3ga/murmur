@@ -251,7 +251,7 @@ void Surface::setDimensions(int w, int h, int nbSamples)
 	if (m_fboNbSamples > ofFbo::maxSamples())
 		m_fboNbSamples = ofFbo::maxSamples();
 
-	m_fbo.allocate(w,h,GL_RGBA, m_fboNbSamples);
+	m_fbo.allocate(w,h,GL_RGB, m_fboNbSamples); // TODO : GL_RGBA ??? 
 }
 
 //--------------------------------------------------------------

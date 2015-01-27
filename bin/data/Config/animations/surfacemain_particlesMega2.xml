@@ -101,7 +101,7 @@
 <Widget>
     <Kind>4</Kind>
     <Name>amp. attraction</Name>
-    <Value>10.000000000</Value>
+    <Value>8.673076630</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -111,10 +111,10 @@
 <Widget>
     <Kind>4</Kind>
     <Name>radius repulsion</Name>
-    <Value>100.000000000</Value>
+    <Value>117.500000000</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>particles size</Name>
-    <Value>2.358974457</Value>
+    <Value>2.025640965</Value>
 </Widget>

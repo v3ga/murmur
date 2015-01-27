@@ -1,5 +1,7 @@
 #pragma once
 
+#define MURMUR_MULTI_WINDOWS	1
+
 #include "ofMain.h"
 #include "murmur.h"
 #include "ofxUI.h"
@@ -20,6 +22,11 @@ class SoundInput;
 class Animation;
 class AnimationManager;
 
+#if MURMUR_MULTI_WINDOWS
+class ofxMultiGLFWWindow;
+class GLFWwindow;
+#endif
+
 class testApp : public ofBaseApp
 {
 	public:
@@ -38,6 +45,13 @@ class testApp : public ofBaseApp
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 	
+		// Multi-windows
+		#if MURMUR_MULTI_WINDOWS
+        ofxMultiGLFWWindow*		mp_glfw;
+        vector<GLFWwindow*>*	mp_windows;
+        int 					m_windowIndex;
+		#endif
+
         // Javascript
 		void                initJS();
 
