@@ -8,9 +8,10 @@
         <speaker>0</speaker>
     </soundOutput>
     <color>
+        <enable>1</enable>
         <colorMode_manual_hsb>
-            <hue>87.509674072</hue>
-            <saturation>255.000000000</saturation>
+            <hue>188.709686279</hue>
+            <saturation>222.987091064</saturation>
         </colorMode_manual_hsb>
     </color>
     <enableStandby>0</enableStandby>

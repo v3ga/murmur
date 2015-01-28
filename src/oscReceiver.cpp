@@ -69,6 +69,12 @@ void oscReceiver::update()
                         pDevice->setStandupVolOSC( m_oscMessage.getArgAsFloat(indexArg) );
 					}
                     else
+                    if (propName == "enableColor")
+					{
+						int value = m_oscMessage.getArgAsInt32(indexArg++);
+						pDevice->enableColorOSC(value>0 ? true : false);
+					}
+                    else
                     if (propName == "color")
 					{
 						float hue = m_oscMessage.getArgAsFloat(indexArg++);

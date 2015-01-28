@@ -48,6 +48,7 @@ class toolDevices : public tool
     	ofxUISlider* 			mp_sliderDeviceTimeStandby;
     	ofxUISlider* 			mp_sliderDeviceSampleVolStandby;
 
+		ofxUIToggle*			mp_toggleColorEnable;
 		ofxUISlider*			mp_sliderColorManualHue;
 		ofxUISlider*			mp_sliderColorManualSaturation;
 		ofxUISpacer*			mp_spacerColorManualHsb;

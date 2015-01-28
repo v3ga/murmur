@@ -21,8 +21,8 @@ class DevicePacket
         DevicePacket         ();
 
         void                  copy(DevicePacket* pPacket);
-		void				  computeColor(const ofColor& deviceColor);
-		void				  computeColor(const float* deviceColor);
+		void				  computeColor(const ofColor& deviceColor, bool isColor);
+		void				  computeColor(const float* deviceColor, bool isColor);
 	
         float                 m_volume;
 		ofColor		  	      m_color;
@@ -131,6 +131,7 @@ class Device
 		void				loadXMLSurface		(ofxXmlSettings&);
 		void				loadXMLSoundInput	(ofxXmlSettings&);
 		void				loadXMLSoundOutput	(ofxXmlSettings&);
+		void				loadXMLColor		(ofxXmlSettings&);
 		virtual	void		loadXMLData			(ofxXmlSettings&);
  
 
@@ -144,12 +145,15 @@ class Device
         oscSender           m_oscSender;
  
 		// Color of LEDs
+		void				enableColor					(bool is=true);
+		void				enableColorOSC				(bool is);
 		void				setColorHueSaturation		(float h, float s);
 		void				setColorHue					(float h);
 		void				setColorSaturation			(float s);
 		void				setColorHueSaturationOSC	(float h, float s);
 		void				setColorSpeedOscillation	(float speed);
 
+		bool				m_isEnableColor;
 		ofColor				m_color;
 		float				m_colorHsv[3];
 		int					m_colorMode;

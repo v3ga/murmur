@@ -16,6 +16,14 @@ DeviceEcho::DeviceEcho(string id, int nbLEDs, float distLEDs) : Device(id,nbLEDs
     m_isDebugSinewaveAngle = 0.0f;
 }
 
+
+//--------------------------------------------------------------
+void DeviceEcho::loadXMLData(ofxXmlSettings& settings)
+{
+	loadXMLSoundInput(settings);
+	loadXMLColor(settings);
+}
+
 //--------------------------------------------------------------
 void DeviceEcho::setupSenderOSC(string ip, int port)
 {
