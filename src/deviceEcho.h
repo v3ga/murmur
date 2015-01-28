@@ -32,6 +32,7 @@ class DeviceEcho : public Device
         vector<ofColor> m_spiColors;
         vector<uint8_t> m_spiData;
         bool            m_connectSPI;
+  
     
         // Sinewave
         bool            m_isDebugSinewave;

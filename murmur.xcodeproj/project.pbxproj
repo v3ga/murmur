@@ -87,6 +87,7 @@
 		F94139471A77938A0047A441 /* json_writer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F94139301A77938A0047A441 /* json_writer.cpp */; };
 		F94139491A77938A0047A441 /* ofxJSONElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F94139341A77938A0047A441 /* ofxJSONElement.cpp */; };
 		F941397D1A77CB830047A441 /* ofxMultiGLFWWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F94139771A77CB830047A441 /* ofxMultiGLFWWindow.cpp */; };
+		F94139841A78D7EA0047A441 /* timelineSimple.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F94139821A78D7EA0047A441 /* timelineSimple.cpp */; };
 		F94AF63E19D419B70026A5A3 /* animationOrbit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F94AF63C19D419B70026A5A3 /* animationOrbit.cpp */; };
 		F94AF64119D498790026A5A3 /* Boid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F94AF63F19D498790026A5A3 /* Boid.cpp */; };
 		F951EB78195AC0D800056B2A /* ofxQuadWarp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F951EB72195AC0D800056B2A /* ofxQuadWarp.cpp */; };
@@ -439,6 +440,8 @@
 		F94139351A77938A0047A441 /* ofxJSONElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxJSONElement.h; sourceTree = "<group>"; };
 		F94139771A77CB830047A441 /* ofxMultiGLFWWindow.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = ofxMultiGLFWWindow.cpp; sourceTree = "<group>"; };
 		F94139781A77CB830047A441 /* ofxMultiGLFWWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMultiGLFWWindow.h; sourceTree = "<group>"; };
+		F94139821A78D7EA0047A441 /* timelineSimple.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = timelineSimple.cpp; sourceTree = "<group>"; };
+		F94139831A78D7EA0047A441 /* timelineSimple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = timelineSimple.h; sourceTree = "<group>"; };
 		F94AF63C19D419B70026A5A3 /* animationOrbit.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animationOrbit.cpp; sourceTree = "<group>"; };
 		F94AF63D19D419B70026A5A3 /* animationOrbit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = animationOrbit.h; sourceTree = "<group>"; };
 		F94AF63F19D498790026A5A3 /* Boid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Boid.cpp; sourceTree = "<group>"; };
@@ -2617,6 +2620,8 @@
 				F94AF64019D498790026A5A3 /* Boid.h */,
 				F97A3ED019E6E66B0048A6A7 /* ofxUIMovingGraphThreshold.cpp */,
 				F97A3ED119E6E66B0048A6A7 /* ofxUIMovingGraphThreshold.h */,
+				F94139821A78D7EA0047A441 /* timelineSimple.cpp */,
+				F94139831A78D7EA0047A441 /* timelineSimple.h */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -2831,6 +2836,7 @@
 				F99930B61719888600272085 /* ofxOscSender.cpp in Sources */,
 				F97A3ED219E6E66B0048A6A7 /* ofxUIMovingGraphThreshold.cpp in Sources */,
 				F99930B71719888600272085 /* tinyxml.cpp in Sources */,
+				F94139841A78D7EA0047A441 /* timelineSimple.cpp in Sources */,
 				F9DC7C2319CA16F500682D1A /* ofxJSVideoGrabber.cpp in Sources */,
 				F9AB0BFC1940FBBB0020D78A /* toolConfiguration.cpp in Sources */,
 				F99930B81719888600272085 /* tinyxmlerror.cpp in Sources */,

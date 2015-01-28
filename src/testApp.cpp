@@ -132,6 +132,20 @@ void testApp::setup()
 	ofSetFrameRate(60);
 
 	m_windowSize.set(ofGetWidth(),ofGetHeight());
+
+
+	m_timelineSimple.load("Exports/ALB/timeline.xml");
+	m_timelineSimple.setEventsCallback( (timelineSimpleEvent::timelineSimpleCb) sM_timelineSimpleEvent, this);
+	
+	m_timelineSimple.start();
+}
+
+
+//--------------------------------------------------------------
+void testApp::sM_timelineSimpleEvent(testApp* pThis, timelineSimpleEvent* pEvent)
+{
+	int delta = pEvent->m_timeTrigger-pEvent->m_time;
+	ofLog() << "TIME EVENT '"+pEvent->m_id+"' time="+ofToString(pEvent->m_time)+" millis, time trigger="+ofToString(pEvent->m_timeTrigger)+", delta="+ofToString(delta);
 }
 
 //--------------------------------------------------------------
@@ -391,6 +405,7 @@ void testApp::initJS()
 //--------------------------------------------------------------
 void testApp::update()
 {
+	m_timelineSimple.update();
 
 	// dt
 	float dt = (float) ofGetLastFrameTime();
@@ -634,7 +649,7 @@ void testApp::keyPressed(int key)
 	}
 	else
 	{
-		if (key == 'f')
+		if (key == 'f' || key == 'F')
 			ofToggleFullscreen();
 	}
 	#endif

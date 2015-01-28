@@ -12,6 +12,7 @@
 #include "oscSender.h"
 #include "soundInput.h"
 #include "Sample.h"
+#include "ofxXmlSettings.h"
 
 // ======================================================================================
 class DevicePacket
@@ -126,7 +127,14 @@ class Device
         // Saving
         void                loadXML(string dir);
         void                saveXML(string dir);
-    
+
+		void				loadXMLSurface		(ofxXmlSettings&);
+		void				loadXMLSoundInput	(ofxXmlSettings&);
+		void				loadXMLSoundOutput	(ofxXmlSettings&);
+		virtual	void		loadXMLData			(ofxXmlSettings&);
+ 
+
+ 
         // Attach point (used only on server side)
         // normalized
         ofVec2f             m_pointSurface;
@@ -161,14 +169,16 @@ class Device
         virtual void        createPackets(int nb);
         virtual void        deletePackets();
         virtual void        sendPacketsOSC();
-    
+				void		setSendPacketsOSC(bool is){m_isSendPackets=is;}
+ 
         virtual void        onReceivePacketBegin();
         virtual void        onReceivePacket(DevicePacket*);
         virtual void        onReceivePacketEnd();
     
         DevicePacket*       getLastPacket(){return m_listPackets[m_nbLEDs-1];}
  		bool				m_isUpdatingPacket;
- 
+ 		bool				m_isSendPackets;
+
 	
         // Sound input
         SoundInput*         mp_soundInput;
