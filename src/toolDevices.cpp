@@ -28,6 +28,8 @@ toolDevices::toolDevices(toolManager* parent, DeviceManager* manager) : tool("De
 	mp_sliderDeviceTimeStandby = 0;
 	mp_sliderDeviceSampleVolStandby = 0;
 
+
+	mp_toggleColorEnable = 0;
 	mp_sliderColorManualHue = 0;
 	mp_sliderColorManualSaturation = 0;
 	mp_spacerColorManualHsb = 0;
@@ -171,12 +173,14 @@ void toolDevices::createControlsCustomFinalize()
     mp_canvasDevice->addWidgetDown(new ofxUISpacer(widthDefault, 1));
 
 //	mp_canvasColorMode = new ofxUICanvas(0,0,widthDefault,300);
+	mp_toggleColorEnable			= new ofxUIToggle("enableColor",	false, dim, dim);
 	mp_sliderColorManualHue 		= new ofxUISlider("hue",			1,254,127,(widthDefault-10)/2,dim);
 	mp_sliderColorManualSaturation 	= new ofxUISlider("saturation", 	1,254,127,(widthDefault-10)/2,dim);
 
 	mp_spacerColorManualHsb = new ofxUISpacer(0,0,widthDefault,dim/2,"toto");
 
 
+	mp_canvasDevice->addWidgetDown(mp_toggleColorEnable);
 	mp_canvasDevice->addWidgetDown(mp_spacerColorManualHsb);
 	mp_canvasDevice->addWidgetDown(mp_sliderColorManualHue);
 	mp_canvasDevice->addWidgetRight(mp_sliderColorManualSaturation);
@@ -323,8 +327,10 @@ void toolDevices::updateDeviceUI(Device* pDevice)
         if (mp_sliderDeviceTimeStandby) mp_sliderDeviceTimeStandby->setValue( pDevice->getTimeStandby() );
         if (mp_sliderDeviceSampleVolStandby) mp_sliderDeviceSampleVolStandby->setValue( pDevice->getSampleVolStandby() );
 		if (mp_sliderStandupVol) mp_sliderStandupVol->setValue( pDevice->getStandupVol() );
+		if (mp_toggleColorEnable) mp_toggleColorEnable->setValue( pDevice->m_isEnableColor );
 		if (mp_sliderColorManualHue) mp_sliderColorManualHue->setValue( pDevice->m_colorHsv[0] );
 		if (mp_sliderColorManualSaturation) mp_sliderColorManualSaturation->setValue( pDevice->m_colorHsv[1] );
+
 
 		if (mp_canvasDevice)
 		{
@@ -421,6 +427,12 @@ void toolDevices::handleEvents(ofxUIEventArgs& e)
 			pDeviceCurrent->setStandupVol( ((ofxUISlider *) e.widget)->getScaledValue() );
         }
     }
+    else if (name == "enableColor")
+    {
+        if (pDeviceCurrent){
+			pDeviceCurrent->enableColor( e.getToggle()->getValue() );
+		}
+	}
     else if (name == "hue")
     {
         if (pDeviceCurrent){

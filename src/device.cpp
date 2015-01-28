@@ -26,17 +26,27 @@ void DevicePacket::copy(DevicePacket* pPacket)
 }
 
 //--------------------------------------------------------------
-void DevicePacket::computeColor(const ofColor& deviceColor)
+void DevicePacket::computeColor(const ofColor& deviceColor, bool isColor)
 {
-	m_color.setHue(deviceColor.getHue());
-	m_color.setSaturation(deviceColor.getSaturation());
-	m_color.setBrightness(m_volume*255.0f);
+	if (isColor)
+	{
+		m_color.setHue(deviceColor.getHue());
+		m_color.setSaturation(deviceColor.getSaturation());
+		m_color.setBrightness(m_volume*255.0f);
+	}
+	else
+	{
+		m_color.set(m_volume*255.0f,m_volume*255.0f,m_volume*255.0f);
+	}
 }
 
 //--------------------------------------------------------------
-void DevicePacket::computeColor(const float* deviceColor)
+void DevicePacket::computeColor(const float* deviceColor,bool isColor)
 {
-	m_color = ofColor::fromHsb(deviceColor[0],deviceColor[1],m_volume*255.0f);
+	if (isColor)
+		m_color = ofColor::fromHsb(deviceColor[0],deviceColor[1],m_volume*255.0f);
+	else
+		m_color.set(m_volume*255.0f,m_volume*255.0f,m_volume*255.0f);
 //	m_color.setHsb(deviceColor[0],deviceColor[1],m_volume*255.0f);
 }
 
@@ -66,6 +76,7 @@ Device::Device(string id, int nbLEDs, float distLEDs)
 	
 	m_isUpdatingPacket = false;
 	m_isSendPackets = true;
+	m_isEnableColor = false;
 }
 
 //--------------------------------------------------------------
@@ -161,6 +172,25 @@ void Device::setColorSaturation(float s)
     m_oscSender.sendMessage(m);
 	
 	//OFAPPLOG->end();
+}
+
+//--------------------------------------------------------------
+void Device::enableColor(bool is)
+{
+	m_isEnableColor = is;
+
+    ofxOscMessage m;
+	m.setAddress( OSC_ADDRESS_SET_DEVICE_PROP );
+    m.addStringArg(m_id);
+    m.addStringArg("enableColor");
+	m.addIntArg( is ? 1 : 0);
+    m_oscSender.sendMessage(m);
+}
+
+//--------------------------------------------------------------
+void Device::enableColorOSC(bool is)
+{
+	m_isEnableColor = is;
 }
 
 //--------------------------------------------------------------
@@ -522,8 +552,7 @@ void Device::sampleSoundInput()
             indexSample = nbVolHistorySize-1;
         
         m_listPackets[i]->m_volume = mp_soundInput->getVolHistory()[(int)indexSample]; // Nearest sampling
-//		m_listPackets[i]->computeColor(m_color);
-		m_listPackets[i]->computeColor(m_colorHsv);
+		m_listPackets[i]->computeColor(m_colorHsv, m_isEnableColor);
 
         indexSample += stepSample;
     }
@@ -564,10 +593,21 @@ void Device::sendPacketsOSC()
     	for (int i=0;i<nbPackets;i++)
     	{
 			m.addFloatArg(m_listPackets[offset]->m_volume);
-			m.addFloatArg(m_listPackets[offset]->m_color.getHue());
-			m.addFloatArg(m_listPackets[offset]->m_color.getSaturation());
-			m.addFloatArg(m_listPackets[offset]->m_color.getBrightness());
-    	}
+			
+			// Color ?
+			if (m_isEnableColor)
+			{
+				m.addFloatArg(m_listPackets[offset]->m_color.getHue());
+				m.addFloatArg(m_listPackets[offset]->m_color.getSaturation());
+				m.addFloatArg(m_listPackets[offset]->m_color.getBrightness());
+    		}
+			else
+			{
+				m.addFloatArg(m_listPackets[offset]->m_volume*255.0f);
+				m.addFloatArg(m_listPackets[offset]->m_volume*255.0f);
+				m.addFloatArg(m_listPackets[offset]->m_volume*255.0f);
+			}
+		}
     	m_oscSender.sendMessage(m);
 
 		offsetPackets += nbLEDsUpdate;
@@ -748,9 +788,6 @@ void Device::loadXMLSoundInput(ofxXmlSettings& settings)
   int		enableStandup		= settings.getValue("device:enableStandup",1);
   float 	volStandup			= settings.getValue("device:volStandup",0.5f);
 
-  float	colorManualHsb[2];
-  colorManualHsb[0]			= settings.getValue("device:color:colorMode_manual_hsb:hue", 			127.0f);
-  colorManualHsb[1]			= settings.getValue("device:color:colorMode_manual_hsb:saturation", 	127.0f);
 
    setSoundInputVolumeMax( volMax );
    setSoundInputVolHistorySize( volHistoryNb );
@@ -760,7 +797,6 @@ void Device::loadXMLSoundInput(ofxXmlSettings& settings)
    setSampleVolumeStandby( sampleVolStandby );
    // setEnableStandup( enableStandup );
    setStandupVol( volStandup );
-   setColorHueSaturation(colorManualHsb[0],colorManualHsb[1]);
 
 
    OFAPPLOG->println(" - volMax="+ofToString(volMax));
@@ -771,7 +807,6 @@ void Device::loadXMLSoundInput(ofxXmlSettings& settings)
    OFAPPLOG->println(" - sampleVolStandby="+ofToString(sampleVolStandby));
    OFAPPLOG->println(" - enableStandup="+ofToString(enableStandup));
    OFAPPLOG->println(" - volStandup="+ofToString(volStandup));
-   OFAPPLOG->println(" - colorManualHsb, (hue="+ofToString(colorManualHsb[0])+", saturation="+ofToString(colorManualHsb[1])+")");
 }
 
 
@@ -794,10 +829,24 @@ void Device::loadXMLSoundOutput(ofxXmlSettings& settings)
 }
 
 //--------------------------------------------------------------
+void Device::loadXMLColor(ofxXmlSettings& settings)
+{
+  float	colorManualHsb[2];
+  colorManualHsb[0]			= settings.getValue("device:color:colorMode_manual_hsb:hue", 			127.0f);
+  colorManualHsb[1]			= settings.getValue("device:color:colorMode_manual_hsb:saturation", 	127.0f);
+  setColorHueSaturation(colorManualHsb[0],colorManualHsb[1]);
+  OFAPPLOG->println(" - colorManualHsb, (hue="+ofToString(colorManualHsb[0])+", saturation="+ofToString(colorManualHsb[1])+")");
+
+  int enable = settings.getValue("device:color:enable", 			0);
+  enableColor(enable>0 ? true : false);
+}
+
+//--------------------------------------------------------------
 void Device::loadXMLData(ofxXmlSettings& settings)
 {
 	loadXMLSoundInput(settings);
 	loadXMLSurface(settings);
+	loadXMLColor(settings);
 	loadXMLSoundOutput(settings);
 }
 
@@ -845,6 +894,7 @@ void Device::saveXML(string dir)
 
         settings.addTag("color");
         settings.pushTag("color");
+			settings.addValue("enable", 			m_isEnableColor ? 1:0);
 			settings.addTag("colorMode_manual_hsb");
 			settings.pushTag("colorMode_manual_hsb");
 				settings.addValue("hue", 			m_colorHsv[0]);

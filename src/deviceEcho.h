@@ -18,12 +18,13 @@ class DeviceEcho : public Device
         DeviceEcho  (string id, int nbLEDs, float distLEDs);
 
     
-        void            setDebugSinewave(bool is){m_isDebugSinewave = is;}
-        void            setupSenderOSC(string ip, int port);
-        void            setupLEDs();
-        void            updateLEDs();
+		void 			loadXMLData			(ofxXmlSettings& settings);
+        void            setDebugSinewave	(bool is){m_isDebugSinewave = is;}
+        void            setupSenderOSC		(string ip, int port);
+        void            setupLEDs			();
+        void            updateLEDs			();
     
-        void            update(float dt);
+        void            update				(float dt);
     
     protected:
     
