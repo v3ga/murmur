@@ -9,6 +9,7 @@
 #include "oscSender.h"
 #include "threadRasp.h"
 #include "tool.h"
+#include "timelineSimple.h"
 
 class Scene;
 class SceneVisualisation;
@@ -127,5 +128,10 @@ class testApp : public ofBaseApp
     
         // Sound input (for simulator)
         void                 audioIn(float * input, int bufferSize, int nChannels);
+ 
+ 
+		// DEBUG
+		 timelineSimple		m_timelineSimple;
+		 static	void		sM_timelineSimpleEvent	(testApp*, timelineSimpleEvent* pEvent);
     
 };

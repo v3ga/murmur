@@ -9,7 +9,6 @@
 
 #include "device.h"
 #include "soundInput.h"
-#include "ofxXmlSettings.h"
 #include "ofAppLog.h"
 #include "globals.h"
 
@@ -66,6 +65,7 @@ Device::Device(string id, int nbLEDs, float distLEDs)
 	m_colorSpeedOscillation = 10.0f;
 	
 	m_isUpdatingPacket = false;
+	m_isSendPackets = true;
 }
 
 //--------------------------------------------------------------
@@ -532,6 +532,8 @@ void Device::sampleSoundInput()
 //--------------------------------------------------------------
 void Device::sendPacketsOSC()
 {
+	if (m_isSendPackets == false) return;
+
 	int nbLEDsUpdate = 160;
 	int nbOSCMessages = m_nbLEDs / nbLEDsUpdate;
 	int nbLEDsRest = m_nbLEDs % nbLEDsUpdate;
@@ -721,6 +723,84 @@ void Device::update(float dt)
     }
 }
 
+
+//--------------------------------------------------------------
+void Device::loadXMLSurface(ofxXmlSettings& settings)
+{
+	string surfaceId = settings.getAttribute("device:surface", "id", "main");
+	float xNorm = settings.getValue("device:surface:xNorm", 0.5f);
+	float yNorm = settings.getValue("device:surface:yNorm", 0.5f);
+
+    OFAPPLOG->println(" - surface="+surfaceId+" (xNorm="+ofToString(xNorm)+",yNorm="+ofToString(yNorm)+")");
+	setPointSurface(xNorm, yNorm);
+}
+
+
+//--------------------------------------------------------------
+void Device::loadXMLSoundInput(ofxXmlSettings& settings)
+{
+  float 	volMax 				= settings.getValue("device:soundInput:volMax",0.05f);
+  int 		volHistoryNb 		= settings.getValue("device:soundInput:volHistoryNb", 400);
+  float 	volHistoryTh		= settings.getValue("device:soundInput:volHistoryTh",0.1f);
+  int		enableStandby		= settings.getValue("device:enableStandby",1);
+  float 	timeStandby			= settings.getValue("device:timeStandby",10.0f);
+  float 	sampleVolStandby	= settings.getValue("device:sampleVolStandby",0.35f);
+  int		enableStandup		= settings.getValue("device:enableStandup",1);
+  float 	volStandup			= settings.getValue("device:volStandup",0.5f);
+
+  float	colorManualHsb[2];
+  colorManualHsb[0]			= settings.getValue("device:color:colorMode_manual_hsb:hue", 			127.0f);
+  colorManualHsb[1]			= settings.getValue("device:color:colorMode_manual_hsb:saturation", 	127.0f);
+
+   setSoundInputVolumeMax( volMax );
+   setSoundInputVolHistorySize( volHistoryNb );
+   setSoundInputVolHistoryTh( volHistoryTh );
+   setEnableStandbyMode( enableStandby == 1 ? true : false );
+   setTimeStandby( timeStandby );
+   setSampleVolumeStandby( sampleVolStandby );
+   // setEnableStandup( enableStandup );
+   setStandupVol( volStandup );
+   setColorHueSaturation(colorManualHsb[0],colorManualHsb[1]);
+
+
+   OFAPPLOG->println(" - volMax="+ofToString(volMax));
+   OFAPPLOG->println(" - volHistoryNb="+ofToString(volHistoryNb));
+   OFAPPLOG->println(" - volHistoryTh="+ofToString(volHistoryTh));
+   OFAPPLOG->println(" - enableStandby="+ofToString(timeStandby));
+   OFAPPLOG->println(" - timeStandby="+ofToString(enableStandby));
+   OFAPPLOG->println(" - sampleVolStandby="+ofToString(sampleVolStandby));
+   OFAPPLOG->println(" - enableStandup="+ofToString(enableStandup));
+   OFAPPLOG->println(" - volStandup="+ofToString(volStandup));
+   OFAPPLOG->println(" - colorManualHsb, (hue="+ofToString(colorManualHsb[0])+", saturation="+ofToString(colorManualHsb[1])+")");
+}
+
+
+
+
+//--------------------------------------------------------------
+void Device::loadXMLSoundOutput(ofxXmlSettings& settings)
+{
+   settings.pushTag("device");
+   settings.pushTag("soundOutput");
+   int nbSpeakers = settings.getNumTags("speaker");
+   clearListSpeakers();
+   for (int i=0;i<nbSpeakers;i++){
+	   int speakerId = settings.getValue("speaker",0,i);
+	   addSpeakerId( speakerId );
+	   OFAPPLOG->println(" - speaker "+ofToString(speakerId)+" added");
+   }
+   settings.popTag();
+   settings.popTag();
+}
+
+//--------------------------------------------------------------
+void Device::loadXMLData(ofxXmlSettings& settings)
+{
+	loadXMLSoundInput(settings);
+	loadXMLSurface(settings);
+	loadXMLSoundOutput(settings);
+}
+
 //--------------------------------------------------------------
 void Device::loadXML(string dir)
 {
@@ -730,59 +810,8 @@ void Device::loadXML(string dir)
     string pathFile = getPathXML(dir);
     if ( settings.loadFile(pathFile) )
     {
-        string surfaceId = settings.getAttribute("device:surface", "id", "main");
-        float xNorm = settings.getValue("device:surface:xNorm", 0.5f);
-        float yNorm = settings.getValue("device:surface:yNorm", 0.5f);
-		
-		float 	volMax 				= settings.getValue("device:soundInput:volMax",0.05f);
-		int 	volHistoryNb 		= settings.getValue("device:soundInput:volHistoryNb", 400);
-		float 	volHistoryTh		= settings.getValue("device:soundInput:volHistoryTh",0.1f);
-     	int		enableStandby		= settings.getValue("device:enableStandby",1);
-	 	float 	timeStandby			= settings.getValue("device:timeStandby",10.0f);
-	 	float 	sampleVolStandby	= settings.getValue("device:sampleVolStandby",0.35f);
-     	int		enableStandup		= settings.getValue("device:enableStandup",1);
-	 	float 	volStandup			= settings.getValue("device:volStandup",0.5f);
-
-		float	colorManualHsb[2];
-		colorManualHsb[0]			= settings.getValue("device:color:colorMode_manual_hsb:hue", 		127.0f);
-		colorManualHsb[1]			= settings.getValue("device:color:colorMode_manual_hsb:saturation", 	127.0f);
-	 
 		OFAPPLOG->println("Device, loaded "+pathFile);
-		OFAPPLOG->println(" - volMax="+ofToString(volMax));
-		OFAPPLOG->println(" - volHistoryNb="+ofToString(volHistoryNb));
-		OFAPPLOG->println(" - volHistoryTh="+ofToString(volHistoryTh));
-		OFAPPLOG->println(" - enableStandby="+ofToString(timeStandby));
-		OFAPPLOG->println(" - timeStandby="+ofToString(enableStandby));
-		OFAPPLOG->println(" - sampleVolStandby="+ofToString(sampleVolStandby));
-		OFAPPLOG->println(" - enableStandup="+ofToString(enableStandup));
-		OFAPPLOG->println(" - volStandup="+ofToString(volStandup));
-		OFAPPLOG->println(" - surface="+surfaceId+" (xNorm="+ofToString(xNorm)+",yNorm="+ofToString(yNorm)+")");
-		OFAPPLOG->println(" - colorManualHsb, (hue="+ofToString(colorManualHsb[0])+", saturation="+ofToString(colorManualHsb[1])+")");
-	 
-        setSoundInputVolumeMax( volMax );
-        setSoundInputVolHistorySize( volHistoryNb );
-        setSoundInputVolHistoryTh( volHistoryTh );
-        setEnableStandbyMode( enableStandby == 1 ? true : false );
-        setTimeStandby( timeStandby );
-        setSampleVolumeStandby( sampleVolStandby );
-		// setEnableStandup( enableStandup );
-		setStandupVol( volStandup );
-        setPointSurface(xNorm, yNorm);
-		setColorHueSaturation(colorManualHsb[0],colorManualHsb[1]);
-
-		settings.pushTag("device");
-		settings.pushTag("soundOutput");
-		int nbSpeakers = settings.getNumTags("speaker");
-		clearListSpeakers();
-		for (int i=0;i<nbSpeakers;i++){
-			int speakerId = settings.getValue("speaker",0,i);
-			addSpeakerId( speakerId );
-	        OFAPPLOG->println(" - speaker "+ofToString(speakerId)+" added");
-		}
-		settings.popTag();
-		settings.popTag();
-
-     
+		loadXMLData(settings);
     }
     else{
         OFAPPLOG->println("Device, error loading "+pathFile);
