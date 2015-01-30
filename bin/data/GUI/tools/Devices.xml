@@ -1,15 +1,5 @@
 <Widget>
     <Kind>22</Kind>
     <Name>Devices</Name>
-    <Value>1</Value>
-</Widget>
-<Widget>
-    <Kind>17</Kind>
-    <Name>deviceEchoSimulator01</Name>
-    <Value>0</Value>
-</Widget>
-<Widget>
-    <Kind>17</Kind>
-    <Name>deviceEchoSimulator02</Name>
     <Value>0</Value>
 </Widget>

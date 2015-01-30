@@ -104,6 +104,8 @@ void DeviceNode::customDraw()
     int nbPackets = mp_device->getNbLEDs();
 
     ofVec3f A,B;
+	ofColor packetColor;
+	ofPushStyle();
     for(int i=0; i<physics.numberOfSprings(); i++)
     {
         msa::physics::Spring3D *spring = (msa::physics::Spring3D *) physics.getSpring(i);
@@ -115,7 +117,6 @@ void DeviceNode::customDraw()
 
 		if (m_drawFlags & E_drawLights)
 		{
-// ofLog()<<"drawing lights for " << mp_device->getID();
 	        ofVec3f vec = b->getPosition() - a->getPosition();
     	    float dist = vec.length();
         	float angle = acos( vec.z / dist ) * RAD_TO_DEG;
@@ -126,23 +127,23 @@ void DeviceNode::customDraw()
 			ofPushMatrix();
 			ofTranslate(a->getPosition().x, a->getPosition().y, a->getPosition().z);
 		 	ofRotate(angle, rx, ry, 0.0);
-			//glPushMatrix();
-        	//glTranslatef(a->getPosition().x, a->getPosition().y, a->getPosition().z);
-        	//glRotatef(angle, rx, ry, 0.0);
 			float size  = ofMap(spring->getStrength(), SPRING_MIN_STRENGTH, SPRING_MAX_STRENGTH, SPRING_MIN_WIDTH, SPRING_MAX_WIDTH);
-        
-        	boxSize = ofMap(mp_device->m_listPackets[nbPackets-1-i]->m_volume,0.0f,1.0f, 0.0f*maxBoxSize, maxBoxSize);
-        	ofSetColor(mp_device->m_listPackets[nbPackets-1-i]->m_color,255);
+		 
+			DevicePacket* pPacket = mp_device->m_listPackets[nbPackets-1-i];
+			float volume = mp_device->m_isInvertPacketsVolume ? 1.0f-pPacket->m_volume: pPacket->m_volume;
+
+
+        	boxSize = ofMap(volume,0.0f,1.0f, 0.0f*maxBoxSize, maxBoxSize);
+        	ofSetColor(pPacket->m_color,255);
 
         	ofBox(boxSize);
-        	//glPopMatrix();
 			ofPopMatrix();
 		}
 
-        ofPushStyle();
         ofSetColor(50,50,50,200);
         ofSetLineWidth(2.0f);
         ofLine(A.x,A.y,A.z, B.x,B.y,B.z);
-        ofPopStyle();
     }
+	ofPopStyle();
+
 }

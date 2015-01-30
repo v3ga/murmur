@@ -20,7 +20,6 @@ class SoundInput
 {
     public:
  
-	
 		~SoundInput							();
 	
         virtual void        setup           (int deviceId, int nChannels);
@@ -30,8 +29,9 @@ class SoundInput
  
         virtual void        drawVolume      (float x, float y);
 	
+		void				useRawVolume	(bool is=true){m_useRawVol=is;}
 		void				mute			(bool is=true){m_isMute=is;}
-    
+ 
         vector <float>&     getVolHistory   (){return m_volHistory;}
         float               getHeightDraw   (){return m_heightDraw;}
 		void				setVolume		(float vol);
@@ -53,6 +53,8 @@ class SoundInput
 		void				setSampleVolume	(float v){m_sampleVolume = v;}
 		float				getSampleVolume	(){return m_sampleVolume;}
  
+		bool				getUseRawVol	(){return m_useRawVol;}
+ 
     private:
         //ofSoundStream*       mp_soundStreamInput;
         ofSoundStream       m_soundStreamInput;
@@ -71,6 +73,7 @@ class SoundInput
         float               m_volHistoryMean, m_volHistoryMeanFiltered;
     
 
+		bool				m_useRawVol;
         float               m_smoothedVol;
         float               m_scaledVol;
         float               m_volEmpiricalMax;
