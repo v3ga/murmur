@@ -1,22 +1,27 @@
 <device id="chambreEcho_002">
     <soundInput>
-        <volMax>0.032322578</volMax>
-        <volHistoryNb>157.000000000</volHistoryNb>
+        <useRawVol>1</useRawVol>
+        <volMax>1.500000000</volMax>
+        <volHistoryNb>103.000000000</volHistoryNb>
         <volHistoryTh>0.234677419</volHistoryTh>
     </soundInput>
     <soundOutput></soundOutput>
     <color>
+        <enable>1</enable>
         <colorMode_manual_hsb>
-            <hue>199.777572632</hue>
-            <saturation>255.000000000</saturation>
+            <hue>190.341934204</hue>
+            <saturation>180.548385620</saturation>
         </colorMode_manual_hsb>
     </color>
-    <enableStandby>1</enableStandby>
+    <packets>
+        <invert>0</invert>
+    </packets>
+    <enableStandby>0</enableStandby>
     <timeStandby>5.000000000</timeStandby>
     <sampleVolStandby>0.083870970</sampleVolStandby>
     <enableStandby>0</enableStandby>
     <surface id="main">
-        <xNorm>0.495117188</xNorm>
-        <yNorm>0.470052093</yNorm>
+        <xNorm>0.500000000</xNorm>
+        <yNorm>0.500000000</yNorm>
     </surface>
 </device>

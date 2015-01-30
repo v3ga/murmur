@@ -21,8 +21,8 @@ class DevicePacket
         DevicePacket         ();
 
         void                  copy(DevicePacket* pPacket);
-		void				  computeColor(const ofColor& deviceColor, bool isColor);
-		void				  computeColor(const float* deviceColor, bool isColor);
+		void				  computeColor(const ofColor& deviceColor, bool isColor, bool isInvert);
+		void				  computeColor(const float* deviceColor, bool isColor, bool isInvert);
 	
         float                 m_volume;
 		ofColor		  	      m_color;
@@ -132,6 +132,7 @@ class Device
 		void				loadXMLSoundInput	(ofxXmlSettings&);
 		void				loadXMLSoundOutput	(ofxXmlSettings&);
 		void				loadXMLColor		(ofxXmlSettings&);
+		void				loadXMLPackets		(ofxXmlSettings&);
 		virtual	void		loadXMLData			(ofxXmlSettings&);
  
 
@@ -173,7 +174,13 @@ class Device
         virtual void        createPackets(int nb);
         virtual void        deletePackets();
         virtual void        sendPacketsOSC();
-				void		setSendPacketsOSC(bool is){m_isSendPackets=is;}
+				void		invertPacketsVolume		(bool is);
+				void		invertPacketsVolumeOSC	(bool is);
+				void		reversePacketsDir		(bool is);
+				void		reversePacketsDirOSC	(bool is);
+
+	 			bool		m_isSendMessagesOSC; // used on deviceEcho
+				void		setSendMessagesOSC(bool is){m_isSendMessagesOSC=is;}
  
         virtual void        onReceivePacketBegin();
         virtual void        onReceivePacket(DevicePacket*);
@@ -181,18 +188,21 @@ class Device
     
         DevicePacket*       getLastPacket(){return m_listPackets[m_nbLEDs-1];}
  		bool				m_isUpdatingPacket;
- 		bool				m_isSendPackets;
-
+		bool				m_isInvertPacketsVolume;
+		bool				m_isReverseDirPackets;
 	
         // Sound input
         SoundInput*         mp_soundInput;
-		virtual	void		startSoundInput(int nbChannels);
-        virtual void        startSoundInput (int deviceId, int nbChannels);
-        virtual void        audioIn         (float * input, int bufferSize, int nChannels);
-        virtual float       getWidthSoundInputVolume();
-        virtual float       getHeightSoundInputVolume();
-        virtual void        drawSoundInputVolume(float x, float y);
-	
+		virtual	void		startSoundInput				(int nbChannels);
+        virtual void        startSoundInput 			(int deviceId, int nbChannels);
+        virtual void        audioIn         			(float * input, int bufferSize, int nChannels);
+        virtual float       getWidthSoundInputVolume	();
+        virtual float       getHeightSoundInputVolume	();
+        virtual void        drawSoundInputVolume		(float x, float y);
+				void		setSoundInputUseRawVolume	(bool is);
+				bool		getSoundInputUseRawVolume	(){return m_soundInputUseRawVol;}
+				void		setSoundInputUseRawVolumeOSC(bool is);
+
 		// Sound playing
 		vector<int>			m_listSpeakerIds;
 		void				clearListSpeakers	();
@@ -201,6 +211,7 @@ class Device
         // > only used on server side
         float               m_soundInputVolHistorySize;
         float               m_soundInputVolEmpiricalMax;
+		bool				m_soundInputUseRawVol;
         
         // Interface
         virtual void        update(float dt);

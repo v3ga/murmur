@@ -37,7 +37,7 @@ void SurfaceNode::customDraw()
 {
     ofPushStyle();
     ofNoFill();
-    ofColor(255,255,255,255);
+    ofSetColor(255,255,255,255);
     ofRectangle(0.0f,0.0f,m_width,m_height);
     if (mp_surface)
     {

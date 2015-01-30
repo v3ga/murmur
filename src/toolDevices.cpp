@@ -21,6 +21,8 @@ toolDevices::toolDevices(toolManager* parent, DeviceManager* manager) : tool("De
 	mp_deviceManager= manager;
 	mp_canvasDevice = 0;
 	mp_lblDeviceTitle = 0;
+
+	mp_toggleDeviceUseRawVol = 0;
 	mp_sliderDeviceVolMax = 0;
 	mp_sliderDeviceVolHistorySize = 0;
 	mp_toggleDeviceEnableStandby = 0;
@@ -33,6 +35,9 @@ toolDevices::toolDevices(toolManager* parent, DeviceManager* manager) : tool("De
 	mp_sliderColorManualHue = 0;
 	mp_sliderColorManualSaturation = 0;
 	mp_spacerColorManualHsb = 0;
+
+	mp_togglePacketsInvert = 0;
+	mp_togglePacketsReverse = 0;
 
 	mp_toggleDeviceEnableStandup = 0;
 	mp_sliderStandupVol = 0;
@@ -111,6 +116,17 @@ void toolDevices::createControlsCustom()
 //--------------------------------------------------------------
 void toolDevices::createControlsCustomFinalize()
 {
+
+	float volMaxMax = 1.0f;
+
+	// Load some properties for uis
+	string fileConfig =  mp_toolManager->m_relPathData + "/Devices_UI_config.xml";
+	ofxXmlSettings uiConfig;
+	if (uiConfig.load(fileConfig))
+	{
+	 volMaxMax = uiConfig.getValue("volMax:max", 1.0f);
+	}
+
 	 float widthDefault = 320;
 	 float dim = 16;
 	 ofxUIWidgetFontType fontType = OFX_UI_FONT_SMALL;
@@ -139,7 +155,8 @@ void toolDevices::createControlsCustomFinalize()
 		// mp_graphSoundValues = new ofxUIMovingGraphThreshold("soundInputValues", );
 	}
  
-    mp_sliderDeviceVolMax = new ofxUISlider("Vol. max", 0.005f, 0.04f, 0.02f, widthDefault-10, dim );
+	mp_toggleDeviceUseRawVol = new ofxUIToggle("Use raw volume", false, dim,dim);
+    mp_sliderDeviceVolMax = new ofxUISlider("Vol. max", 0.005f, volMaxMax, 0.02f, widthDefault-10, dim );
     mp_sliderDeviceVolHistorySize = new ofxUISlider("Vol. history size", 50, 500, 400, widthDefault-10, dim );
     mp_toggleDeviceEnableStandby = new ofxUIToggle("Enable standby", true, dim, dim);
     mp_sliderDeviceVolHistoryTh = new ofxUISlider( "Vol. history standby", 0.0f, 0.75f, 0.5f, widthDefault-10, dim );
@@ -148,6 +165,7 @@ void toolDevices::createControlsCustomFinalize()
  
 	mp_canvasDevice->addWidgetDown(mp_sliderDeviceVolMax);
 	mp_canvasDevice->addWidgetDown(mp_sliderDeviceVolHistorySize);
+	mp_canvasDevice->addWidgetDown(mp_toggleDeviceUseRawVol);
 
     mp_canvasDevice->addWidgetDown(new ofxUILabel("Stand by", OFX_UI_FONT_MEDIUM));
     mp_canvasDevice->addWidgetDown(new ofxUISpacer(widthDefault, 1));
@@ -191,6 +209,15 @@ void toolDevices::createControlsCustomFinalize()
 
 	//mp_canvasColorMode->autoSizeToFitWidgets();
 	//mp_canvasDevice->addWidgetDown(mp_canvasColorMode);
+
+
+    mp_canvasDevice->addWidgetDown(new ofxUILabel("Packets", OFX_UI_FONT_MEDIUM));
+    mp_canvasDevice->addWidgetDown(new ofxUISpacer(widthDefault, 1));
+	mp_togglePacketsInvert = new ofxUIToggle("invertColorPackets",	false, dim, dim);
+    mp_canvasDevice->addWidgetDown(mp_togglePacketsInvert);
+
+	mp_togglePacketsReverse = new ofxUIToggle("reverseDirPackets",	false, dim, dim);
+    mp_canvasDevice->addWidgetRight(mp_togglePacketsReverse);
 
 	
     mp_canvasDevice->addWidgetDown(new ofxUILabel("Speakers", OFX_UI_FONT_MEDIUM));
@@ -320,6 +347,7 @@ void toolDevices::updateDeviceUI(Device* pDevice)
 {
     if (pDevice)
     {
+		if (mp_toggleDeviceUseRawVol) mp_toggleDeviceUseRawVol->setValue( pDevice->getSoundInputUseRawVolume() );
         if (mp_sliderDeviceVolMax) mp_sliderDeviceVolMax->setValue( pDevice->getSoundInputVolumeMax() );
         if (mp_sliderDeviceVolHistorySize) mp_sliderDeviceVolHistorySize->setValue( float(pDevice->getSoundInputVolHistorySize()) );
         if (mp_sliderDeviceVolHistoryTh) mp_sliderDeviceVolHistoryTh->setValue( float(pDevice->getSoundInputVolHistoryTh()) );
@@ -330,7 +358,8 @@ void toolDevices::updateDeviceUI(Device* pDevice)
 		if (mp_toggleColorEnable) mp_toggleColorEnable->setValue( pDevice->m_isEnableColor );
 		if (mp_sliderColorManualHue) mp_sliderColorManualHue->setValue( pDevice->m_colorHsv[0] );
 		if (mp_sliderColorManualSaturation) mp_sliderColorManualSaturation->setValue( pDevice->m_colorHsv[1] );
-
+		if (mp_togglePacketsInvert) mp_togglePacketsInvert->setValue( pDevice->m_isInvertPacketsVolume );
+		if (mp_togglePacketsReverse) mp_togglePacketsReverse->setValue( pDevice->m_isReverseDirPackets );
 
 		if (mp_canvasDevice)
 		{
@@ -383,6 +412,11 @@ void toolDevices::handleEvents(ofxUIEventArgs& e)
 	{
 		if (pDeviceCurrent)
 			pDeviceCurrent->mute( ((ofxUIToggle *) e.widget)->getValue() );
+	}
+    else if (name == "Use raw volume")
+	{
+        if (pDeviceCurrent)
+            pDeviceCurrent->setSoundInputUseRawVolume ( e.getToggle()->getValue() );
 	}
     else if (name == "Vol. max")
     {
@@ -447,6 +481,20 @@ void toolDevices::handleEvents(ofxUIEventArgs& e)
 			updateDeviceColorUI();
         }
     }
+	else if (name == "invertColorPackets")
+	{
+		if (pDeviceCurrent)
+			pDeviceCurrent->invertPacketsVolume( e.getToggle()->getValue() );
+	}
+	else if (name == "reverseDirPackets")
+	{
+		if (pDeviceCurrent)
+			pDeviceCurrent->reversePacketsDir( e.getToggle()->getValue() );
+	}
+	
+
+	
+	
 	else
 	{
 		if (pDeviceCurrent)

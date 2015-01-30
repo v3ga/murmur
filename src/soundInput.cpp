@@ -9,6 +9,8 @@
 #include "soundInput.h"
 #include "Sample.h"
 
+
+
 //--------------------------------------------------------------
 SoundInput::~SoundInput()
 {
@@ -19,6 +21,7 @@ SoundInput::~SoundInput()
 //--------------------------------------------------------------
 void SoundInput::setup(int deviceId, int nChannels)
 {
+	m_useRawVol = false;
     m_smoothedVol = 0.0f;
     m_scaledVol = 0.0f;
     m_volHistoryNb = 400;
@@ -62,6 +65,7 @@ void SoundInput::setup(int deviceId, int nChannels)
 //--------------------------------------------------------------
 void SoundInput::setup(int nChannels)
 {
+	m_useRawVol = false;
     m_smoothedVol = 0.0f;
     m_scaledVol = 0.0f;
     m_volHistoryNb = 400;
@@ -70,6 +74,8 @@ void SoundInput::setup(int nChannels)
  
     m_bufferSize = 256; // 256 to be compliant with FFT
     m_nbChannels = nChannels;
+	
+	mp_sample=0;
 
 #if SOUNDINPUT_USE_FFT
     if (nChannels==1 /*&& m_bufferSize == m_fft.getNoOfBands()*/){
@@ -313,10 +319,17 @@ void SoundInput::processAudio(float * input, int bufferSize, int nChannels)
         
         // this is how we get the root of rms :)
         curVol = sqrt( curVol );
-        
-        m_smoothedVol *= 0.93;
-        m_smoothedVol += 0.07 * curVol;
-		   
+
+		if (m_useRawVol)
+		{
+		 	m_smoothedVol = curVol;
+		}
+		else
+		{
+	        m_smoothedVol *= 0.93;
+    	    m_smoothedVol += 0.07 * curVol;
+	 	}
+		 
 #if SOUNDINPUT_USE_FFT
         m_fft.audioIn(input, bufferSize, nChannels);
 #endif

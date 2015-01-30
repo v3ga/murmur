@@ -32,7 +32,12 @@ void oscReceiver::update()
 				{
                     // Property
                     string propName = m_oscMessage.getArgAsString(indexArg++);
-                 
+
+					if (propName == "useRawVol")
+                    {
+                        pDevice->setSoundInputUseRawVolumeOSC( m_oscMessage.getArgAsInt32(indexArg)==1 ? true : false );
+                    }
+					else
 					if (propName == "volMax")
                     {
                         pDevice->setSoundInputVolumeMaxOSC( m_oscMessage.getArgAsFloat(indexArg) );
@@ -82,6 +87,18 @@ void oscReceiver::update()
                         pDevice->setColorHueSaturationOSC(hue,sat);
 
 						// ofLog() << "(hue,sat)=" << hue << ',' << sat;
+					}
+					else
+					if (propName == "invertPacketsVolume")
+					{
+						int value = m_oscMessage.getArgAsInt32(indexArg++);
+						pDevice->invertPacketsVolumeOSC(value>0 ? true : false);
+					}
+					else
+					if (propName == "reversePacketsDir")
+					{
+						int value = m_oscMessage.getArgAsInt32(indexArg++);
+						pDevice->reversePacketsDirOSC(value>0 ? true : false);
 					}
                 }
             }
@@ -149,13 +166,14 @@ void oscReceiver::update()
                     // Decode new message
                     if (pDevice)
                     {
-                        // pDevice->onReceivePacketBegin();
+                        pDevice->onReceivePacketBegin();
                         
                         int nbPackets = (m_oscMessage.getNumArgs() - 1)/4; // TODO : Be careful with this
                         for (int i=0;i<nbPackets;i++)
                         {
                             m_packetTemp.m_volume = m_oscMessage.getArgAsFloat(indexArg++);
-                            // TODO : Other arguments to decode here
+
+							// TODO : Other arguments to decode here
 //							if (m_oscMessage.getNumArgs()>=3)
 							{
 								 m_packetTemp.m_color.setHue( m_oscMessage.getArgAsFloat(indexArg++) );
@@ -168,7 +186,7 @@ void oscReceiver::update()
 
                         }
 
-                        //pDevice->onReceivePacketEnd();
+                        pDevice->onReceivePacketEnd();
 
                         // Get the surface of device and update animation
                         Surface* pSurface = Globals::instance()->mp_app->getSurfaceForDevice(pDevice);

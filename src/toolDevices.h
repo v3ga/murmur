@@ -41,6 +41,7 @@ class toolDevices : public tool
         ofxUIDropDownList*		mp_ddlDevices;
 		ofxUICanvas*			mp_canvasDevice;
 		ofxUILabel*				mp_lblDeviceTitle;
+		ofxUIToggle*			mp_toggleDeviceUseRawVol;
 	    ofxUISlider*			mp_sliderDeviceVolMax;
     	ofxUISlider* 			mp_sliderDeviceVolHistorySize;
     	ofxUIToggle* 			mp_toggleDeviceEnableStandby;
@@ -52,6 +53,11 @@ class toolDevices : public tool
 		ofxUISlider*			mp_sliderColorManualHue;
 		ofxUISlider*			mp_sliderColorManualSaturation;
 		ofxUISpacer*			mp_spacerColorManualHsb;
+ 
+		ofxUIToggle*			mp_togglePacketsInvert;
+		ofxUIToggle*			mp_togglePacketsReverse;
+ 
+ 
 
     	ofxUIToggle* 			mp_toggleDeviceEnableStandup;
 		ofxUISlider*			mp_sliderStandupVol;
