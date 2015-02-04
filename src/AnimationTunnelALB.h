@@ -76,6 +76,9 @@ class AnimationTunnelALB : public Animation
  		bool					m_emitLeft,m_emitRight;
  
 		float					m_w, m_h;
+ 		ofMatrix4x4 			m_mRotationLeft,m_mRotationRight;
+		void					updateRotations();
+ 
  
 		ofCamera				m_cam;
  

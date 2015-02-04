@@ -15,7 +15,8 @@
 class oscReceiver  : public ofxOscReceiver
 {
     public:
-        void                update      ();
+        void                update      		();
+		Device*				discoverDevice		(string id, int nbLeds);
     
 private:
         ofxOscMessage		m_oscMessage;

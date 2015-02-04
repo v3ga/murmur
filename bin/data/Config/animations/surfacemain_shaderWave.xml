@@ -81,17 +81,17 @@
 <Widget>
     <Kind>42</Kind>
     <Name>sizeTexture</Name>
-    <Value>1330</Value>
+    <Value>1214</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>intensity</Name>
-    <Value>0.717948735</Value>
+    <Value>1.000000000</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
     <Name>debug enable blend</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>

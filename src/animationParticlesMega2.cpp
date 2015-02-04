@@ -115,7 +115,7 @@ void AnimationParticlesMega2::createUICustom()
 {
     if (mp_UIcanvas)
     {
-        mp_UIcanvas->addSlider("amp. attraction", 1.0f, 20.0f, &m_ampAttraction);
+        mp_UIcanvas->addSlider("amp. attraction", 1.0f, 100.0f, &m_ampAttraction);
         mp_UIcanvas->addSlider("amp. repulsion", 1.0f, 100.0f, &m_ampRepulsion);
         mp_UIcanvas->addSlider("radius repulsion", 40.0f, 300.0f, &m_repulsionRadius);
         mp_UIcanvas->addSlider("particles size", 1.0f, 5.0f, &m_particlesSize);
