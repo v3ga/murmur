@@ -20,8 +20,10 @@ DeviceEcho::DeviceEcho(string id, int nbLEDs, float distLEDs) : Device(id,nbLEDs
 //--------------------------------------------------------------
 void DeviceEcho::loadXMLData(ofxXmlSettings& settings)
 {
-	loadXMLSoundInput(settings);
+/*	loadXMLSoundInput(settings);
 	loadXMLColor(settings);
+*/
+	Device::loadXMLData(settings);
 }
 
 //--------------------------------------------------------------

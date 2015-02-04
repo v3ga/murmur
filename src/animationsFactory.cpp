@@ -13,6 +13,7 @@
 #include "animationParticlesMega2.h"
 #include "animationBox2D.h"
 #include "animationTunnel.h"
+#include "animationTunnelALB.h"
 #include "animationOrbit.h"
 
 Animation* AnimationsFactory::create(string name)
@@ -30,6 +31,8 @@ Animation* AnimationsFactory::create(string name)
         pAnimation = new AnimationBox2D_circles(name);
     else if (name == "tunnel")
         pAnimation = new AnimationTunnel(name);
+    else if (name == "tunnelALB")
+        pAnimation = new AnimationTunnelALB(name);
     else if (name == "orbit")
         pAnimation = new AnimationOrbit(name);
  

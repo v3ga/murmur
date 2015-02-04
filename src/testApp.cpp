@@ -405,7 +405,7 @@ void testApp::initJS()
 //--------------------------------------------------------------
 void testApp::update()
 {
-	m_timelineSimple.update();
+	//m_timelineSimple.update();
 
 	// dt
 	float dt = (float) ofGetLastFrameTime();

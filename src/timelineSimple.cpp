@@ -36,6 +36,8 @@ void timelineSimple::start()
 	vector<timelineSimpleEvent*>::iterator it = m_events.begin();
 	for ( ; it != m_events.end(); ++it)
 		(*it)->m_timeTrigger=0;
+
+	startThread();
 }
 
 //--------------------------------------------------------------
@@ -53,6 +55,16 @@ void timelineSimple::update()
 		}
 	}
 }
+
+//--------------------------------------------------------------
+void timelineSimple::threadedFunction()
+{
+	while( isThreadRunning() != 0 ){
+		update();
+		ofSleepMillis(2);
+	}
+}
+
 
 //--------------------------------------------------------------
 void timelineSimple::addEvent(timelineSimpleEvent* p)
@@ -89,11 +101,13 @@ void timelineSimple::load(string file)
 		OFAPPLOG->println("-nbEvents = "+ofToString(nbEvents));
 		for (int i=0;i<nbEvents;i++)
 		{
-		   string id = data.getAttribute("event","id", "???",i);
-		   float time = data.getAttribute("event","time", 0.0,i);
-			OFAPPLOG->println("-id = "+id);
-			if (time>0.0)
-			{
+		   string id 		= data.getAttribute("event",	"id", 		"???",	i);
+		   float time 		= data.getAttribute("event",	"time", 	0.0f,	i);
+		   string action 	= data.getAttribute("event",	"action",	"",		i);
+		 
+		   OFAPPLOG->println("-id = "+id);
+		   if (time>0.0)
+		   {
 				unsigned timeLong = (unsigned long long) (time*1000.0f);
 				addEvent(id, timeLong,0,0);
 			}
@@ -101,3 +115,4 @@ void timelineSimple::load(string file)
 	}
 	OFAPPLOG->end();
 }
+

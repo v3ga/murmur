@@ -3,6 +3,7 @@
         <animation>shaderWave</animation>
         <animation>particlesMega2</animation>
         <animation>box2DCircles</animation>
+        <animation>tunnelALB</animation>
     </animations>
 
     <animations type="js" folder="murmur">

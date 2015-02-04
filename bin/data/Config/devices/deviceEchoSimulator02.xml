@@ -1,6 +1,6 @@
 <device id="deviceEchoSimulator02">
     <soundInput>
-        <useRawVol>1</useRawVol>
+        <useRawVol>0</useRawVol>
         <volMax>0.021032259</volMax>
         <volHistoryNb>73.000000000</volHistoryNb>
         <volHistoryTh>0.278225809</volHistoryTh>
@@ -9,7 +9,7 @@
         <speaker>1</speaker>
     </soundOutput>
     <color>
-        <enable>0</enable>
+        <enable>1</enable>
         <colorMode_manual_hsb>
             <hue>208.296768188</hue>
             <saturation>180.548385620</saturation>
