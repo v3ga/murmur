@@ -69,7 +69,7 @@ AnimationTunnelALB::AnimationTunnelALB(string name) : Animation(name)
 	m_emitRight		= true;
 	
 	//m_volAccum.setTriggerInCb(sM_volTriggerIn, this);
-
+	updateRotations();
 }
 
 //--------------------------------------------------------------
@@ -247,14 +247,18 @@ void AnimationTunnelALB::onNewPacket(DevicePacket* pDevicePacket, string deviceI
 		
 		ofVec3f posAnchorWorld = m_cam.screenToWorld(ofVec3f(m_posAnchor.x,m_posAnchor.y,0),ofRectangle(0,0,m_w,m_h));
 		ofVec3f dir = (posAnchorWorld - m_cam.getPosition()).normalize();
-		// m_posFar = /*m_cam.getPosition()+*/1000.0*dir;
-		m_posFar = m_cam.getPosition()+1500.0*dir;
+		m_posFar = m_cam.getPosition()+m_zMax*dir;
 
 
 //	m_dirLeft.set	( ofVec3f( cos(ofDegToRad(90+m_dirAngle)), 0, sin(ofDegToRad(90+m_dirAngle)) ) );
   	//m_dirRight.set	( ofVec3f( cos(ofDegToRad(90-m_dirAngle)), 0, sin(ofDegToRad(90-m_dirAngle)) ) );
 m_dirLeft = (m_cam.screenToWorld(ofVec3f(m_w/2,m_h/2,0))-m_posFar).normalized();
 m_dirRight =(m_cam.screenToWorld(ofVec3f(m_w/2,m_h/2,0))-m_posFar).normalized();
+
+
+m_dirLeft = m_mRotationLeft*m_dirLeft;
+m_dirRight = m_mRotationRight*m_dirRight;
+/*
 ofMatrix4x4 m;
 
 ofVec3f k = m_dirLeft;
@@ -269,19 +273,19 @@ i.z, j.z, k.z, 0,
 
 );
 
-
+*/
 		//m_dirLeft
 
 		if (m_emitRight)
 		{
 			pTunnelElement = new TunnelElementALB(mp_meshes[0], m_posFar, m_dirRight.normalize(), m_dirSpeed,1);
-			pTunnelElement->setRotation(m);
+			//pTunnelElement->setRotation(m);
 			m_elements.push_back( pTunnelElement );
 		}
 		if (m_emitLeft)
 		{
 			pTunnelElement = new TunnelElementALB(mp_meshes[0], m_posFar, m_dirLeft.normalize(), m_dirSpeed,0);
-			pTunnelElement->setRotation(m);
+			//pTunnelElement->setRotation(m);
 			m_elements.push_back( pTunnelElement );
 		}
 	}
@@ -298,16 +302,27 @@ void AnimationTunnelALB::createUICustom()
     if (mp_UIcanvas)
     {
         mp_UIcanvas->addSlider("vol. th", 	0.0f, 1.0f, 	&m_volAccum.m_valueTriggerIn);
-//        mp_UIcanvas->addSlider("z point", 	0, 500.0f, 		&m_posFar.z);
         mp_UIcanvas->addSlider("h1", 		10, 50, 		&m_h1Mesh);
         mp_UIcanvas->addSlider("h2", 		1, 10, 			&m_h2Mesh);
         mp_UIcanvas->addSlider("w", 		1, 30, 			&m_wMesh);
-        mp_UIcanvas->addSlider("speed", 	100.0f, 500.0f, &m_dirSpeed);
-//        mp_UIcanvas->addSlider("angle", 	0, 10, 			&m_dirAngle);
+        mp_UIcanvas->addSlider("speed", 	100.0f, 1500.0f, &m_dirSpeed);
+        mp_UIcanvas->addSlider("zmax",		100.0f,2000.0f,&m_zMax);
+        mp_UIcanvas->addSlider("angle",		0,20,			&m_dirAngle);
         mp_UIcanvas->addToggle("left", 						&m_emitLeft);
         mp_UIcanvas->addToggle("right", 					&m_emitRight);
     }
 }
+
+//--------------------------------------------------------------
+void AnimationTunnelALB::updateRotations()
+{
+	m_mRotationLeft.makeIdentityMatrix();
+	m_mRotationRight.makeIdentityMatrix();
+
+  m_mRotationLeft.rotate(m_dirAngle, 0, 1, 0);
+  m_mRotationRight.rotate(-m_dirAngle, 0, 1, 0);
+}
+
 
 //--------------------------------------------------------------
 void AnimationTunnelALB::guiEvent(ofxUIEventArgs &e)
@@ -321,6 +336,11 @@ void AnimationTunnelALB::guiEvent(ofxUIEventArgs &e)
 		for (int i=0;i<nbElements;i++)
 			m_elements[i]->m_dirSpeed = m_dirSpeed;
 	}
+	else
+		if (e.getName() == "angle")
+		{
+			updateRotations();
+		}
 }
 
 

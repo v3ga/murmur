@@ -681,6 +681,7 @@ void Device::sendPacketsOSC()
     ofxOscMessage m_begin;
     m_begin.setAddress( OSC_ADDRESS_SEND_PACKETS_BEGIN );
     m_begin.addStringArg(m_id);
+	m_begin.addIntArg(m_nbLEDs);
     m_oscSender.sendMessage(m_begin);
 
 	

@@ -1,27 +1,27 @@
 <Widget>
     <Kind>12</Kind>
     <Name>wSurface</Name>
-    <Value>8</Value>
+    <Value>31,4</Value>
 </Widget>
 <Widget>
     <Kind>12</Kind>
     <Name>hSurface</Name>
-    <Value>6</Value>
+    <Value>10,5</Value>
 </Widget>
 <Widget>
     <Kind>12</Kind>
     <Name>wFboSurface</Name>
-    <Value>1600</Value>
+    <Value>2400</Value>
 </Widget>
 <Widget>
     <Kind>12</Kind>
     <Name>hFboSurface</Name>
-    <Value>1200</Value>
+    <Value>784</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>
     <Name>quality</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
