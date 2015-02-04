@@ -1,0 +1,55 @@
+<Widget>
+    <Kind>4</Kind>
+    <Name>volValuesMeanTh</Name>
+    <Value>0.500000000</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>volume</Name>
+    <Value>0.287096769</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>vol. th</Name>
+    <Value>0.801282048</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>z point</Name>
+    <Value>300.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>h1</Name>
+    <Value>50.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>h2</Name>
+    <Value>8.413461685</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>w</Name>
+    <Value>1.836538434</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>speed</Name>
+    <Value>441.025634766</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>angle</Name>
+    <Value>0.512820542</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>left</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>right</Name>
+    <Value>1</Value>
+</Widget>

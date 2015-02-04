@@ -88,6 +88,7 @@
 		F94139491A77938A0047A441 /* ofxJSONElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F94139341A77938A0047A441 /* ofxJSONElement.cpp */; };
 		F941397D1A77CB830047A441 /* ofxMultiGLFWWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F94139771A77CB830047A441 /* ofxMultiGLFWWindow.cpp */; };
 		F94139841A78D7EA0047A441 /* timelineSimple.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F94139821A78D7EA0047A441 /* timelineSimple.cpp */; };
+		F94A60E11A813EC900A850FA /* AnimationTunnelALB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F94A60DF1A813EC900A850FA /* AnimationTunnelALB.cpp */; };
 		F94AF63E19D419B70026A5A3 /* animationOrbit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F94AF63C19D419B70026A5A3 /* animationOrbit.cpp */; };
 		F94AF64119D498790026A5A3 /* Boid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F94AF63F19D498790026A5A3 /* Boid.cpp */; };
 		F951EB78195AC0D800056B2A /* ofxQuadWarp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F951EB72195AC0D800056B2A /* ofxQuadWarp.cpp */; };
@@ -442,6 +443,8 @@
 		F94139781A77CB830047A441 /* ofxMultiGLFWWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMultiGLFWWindow.h; sourceTree = "<group>"; };
 		F94139821A78D7EA0047A441 /* timelineSimple.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = timelineSimple.cpp; sourceTree = "<group>"; };
 		F94139831A78D7EA0047A441 /* timelineSimple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = timelineSimple.h; sourceTree = "<group>"; };
+		F94A60DF1A813EC900A850FA /* AnimationTunnelALB.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AnimationTunnelALB.cpp; sourceTree = "<group>"; };
+		F94A60E01A813EC900A850FA /* AnimationTunnelALB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimationTunnelALB.h; sourceTree = "<group>"; };
 		F94AF63C19D419B70026A5A3 /* animationOrbit.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animationOrbit.cpp; sourceTree = "<group>"; };
 		F94AF63D19D419B70026A5A3 /* animationOrbit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = animationOrbit.h; sourceTree = "<group>"; };
 		F94AF63F19D498790026A5A3 /* Boid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Boid.cpp; sourceTree = "<group>"; };
@@ -1923,6 +1926,8 @@
 				F90A221C174FA39A005DE613 /* animationTunnel.cpp */,
 				F94AF63D19D419B70026A5A3 /* animationOrbit.h */,
 				F94AF63C19D419B70026A5A3 /* animationOrbit.cpp */,
+				F94A60DF1A813EC900A850FA /* AnimationTunnelALB.cpp */,
+				F94A60E01A813EC900A850FA /* AnimationTunnelALB.h */,
 			);
 			name = Animations;
 			sourceTree = "<group>";
@@ -2878,6 +2883,7 @@
 				F999312E17198ABD00272085 /* OscReceivedElements.cpp in Sources */,
 				F999312F17198ABD00272085 /* OscTypes.cpp in Sources */,
 				8463806619A4CE4F0071BFB4 /* ofxJSLight.cpp in Sources */,
+				F94A60E11A813EC900A850FA /* AnimationTunnelALB.cpp in Sources */,
 				F999338C171B432900272085 /* deviceInfo.cpp in Sources */,
 				F999338F171B5E5600272085 /* oscReceiver.cpp in Sources */,
 				F9993392171B605600272085 /* oscSender.cpp in Sources */,

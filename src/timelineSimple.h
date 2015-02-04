@@ -23,6 +23,8 @@ class timelineSimpleEvent
 			
 			m_timeTrigger = 0;
 		}
+ 
+		void setAction(string action){m_action = action;}
 
 		void trigger(unsigned long long timeTrigger)
 		{
@@ -33,26 +35,29 @@ class timelineSimpleEvent
 		}
 
 		string						m_id;
-		unsigned long long			m_time;		// millis
-		unsigned long long			m_timeTrigger;		// millis
+		unsigned long long			m_time;			// millis
+		unsigned long long			m_timeTrigger;	// millis
 		void*						mp_cbObj;
 		timelineSimpleCb			mpf_cb;
+		string						m_action;		// a string with action / params to be decode in the event callback by application
 };
 
 
-class timelineSimple
+class timelineSimple : public ofThread
 {
 	public:
 		timelineSimple			();
 		~timelineSimple			();
 
-		void					start		();
-		void					update		();
+		void					start				();
+		void					update				();
+		void					threadedFunction	();
 
 		void					addEvent			(timelineSimpleEvent*);
 		void					addEvent			(string id, unsigned long long time, timelineSimpleEvent::timelineSimpleCb pCb, void* pCbObj);
 		void					setEventsCallback	(timelineSimpleEvent::timelineSimpleCb pCb, void* pCbObj);
 		void					load				(string file);
+
 
 		unsigned long long				m_timeStart;
 		vector<timelineSimpleEvent*>	m_events;

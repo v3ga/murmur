@@ -1,11 +1,11 @@
 <murmur>
 	<simulator>
         <!-- Activate or not simulation -->
-        <enable>0</enable>
+        <enable>1</enable>
 
         <!-- Sound input for simulators -->
         <soundInput>
-            <device>1</device>
+            <device>0</device>
             <nbChannels>1</nbChannels>
         </soundInput>
         
@@ -16,12 +16,12 @@
                 <nbLEDs>160</nbLEDs>
                 <length>4.0</length>
             </device>
+<!--
             <device>
                 <id>deviceEchoSimulator02</id>
                 <nbLEDs>160</nbLEDs>
                 <length>4.0</length>
             </device>
-<!--
             <device>
                 <id>deviceEchoSimulator03</id>
                 <nbLEDs>160</nbLEDs>

@@ -8,6 +8,7 @@
 
 #include "volumeAccum.h"
 
+//--------------------------------------------------------------
 VolumeAccum::VolumeAccum()
 {
     m_state = STATE_WAVE_OUT;
@@ -20,12 +21,14 @@ VolumeAccum::VolumeAccum()
 	
 }
 
+//--------------------------------------------------------------
 void VolumeAccum::setTriggerInCb(cbTriggerIn pFunc, void* pUserData)
 {
     mpf_funcTriggerIn = pFunc;
     mp_userData = pUserData;
 }
 
+//--------------------------------------------------------------
 void VolumeAccum::add(float volume)
 {
 	// Add value
