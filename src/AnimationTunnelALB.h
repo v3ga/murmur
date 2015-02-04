@@ -13,15 +13,19 @@
 class TunnelElementALB
 {
     public:
-        TunnelElementALB           (ofMesh* pMesh, ofVec3f pos, ofVec3f dir, float dirSpeed);
+        TunnelElementALB           (ofMesh* pMesh, ofVec3f pos, ofVec3f dir, float dirSpeed, int leftOrRight);
     
-		void					update	(float dt);
-		void					draw	();
+		void					setRotation	(ofMatrix4x4& m);
+		void					update		(float dt);
+		void					draw		();
 
         ofVec3f                 m_pos;
         ofVec3f                 m_dir;
 		float					m_dirSpeed;
 		ofMesh*					mp_mesh;
+		ofMatrix4x4				m_rot;
+ 
+		int						m_leftOrRight;
 };
 
 class AnimationTunnelALB : public Animation
