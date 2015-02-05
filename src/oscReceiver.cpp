@@ -46,6 +46,7 @@ Device* oscReceiver::discoverDevice(string id, int nbLeds)
 	   }
 	   OFAPPLOG->end();
    }
+   return pDevice;
 }
 
 //--------------------------------------------------------------
@@ -89,6 +90,11 @@ void oscReceiver::update()
                         pDevice->setSoundInputVolHistoryThOSC( m_oscMessage.getArgAsFloat(indexArg) );
                     }
                     else
+                    if (propName == "volHistoryPingTh")
+                    {
+                        pDevice->setVolHistoryPingThOSC( m_oscMessage.getArgAsFloat(indexArg) );
+                    }
+                    else
                     if (propName == "enableStandbyMode")
                     {
                         pDevice->setEnableStandbyModeOSC( m_oscMessage.getArgAsInt32(indexArg)==1 ? true : false );
@@ -96,7 +102,6 @@ void oscReceiver::update()
                     else
                     if (propName == "timeStandby")
                     {
-                        //printf("timeStandby = %.3f - ", m_oscMessage.getArgAsFloat(indexArg));
                         pDevice->setTimeStandbyOSC( m_oscMessage.getArgAsFloat(indexArg) );
                     }
                     else
@@ -136,6 +141,7 @@ void oscReceiver::update()
 						int value = m_oscMessage.getArgAsInt32(indexArg++);
 						pDevice->reversePacketsDirOSC(value>0 ? true : false);
 					}
+
                 }
             }
             else
@@ -154,13 +160,15 @@ void oscReceiver::update()
 				string deviceId = m_oscMessage.getArgAsString(indexArg++);
                 Device* pDevice = pDeviceManager->getDeviceById( deviceId );
 				if (pDevice)
+				{
 					pDevice->onReceivePacketEnd();
 
-				// Get the surface of device and update animation
-				Surface* pSurface = Globals::instance()->mp_app->getSurfaceForDevice(pDevice);
+					// Get the surface of device and update animation
+					Surface* pSurface = Globals::instance()->mp_app->getSurfaceForDevice(pDevice);
 				
-				if (pSurface)
-					pSurface->onNewPacket( pDevice->getLastPacket(), pDevice->m_id );
+					if (pSurface)
+						pSurface->onNewPacket( pDevice->getLastPacket(), pDevice->m_id );
+				}
 			}
             else
             if (m_oscMessage.getAddress() == OSC_ADDRESS_SEND_PACKETS)
@@ -177,16 +185,33 @@ void oscReceiver::update()
                         for (int i=0;i<nbPackets;i++)
                         {
                             m_packetTemp.m_volume = m_oscMessage.getArgAsFloat(indexArg++);
-							m_packetTemp.m_color.setHue			( m_oscMessage.getArgAsFloat(indexArg++) );
-							m_packetTemp.m_color.setSaturation	( m_oscMessage.getArgAsFloat(indexArg++) );
-							m_packetTemp.m_color.setBrightness	( m_oscMessage.getArgAsFloat(indexArg++) );
-							
+							//m_packetTemp.m_color.setHue			( m_oscMessage.getArgAsFloat(indexArg++) );
+							//m_packetTemp.m_color.setSaturation	( m_oscMessage.getArgAsFloat(indexArg++) );
+							//m_packetTemp.m_color.setBrightness	( m_oscMessage.getArgAsFloat(indexArg++) );
+
+							m_packetTemp.m_color.set(m_oscMessage.getArgAsFloat(indexArg++),m_oscMessage.getArgAsFloat(indexArg++),m_oscMessage.getArgAsFloat(indexArg++));
+						 
+						 	// ofLog() << m_packetTemp.m_color;
+						 
                             // Send to device
                             pDevice->onReceivePacket(&m_packetTemp);
                         }
                     }
                 }
             }
+			else
+			if (m_oscMessage.getAddress() == OSC_ADDRESS_RESET_PING)
+			{
+                if (pDeviceManager)
+                {
+                    string deviceId = m_oscMessage.getArgAsString(indexArg++);
+                    Device* pDevice = pDeviceManager->getDeviceById( deviceId );
+					if (pDevice)
+						pDevice->resetVolHistoryPingOSC();
+				}
+			}
+
+
         }
     }
 }

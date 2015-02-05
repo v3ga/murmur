@@ -72,6 +72,16 @@ class Device
 		bool				m_isEnableStandup;
 		float				m_standupTh;
  
+		// Ping
+		float				m_volHistoryPingTh;
+ 		bool				m_resetVolHistoryPing;
+ 
+		void				setVolHistoryPingTh			(float v);
+		void				setVolHistoryPingThOSC		(float v);
+
+		virtual void		resetVolHistoryPing			();
+		virtual void		resetVolHistoryPingOSC		();
+ 
         enum{
             EStandby_active              = 0,
             EStandby_pre_standby         = 1,
@@ -134,7 +144,7 @@ class Device
 		void				loadXMLColor		(ofxXmlSettings&);
 		void				loadXMLPackets		(ofxXmlSettings&);
 		virtual	void		loadXMLData			(ofxXmlSettings&);
- 
+		void 				loadXMLPing			(ofxXmlSettings&);
 
  
         // Attach point (used only on server side)

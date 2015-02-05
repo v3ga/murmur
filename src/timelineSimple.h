@@ -57,11 +57,13 @@ class timelineSimple : public ofThread
 		void					addEvent			(string id, unsigned long long time, timelineSimpleEvent::timelineSimpleCb pCb, void* pCbObj);
 		void					setEventsCallback	(timelineSimpleEvent::timelineSimpleCb pCb, void* pCbObj);
 		void					load				(string file);
+		bool					isStarted			(){return m_isStarted;}
 
 
 		unsigned long long				m_timeStart;
 		vector<timelineSimpleEvent*>	m_events;
 		int								m_eventIndex;
+		bool							m_isStarted;
 };
 
 

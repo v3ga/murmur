@@ -92,6 +92,13 @@ void SoundInput::setup(int nChannels)
 	mute(false);
 }
 
+//--------------------------------------------------------------
+float SoundInput::getVolHistoryLast()
+{
+	if (m_volHistory.size()>0)
+		return m_volHistory[0]; // we use insert to save values in this array
+	return 0.0f;
+}
 
 //--------------------------------------------------------------
 void SoundInput::setVolume(float vol)

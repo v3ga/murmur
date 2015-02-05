@@ -86,6 +86,8 @@ Device::Device(string id, int nbLEDs, float distLEDs)
 	m_isReverseDirPackets = false;
 
 	m_soundInputUseRawVol = true;
+	
+	m_volHistoryPingTh = 0.5;
 }
 
 //--------------------------------------------------------------
@@ -518,6 +520,11 @@ void Device::drawSoundInputVolume(float x, float y)
         ofSetColor(0,0,255);
 		yTh = y+(1.0-m_standupTh)*getHeightSoundInputVolume();
         ofLine(x-getWidthSoundInputVolume()/2,yTh,x,yTh);
+
+        ofSetColor(255,255,0);
+		yTh = y+(1.0-m_volHistoryPingTh)*getHeightSoundInputVolume();
+        ofLine(x-getWidthSoundInputVolume()/2,yTh,x,yTh);
+
     }
 }
 
@@ -663,6 +670,46 @@ void Device::reversePacketsDirOSC(bool is)
 	m_isReverseDirPackets = is;
 }
 
+//--------------------------------------------------------------
+void Device::setVolHistoryPingTh(float v)
+{
+	m_volHistoryPingTh = v;
+
+	if (m_isSendMessagesOSC == false) return;
+
+	ofxOscMessage m;
+    m.setAddress( OSC_ADDRESS_SET_DEVICE_PROP );
+    m.addStringArg(m_id);
+    m.addStringArg("volHistoryPingTh");
+    m.addFloatArg(m_volHistoryPingTh);
+    m_oscSender.sendMessage(m);
+}
+
+//--------------------------------------------------------------
+void Device::setVolHistoryPingThOSC(float v)
+{
+	m_volHistoryPingTh = v;
+}
+
+//--------------------------------------------------------------
+void Device::resetVolHistoryPing()
+{
+	m_resetVolHistoryPing = true;
+
+	if (m_isSendMessagesOSC == false) return;
+
+	ofxOscMessage m;
+    m.setAddress( OSC_ADDRESS_RESET_PING );
+    m.addStringArg(m_id);
+    m_oscSender.sendMessage(m);
+
+}
+
+//--------------------------------------------------------------
+void Device::resetVolHistoryPingOSC()
+{
+	m_resetVolHistoryPing = true;
+}
 
 //--------------------------------------------------------------
 void Device::sendPacketsOSC()
@@ -952,6 +999,12 @@ void Device::loadXMLPackets(ofxXmlSettings& settings)
 }
 
 //--------------------------------------------------------------
+void Device::loadXMLPing(ofxXmlSettings& settings)
+{
+	m_volHistoryPingTh = settings.getValue("device:ping:value", 			0.5f);
+}
+
+//--------------------------------------------------------------
 void Device::loadXMLData(ofxXmlSettings& settings)
 {
 	loadXMLSoundInput(settings);
@@ -959,6 +1012,7 @@ void Device::loadXMLData(ofxXmlSettings& settings)
 	loadXMLColor(settings);
 	loadXMLSoundOutput(settings);
 	loadXMLPackets(settings);
+	loadXMLPing(settings);
 }
 
 //--------------------------------------------------------------
@@ -993,11 +1047,10 @@ void Device::saveXML(string dir)
         settings.addTag("soundInput");
         settings.pushTag("soundInput");
 
-//getSoundInputRawVolume
-            settings.addValue("useRawVol", 		getSoundInputUseRawVolume());
-            settings.addValue("volMax", 		getSoundInputVolumeMax());
-            settings.addValue("volHistoryNb", 	getSoundInputVolHistorySize());
-            settings.addValue("volHistoryTh", 	getSoundInputVolHistoryTh());
+            settings.addValue("useRawVol", 			getSoundInputUseRawVolume());
+            settings.addValue("volMax", 			getSoundInputVolumeMax());
+            settings.addValue("volHistoryNb", 		getSoundInputVolHistorySize());
+            settings.addValue("volHistoryTh", 		getSoundInputVolHistoryTh());
 		settings.popTag();
 
         settings.addTag("soundOutput");
@@ -1021,6 +1074,13 @@ void Device::saveXML(string dir)
         settings.pushTag("packets");
 		settings.addValue("invert", m_isInvertPacketsVolume ? 1 : 0);
         settings.popTag();
+
+        settings.addTag("ping");
+        settings.pushTag("ping");
+		settings.addValue("value", m_volHistoryPingTh);
+        settings.popTag();
+
+
 
 
     settings.addValue("enableStandby", 		getEnableStandbyMode() ? 1 : 0);
