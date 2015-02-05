@@ -57,6 +57,7 @@ class toolDevices : public tool
 		ofxUIToggle*			mp_togglePacketsInvert;
 		ofxUIToggle*			mp_togglePacketsReverse;
  
+		ofxUISlider*			mp_sliderDeviceVolHistoryPingTh;
  
 
     	ofxUIToggle* 			mp_toggleDeviceEnableStandup;

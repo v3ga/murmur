@@ -13,5 +13,6 @@
 #define OSC_ADDRESS_SEND_PACKETS_END  	"device/send/packets/end"
 #define OSC_ADDRESS_SET_DEVICE_PROP     "device/set/property"
 #define OSC_ADDRESS_TURN_OFF			"device/turnoff"
+#define OSC_ADDRESS_RESET_PING			"device/reset/ping"
 
 

@@ -39,6 +39,8 @@ toolDevices::toolDevices(toolManager* parent, DeviceManager* manager) : tool("De
 	mp_togglePacketsInvert = 0;
 	mp_togglePacketsReverse = 0;
 
+	mp_sliderDeviceVolHistoryPingTh = 0;
+
 	mp_toggleDeviceEnableStandup = 0;
 	mp_sliderStandupVol = 0;
 
@@ -219,6 +221,15 @@ void toolDevices::createControlsCustomFinalize()
 	mp_togglePacketsReverse = new ofxUIToggle("reverseDirPackets",	false, dim, dim);
     mp_canvasDevice->addWidgetRight(mp_togglePacketsReverse);
 
+    mp_canvasDevice->addWidgetDown(new ofxUILabel("Ping", OFX_UI_FONT_MEDIUM));
+    mp_canvasDevice->addWidgetDown(new ofxUISpacer(widthDefault, 1));
+	
+	
+	mp_sliderDeviceVolHistoryPingTh = new ofxUISlider("ping threshold",	0.0,1.0,0.5,widthDefault,dim);
+    mp_canvasDevice->addWidgetDown(mp_sliderDeviceVolHistoryPingTh);
+    mp_canvasDevice->addWidgetDown( new ofxUILabelButton("ping reset", false, 0,0,widthDefault,dim,OFX_UI_FONT_SMALL) );
+
+
 	
     mp_canvasDevice->addWidgetDown(new ofxUILabel("Speakers", OFX_UI_FONT_MEDIUM));
     mp_canvasDevice->addWidgetDown(new ofxUISpacer(widthDefault, 1));
@@ -360,6 +371,7 @@ void toolDevices::updateDeviceUI(Device* pDevice)
 		if (mp_sliderColorManualSaturation) mp_sliderColorManualSaturation->setValue( pDevice->m_colorHsv[1] );
 		if (mp_togglePacketsInvert) mp_togglePacketsInvert->setValue( pDevice->m_isInvertPacketsVolume );
 		if (mp_togglePacketsReverse) mp_togglePacketsReverse->setValue( pDevice->m_isReverseDirPackets );
+		if (mp_sliderDeviceVolHistoryPingTh) mp_sliderDeviceVolHistoryPingTh->setValue( pDevice->m_volHistoryPingTh );
 
 		if (mp_canvasDevice)
 		{
@@ -491,6 +503,19 @@ void toolDevices::handleEvents(ofxUIEventArgs& e)
 		if (pDeviceCurrent)
 			pDeviceCurrent->reversePacketsDir( e.getToggle()->getValue() );
 	}
+	else if (name == "ping threshold")
+	{
+		if (pDeviceCurrent)
+			pDeviceCurrent->setVolHistoryPingTh( e.getSlider()->getValue() );
+	}
+	else if (name == "ping reset")
+	{
+		ofxUILabelButton* pBtn = (ofxUILabelButton*) e.widget;
+		if (pDeviceCurrent && pBtn->getValue())
+			pDeviceCurrent->resetVolHistoryPing();
+	}
+
+
 	
 
 	

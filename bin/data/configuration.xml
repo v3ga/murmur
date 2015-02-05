@@ -1,7 +1,7 @@
 <murmur>
 	<simulator>
         <!-- Activate or not simulation -->
-        <enable>1</enable>
+        <enable>0</enable>
 
         <!-- Sound input for simulators -->
         <soundInput>
@@ -13,7 +13,7 @@
         <devices>
             <device>
                 <id>deviceEchoSimulator01</id>
-                <nbLEDs>160</nbLEDs>
+                <nbLEDs>320</nbLEDs>
                 <length>4.0</length>
             </device>
 <!--
@@ -36,8 +36,8 @@
 		   <surface>
 			   <x>1024</x>
 			   <y>0</y>
-			   <w>2400</w>
-			   <h>784</h>
+			   <w>800</w>
+			   <h>600</h>
 		   </surface>
 	   </windows>
 

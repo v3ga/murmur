@@ -33,6 +33,7 @@ class SoundInput
 		void				mute			(bool is=true){m_isMute=is;}
  
         vector <float>&     getVolHistory   (){return m_volHistory;}
+		float				getVolHistoryLast();
         float               getHeightDraw   (){return m_heightDraw;}
 		void				setVolume		(float vol);
     

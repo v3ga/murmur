@@ -15,6 +15,7 @@ timelineSimple::timelineSimple()
 {
 	m_timeStart = 0.0f;
 	m_eventIndex = 0;
+	m_isStarted = false;
 }
 
 //--------------------------------------------------------------
@@ -31,6 +32,7 @@ void timelineSimple::start()
 {
 	m_timeStart = ofGetElapsedTimeMillis();
 	m_eventIndex = 0;
+	m_isStarted = true;
 
 	// Reset events
 	vector<timelineSimpleEvent*>::iterator it = m_events.begin();
