@@ -52,6 +52,7 @@ class Motif
     pushStyle();
     stroke(#FFFFFF, map(pos.z,-500,500,0,255));
     strokeWeight(3);
+    // fill(#FFFFFF);
     beginShape();
     for (int i=0;i<8;i++)
       vertex(points[i].x,points[i].y,points[i].z);
