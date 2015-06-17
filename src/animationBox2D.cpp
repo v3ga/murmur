@@ -246,4 +246,15 @@ void AnimationBox2D_circles::registerSoundTags(vector<string>& soundTags)
 	soundTags.push_back("bubble");
 }
 
+//--------------------------------------------------------------
+void AnimationBox2D_circles::newMidiMessage(ofxMidiMessage& midiMessage)
+{
+	if (midiMessage.control == 9)
+	{
+		m_gravity = ofMap((float) midiMessage.value, 0, 127, -10, 10);
+	}
+}
+
+
+
 

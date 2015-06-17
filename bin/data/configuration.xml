@@ -5,7 +5,7 @@
 
         <!-- Sound input for simulators -->
         <soundInput>
-            <device>1</device>
+            <device>0</device>
             <nbChannels>1</nbChannels>
         </soundInput>
         
@@ -62,4 +62,11 @@
     <launchDevices>
         <ip>192.168.0.39</ip>
     </launchDevices>
+
+
+    <!-- Midi -->
+	<midi>
+		<port>0</port>
+	</midi>
+
 </murmur>

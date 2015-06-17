@@ -18,6 +18,7 @@
 #include "ofxUIMovingGraphThreshold.h"
 #include "volumeAccum.h"
 #include "ofxJSONElement.h"
+#include "ofxMidi.h"
 
 
 struct AnimationTheme
@@ -81,6 +82,12 @@ class Animation
 
 		// Export to string
 		virtual string			toString				(){return "";}
+ 
+		// Midi
+		ofxXmlSettings			m_midiSettings;
+		virtual	void			loadMidiSettings		();
+		virtual void 			newMidiMessage			(ofxMidiMessage& eventArgs){}
+		map<int,string>			m_mapMidiToPropName;
 
         // UI
         ofxUICanvas*            mp_UIcanvas;
@@ -209,6 +216,9 @@ class AnimationManager
 		bool					M_reloadScript			();
 
         void                    M_readSettings          (ofxXmlSettings&);
+ 
+		void					loadMidiSettings		();
+		void					newMidiMessage			(ofxMidiMessage& midiMessage);
     
     
 		vector<Animation*>		m_listAnimations;

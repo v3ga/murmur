@@ -233,10 +233,17 @@ void Surface::setup()
         // printf("   - cannot load %s\n", "surfaceMain.xml");
 		OFAPPLOG->println("cannot load 'surfaceMain.xml'");
     }
+
+	// Midi settings
+	// int nbAnimations =
+
 	
 	// Scripts
 	ofDirectory dirScripts("Scripts");
     m_animationManager.M_readSettings(surfaceSettings);
+
+	// Midi
+	m_animationManager.loadMidiSettings();
 	
 	OFAPPLOG->println("setting animation index 0");
 	m_animationManager.M_setAnimationDirect(0);

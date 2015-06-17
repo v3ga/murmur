@@ -91,7 +91,7 @@
 <Widget>
     <Kind>4</Kind>
     <Name>gravity</Name>
-    <Value>-5.897435665</Value>
+    <Value>9.842519760</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -116,17 +116,17 @@
 <Widget>
     <Kind>2</Kind>
     <Name>left wall</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
     <Name>right wall</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
     <Name>top wall</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>

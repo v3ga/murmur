@@ -47,6 +47,9 @@ class AnimationBox2D_circles : public AnimationBox2D
         virtual void            createUICustom          ();
 		virtual	void			registerSoundTags		(vector<string>& soundTags);
 
+
+		virtual void 			newMidiMessage			(ofxMidiMessage& eventArgs);
+
         vector<ofxBox2dCircle>  m_listCircles;
 		vector<ofColor>			m_listCirclesColor;
         float                   m_gravity;

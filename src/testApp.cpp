@@ -79,7 +79,11 @@ void testApp::setup()
 
     // Sounds
     SoundManager::instance()->setup(m_settings);
-    
+	
+	// MIDI
+	initMidi();
+
+ 
     // Devices + Surfaces
     initDevices();
     initSurfaces();
@@ -402,6 +406,32 @@ void testApp::initJS()
         setupJS();
 	}
 }
+
+//--------------------------------------------------------------
+void testApp::initMidi()
+{
+	OFAPPLOG->begin("testApp::initMidi()");
+	m_midiIn.listPorts();
+
+	int midiInPort = m_settings.getValue("murmur:midi:port", 0);
+
+	OFAPPLOG->println("- opening port "+ofToString(midiInPort));
+
+	m_midiIn.openPort(midiInPort);
+	m_midiIn.addListener(this);
+	m_midiIn.setVerbose(true);
+	
+	OFAPPLOG->end();
+}
+
+//--------------------------------------------------------------
+void testApp::newMidiMessage(ofxMidiMessage& midiMessage)
+{
+//	ofLog() << midiMessage.control << " / " << midiMessage.value;
+	if (mp_surfaceMain)
+		mp_surfaceMain->getAnimationManager().newMidiMessage(midiMessage);
+}
+
 //--------------------------------------------------------------
 void testApp::update()
 {

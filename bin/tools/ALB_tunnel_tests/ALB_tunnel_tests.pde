@@ -25,7 +25,7 @@ float dirSpeed = 15;
 boolean doRotation = false;
 float motifHeight = 30;
 
-float period = 100; // milliseconds
+float period = 60; // milliseconds
 float time0=0, time1 = 0;
 
 
@@ -35,7 +35,7 @@ ArrayList<Motif> motifsLeft;
 // ------------------------------------------------------------------------------------------------
 void setup()
 {
-  size(800,600,P3D);
+  size(850,400,P3D);
   pointFar = new PVector(0,0,-600);
   dirLeft = new PVector();
   dirRight = new PVector();

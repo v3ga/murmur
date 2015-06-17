@@ -768,6 +768,44 @@ ofColor Animation::chooseRandomColor()
 }
 
 
+//--------------------------------------------------------------
+void Animation::loadMidiSettings()
+{
+	OFAPPLOG->begin("Animation::loadMidiSettings()");
+	string file = "Config/midi/"+m_name+".xml";
+	OFAPPLOG->println(" - file="+file);
+
+	ofFile f(file);
+	if (f.exists())
+	{
+		if (m_midiSettings.load(file))
+		{
+			OFAPPLOG->println(" - ok loaded settings.");
+			int nb = m_midiSettings.getNumTags("midi");
+			for (int i=0;i<nb;i++)
+			{
+				int 	control 	= m_midiSettings.getAttribute("midi", "control", 0, i);
+				if (control>0)
+				{
+					string 	propName 	= m_midiSettings.getAttribute("midi", "property", "???", i);
+					m_mapMidiToPropName[control] = 	propName;
+					OFAPPLOG->println(" - defining control "+ofToString(control) + " for property '"+propName+"'");
+				}
+			}
+		}
+		else
+		{
+			OFAPPLOG->println(" - error loading settings.");
+		}
+	}
+	else
+	{
+	 OFAPPLOG->println(" - warning, midi file not found.");
+	}
+	OFAPPLOG->end();
+}
+
+
 #define ____________AnimationManager____________
 
 //--------------------------------------------------------------
@@ -1143,4 +1181,23 @@ void AnimationManager::M_changeState(int newState)
 		}
 	}
 }
+
+//--------------------------------------------------------------
+void AnimationManager::loadMidiSettings()
+{
+	int nbAnimations = m_listAnimations.size();
+	for (int i=0;i<nbAnimations;i++)
+	{
+		m_listAnimations[i]->loadMidiSettings();
+	}
+}
+
+
+//--------------------------------------------------------------
+void AnimationManager::newMidiMessage(ofxMidiMessage& midiMessage)
+{
+	if (mp_animationCurrent)
+		mp_animationCurrent->newMidiMessage(midiMessage);
+}
+
 

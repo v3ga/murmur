@@ -10,6 +10,7 @@
 #include "threadRasp.h"
 #include "tool.h"
 #include "timelineSimple.h"
+#include "ofxMidi.h"
 
 class Scene;
 class SceneVisualisation;
@@ -28,7 +29,7 @@ class ofxMultiGLFWWindow;
 class GLFWwindow;
 #endif
 
-class testApp : public ofBaseApp
+class testApp : public ofBaseApp, public ofxMidiListener
 {
 	public:
 		void setup();
@@ -129,6 +130,10 @@ class testApp : public ofBaseApp
         // Sound input (for simulator)
         void                 audioIn(float * input, int bufferSize, int nChannels);
  
+ 		// Midi
+		ofxMidiIn 		    m_midiIn;
+		void				initMidi				();
+		void 				newMidiMessage			(ofxMidiMessage& eventArgs);
  
 		// DEBUG
 		 timelineSimple		m_timelineSimple;
