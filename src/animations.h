@@ -19,7 +19,7 @@
 #include "volumeAccum.h"
 #include "ofxJSONElement.h"
 #include "ofxMidi.h"
-
+#include "classProperty.h"
 
 struct AnimationTheme
 {
@@ -69,6 +69,7 @@ class Animation
 				void			M_zeroAll				();
 		virtual	void			VM_setArgs				(string args);
 		virtual	void			VM_enter				();
+				void			M_update				(float dt);
 		virtual void			VM_update				(float dt);
 		virtual void			VM_draw					(float w, float h);
         virtual void            VM_doTransition         (int which, float t);
@@ -86,8 +87,13 @@ class Animation
 		// Midi
 		ofxXmlSettings			m_midiSettings;
 		virtual	void			loadMidiSettings		();
-		virtual void 			newMidiMessage			(ofxMidiMessage& eventArgs){}
-		map<int,string>			m_mapMidiToPropName;
+		virtual	void			handleMidiMessages		();
+		virtual void 			newMidiMessage			(ofxMidiMessage& eventArgs);
+
+		map<int,classProperty*>	m_mapMidiToProp;
+ 		vector<ofxMidiMessage>	m_midiMessagesToHandle;
+		ofMutex					m_midiMutex;
+ 
 
         // UI
         ofxUICanvas*            mp_UIcanvas;
@@ -95,6 +101,8 @@ class Animation
 		ofxUILabel*				 mp_lblVolValues;
 
         virtual void            setUICanvas             (ofxUICanvas* p){mp_UIcanvas=p;}
+		void					addUISlider				(classProperty_float*);
+		void					addUItoggle				(classProperty_bool*);
         virtual void            createUI                ();
 		virtual	void			createUIVolume			();
 		virtual	void			createUISound			();
@@ -106,10 +114,13 @@ class Animation
 		virtual	bool			guiEventTogglesSound	(string name);
 				void			updateUIVolume			();
 
+
         virtual void            saveProperties          (string id);
         virtual void            loadProperties          (string id);
         string                  getPropertiesFilename   (string id, bool isExtension=true); // id from surface
 
+
+		classProperties			m_properties;
  
         // SUPER DIRTY
         static std::map<JSObject*, Animation*> sm_mapJSObj_Anim;

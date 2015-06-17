@@ -115,10 +115,16 @@ void AnimationParticlesMega2::createUICustom()
 {
     if (mp_UIcanvas)
     {
-        mp_UIcanvas->addSlider("amp. attraction", 1.0f, 100.0f, &m_ampAttraction);
-        mp_UIcanvas->addSlider("amp. repulsion", 1.0f, 100.0f, &m_ampRepulsion);
-        mp_UIcanvas->addSlider("radius repulsion", 40.0f, 300.0f, &m_repulsionRadius);
-        mp_UIcanvas->addSlider("particles size", 1.0f, 5.0f, &m_particlesSize);
+		m_properties.add( new classProperty_float("amp. attraction",1.0f, 100.0f, &m_ampAttraction) );
+		m_properties.add( new classProperty_float("amp. repulsion", 1.0f, 100.0f, &m_ampRepulsion) );
+		m_properties.add( new classProperty_float("radius repulsion", 40.0f, 300.0f, &m_repulsionRadius) );
+		m_properties.add( new classProperty_float("particles size", 1.0f, 5.0f, &m_particlesSize) );
+	
+
+		addUISlider( m_properties.getFloat("amp. attraction") );
+		addUISlider( m_properties.getFloat("amp. repulsion") );
+		addUISlider( m_properties.getFloat("radius repulsion") );
+		addUISlider( m_properties.getFloat("particles size") );
     }
 }
 

@@ -36,6 +36,8 @@ class toolAnimations : public tool
 		void							showAnimationPropsAll		(bool is=true);
 		void							showAnimationCurrentProperties();
 
+		void							initMidiAnimations			(Surface*);
+
 		ofxUILabel* 					mp_lblAnimDirJs;
 		ofxUILabel* 					mp_lblAnimTitle;
 		ofxUITextArea*					mp_consoleJs;

@@ -13,7 +13,8 @@
 #include "animations.h"
 
 #include "tools.h"
-#include "toolALB.h"
+//#include "toolALB.h"
+#include "toolEdimbourgh.h"
 
 
 #if MURMUR_MULTI_WINDOWS
@@ -100,7 +101,8 @@ void testApp::setup()
 	toolDevices*		pToolDevices		= new toolDevices(&toolManager, mp_deviceManager);
 	toolNetwork* 		pToolNetwork 		= new toolNetwork(&toolManager);
 	toolSurfaces*		pToolSurfaces		= new toolSurfaces(&toolManager, mp_surfaceMain);
-	toolALB*			pToolALB			= new toolALB(&toolManager);
+//	toolALB*			pToolALB			= new toolALB(&toolManager);
+	toolEdimbourgh*		pToolEdimbourgh		= new toolEdimbourgh(&toolManager);
 
 	toolManager.addTool( pToolConfiguration );
 	toolManager.addTool( new toolNetwork(&toolManager) );
@@ -109,7 +111,8 @@ void testApp::setup()
 	toolManager.addTool( pToolAnimations );
 	toolManager.addTool( new toolScene(&toolManager, mp_sceneVisualisation) );
 	toolManager.addTool( new toolSound(&toolManager) );
-	toolManager.addTool( pToolALB );
+//	toolManager.addTool( pToolALB );
+	toolManager.addTool( pToolEdimbourgh );
 
 	toolManager.setLogo("murmur_logo.png");
 	toolManager.setFontName("Fonts/NewMedia Fett.ttf");
@@ -129,7 +132,12 @@ void testApp::setup()
 	if (pToolDevices)			pToolDevices->setup();
 	if (pToolSurfaces)			pToolSurfaces->setup();
 	if (pToolAnimations)		pToolAnimations->setup();
-	if (pToolALB)				pToolALB->setup();
+//	if (pToolALB)				pToolALB->setup();
+	if (pToolEdimbourgh)		pToolEdimbourgh->setup();
+	
+	// Midi settings
+	if (pToolAnimations)		pToolAnimations->initMidiAnimations(mp_surfaceMain);
+	
 	
 	// GO
 	ofSetVerticalSync(true);
@@ -138,10 +146,10 @@ void testApp::setup()
 	m_windowSize.set(ofGetWidth(),ofGetHeight());
 
 
-	m_timelineSimple.load("Exports/ALB/timeline.xml");
-	m_timelineSimple.setEventsCallback( (timelineSimpleEvent::timelineSimpleCb) sM_timelineSimpleEvent, this);
+//	m_timelineSimple.load("Exports/ALB/timeline.xml");
+//	m_timelineSimple.setEventsCallback( (timelineSimpleEvent::timelineSimpleCb) sM_timelineSimpleEvent, this);
 	
-	m_timelineSimple.start();
+//	m_timelineSimple.start();
 }
 
 

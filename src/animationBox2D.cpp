@@ -224,13 +224,16 @@ void AnimationBox2D_circles::createUICustom()
 {
     if (mp_UIcanvas)
     {
+		m_properties.add( new classProperty_float("gravity", 		-10,	10, 	&m_gravity) );
+		m_properties.add( new classProperty_float("obj. number", 	100, 	500, 	&m_nbObjects) );
+
         mp_UIcanvas->addToggle("color", 			&m_isColor);
 
-        mp_UIcanvas->addSlider("gravity", 			-10.0f, 10.0f, 	&m_gravity);
+		addUISlider( m_properties.getFloat("gravity") );
         mp_UIcanvas->addSlider("vol. trigger", 		0.0f, 1.0f, 	&m_volTrigger);
         mp_UIcanvas->addSlider("obj. size min", 	10, 20, 		&m_sizeMin);
         mp_UIcanvas->addSlider("obj. size max", 	10, 50, 		&m_sizeMax);
-        mp_UIcanvas->addSlider("obj. number", 		100, 500, 		&m_nbObjects);
+		addUISlider( m_properties.getFloat("obj. number") );
 
         mp_UIcanvas->addToggle("left wall", 	&m_isLeftWall);
         mp_UIcanvas->addToggle("right wall", 	&m_isRightWall);
@@ -246,14 +249,6 @@ void AnimationBox2D_circles::registerSoundTags(vector<string>& soundTags)
 	soundTags.push_back("bubble");
 }
 
-//--------------------------------------------------------------
-void AnimationBox2D_circles::newMidiMessage(ofxMidiMessage& midiMessage)
-{
-	if (midiMessage.control == 9)
-	{
-		m_gravity = ofMap((float) midiMessage.value, 0, 127, -10, 10);
-	}
-}
 
 
 

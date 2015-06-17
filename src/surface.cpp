@@ -242,8 +242,6 @@ void Surface::setup()
 	ofDirectory dirScripts("Scripts");
     m_animationManager.M_readSettings(surfaceSettings);
 
-	// Midi
-	m_animationManager.loadMidiSettings();
 	
 	OFAPPLOG->println("setting animation index 0");
 	m_animationManager.M_setAnimationDirect(0);

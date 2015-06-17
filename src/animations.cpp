@@ -208,6 +208,20 @@ void Animation::createUI()
     ofAddListener(mp_UIcanvas->newGUIEvent, this, &Animation::guiEvent);
 }
 
+//--------------------------------------------------------------
+void Animation::addUISlider(classProperty_float* pProp)
+{
+    if (mp_UIcanvas)
+        mp_UIcanvas->addSlider(pProp->m_name, pProp->m_min, pProp->m_max, pProp->mp_variable);
+}
+
+//--------------------------------------------------------------
+void Animation::addUItoggle(classProperty_bool*)
+{
+
+}
+
+
 
 //--------------------------------------------------------------
 void Animation::registerSoundTags(vector<string>& soundTags)
@@ -473,9 +487,16 @@ ofxJSBOOL Animation::jsNewSlider(ofxJSContext* cx, ofxJSObject* obj, uintN argc,
             float min = ofxJSValue_TO_float(argv[1]);
             float max = ofxJSValue_TO_float(argv[2]);
             float val = ofxJSValue_TO_float(argv[3]);
-            
-            pThis->mp_UIcanvas->addWidgetDown( new ofxUISlider(name, min,max,val, ANIM_UI_WIDTH_DEFAULT,ANIM_UI_HEIGHT_DEFAULT) );
-        
+
+			// TODO : may be move this somewhere else ?
+			classProperty_float* pProp = new classProperty_float(name,min,max);
+			pThis->m_properties.add( pProp );
+
+		 
+            pThis->mp_UIcanvas->addWidgetDown( new ofxUISlider(name, min,max,pProp->mp_variable, ANIM_UI_WIDTH_DEFAULT,ANIM_UI_HEIGHT_DEFAULT) );
+
+			
+		 
             return JS_TRUE;
             
         }
@@ -593,6 +614,14 @@ void Animation::updateUIVolume()
 		}
 	}
 }
+
+//--------------------------------------------------------------
+void Animation::M_update(float dt)
+{
+	handleMidiMessages();
+	VM_update(dt);
+}
+
 
 //--------------------------------------------------------------
 void Animation::VM_update(float dt)
@@ -788,8 +817,12 @@ void Animation::loadMidiSettings()
 				if (control>0)
 				{
 					string 	propName 	= m_midiSettings.getAttribute("midi", "property", "???", i);
-					m_mapMidiToPropName[control] = 	propName;
-					OFAPPLOG->println(" - defining control "+ofToString(control) + " for property '"+propName+"'");
+					classProperty* pProp = m_properties.get(propName);
+					if(pProp)
+					{
+						m_mapMidiToProp[control] = 	pProp;
+						OFAPPLOG->println(" - defining control "+ofToString(control) + " for property '"+pProp->m_name+"'");
+					}
 				}
 			}
 		}
@@ -805,6 +838,51 @@ void Animation::loadMidiSettings()
 	OFAPPLOG->end();
 }
 
+//--------------------------------------------------------------
+void Animation::newMidiMessage(ofxMidiMessage& midiMessage)
+{
+	m_midiMutex.lock();
+	m_midiMessagesToHandle.push_back( ofxMidiMessage(midiMessage) ); // make a copy
+	m_midiMutex.unlock();
+}
+
+
+//--------------------------------------------------------------
+void Animation::handleMidiMessages()
+{
+	m_midiMutex.lock();
+	int nbMidiMessages = m_midiMessagesToHandle.size();
+	for (int i=0;i<nbMidiMessages;i++)
+	{
+		ofxMidiMessage& midiMessage = m_midiMessagesToHandle[i];
+
+		int control = midiMessage.control;
+
+		if ( m_mapMidiToProp.find( control ) != m_mapMidiToProp.end() )
+		{
+			classProperty* pProp = m_mapMidiToProp[control];
+
+			pProp->setValueFromMidiMessage( midiMessage );
+
+			// ————————————————————————————————————————————————————————————————————————————————
+			// Special actions if it is js
+			if (mp_obj && mp_UIcanvas)
+			{
+				// Update layout
+				if (pProp->m_type == classProperty::FLOAT)
+				{
+					ofxUISlider* pSliderProp = (ofxUISlider*) mp_UIcanvas->getWidget( pProp->m_name );
+					if (pSliderProp){
+						pSliderProp->setValue( *((classProperty_float*)pProp)->mp_variable) ;
+						mp_UIcanvas->triggerEvent(pSliderProp);
+					}
+				}
+			}
+			// ————————————————————————————————————————————————————————————————————————————————
+		}
+	}
+	m_midiMutex.unlock();
+}
 
 #define ____________AnimationManager____________
 
@@ -1040,7 +1118,7 @@ void AnimationManager::M_update(float dt)
 {
 	// Update current animation
 	if (mp_animationCurrent){
-		mp_animationCurrent->VM_update(dt);
+		mp_animationCurrent->M_update(dt);
 	}
 		
 	// Update transition tween
@@ -1197,7 +1275,9 @@ void AnimationManager::loadMidiSettings()
 void AnimationManager::newMidiMessage(ofxMidiMessage& midiMessage)
 {
 	if (mp_animationCurrent)
+	{
 		mp_animationCurrent->newMidiMessage(midiMessage);
+	}
 }
 
 

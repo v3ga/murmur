@@ -346,3 +346,15 @@ void toolAnimations::updateDeviceAnimationTitle()
 	}
 }
 
+//--------------------------------------------------------------
+void toolAnimations::initMidiAnimations(Surface* pSurface)
+{
+    vector<Animation*>::iterator it = pSurface->getAnimationManager().m_listAnimations.begin();
+    for ( ; it != pSurface->getAnimationManager().m_listAnimations.end() ; ++it)
+    {
+		(*it)->loadMidiSettings();
+	}
+}
+
+
+

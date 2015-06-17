@@ -3,11 +3,14 @@
         <animation>shaderWave</animation>
         <animation>particlesMega2</animation>
         <animation>box2DCircles</animation>
+<!--
         <animation>tunnelALB</animation>
+-->
     </animations>
 
-    <animations type="js" folder="workshops/eartsup_2014">
+    <animations type="js" folder="edimbourgh">
     <!--
+    <animations type="js" folder="workshops/eartsup_2014">
     <animations type="js" folder="workshops/esad_amiens_codesign">
     <animations type="js" folder="murmur">
     <animations type="js" folder="workshops/allo-halo">

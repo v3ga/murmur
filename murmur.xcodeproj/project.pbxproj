@@ -185,6 +185,8 @@
 		F9B8037F1B31926A00F12500 /* ofxMidiMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9B803641B31926A00F12500 /* ofxMidiMessage.cpp */; };
 		F9B803801B31926A00F12500 /* ofxMidiOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9B803661B31926A00F12500 /* ofxMidiOut.cpp */; };
 		F9B8038C1B31945F00F12500 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9B8038B1B31945F00F12500 /* CoreMIDI.framework */; };
+		F9B8038F1B31FF1F00F12500 /* classProperty.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9B8038D1B31FF1F00F12500 /* classProperty.cpp */; };
+		F9B803921B32120800F12500 /* toolEdimbourgh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9B803901B32120800F12500 /* toolEdimbourgh.cpp */; };
 		F9BC6AF6174512E000633C5C /* animationsFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9BC6AF4174512E000633C5C /* animationsFactory.cpp */; };
 		F9BC6AF91745149C00633C5C /* animationWaveShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9BC6AF71745149C00633C5C /* animationWaveShader.cpp */; };
 		F9BC6B0B17456DDD00633C5C /* soundManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9BC6B0917456DDC00633C5C /* soundManager.cpp */; };
@@ -844,6 +846,10 @@
 		F9B803671B31926A00F12500 /* ofxMidiOut.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMidiOut.h; sourceTree = "<group>"; };
 		F9B803681B31926A00F12500 /* ofxMidiTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMidiTypes.h; sourceTree = "<group>"; };
 		F9B8038B1B31945F00F12500 /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = ../../../../../../../../System/Library/Frameworks/CoreMIDI.framework; sourceTree = "<group>"; };
+		F9B8038D1B31FF1F00F12500 /* classProperty.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = classProperty.cpp; sourceTree = "<group>"; };
+		F9B8038E1B31FF1F00F12500 /* classProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = classProperty.h; sourceTree = "<group>"; };
+		F9B803901B32120800F12500 /* toolEdimbourgh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = toolEdimbourgh.cpp; sourceTree = "<group>"; };
+		F9B803911B32120800F12500 /* toolEdimbourgh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = toolEdimbourgh.h; sourceTree = "<group>"; };
 		F9BC6AE71743BA7E00633C5C /* Particle2D.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Particle2D.js; sourceTree = "<group>"; };
 		F9BC6AE81743BA7E00633C5C /* Particle2DMass.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Particle2DMass.js; sourceTree = "<group>"; };
 		F9BC6AF4174512E000633C5C /* animationsFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animationsFactory.cpp; sourceTree = "<group>"; };
@@ -2329,6 +2335,8 @@
 				F9AB0C081941B0DE0020D78A /* toolVideo.h */,
 				F94138C11A72F45A0047A441 /* toolALB.cpp */,
 				F94138C21A72F45A0047A441 /* toolALB.h */,
+				F9B803901B32120800F12500 /* toolEdimbourgh.cpp */,
+				F9B803911B32120800F12500 /* toolEdimbourgh.h */,
 			);
 			name = Tools;
 			sourceTree = "<group>";
@@ -2700,6 +2708,8 @@
 		F9BC6D17174DEF2100633C5C /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				F9B8038D1B31FF1F00F12500 /* classProperty.cpp */,
+				F9B8038E1B31FF1F00F12500 /* classProperty.h */,
 				F96FBE8E19794D8600E58A6F /* ofAppLog.cpp */,
 				F96FBE8F19794D8600E58A6F /* ofAppLog.h */,
 				F9AB0C0F1947A0FE0020D78A /* Sample.cpp */,
@@ -2976,10 +2986,12 @@
 				F999312C17198ABD00272085 /* OscOutboundPacketStream.cpp in Sources */,
 				F999312D17198ABD00272085 /* OscPrintReceivedElements.cpp in Sources */,
 				F9DC7C4A19CA174300682D1A /* ofxSoundPlayerMultiOutput.cpp in Sources */,
+				F9B8038F1B31FF1F00F12500 /* classProperty.cpp in Sources */,
 				F999312E17198ABD00272085 /* OscReceivedElements.cpp in Sources */,
 				F999312F17198ABD00272085 /* OscTypes.cpp in Sources */,
 				8463806619A4CE4F0071BFB4 /* ofxJSLight.cpp in Sources */,
 				F94A60E11A813EC900A850FA /* AnimationTunnelALB.cpp in Sources */,
+				F9B803921B32120800F12500 /* toolEdimbourgh.cpp in Sources */,
 				F999338C171B432900272085 /* deviceInfo.cpp in Sources */,
 				F999338F171B5E5600272085 /* oscReceiver.cpp in Sources */,
 				F9993392171B605600272085 /* oscSender.cpp in Sources */,
