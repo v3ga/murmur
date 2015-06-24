@@ -10,6 +10,7 @@
 
 #include "tool.h"
 #include "classProperty.h"
+#include "ofxTimeline.h"
 
 class toolEdimbourgh : public tool
 {
@@ -19,9 +20,17 @@ class toolEdimbourgh : public tool
 		void					createControlsCustom	();
 		void					setup					();
 		void					update					();
+		void					drawUI					();
 		void					handleEvents			(ofxUIEventArgs& e);
+		void					bangFired				(ofxTLBangEventArgs& args);
+		bool					keyPressed				(int key){return true;}
 
+		void					createTimeline			();
 
- 
 	 	classProperties			m_properties;
-};
+		ofxTimeline				m_timeline;
+ 
+		ofxUIButton*			mp_btnSaveTimeline;
+		string					m_timelineCurrentFolder;
+ 
+ };

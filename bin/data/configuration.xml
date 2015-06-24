@@ -16,12 +16,14 @@
                 <nbLEDs>320</nbLEDs>
                 <length>4.0</length>
             </device>
-<!--
+
             <device>
                 <id>deviceEchoSimulator02</id>
                 <nbLEDs>160</nbLEDs>
                 <length>4.0</length>
             </device>
+
+<!--
             <device>
                 <id>deviceEchoSimulator03</id>
                 <nbLEDs>160</nbLEDs>

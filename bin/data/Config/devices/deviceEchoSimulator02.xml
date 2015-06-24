@@ -11,13 +11,16 @@
     <color>
         <enable>1</enable>
         <colorMode_manual_hsb>
-            <hue>208.296768188</hue>
-            <saturation>180.548385620</saturation>
+            <hue>242.277069092</hue>
+            <saturation>158.869049072</saturation>
         </colorMode_manual_hsb>
     </color>
     <packets>
         <invert>0</invert>
     </packets>
+    <ping>
+        <value>0.500000000</value>
+    </ping>
     <enableStandby>0</enableStandby>
     <timeStandby>5.000000000</timeStandby>
     <sampleVolStandby>0.349999994</sampleVolStandby>

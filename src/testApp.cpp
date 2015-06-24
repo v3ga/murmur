@@ -653,32 +653,32 @@ void testApp::keyPressed(int key)
 	toolConfiguration* 	pToolConfiguration 	= (toolConfiguration*) 		toolManager.getTool("Configuration");
 	toolAnimations* 	pToolAnimations 	= (toolAnimations*) 		toolManager.getTool("Animations");
 	
-	if (key == ' ')
-    {
-		if (pToolConfiguration)
-			pToolConfiguration->toggleViewSimulation();
-    }
-	else if (key == 'f' || key == 'F')
+	if (toolManager.keyPressed(key) == false)
 	{
-		if (pToolConfiguration)
-			pToolConfiguration->toggleFullscreen();
-	}
-	else
-	{
-		if (toolManager.keyPressed(key) == false)
+		if (key == 's')
+    	{
+			if (pToolConfiguration)
+				pToolConfiguration->toggleViewSimulation();
+    	}
+		else if (key == 'f' || key == 'F')
 		{
-			if (key == OF_KEY_LEFT)
-			{
-				if (pToolAnimations && !pToolAnimations->isSequenceActive()){
-					pToolAnimations->showPrevAnimation();
-				}
-			}
-			else if (key == OF_KEY_RIGHT)
-			{
-				if (pToolAnimations && !pToolAnimations->isSequenceActive()){
-					pToolAnimations->showNextAnimation();
-				}
-			}
+			if (pToolConfiguration)
+				pToolConfiguration->toggleFullscreen();
+		}
+		else
+		{
+		   if (key == OF_KEY_LEFT)
+		   {
+			   if (pToolAnimations && !pToolAnimations->isSequenceActive()){
+				   pToolAnimations->showPrevAnimation();
+			   }
+		   }
+		   else if (key == OF_KEY_RIGHT)
+		   {
+			   if (pToolAnimations && !pToolAnimations->isSequenceActive()){
+				   pToolAnimations->showNextAnimation();
+			   }
+		   }
 		}
 	}
 	OFAPPLOG->end();
