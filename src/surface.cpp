@@ -231,11 +231,14 @@ void Surface::setup()
 		
 
 		// TEMP
+/*
 		AnimationComposition* pAnimation = new AnimationComposition("composition01");
 		pAnimation->add( "box2DCircles" );
 		pAnimation->add( "particlesMega2" );
 		
 		m_animationManager.M_addAnimation(pAnimation);
+*/
+		// TEMP
 		
 
         surfaceSettings.popTag();

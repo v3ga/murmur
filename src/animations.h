@@ -103,6 +103,8 @@ class Animation
 
         // UI
         ofxUICanvas*            mp_UIcanvas;
+        ofxUICanvas*            mp_UIcanvas01;
+
 		ofxUIMovingGraphThreshold* mp_UIVolumeTh;
 		ofxUILabel*				 mp_lblVolValues;
 

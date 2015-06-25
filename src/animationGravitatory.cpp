@@ -9,8 +9,9 @@
 #include "animationGravitatory.h"
 
 //--------------------------------------------------------------
-ParticleGravitatory::ParticleGravitatory(string deviceId, float x, float y, ofColor color)
+ParticleGravitatory::ParticleGravitatory(AnimationGravitatory* pParent, string deviceId, float x, float y, ofColor color)
 {
+	mp_parent = pParent;
 	m_deviceId = deviceId;
 	m_pos.set(x,y);
 	m_angle = ofRandom(TWO_PI);
@@ -18,6 +19,8 @@ ParticleGravitatory::ParticleGravitatory(string deviceId, float x, float y, ofCo
 	m_size = ofRandom(5,30);
 	m_ageMax = ofRandom(15,30);
 	m_color = color;
+
+
 }
 
 //--------------------------------------------------------------
@@ -28,7 +31,7 @@ void ParticleGravitatory::update(float dt)
 	m_pos.x += cos( m_angle )*200*dt;
 	m_pos.y += sin( m_angle )*200*dt;
 
-	m_angle += m_angleSpeed*dt;
+	m_angle += m_angleSpeed*dt*mp_parent->m_angleSpeedFactor;
 	m_age += dt;
 }
 
@@ -36,13 +39,16 @@ void ParticleGravitatory::update(float dt)
 void ParticleGravitatory::draw()
 {
 	float alpha = (1.0f-m_age/m_ageMax) * 255.0f;
-	ofSetColor(m_color,alpha);
-	ofEllipse(m_pos.x,m_pos.y,m_size,m_size);
+	ofSetColor(m_color,alpha*mp_parent->m_alphaFactor);
+	ofEllipse(m_pos.x,m_pos.y,m_size*mp_parent->m_sizeFactor,m_size*mp_parent->m_sizeFactor);
 }
 
 //--------------------------------------------------------------
 AnimationGravitatory::AnimationGravitatory(string name) : Animation(name)
 {
+	m_sizeFactor		= 1.0f;
+	m_alphaFactor		= 1.0f;
+	m_angleSpeedFactor	= 1.0f;
 }
 
 //--------------------------------------------------------------
@@ -65,18 +71,21 @@ void AnimationGravitatory::createUICustom()
 {
 	if (mp_UIcanvas)
 	{
-		mp_UIcanvas->addToggle("colorFromDevice", 					&m_isColorFromDevice);
+		mp_UIcanvas->addToggle("colorFromDevice", 	&m_isColorFromDevice);
 	}
-/*
-		m_properties.add( new classProperty_float("amp. attraction",1.0f, 100.0f, &m_ampAttraction) );
-		m_properties.add( new classProperty_float("amp. repulsion", 1.0f, 100.0f, &m_ampRepulsion) );
-		m_properties.add( new classProperty_float("radius repulsion", 40.0f, 300.0f, &m_repulsionRadius) );
-		m_properties.add( new classProperty_float("particles size", 1.0f, 5.0f, &m_particlesSize) );
+
+		m_properties.add( new classProperty_float("sizeFactor",			0.0f, 1.0f, 	&m_sizeFactor) );
+		m_properties.add( new classProperty_float("alphaFactor", 		0.0f, 1.0f, 	&m_alphaFactor) );
+		m_properties.add( new classProperty_float("angleSpeedFactor", 	0.0f, 1.0f, 	&m_angleSpeedFactor) );
+
+		addUISlider( m_properties.getFloat("sizeFactor") );
+		addUISlider( m_properties.getFloat("alphaFactor") );
+		addUISlider( m_properties.getFloat("angleSpeedFactor") );
+
+
+/*		m_properties.add( new classProperty_float("particles size", 1.0f, 5.0f, &m_particlesSize) );
 	
 
-		addUISlider( m_properties.getFloat("amp. attraction") );
-		addUISlider( m_properties.getFloat("amp. repulsion") );
-		addUISlider( m_properties.getFloat("radius repulsion") );
 		addUISlider( m_properties.getFloat("particles size") );
 
 */
@@ -144,7 +153,7 @@ void AnimationGravitatory::onNewPacket(DevicePacket* pDevicePacket, string devic
 	
 	if (pDevicePacket->m_volume>0.2f)
 	{
-		particles.push_back( new ParticleGravitatory(deviceId,x,y,  m_isColorFromDevice ?  pDevicePacket->m_color : ofColor(255) ) );
+		particles.push_back( new ParticleGravitatory(this, deviceId,x,y,  m_isColorFromDevice ?  pDevicePacket->m_color : ofColor(255) ) );
 		//ofLog() << deviceId << " : " << ofToString( particles.size() ) << " particles";
 	}
 }

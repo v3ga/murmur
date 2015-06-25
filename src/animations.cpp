@@ -132,6 +132,7 @@ void Animation::M_zeroAll()
 	mp_obj			= 0;
 	m_isAutoClear	= true;
     mp_UIcanvas     = 0;
+	mp_UIcanvas01	= 0;
 	mp_UIVolumeTh	= 0;
 	m_volValuesMeanTh = 0.5f;
 	mp_lblVolValues = 0;

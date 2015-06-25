@@ -34,8 +34,11 @@ class toolEdimbourgh : public tool
 
 
 		ofxUIToggle*			mp_tgLoopTimeline;
+		ofxUIToggle*			mp_tgAutoplayTimeline;
 		ofxUIButton*			mp_btnSaveTimeline;
 		ofxUIButton*			mp_btnPlayPauseTimeline;
 		ofxUIButton*			mp_btnStopTimeline;
+
 		string					m_timelineCurrentFolder;
+		bool					m_bAutoplay;
  };

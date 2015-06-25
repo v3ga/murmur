@@ -266,8 +266,11 @@ void AnimationShaderWave::createUICustom()
 {
     if (mp_UIcanvas)
     {
+		m_properties.add( new classProperty_float("intensity", 0.0f, 1.0f, &m_waveIntensity) );
+	
 		mp_UIcanvas->addIntSlider("sizeTexture", 400,1500, &m_waveVolumeTexture);
-        mp_UIcanvas->addSlider("intensity", 0.0f, 1.0f, &m_waveIntensity);
+		addUISlider( m_properties.getFloat("intensity") );
+//        mp_UIcanvas->addSlider("intensity", 0.0f, 1.0f, &m_waveIntensity);
         mp_UIcanvas->addToggle("debug enable blend", &m_isBlend);
         mp_UIcanvas->addToggle("colorFromDevice", &m_isColorFromDevice);
         mp_UIcanvas->addToggle("color", &m_isColor);

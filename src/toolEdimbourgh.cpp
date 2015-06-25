@@ -15,11 +15,14 @@
 //--------------------------------------------------------------
 toolEdimbourgh::toolEdimbourgh(toolManager* pParent) : tool("_Edimbourgh_", pParent)
 {
-	m_timelineCurrentFolder = "Gui/tools/_Edimbourgh_timeline/config01/";
 	mp_btnSaveTimeline 		= 0;
 	mp_tgLoopTimeline 		= 0;
+	mp_tgAutoplayTimeline	= 0;
 	mp_btnPlayPauseTimeline	= 0;
 	mp_btnStopTimeline		= 0;
+
+	m_timelineCurrentFolder = "Gui/tools/_Edimbourgh_timeline/config01/";
+	m_bAutoplay 			= false;
 }
 
 //--------------------------------------------------------------
@@ -44,9 +47,12 @@ void toolEdimbourgh::createControlsCustom()
 		mp_btnStopTimeline = new ofxUILabelButton("Stop", false, 100,dim,0,0,OFX_UI_FONT_SMALL);
 		mp_canvas->addWidgetRight( mp_btnStopTimeline );
 
+		mp_tgAutoplayTimeline = new ofxUIToggle("Loop", false, dim, dim);
+		mp_canvas->addWidgetRight( mp_tgAutoplayTimeline );
 
-		mp_tgLoopTimeline = new ofxUIToggle("Loop", false, dim, dim);
+		mp_tgLoopTimeline = new ofxUIToggle("Autoplay", false, dim, dim);
 		mp_canvas->addWidgetRight( mp_tgLoopTimeline );
+
 
 		mp_btnSaveTimeline = new ofxUILabelButton("Save", false, 100,dim,0,0,OFX_UI_FONT_SMALL);
 		mp_canvas->addWidgetDown( mp_btnSaveTimeline );
@@ -66,6 +72,13 @@ void toolEdimbourgh::createControlsCustom()
 void toolEdimbourgh::setup()
 {
 	OFAPPLOG->begin("toolEdimbourgh::setup()");
+	OFAPPLOG->begin(" - autoplay = " + ofToString(m_bAutoplay));
+
+	if (m_bAutoplay)
+	{
+		m_timeline.play();
+		updateLayout();
+	}
 	OFAPPLOG->end();
 }
 
@@ -86,6 +99,7 @@ void toolEdimbourgh::createTimeline()
 	m_timeline.loadTracksFromFolder(m_timelineCurrentFolder);
 
 	ofAddListener(m_timeline.events().bangFired, this, &toolEdimbourgh::bangFired);
+
 }
 
 //--------------------------------------------------------------
@@ -162,6 +176,10 @@ void toolEdimbourgh::handleEvents(ofxUIEventArgs& e)
 		m_timeline.stop();
 		m_timeline.setCurrentTimeSeconds(0);
 		updateLayout();
+	}
+	else if (name == "Autoplay")
+	{
+		m_bAutoplay = e.getToggle()->getValue();
 	}
 	else if (name == "transition duration (s)")
 	{

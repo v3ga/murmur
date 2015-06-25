@@ -9,20 +9,32 @@
 #include "animationComposition.h"
 #include "animationsFactory.h"
 
+//--------------------------------------------------------------
 AnimationComposition::AnimationComposition(string name) : Animation(name)
 {
 
 }
 
 
+//--------------------------------------------------------------
 void AnimationComposition::createUICustom()
 {
 	if (m_animations.size()>0)
 	{
+	
+/*
+		m_animations[0]->mp_UIcanvas = new ofxUICanvas(mp_UIcanvas->getRect()->getWidth(), mp_UIcanvas->getRect()->getHeight());
+
 		m_animations[0]->createUICustom();
+
+		mp_UIcanvas->addWidgetDown(m_animations[0]->mp_UIcanvas);
+		m_animations[0]->mp_UIcanvas->setVisible(true);
+*/
+
 	}
 }
 
+//--------------------------------------------------------------
 void AnimationComposition::add(string name)
 {
 	Animation* pAnimation = AnimationsFactory::create(name);
@@ -32,6 +44,7 @@ void AnimationComposition::add(string name)
 	}
 }
 
+//--------------------------------------------------------------
 void AnimationComposition::loadProperties(string id)
 {
 	vector<Animation*>::iterator it = m_animations.begin();
@@ -39,6 +52,7 @@ void AnimationComposition::loadProperties(string id)
 	 	(*it)->loadProperties( id+"_"+(*it)->m_name );
 }
 
+//--------------------------------------------------------------
 void AnimationComposition::VM_enter()
 {
 	vector<Animation*>::iterator it = m_animations.begin();
@@ -46,6 +60,7 @@ void AnimationComposition::VM_enter()
 	 	(*it)->VM_enter();
 }
 
+//--------------------------------------------------------------
 void AnimationComposition::VM_update(float dt)
 {
 	vector<Animation*>::iterator it = m_animations.begin();
@@ -53,6 +68,7 @@ void AnimationComposition::VM_update(float dt)
 	 	(*it)->VM_update(dt);
 }
 
+//--------------------------------------------------------------
 void AnimationComposition::VM_draw(float w, float h)
 {
 	drawBackground(0);
@@ -67,6 +83,7 @@ void AnimationComposition::VM_draw(float w, float h)
 	}
 }
 
+//--------------------------------------------------------------
 void AnimationComposition::onNewPacket(DevicePacket* pDevice, string deviceId, float x, float y)
 {
 	vector<Animation*>::iterator it = m_animations.begin();
