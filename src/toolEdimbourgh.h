@@ -18,8 +18,10 @@ class toolEdimbourgh : public tool
 		toolEdimbourgh			(toolManager*);
 
 		void					createControlsCustom	();
+
 		void					setup					();
 		void					update					();
+		void					updateLayout			();
 		void					drawUI					();
 		void					handleEvents			(ofxUIEventArgs& e);
 		void					bangFired				(ofxTLBangEventArgs& args);
@@ -29,8 +31,11 @@ class toolEdimbourgh : public tool
 
 	 	classProperties			m_properties;
 		ofxTimeline				m_timeline;
- 
+
+
+		ofxUIToggle*			mp_tgLoopTimeline;
 		ofxUIButton*			mp_btnSaveTimeline;
+		ofxUIButton*			mp_btnPlayPauseTimeline;
+		ofxUIButton*			mp_btnStopTimeline;
 		string					m_timelineCurrentFolder;
- 
  };

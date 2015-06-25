@@ -211,7 +211,7 @@ void AnimationTunnelALB::VM_draw(float w, float h)
 	m_w = w;
 	m_h = h;
 
-	ofBackground(0);
+	drawBackground(0);
 	m_cam.setPosition(0,0,1000);
 	m_cam.begin(ofRectangle(0,0,w,h));
 

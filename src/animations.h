@@ -84,6 +84,12 @@ class Animation
 		// Export to string
 		virtual string			toString				(){return "";}
  
+ 		// Background
+		bool					m_bDrawBackground;
+		void					setDrawBackground		(bool is=true){m_bDrawBackground = is;}
+ 		void					drawBackground			(float grey){if (m_bDrawBackground) ofBackground(grey);}
+		void					drawBackground			(float r, float g, float b, float a){if (m_bDrawBackground) ofBackground(r,g,b,a);}
+ 
 		// Midi
 		ofxXmlSettings			m_midiSettings;
 		virtual	void			loadMidiSettings		();
@@ -182,6 +188,8 @@ class Animation
 		map<string, ofColor>		m_colorDevice;
 		void						loadColors			();
 		ofColor						chooseRandomColor	();
+
+		bool						m_isColorFromDevice;
 };
 
 

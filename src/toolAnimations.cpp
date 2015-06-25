@@ -98,10 +98,11 @@ void toolAnimations::createControlsCustom()
 	
 		mp_canvas->addWidgetDown(new ofxUILabel("Animations", OFX_UI_FONT_LARGE));
 		mp_canvas->addWidgetDown(new ofxUISpacer(widthDefault, 2));
+/*
 		mp_canvas->addWidgetDown(new ofxUIToggle("activate sequence", GLOBALS->mp_app->isAnimationSequence, dim, dim));
 		mp_canvas->addWidgetDown(new ofxUISlider("transition duration (s)", 0.5f, 2.0f, 0.75f, widthDefault-10, dim ));
 		mp_canvas->addWidgetDown(new ofxUISlider("animation duration (s)", 30.0f, 180.0f, 120.0f, widthDefault-10, dim ));
-
+*/
 		mp_canvas->addWidgetDown(new ofxUILabel("Scripts", OFX_UI_FONT_MEDIUM));
 		mp_canvas->addWidgetDown(new ofxUISpacer(widthDefault, 2));
 		mp_lblAnimDirJs = new ofxUILabel("> dir", fontType);
@@ -183,7 +184,7 @@ void toolAnimations::handleEvents(ofxUIEventArgs& e)
 
     if (name == "activate sequence")
     {
-		pSurfaceCurrent->setTimelineActive( ((ofxUIToggle *) e.widget)->getValue() );
+		// pSurfaceCurrent->setTimelineActive( ((ofxUIToggle *) e.widget)->getValue() );
 		// ofLog() << "toggle activate sequence";
     }
     else if (name == "animation duration (s)")

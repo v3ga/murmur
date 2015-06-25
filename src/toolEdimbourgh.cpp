@@ -16,7 +16,10 @@
 toolEdimbourgh::toolEdimbourgh(toolManager* pParent) : tool("_Edimbourgh_", pParent)
 {
 	m_timelineCurrentFolder = "Gui/tools/_Edimbourgh_timeline/config01/";
-	mp_btnSaveTimeline = 0;
+	mp_btnSaveTimeline 		= 0;
+	mp_tgLoopTimeline 		= 0;
+	mp_btnPlayPauseTimeline	= 0;
+	mp_btnStopTimeline		= 0;
 }
 
 //--------------------------------------------------------------
@@ -32,12 +35,28 @@ void toolEdimbourgh::createControlsCustom()
 	    mp_canvas->addWidgetDown( new ofxUILabel("Edimbourgh",OFX_UI_FONT_LARGE) );
     	mp_canvas->addWidgetDown( new ofxUISpacer(widthDefault, 2) );
 
-		mp_btnSaveTimeline = new ofxUILabelButton("Save", false, 100,dim);
+	    mp_canvas->addWidgetDown(new ofxUILabel("Timeline", OFX_UI_FONT_MEDIUM));
+    	mp_canvas->addWidgetDown(new ofxUISpacer(widthDefault, 1));
+
+		mp_btnPlayPauseTimeline = new ofxUILabelButton("Play", false, 100,dim,0,0,OFX_UI_FONT_SMALL);
+		mp_canvas->addWidgetDown( mp_btnPlayPauseTimeline );
+
+		mp_btnStopTimeline = new ofxUILabelButton("Stop", false, 100,dim,0,0,OFX_UI_FONT_SMALL);
+		mp_canvas->addWidgetRight( mp_btnStopTimeline );
+
+
+		mp_tgLoopTimeline = new ofxUIToggle("Loop", false, dim, dim);
+		mp_canvas->addWidgetRight( mp_tgLoopTimeline );
+
+		mp_btnSaveTimeline = new ofxUILabelButton("Save", false, 100,dim,0,0,OFX_UI_FONT_SMALL);
 		mp_canvas->addWidgetDown( mp_btnSaveTimeline );
+
+	    mp_canvas->addWidgetDown(new ofxUILabel("Timeline/setAnim", OFX_UI_FONT_MEDIUM) );
+    	mp_canvas->addWidgetDown(new ofxUISpacer(widthDefault, 1) );
+		mp_canvas->addWidgetDown(new ofxUISlider("transition duration (s)", 0.1f, 1.0f, 0.15f, widthDefault, dim ));
 
 		mp_canvas->autoSizeToFitWidgets();
 	}
-
 
 	// Timeline
 	createTimeline();
@@ -58,6 +77,7 @@ void toolEdimbourgh::createTimeline()
 	m_timeline.reset();
 
 	// Create
+	m_timeline.setSpacebarTogglePlay(false);
 	m_timeline.setup();
 	m_timeline.setWorkingFolder(m_timelineCurrentFolder);
 	m_timeline.setAutosave(false);
@@ -96,24 +116,23 @@ void toolEdimbourgh::update()
 		}
 	
 	}
+}
 
-//	if (m_timeline.is)
-	
-
-	
+//--------------------------------------------------------------
+void toolEdimbourgh::updateLayout()
+{
+	if (mp_btnPlayPauseTimeline)
+		mp_btnPlayPauseTimeline->getLabelWidget()->setLabel( m_timeline.getIsPlaying() ? "Pause" : "Play" );
 }
 
 //--------------------------------------------------------------
 void toolEdimbourgh::drawUI()
 {
 	tool::drawUI();
-//	ofPushMatrix();
-//	ofTranslate(0,ofGetHeight()-m_timeline.getHeight());
 	float margin = 10;
 	m_timeline.setWidth(ofGetWidth()-2*margin);
 	m_timeline.setOffset(ofVec2f(margin,ofGetHeight()-m_timeline.getHeight()-margin));
 	m_timeline.draw();
-//	ofPopMatrix();
 }
 
 
@@ -123,9 +142,31 @@ void toolEdimbourgh::handleEvents(ofxUIEventArgs& e)
 	string name = e.getName();
 	if (name == "Save")
 	{
-		ofLog() << "Save";
-				m_timeline.saveTracksToFolder(m_timelineCurrentFolder);
-m_timeline.save();
+		m_timeline.saveTracksToFolder(m_timelineCurrentFolder);
+		m_timeline.save();
+	}
+	else if (name == "Loop")
+	{
+		m_timeline.setLoopType(  e.getToggle()->getValue() ?  OF_LOOP_NORMAL : OF_LOOP_NONE );
+	}
+	else if (name == "Play" || name == "Pause")
+	{
+		ofxUIButton* pBtn = e.getButton();
+		if (pBtn->getValue()){
+			m_timeline.togglePlay();
+			updateLayout();
+		}
+	}
+	else if (name == "Stop")
+	{
+		m_timeline.stop();
+		m_timeline.setCurrentTimeSeconds(0);
+		updateLayout();
+	}
+	else if (name == "transition duration (s)")
+	{
+		AnimationManager& animManager = GLOBALS->getSurfaceMain()->getAnimationManager();
+		animManager.M_setTransitionDuration( e.getSlider()->getScaledValue() );
 	}
 }
 
@@ -135,9 +176,21 @@ void toolEdimbourgh::bangFired(ofxTLBangEventArgs& args)
 	string trackName = args.track->getName();
 	if (trackName == "setAnim")
 	{
-		string animationName = args.flag;
 		AnimationManager& animManager = GLOBALS->getSurfaceMain()->getAnimationManager();
-		animManager.M_setAnimation( animationName );
+
+		string animationNameWithArgs = args.flag;
+		vector<string> animParts = ofSplitString(animationNameWithArgs, "/");
+
+		if (animParts.size() == 1)
+		{
+			animManager.M_setAnimation( animParts[0] );
+		}
+		else{
+			if (animParts[1] == "d")
+				animManager.M_setAnimationDirect( animParts[0] );
+			else
+				animManager.M_setAnimation( animParts[0] );
+		}
 	}
 }
 

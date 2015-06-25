@@ -184,7 +184,7 @@ void AnimationTunnel::VM_draw(float w, float h)
     glEnable(GL_DEPTH_TEST);
     
 
-    ofBackground(0,0,0,255);
+	drawBackground(0,0,0,255);
     ofTranslate(m_posAnchor.x,m_posAnchor.y,0);
     
     vector<TunnelElement*>::iterator it = m_listTunnelElement.begin();

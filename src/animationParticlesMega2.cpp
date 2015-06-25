@@ -38,6 +38,7 @@ AnimationParticlesMega2::AnimationParticlesMega2(string name) : Animation(name)
 	
 	m_particlesSize = 1.0f;
 	m_particlesPos = 0;
+	m_particlesColor = 0;
 }
 
 
@@ -50,6 +51,9 @@ AnimationParticlesMega2::~AnimationParticlesMega2()
 
 	delete[] m_particlesPos;
 	m_particlesPos = 0;
+
+	delete[] m_particlesColor;
+	m_particlesColor = 0;
 }
 
 //--------------------------------------------------------------
@@ -70,7 +74,15 @@ void AnimationParticlesMega2::createParticles()
 			delete[] m_particlesPos;
 			m_particlesPos = 0;
 		}
+		if (m_particlesColor)
+		{
+			delete[] m_particlesColor;
+			m_particlesColor = 0;
+		}
+
+
 		m_particlesPos = new ofVec3f[kParticles * 1024];
+		m_particlesColor = new ofFloatColor[kParticles * 1024];
 
         for(int i = 0; i < kParticles * 1024; i++) {
             float x = ofRandom(padding, ofGetWidth() - padding);
@@ -80,6 +92,7 @@ void AnimationParticlesMega2::createParticles()
 
 			m_particlesPos[i].set(x,y);
 
+			m_particlesColor[i].set( ofRandom(0.0f,1.0f) );
 
             Particle particle(m_particlesPos+i, xv, yv);
             particleSystem.add(particle);
@@ -88,6 +101,7 @@ void AnimationParticlesMega2::createParticles()
         }
 
 		m_particlesVbo.setVertexData(m_particlesPos, kParticles * 1024, GL_DYNAMIC_DRAW);
+//		m_particlesVbo.setColorData(m_particlesColor, kParticles * 1024, GL_DYNAMIC_DRAW);
 
         timeStep = 1;
         lineOpacity = 128;
@@ -158,7 +172,8 @@ void AnimationParticlesMega2::VM_update(float dt)
 //--------------------------------------------------------------
 void AnimationParticlesMega2::VM_draw(float w, float h)
 {
-    ofBackground(0, 0, 0);
+	drawBackground(0);
+
     m_resolution.set(w,h);
     createParticles();
 
@@ -167,6 +182,7 @@ void AnimationParticlesMega2::VM_draw(float w, float h)
     particleSystem.setTimeStep(timeStep);
  
 	m_particlesVbo.updateVertexData(m_particlesPos, kParticles*1024);
+//	m_particlesVbo.update
     
 	ofEnableAlphaBlending();
 	ofSetColor(255, 255, 255, lineOpacity);

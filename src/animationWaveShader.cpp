@@ -102,7 +102,8 @@ void AnimationShaderWave::VM_draw(float w, float h)
 //    m_anchor.set(m_anchorNorm.x*w, m_anchorNorm.y*h);
 //    printf("(%.3f,%.3f)-",m_anchor.x,m_anchor.y);
     
-    ofBackground(0, 0, 0, 0);
+	drawBackground(0,0,0,0);
+
     ofSetColor(255);
 //	ofDisableAlphaBlending();
 	if (m_isBlend)
@@ -187,9 +188,14 @@ void AnimationShaderWave::onNewPacket(DevicePacket* pDevicePacket, string device
 		{
 			pShaderWave->m_anchor.set(x, y);
 		    pShaderWave->m_volume = pDevicePacket->m_volume;
-
-			if (m_isColor)
+			
+			if (m_isColorFromDevice)
 			{
+				pShaderWave->m_color = pDevicePacket->m_color;
+			}
+			else if (m_isColor)
+			{
+
 				VolumeAccum* pVolumAccum = m_mapDeviceVolumAccum[deviceId];
 				if (pVolumAccum)
 				{
@@ -199,6 +205,8 @@ void AnimationShaderWave::onNewPacket(DevicePacket* pDevicePacket, string device
 						if (m_mapVolMeanAbove[deviceId] == false)
 						{
 							m_mapVolMeanAbove[deviceId] = true;
+
+							
 							ofColor color = chooseRandomColor();
 
 							pShaderWave->m_fColor = 0.9f;
@@ -261,6 +269,7 @@ void AnimationShaderWave::createUICustom()
 		mp_UIcanvas->addIntSlider("sizeTexture", 400,1500, &m_waveVolumeTexture);
         mp_UIcanvas->addSlider("intensity", 0.0f, 1.0f, &m_waveIntensity);
         mp_UIcanvas->addToggle("debug enable blend", &m_isBlend);
+        mp_UIcanvas->addToggle("colorFromDevice", &m_isColorFromDevice);
         mp_UIcanvas->addToggle("color", &m_isColor);
 
     }

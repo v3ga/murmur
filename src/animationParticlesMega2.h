@@ -194,5 +194,6 @@ private:
 	map<string, ParticleForce*>	m_mapParticleForce;
 	ofVbo					m_particlesVbo;
 	ofVec3f*				m_particlesPos;
+	ofFloatColor*			m_particlesColor;
 	
 };

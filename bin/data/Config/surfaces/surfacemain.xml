@@ -1,6 +1,7 @@
 <surface id="main">
     <animations type="cpp">
-        <animation>shaderWave</animation>
+  		<animation>gravitatory</animation>
+       <animation>shaderWave</animation>
         <animation>particlesMega2</animation>
         <animation>box2DCircles</animation>
 <!--

@@ -3,6 +3,7 @@
 #include "globals.h"
 #include "data.h"
 #include "js.h"
+#include "ofAppLog.h"
 
 #include "sceneVisualisation.h"
 #include "deviceEchoSimulator.h"
@@ -24,6 +25,8 @@
 //--------------------------------------------------------------
 void testApp::setup()
 {
+	OFAPPLOG->begin("testApp::setup()");
+
 	// Init
 	m_isUpdateLayout = false;
 	
@@ -145,6 +148,7 @@ void testApp::setup()
 
 	m_windowSize.set(ofGetWidth(),ofGetHeight());
 
+	OFAPPLOG->end();
 
 //	m_timelineSimple.load("Exports/ALB/timeline.xml");
 //	m_timelineSimple.setEventsCallback( (timelineSimpleEvent::timelineSimpleCb) sM_timelineSimpleEvent, this);

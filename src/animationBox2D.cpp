@@ -93,12 +93,6 @@ void AnimationBox2D::guiEvent(ofxUIEventArgs &e)
 	string name = e.getName();
 	if (name == "left wall" || name == "right wall" || name == "top wall" || name == "bottom wall")
 	{
-		Surface* pSurfaceMain = GLOBALS->getSurfaceMain();
-		if (pSurfaceMain)
-		{
-			createBox2D(0,0*10,30,true,ofRectangle(0, 0, pSurfaceMain->getWidthPixels(), pSurfaceMain->getHeightPixels()));
-			createBounds( ofRectangle(0.0f,0.0f,pSurfaceMain->getWidthPixels(),pSurfaceMain->getHeightPixels()) ); // TEMP, should be relative to surface
-		}
 	}
 }
 
@@ -134,6 +128,14 @@ void AnimationBox2D_circles::VM_update(float dt)
 {
 	updateUIVolume();
 
+		Surface* pSurfaceMain = GLOBALS->getSurfaceMain();
+		if (pSurfaceMain)
+		{
+			createBox2D(0,0*10,30,true,ofRectangle(0, 0, pSurfaceMain->getWidthPixels(), pSurfaceMain->getHeightPixels()));
+			createBounds( ofRectangle(0.0f,0.0f,pSurfaceMain->getWidthPixels(),pSurfaceMain->getHeightPixels()) ); // TEMP, should be relative to surface
+		}
+
+
     if (m_isBox2DCreated){
         m_box2d.setGravity(0.0f, m_gravity);
         m_box2d.update();
@@ -144,8 +146,7 @@ void AnimationBox2D_circles::VM_update(float dt)
 //--------------------------------------------------------------
 void AnimationBox2D_circles::VM_draw(float w, float h)
 {
- 
-    ofBackground(0);
+	drawBackground(0);
     ofPushStyle();
     ofxBox2dCircle circle;
 	for(int i=0; i<m_listCircles.size(); i++)
@@ -153,7 +154,7 @@ void AnimationBox2D_circles::VM_draw(float w, float h)
         circle = m_listCircles[i];
         
 		ofFill();
-		if (m_isColor)
+		if (m_isColor || m_isColorFromDevice)
 		{
 			ofSetColor( m_listCirclesColor[i] );
 		}
@@ -198,7 +199,21 @@ void AnimationBox2D_circles::onNewPacket(DevicePacket* pDevicePacket, string dev
             circle.setVelocity( ofRandom(-0.5,0.5), ofRandom(-0.5,0.5) );
             
             m_listCircles.push_back(circle);
-			m_listCirclesColor.push_back( m_colorDevice[deviceId] );
+			if (m_isColorFromDevice)
+			{
+				m_listCirclesColor.push_back( pDevicePacket->m_color );
+				ofLog() << pDevicePacket->m_color;
+			}
+			else
+			if (m_isColor)
+			{
+				m_listCirclesColor.push_back( m_colorDevice[deviceId] );
+			}
+			else
+			{
+				m_listCirclesColor.push_back( ofColor(255) );
+			}
+
 
             if (m_listCircles.size() > (int)m_nbObjects) {
                 m_listCircles.begin()->destroy();
@@ -227,7 +242,8 @@ void AnimationBox2D_circles::createUICustom()
 		m_properties.add( new classProperty_float("gravity", 		-10,	10, 	&m_gravity) );
 		m_properties.add( new classProperty_float("obj. number", 	100, 	500, 	&m_nbObjects) );
 
-        mp_UIcanvas->addToggle("color", 			&m_isColor);
+        mp_UIcanvas->addToggle("color", 							&m_isColor);
+        mp_UIcanvas->addToggle("colorFromDevice", 					&m_isColorFromDevice);
 
 		addUISlider( m_properties.getFloat("gravity") );
         mp_UIcanvas->addSlider("vol. trigger", 		0.0f, 1.0f, 	&m_volTrigger);

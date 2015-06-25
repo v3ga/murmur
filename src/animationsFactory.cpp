@@ -15,6 +15,8 @@
 #include "animationTunnel.h"
 #include "animationTunnelALB.h"
 #include "animationOrbit.h"
+#include "animationGravitatory.h"
+#include "animationComposition.h"
 
 Animation* AnimationsFactory::create(string name)
 {
@@ -35,6 +37,10 @@ Animation* AnimationsFactory::create(string name)
         pAnimation = new AnimationTunnelALB(name);
     else if (name == "orbit")
         pAnimation = new AnimationOrbit(name);
+    else if (name == "gravitatory")
+        pAnimation = new AnimationGravitatory(name);
+    else if (name == "composition")
+        pAnimation = new AnimationComposition(name);
  
     return pAnimation;
 }

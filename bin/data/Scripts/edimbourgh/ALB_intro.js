@@ -1,8 +1,10 @@
 
+this.deviceVolume = [];
 
 //--------------------------------------------------------------
-function ParticleSquare(x,y,vol,a)
+function ParticleSquare(deviceId,x,y,vol,a)
 {
+	this.deviceId = deviceId;
 	this.x = x;
 	this.y = y;
 	this.vol = vol;
@@ -43,8 +45,8 @@ function ParticleSquare(x,y,vol,a)
 
 	this.update = function(dt)
 	{
-		this.x += Math.cos(this.angle)*dt*300/2; 		
-		this.y += Math.sin(this.angle)*dt*300/2;
+		this.x += Math.cos(this.angle)*dt*500*deviceVolume[this.deviceId]; 		
+		this.y += Math.sin(this.angle)*dt*500*deviceVolume[this.deviceId];
 		this.angle += 0.023;	
 		this.age += dt;
 		this.alpha = 255*(1-this.age/40.0);
@@ -77,6 +79,10 @@ function setup()
 //
 function update(dt)
 {
+	for (var i=0 ; i < this.deviceVolume.length ; i++){
+		this.deviceVolume[i] += (0-this.deviceVolume[i])*0.7;
+	}
+
 	for (var i=0 ; i < this.particles.length ; i++){
 		this.particles[i].update(dt);
 	}
@@ -121,9 +127,10 @@ function draw(w,h)
 //
 function onNewPacket(deviceId,volume,x,y)
 {
+	this.deviceVolume[deviceId] = volume;
 	if (volume > 0.05)
 	{
-		this.particles.push( new ParticleSquare(x,y,volume*5,of.Random(1,50) ));
+		this.particles.push( new ParticleSquare(deviceId, x,y,volume*5,of.Random(1,50) ));
 	}
 
 	this.volumeSaved = volume*200;

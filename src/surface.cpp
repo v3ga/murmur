@@ -12,6 +12,9 @@
 #include "ofxXmlSettings.h"
 #include "animationsFactory.h"
 
+// TEMP
+#include "animationComposition.h"
+
 //--------------------------------------------------------------
 Surface::Surface(string id, int wPixels, int hPixels)
 {
@@ -225,6 +228,15 @@ void Surface::setup()
 		}
 		
 //        surfaceSettings.pushTag("animations");
+		
+
+		// TEMP
+		AnimationComposition* pAnimation = new AnimationComposition("composition01");
+		pAnimation->add( "box2DCircles" );
+		pAnimation->add( "particlesMega2" );
+		
+		m_animationManager.M_addAnimation(pAnimation);
+		
 
         surfaceSettings.popTag();
     }

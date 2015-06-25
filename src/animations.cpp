@@ -136,7 +136,10 @@ void Animation::M_zeroAll()
 	m_volValuesMeanTh = 0.5f;
 	mp_lblVolValues = 0;
 	
-	m_isColor		= false;
+	m_isColor				= false;
+	m_isColorFromDevice		= false;
+	
+	setDrawBackground(true);
 }
 
 //--------------------------------------------------------------

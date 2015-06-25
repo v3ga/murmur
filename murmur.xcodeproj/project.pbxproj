@@ -293,6 +293,7 @@
 		F9DE82F51B39FA7300F5A086 /* ofxTLVideoTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9DE82AB1B39FA7200F5A086 /* ofxTLVideoTrack.cpp */; };
 		F9DE82F61B39FA7300F5A086 /* ofxTLZoomer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9DE82AD1B39FA7200F5A086 /* ofxTLZoomer.cpp */; };
 		F9DE83291B39FAF300F5A086 /* ofxTextInputField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9DE83241B39FAF300F5A086 /* ofxTextInputField.cpp */; };
+		F9DE83341B3C590400F5A086 /* animationComposition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9DE83321B3C590400F5A086 /* animationComposition.cpp */; };
 		F9E11C5217C3A2F000AD3DFD /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9E11C4517C3A2F000AD3DFD /* Syphon.framework */; };
 		F9E11C5317C3A2F000AD3DFD /* SyphonNameboundClient.m in Sources */ = {isa = PBXBuildFile; fileRef = F9E11C4817C3A2F000AD3DFD /* SyphonNameboundClient.m */; };
 		F9E11C5417C3A2F000AD3DFD /* ofxSyphonClient.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9E11C4D17C3A2F000AD3DFD /* ofxSyphonClient.mm */; };
@@ -1135,6 +1136,8 @@
 		F9DE83261B39FAF300F5A086 /* ofxTextInputFieldFontRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTextInputFieldFontRenderer.h; sourceTree = "<group>"; };
 		F9DE832E1B39FB0B00F5A086 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		F9DE83301B39FB0B00F5A086 /* ofRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofRange.h; sourceTree = "<group>"; };
+		F9DE83321B3C590400F5A086 /* animationComposition.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animationComposition.cpp; sourceTree = "<group>"; };
+		F9DE83331B3C590400F5A086 /* animationComposition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = animationComposition.h; sourceTree = "<group>"; };
 		F9E11C4517C3A2F000AD3DFD /* Syphon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Syphon.framework; sourceTree = "<group>"; };
 		F9E11C4717C3A2F000AD3DFD /* SyphonNameboundClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyphonNameboundClient.h; sourceTree = "<group>"; };
 		F9E11C4817C3A2F000AD3DFD /* SyphonNameboundClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyphonNameboundClient.m; sourceTree = "<group>"; };
@@ -2120,6 +2123,8 @@
 				F94A60E01A813EC900A850FA /* AnimationTunnelALB.h */,
 				F9DE809F1B398FDC00F5A086 /* animationGravitatory.cpp */,
 				F9DE80A01B398FDC00F5A086 /* animationGravitatory.h */,
+				F9DE83321B3C590400F5A086 /* animationComposition.cpp */,
+				F9DE83331B3C590400F5A086 /* animationComposition.h */,
 			);
 			name = Animations;
 			sourceTree = "<group>";
@@ -3487,6 +3492,7 @@
 				F92BC4BA189F094600CA158A /* ofxUIMultiImageToggle.cpp in Sources */,
 				F9DE80A11B398FDC00F5A086 /* animationGravitatory.cpp in Sources */,
 				F9B8037F1B31926A00F12500 /* ofxMidiMessage.cpp in Sources */,
+				F9DE83341B3C590400F5A086 /* animationComposition.cpp in Sources */,
 				F99930FA171989EB00272085 /* ofxEasingCubic.cpp in Sources */,
 				F9DE82E31B39FA7300F5A086 /* ofxTLColorTrack.cpp in Sources */,
 				F9AB0BEF1940FA760020D78A /* tool.cpp in Sources */,
