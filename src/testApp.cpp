@@ -121,6 +121,8 @@ void testApp::setup()
 	toolManager.setFontName("Fonts/NewMedia Fett.ttf");
 	toolManager.createControls(ofVec2f(100,100),ofVec2f(200,200));
 	toolManager.loadData();
+	
+	pToolEdimbourgh->loadMidiSettings();
  
     // Run network
 	// if (pToolNetwork) 			pToolNetwork->setup();
@@ -442,6 +444,10 @@ void testApp::newMidiMessage(ofxMidiMessage& midiMessage)
 //	ofLog() << midiMessage.control << " / " << midiMessage.value;
 	if (mp_surfaceMain)
 		mp_surfaceMain->getAnimationManager().newMidiMessage(midiMessage);
+
+	toolEdimbourgh* pToolEdimbourgh = (toolEdimbourgh*) toolManager.getTool("_Edimbourgh_");
+	if (pToolEdimbourgh)
+		pToolEdimbourgh->newMidiMessage(midiMessage);
 }
 
 //--------------------------------------------------------------

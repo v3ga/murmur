@@ -34,7 +34,7 @@
 		<key>4BA63F6230E5D3E779B604A0A76A5AD0E884E6D1</key>
 		<string>../..</string>
 		<key>9306F8A4B5C13BDC4DDB4D5C22AC1335F4D819E8</key>
-		<string>../../../../../addons/ofxTimeline</string>
+		<string>../../../addons/ofxTimeline</string>
 		<key>A07761EFE28259701C86F29F3992B643D9DB6851</key>
 		<string>../../../of_v0.8.1_osx_release/addons/ofxSoundPlayerMultiOutput</string>
 		<key>e7f115c4-931f-11de-b51d-eb253e4b719b++505</key>
@@ -63,17 +63,17 @@
 		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
-			<string>public.vcs.subversion</string>
+			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>e7f115c4-931f-11de-b51d-eb253e4b719b++505</string>
+			<string>087B3E30C5DAF41F45449A05D37C663C00261246</string>
 			<key>IDESourceControlWCCName</key>
 			<string>ofxJavascript</string>
 		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
-			<string>public.vcs.git</string>
+			<string>public.vcs.subversion</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>087B3E30C5DAF41F45449A05D37C663C00261246</string>
+			<string>e7f115c4-931f-11de-b51d-eb253e4b719b++505</string>
 			<key>IDESourceControlWCCName</key>
 			<string>ofxJavascript</string>
 		</dict>

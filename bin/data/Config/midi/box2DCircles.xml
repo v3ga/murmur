@@ -1,2 +1,3 @@
 <midi control="9" property="gravity" />
 <midi control="5" property="obj. number" />
+<midi control="44" property="left wall" />

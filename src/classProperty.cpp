@@ -50,6 +50,75 @@ classProperty_bool::classProperty_bool(string name, bool* pValue) : classPropert
 {
 	mp_variable	= pValue;
 	m_type	= BOOL;
+	m_mode = MODE_TOGGLE;
+	
+	if (mp_variable)
+		m_midiValuePrev = *mp_variable ? 127 : 0;
+}
+
+classProperty_bool::classProperty_bool(string name, bool* pValue, int mode) : classProperty(name)
+{
+	mp_variable	= pValue;
+	m_type	= BOOL;
+	m_mode = mode;
+
+	if (mp_variable)
+		m_midiValuePrev = *mp_variable ? 127 : 0;
+}
+
+//--------------------------------------------------------------
+void classProperty_bool::setValueFromMidiMessage(ofxMidiMessage& m)
+{
+	if (m_mode == MODE_TOGGLE)
+	{
+		if (m.status == MIDI_CONTROL_CHANGE)
+		{
+			// ofLog() << "receiving controle change";
+			if (m.value == 127 && m.value != m_midiValuePrev)
+			{
+				if (mp_variable)
+					*mp_variable = !(*mp_variable);
+				//ofLog() << "changing variable to " << ofToString(*mp_variable) << " / m.value=" << ofToString(m.value) << ";m_midiValuePrev="<<ofToString(m_midiValuePrev);
+			}
+
+
+			m_midiValuePrev = m.value;
+		}
+		else
+		if (m.status == MIDI_NOTE_ON)
+		{
+			if (mp_variable)
+				*mp_variable = !(*mp_variable);
+		}
+	}
+	else if (m_mode == MODE_BUTTON)
+	{
+		bool whatever = false;
+
+		if (m.status == MIDI_CONTROL_CHANGE)
+		{
+			if (m.value == 127)
+			{
+				if (m.value != m_midiValuePrev)
+				{
+					if (mp_variable)
+						*mp_variable = true;
+					ofNotifyEvent(onValueChanged, whatever, this);
+				}
+			}
+			else if (m.value == 0)
+			{
+				if (m.value != m_midiValuePrev)
+				{
+					if (mp_variable)
+						*mp_variable = false;
+					ofNotifyEvent(onValueChanged, whatever, this);
+				}
+			}
+
+			m_midiValuePrev = m.value;
+		}
+	}
 }
 
 

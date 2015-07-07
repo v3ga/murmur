@@ -202,7 +202,7 @@ void AnimationBox2D_circles::onNewPacket(DevicePacket* pDevicePacket, string dev
 			if (m_isColorFromDevice)
 			{
 				m_listCirclesColor.push_back( pDevicePacket->m_color );
-				ofLog() << pDevicePacket->m_color;
+				//ofLog() << pDevicePacket->m_color;
 			}
 			else
 			if (m_isColor)
@@ -251,8 +251,12 @@ void AnimationBox2D_circles::createUICustom()
         mp_UIcanvas->addSlider("obj. size max", 	10, 50, 		&m_sizeMax);
 		addUISlider( m_properties.getFloat("obj. number") );
 
-        mp_UIcanvas->addToggle("left wall", 	&m_isLeftWall);
-        mp_UIcanvas->addToggle("right wall", 	&m_isRightWall);
+//        mp_UIcanvas->addToggle("left wall", 	&m_isLeftWall);
+		m_properties.add( new classProperty_bool("left wall", 	&m_isLeftWall) );
+		addUItoggle( m_properties.getBool("left wall"));
+ 
+		
+		mp_UIcanvas->addToggle("right wall", 	&m_isRightWall);
         mp_UIcanvas->addToggle("top wall", 		&m_isTopWall);
         mp_UIcanvas->addToggle("bottom wall", 	&m_isBottomWall);
     }

@@ -20,6 +20,7 @@
 #include "ofxJSONElement.h"
 #include "ofxMidi.h"
 #include "classProperty.h"
+#include "midiInterface.h"
 
 struct AnimationTheme
 {
@@ -58,7 +59,7 @@ class AnimationSoundPlayer
 };
 
 
-class Animation
+class Animation : public midiInterface
 {
 	public:
 		Animation				(string name);
@@ -91,14 +92,10 @@ class Animation
 		void					drawBackground			(float r, float g, float b, float a){if (m_bDrawBackground) ofBackground(r,g,b,a);}
  
 		// Midi
-		ofxXmlSettings			m_midiSettings;
+		virtual	string			getMidiSettingsPath		(){ return "Config/midi/"+m_name+".xml"; }
 		virtual	void			loadMidiSettings		();
 		virtual	void			handleMidiMessages		();
 		virtual void 			newMidiMessage			(ofxMidiMessage& eventArgs);
-
-		map<int,classProperty*>	m_mapMidiToProp;
- 		vector<ofxMidiMessage>	m_midiMessagesToHandle;
-		ofMutex					m_midiMutex;
  
 
         // UI

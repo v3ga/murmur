@@ -58,8 +58,22 @@ class classProperty_bool : public classProperty
 {
 	public:
 		classProperty_bool(string name, bool* pValue);
+		classProperty_bool(string name, bool* pValue, int mode);
+
+		void			setValueFromMidiMessage	(ofxMidiMessage&);
 
 		bool*			mp_variable;
+		int				m_mode;
+		ofEvent<bool>	onValueChanged; // not sure about this
+ 
+
+		enum{
+			MODE_TOGGLE = 0,
+			MODE_BUTTON = 1
+		};
+
+	protected:
+		int				m_midiValuePrev;
 };
 
 

@@ -11,8 +11,10 @@
 #include "tool.h"
 #include "classProperty.h"
 #include "ofxTimeline.h"
+#include "midiInterface.h"
+#include "classProperty.h"
 
-class toolEdimbourgh : public tool
+class toolEdimbourgh : public tool, public midiInterface
 {
 	public:
 		toolEdimbourgh			(toolManager*);
@@ -29,8 +31,15 @@ class toolEdimbourgh : public tool
 
 		void					createTimeline			();
 
+		virtual string			getMidiSettingsPath		(){return "Gui/tools/midi/_Edimbourgh_.xml";}
+		void					loadMidiSettings		(){midiInterface::loadMidiSettings(m_properties);}
+		void					onPlayPause				(bool& value);
+		void					onStop					(bool& value);
+
+
 	 	classProperties			m_properties;
 		ofxTimeline				m_timeline;
+ 
 
 
 		ofxUIToggle*			mp_tgLoopTimeline;

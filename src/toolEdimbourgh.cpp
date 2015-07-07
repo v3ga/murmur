@@ -62,6 +62,15 @@ void toolEdimbourgh::createControlsCustom()
 		mp_canvas->addWidgetDown(new ofxUISlider("transition duration (s)", 0.1f, 1.0f, 0.15f, widthDefault, dim ));
 
 		mp_canvas->autoSizeToFitWidgets();
+		
+		classProperty_bool* pPropPlayPause = new classProperty_bool("bPlayPause",0,classProperty_bool::MODE_BUTTON);
+		m_properties.add( pPropPlayPause );
+		ofAddListener(pPropPlayPause->onValueChanged, this, &toolEdimbourgh::onPlayPause);
+
+		classProperty_bool* pPropStop = new classProperty_bool("bStop",0,classProperty_bool::MODE_BUTTON);
+		m_properties.add( pPropStop );
+		ofAddListener(pPropStop->onValueChanged, this, &toolEdimbourgh::onStop);
+
 	}
 
 	// Timeline
@@ -105,6 +114,8 @@ void toolEdimbourgh::createTimeline()
 //--------------------------------------------------------------
 void toolEdimbourgh::update()
 {
+	handleMidiMessages();
+
 	DeviceManager* pDeviceManager = GLOBALS->mp_deviceManager;
 	if (pDeviceManager)
 	{
@@ -210,6 +221,21 @@ void toolEdimbourgh::bangFired(ofxTLBangEventArgs& args)
 				animManager.M_setAnimation( animParts[0] );
 		}
 	}
+}
+
+//--------------------------------------------------------------
+void toolEdimbourgh::onPlayPause(bool& value)
+{
+	m_timeline.togglePlay();
+	updateLayout();
+}
+
+//--------------------------------------------------------------
+void toolEdimbourgh::onStop(bool& value)
+{
+	m_timeline.stop();
+	m_timeline.setCurrentTimeSeconds(0);
+	updateLayout();
 }
 
 

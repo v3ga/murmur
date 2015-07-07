@@ -62,7 +62,7 @@
 
     <!-- Raspberry -->
     <launchDevices>
-        <ip>192.168.0.39</ip>
+        <ip>192.168.2.7</ip>
     </launchDevices>
 
 

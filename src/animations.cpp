@@ -85,20 +85,20 @@ void AnimationSoundPlayer::print(string title)
 std::map<JSObject*, Animation*> Animation::sm_mapJSObj_Anim;
 
 //--------------------------------------------------------------
-Animation::Animation()
+Animation::Animation() : midiInterface()
 {
 	M_zeroAll();
 }
 
 //--------------------------------------------------------------
-Animation::Animation(string name_)
+Animation::Animation(string name_) : midiInterface()
 {
 	M_zeroAll();
 	m_name			= name_;
 }
 
 //--------------------------------------------------------------
-Animation::Animation(string name_,string pathAbsScript_)
+Animation::Animation(string name_,string pathAbsScript_) : midiInterface()
 {
 	M_zeroAll();
 	m_name			= name_;
@@ -220,12 +220,11 @@ void Animation::addUISlider(classProperty_float* pProp)
 }
 
 //--------------------------------------------------------------
-void Animation::addUItoggle(classProperty_bool*)
+void Animation::addUItoggle(classProperty_bool* pProp)
 {
-
+    if (mp_UIcanvas)
+        mp_UIcanvas->addToggle(pProp->m_name, pProp->mp_variable);
 }
-
-
 
 //--------------------------------------------------------------
 void Animation::registerSoundTags(vector<string>& soundTags)
@@ -800,56 +799,11 @@ ofColor Animation::chooseRandomColor()
 	return ofColor(255);
 }
 
-
 //--------------------------------------------------------------
 void Animation::loadMidiSettings()
 {
-	OFAPPLOG->begin("Animation::loadMidiSettings()");
-	string file = "Config/midi/"+m_name+".xml";
-	OFAPPLOG->println(" - file="+file);
-
-	ofFile f(file);
-	if (f.exists())
-	{
-		if (m_midiSettings.load(file))
-		{
-			OFAPPLOG->println(" - ok loaded settings.");
-			int nb = m_midiSettings.getNumTags("midi");
-			for (int i=0;i<nb;i++)
-			{
-				int 	control 	= m_midiSettings.getAttribute("midi", "control", 0, i);
-				if (control>0)
-				{
-					string 	propName 	= m_midiSettings.getAttribute("midi", "property", "???", i);
-					classProperty* pProp = m_properties.get(propName);
-					if(pProp)
-					{
-						m_mapMidiToProp[control] = 	pProp;
-						OFAPPLOG->println(" - defining control "+ofToString(control) + " for property '"+pProp->m_name+"'");
-					}
-				}
-			}
-		}
-		else
-		{
-			OFAPPLOG->println(" - error loading settings.");
-		}
-	}
-	else
-	{
-	 OFAPPLOG->println(" - warning, midi file not found.");
-	}
-	OFAPPLOG->end();
+	midiInterface::loadMidiSettings(m_properties);
 }
-
-//--------------------------------------------------------------
-void Animation::newMidiMessage(ofxMidiMessage& midiMessage)
-{
-	m_midiMutex.lock();
-	m_midiMessagesToHandle.push_back( ofxMidiMessage(midiMessage) ); // make a copy
-	m_midiMutex.unlock();
-}
-
 
 //--------------------------------------------------------------
 void Animation::handleMidiMessages()
@@ -885,8 +839,16 @@ void Animation::handleMidiMessages()
 			// ————————————————————————————————————————————————————————————————————————————————
 		}
 	}
+	m_midiMessagesToHandle.clear();
 	m_midiMutex.unlock();
 }
+
+//--------------------------------------------------------------
+void  Animation::newMidiMessage(ofxMidiMessage& eventArgs)
+{
+	midiInterface::newMidiMessage(eventArgs);
+}
+
 
 #define ____________AnimationManager____________
 
