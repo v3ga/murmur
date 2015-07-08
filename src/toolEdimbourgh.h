@@ -22,6 +22,7 @@ class toolEdimbourgh : public tool, public midiInterface
 		void					createControlsCustom	();
 
 		void					setup					();
+		void					loadData				();
 		void					update					();
 		void					updateLayout			();
 		void					drawUI					();
@@ -47,6 +48,7 @@ class toolEdimbourgh : public tool, public midiInterface
 		ofxUIButton*			mp_btnSaveTimeline;
 		ofxUIButton*			mp_btnPlayPauseTimeline;
 		ofxUIButton*			mp_btnStopTimeline;
+		ofxUITextInput*			mp_teDurationTimeline;
 
 		string					m_timelineCurrentFolder;
 		bool					m_bAutoplay;

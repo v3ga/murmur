@@ -1,3 +1,7 @@
 <midi control="9" property="gravity" />
 <midi control="5" property="obj. number" />
+<midi control="28" property="obj. scale" />
 <midi control="44" property="left wall" />
+<midi control="40" property="right wall" />
+<midi control="41" property="top wall" />
+<midi control="42" property="bottom wall" />

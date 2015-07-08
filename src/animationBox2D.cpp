@@ -107,6 +107,7 @@ AnimationBox2D_circles::AnimationBox2D_circles(string name ) : AnimationBox2D(na
     m_volTrigger = 0.2f;
     m_sizeMin = 10;
     m_sizeMax = 30;
+	m_sizeScale = 1.0f;
     m_nbObjects = 400;
 	
 	loadColors();
@@ -162,7 +163,7 @@ void AnimationBox2D_circles::VM_draw(float w, float h)
 		{
 			ofSetColor(255);
 		}
-        ofEllipse(circle.getPosition().x, circle.getPosition().y, circle.getRadius()*2,circle.getRadius()*2);
+        ofEllipse(circle.getPosition().x, circle.getPosition().y, circle.getRadius()*2*m_sizeScale,circle.getRadius()*2*m_sizeScale);
     }
 
     if (m_isCircleInflating)
@@ -247,18 +248,30 @@ void AnimationBox2D_circles::createUICustom()
 
 		addUISlider( m_properties.getFloat("gravity") );
         mp_UIcanvas->addSlider("vol. trigger", 		0.0f, 1.0f, 	&m_volTrigger);
-        mp_UIcanvas->addSlider("obj. size min", 	10, 20, 		&m_sizeMin);
-        mp_UIcanvas->addSlider("obj. size max", 	10, 50, 		&m_sizeMax);
+
+		m_properties.add( new classProperty_float("obj. size min", 	10,20,&m_sizeMin) );
+		m_properties.add( new classProperty_float("obj. size max", 	10,50,&m_sizeMax) );
+		m_properties.add( new classProperty_float("obj. scale", 	0.0f,1.0f,&m_sizeScale) );
+		addUISlider( m_properties.getFloat("obj. size min") );
+		addUISlider( m_properties.getFloat("obj. size max") );
+		addUISlider( m_properties.getFloat("obj. scale") );
 		addUISlider( m_properties.getFloat("obj. number") );
 
 //        mp_UIcanvas->addToggle("left wall", 	&m_isLeftWall);
 		m_properties.add( new classProperty_bool("left wall", 	&m_isLeftWall) );
+		m_properties.add( new classProperty_bool("right wall", 	&m_isRightWall) );
+		m_properties.add( new classProperty_bool("top wall", 	&m_isTopWall) );
+		m_properties.add( new classProperty_bool("bottom wall", &m_isBottomWall) );
+
 		addUItoggle( m_properties.getBool("left wall"));
+		addUItoggle( m_properties.getBool("right wall"));
+		addUItoggle( m_properties.getBool("top wall"));
+		addUItoggle( m_properties.getBool("bottom wall"));
  
 		
-		mp_UIcanvas->addToggle("right wall", 	&m_isRightWall);
-        mp_UIcanvas->addToggle("top wall", 		&m_isTopWall);
-        mp_UIcanvas->addToggle("bottom wall", 	&m_isBottomWall);
+//		mp_UIcanvas->addToggle("right wall", 	&m_isRightWall);
+// 	    mp_UIcanvas->addToggle("top wall", 		&m_isTopWall);
+//      mp_UIcanvas->addToggle("bottom wall", 	&m_isBottomWall);
     }
 }
 

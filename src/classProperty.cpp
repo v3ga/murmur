@@ -93,7 +93,7 @@ void classProperty_bool::setValueFromMidiMessage(ofxMidiMessage& m)
 	}
 	else if (m_mode == MODE_BUTTON)
 	{
-		bool whatever = false;
+		bool value = false;
 
 		if (m.status == MIDI_CONTROL_CHANGE)
 		{
@@ -101,21 +101,23 @@ void classProperty_bool::setValueFromMidiMessage(ofxMidiMessage& m)
 			{
 				if (m.value != m_midiValuePrev)
 				{
+					value = true;
 					if (mp_variable)
 						*mp_variable = true;
-					ofNotifyEvent(onValueChanged, whatever, this);
+					ofNotifyEvent(onValueChanged, value, this);
 				}
 			}
-			else if (m.value == 0)
+/*			else if (m.value == 0)
 			{
 				if (m.value != m_midiValuePrev)
 				{
+					value = false;
 					if (mp_variable)
 						*mp_variable = false;
-					ofNotifyEvent(onValueChanged, whatever, this);
+					ofNotifyEvent(onValueChanged, value, this);
 				}
 			}
-
+*/
 			m_midiValuePrev = m.value;
 		}
 	}

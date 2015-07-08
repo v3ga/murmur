@@ -115,6 +115,11 @@
 </Widget>
 <Widget>
     <Kind>4</Kind>
+    <Name>obj. scale</Name>
+    <Value>0.779527545</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
     <Name>obj. number</Name>
     <Value>323.622039795</Value>
 </Widget>

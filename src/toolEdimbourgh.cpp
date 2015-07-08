@@ -20,6 +20,7 @@ toolEdimbourgh::toolEdimbourgh(toolManager* pParent) : tool("_Edimbourgh_", pPar
 	mp_tgAutoplayTimeline	= 0;
 	mp_btnPlayPauseTimeline	= 0;
 	mp_btnStopTimeline		= 0;
+	mp_teDurationTimeline	= 0;
 
 	m_timelineCurrentFolder = "Gui/tools/_Edimbourgh_timeline/config01/";
 	m_bAutoplay 			= false;
@@ -53,13 +54,22 @@ void toolEdimbourgh::createControlsCustom()
 		mp_tgLoopTimeline = new ofxUIToggle("Autoplay", false, dim, dim);
 		mp_canvas->addWidgetRight( mp_tgLoopTimeline );
 
+		mp_teDurationTimeline = new ofxUITextInput("Duration", "60", 100, dim);
+		mp_teDurationTimeline->setAutoClear(false);
+		mp_canvas->addWidgetDown( mp_teDurationTimeline );
+
+		mp_canvas->addWidgetRight( new ofxUILabel("Duration",OFX_UI_FONT_SMALL) );
+
 
 		mp_btnSaveTimeline = new ofxUILabelButton("Save", false, 100,dim,0,0,OFX_UI_FONT_SMALL);
 		mp_canvas->addWidgetDown( mp_btnSaveTimeline );
 
+
 	    mp_canvas->addWidgetDown(new ofxUILabel("Timeline/setAnim", OFX_UI_FONT_MEDIUM) );
     	mp_canvas->addWidgetDown(new ofxUISpacer(widthDefault, 1) );
 		mp_canvas->addWidgetDown(new ofxUISlider("transition duration (s)", 0.1f, 1.0f, 0.15f, widthDefault, dim ));
+
+
 
 		mp_canvas->autoSizeToFitWidgets();
 		
@@ -92,6 +102,19 @@ void toolEdimbourgh::setup()
 }
 
 //--------------------------------------------------------------
+void toolEdimbourgh::loadData()
+{
+	tool::loadData();
+	
+	// Because text input does not trigger event when loading
+	if (mp_teDurationTimeline)
+	{
+		float duration = ofToFloat( mp_teDurationTimeline->getTextString() );
+		m_timeline.setDurationInSeconds(duration);
+	}
+}
+
+//--------------------------------------------------------------
 void toolEdimbourgh::createTimeline()
 {
 	// Reset
@@ -99,12 +122,12 @@ void toolEdimbourgh::createTimeline()
 	m_timeline.reset();
 
 	// Create
+	
 	m_timeline.setSpacebarTogglePlay(false);
 	m_timeline.setup();
 	m_timeline.setWorkingFolder(m_timelineCurrentFolder);
 	m_timeline.setAutosave(false);
 	m_timeline.addFlags("setAnim");
-	m_timeline.setDurationInSeconds(60);
 	m_timeline.loadTracksFromFolder(m_timelineCurrentFolder);
 
 	ofAddListener(m_timeline.events().bangFired, this, &toolEdimbourgh::bangFired);
@@ -197,6 +220,15 @@ void toolEdimbourgh::handleEvents(ofxUIEventArgs& e)
 		AnimationManager& animManager = GLOBALS->getSurfaceMain()->getAnimationManager();
 		animManager.M_setTransitionDuration( e.getSlider()->getScaledValue() );
 	}
+	else if (name == "Duration")
+	{
+		int triggerType  = mp_teDurationTimeline->getInputTriggerType();
+		if (triggerType == OFX_UI_TEXTINPUT_ON_ENTER)
+		{
+			float duration = ofToFloat( mp_teDurationTimeline->getTextString() );
+			m_timeline.setDurationInSeconds(duration);
+		}
+	}
 }
 
 //--------------------------------------------------------------
@@ -212,6 +244,7 @@ void toolEdimbourgh::bangFired(ofxTLBangEventArgs& args)
 
 		if (animParts.size() == 1)
 		{
+			if (animParts[0] == "waves2") animParts[0] += ".js";
 			animManager.M_setAnimation( animParts[0] );
 		}
 		else{

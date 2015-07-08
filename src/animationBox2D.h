@@ -61,6 +61,7 @@ class AnimationBox2D_circles : public AnimationBox2D
         float                   m_sizeMin;
         float                   m_sizeMax;
         float                   m_nbObjects;
+		float					m_sizeScale;
 };
 
 /*
