@@ -12,6 +12,9 @@
 #include "globals.h"
 #include "testApp.h"
 #include "ofxHomographyHelper.h"
+#include "ofxMultiGLFWWindow.h"
+
+
 //--------------------------------------------------------------
 toolSurfaces::toolSurfaces(toolManager* parent, Surface* surface) : tool("Surfaces", parent)
 {
@@ -20,6 +23,7 @@ toolSurfaces::toolSurfaces(toolManager* parent, Surface* surface) : tool("Surfac
 	mp_mask					= 0;
 	mp_maskUI 				= 0;
 	m_isDrawHandles			= false;
+	mp_windowCurrent		= 0;
 	
 	setView					(VIEW_NORMAL);
 }
@@ -90,6 +94,7 @@ void toolSurfaces::createControlsCustom()
 	    mp_canvas->addWidgetDown	(new ofxUIToggle("syphon", false, dim, dim));
 	    mp_canvas->addWidgetDown	(new ofxUIToggle("quad warping", false, dim, dim));
 	    mp_canvas->addWidgetDown	(new ofxUIToggle("draw quad warping", false, dim, dim));
+	    mp_canvas->addWidgetDown	(new ofxUIButton("reset quad warping", false, dim*4, dim));
 	
 		mp_canvas->autoSizeToFitWidgets();
 	
@@ -145,15 +150,33 @@ void toolSurfaces::update()
 	
 }
 
+
+//--------------------------------------------------------------
+void toolSurfaces::computeRectSurfaceOff()
+{
+	if (mp_surfaceMain)
+	{
+		ofFbo& offSurface = mp_surfaceMain->getOffscreen();
+		if (mp_windowCurrent)
+		{
+
+			int width, height;
+			glfwGetWindowSize(mp_windowCurrent, &width, &height);
+			m_rectScreen.set(0,0,width, height);
+		}
+		else
+			m_rectScreen.set(0,0,ofGetWidth(),ofGetHeight());
+
+		m_rectSurfaceOff.set(0,0,offSurface.getWidth(),offSurface.getHeight());
+		m_rectSurfaceOff.scaleTo(m_rectScreen);
+		m_rectSurfaceOff.alignTo(m_rectScreen);
+	}
+}
+
 //--------------------------------------------------------------
 void toolSurfaces::draw()
 {
-	ofFbo& offSurface = mp_surfaceMain->getOffscreen();
-
-	m_rectScreen.set(0,0,ofGetWidth(),ofGetHeight());
-	m_rectSurfaceOff.set(0,0,offSurface.getWidth(),offSurface.getHeight());
-	m_rectSurfaceOff.scaleTo(m_rectScreen);
-	m_rectSurfaceOff.alignTo(m_rectScreen);
+	computeRectSurfaceOff();
 
 	if (m_view == VIEW_NORMAL)
 	{
@@ -285,6 +308,11 @@ void toolSurfaces::handleEvents(ofxUIEventArgs& e)
 		else
 			m_quadWarping.disableMouseEvents();
 	}
+	else if (name == "reset quad warping")
+	{
+	 	if (e.getButton()->getValue())
+			m_quadWarping.resetHandles();
+	}
 }
 
 //--------------------------------------------------------------
@@ -292,32 +320,36 @@ void toolSurfaces::mousePressed(int x, int y, int button)
 {
 	if (m_view == VIEW_NORMAL)
 	{
-	   toolDevices*	pToolDevices 	= (toolDevices*) mp_toolManager->getTool("Devices");
-	   toolScene* 	pToolScene 		= (toolScene*)mp_toolManager->getTool("Scene");
+		if (GLOBALS->mp_app->isShowDevicePointSurfaces)
+		{
+		   toolDevices*	pToolDevices 	= (toolDevices*) mp_toolManager->getTool("Devices");
+		   toolScene* 	pToolScene 		= (toolScene*)mp_toolManager->getTool("Scene");
 
-	   if (pToolDevices == 0 || pToolDevices->mp_deviceManager == 0 || pToolScene == 0) return;
+		   if (pToolDevices == 0 || pToolDevices->mp_deviceManager == 0 || pToolScene == 0) return;
 
-	   Device*  pDeviceCurrent 		= pToolDevices->mp_deviceManager->getDeviceCurrent();
-	   Surface* pSurfaceCurrent  	= this->getSurfaceForDevice(pDeviceCurrent);
+		   Device*  pDeviceCurrent 		= pToolDevices->mp_deviceManager->getDeviceCurrent();
+		   Surface* pSurfaceCurrent  	= this->getSurfaceForDevice(pDeviceCurrent);
 
-	   if (pDeviceCurrent && pSurfaceCurrent)
-	   {
-		   float dx = x - m_rectSurfaceOff.getX();
-		   float dy = y - m_rectSurfaceOff.getY();
-		   
-		   float xNorm = ofClamp(dx / m_rectSurfaceOff.getWidth(),0.0f,1.0f);
-		   float yNorm = ofClamp(dy / m_rectSurfaceOff.getHeight(),0.0f,1.0f);
-	   
-		   pDeviceCurrent->setPointSurface(xNorm, yNorm);
-		
-		   // Update simulation
-		   if(pToolScene->getScene())
+		   if (pDeviceCurrent && pSurfaceCurrent)
 		   {
-			   DeviceNode* pDeviceNode = pToolScene->getScene()->getDeviceNode(pDeviceCurrent);
-			   SurfaceNode* pSurfaceNode = pToolScene->getScene()->getSurfaceNode(pSurfaceCurrent);
-			   if (pDeviceNode && pSurfaceNode)
-				   pDeviceNode->setPositionNodeSurface( pSurfaceNode->getGlobalPositionDevicePointSurface(pDeviceNode->getDevice()) );
-			   
+				computeRectSurfaceOff();
+		
+		   		float dx = x - m_rectSurfaceOff.getX();
+		   		float dy = y - m_rectSurfaceOff.getY();
+		   
+		   		float xNorm = ofClamp(dx / m_rectSurfaceOff.getWidth(),0.0f,1.0f);
+		   		float yNorm = ofClamp(dy / m_rectSurfaceOff.getHeight(),0.0f,1.0f);
+	   
+		   		pDeviceCurrent->setPointSurface(xNorm, yNorm);
+		
+			   // Update simulation
+			   if(pToolScene->getScene())
+			   {
+				   DeviceNode* pDeviceNode = pToolScene->getScene()->getDeviceNode(pDeviceCurrent);
+				   SurfaceNode* pSurfaceNode = pToolScene->getScene()->getSurfaceNode(pSurfaceCurrent);
+				   if (pDeviceNode && pSurfaceNode)
+				   	pDeviceNode->setPositionNodeSurface( pSurfaceNode->getGlobalPositionDevicePointSurface(pDeviceNode->getDevice()) );
+			   }
 		   }
 	   }
 	}

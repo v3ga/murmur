@@ -348,6 +348,20 @@ void toolAnimations::updateDeviceAnimationTitle()
 }
 
 //--------------------------------------------------------------
+void toolAnimations::enableWindowCallbacks()
+{
+	tool::enableWindowCallbacks();
+	if (mp_animationUI) mp_animationUI->EnableCallbacks();
+}
+
+//--------------------------------------------------------------
+void toolAnimations::disableWindowCallbacks()
+{
+	tool::disableWindowCallbacks();
+	if (mp_animationUI) mp_animationUI->DisableCallbacks();
+}
+
+//--------------------------------------------------------------
 void toolAnimations::initMidiAnimations(Surface* pSurface)
 {
     vector<Animation*>::iterator it = pSurface->getAnimationManager().m_listAnimations.begin();

@@ -239,6 +239,15 @@ void quadWarping::unselectHandle()
 	}
 }
 
+//--------------------------------------------------------------
+void quadWarping::resetHandles()
+{
+	m_handles[0].setPos(0.25f * ofGetWidth(),0.25f * ofGetHeight());
+	m_handles[1].setPos(0.75f * ofGetWidth(),0.25f * ofGetHeight());
+	m_handles[2].setPos(0.75f * ofGetWidth(),0.75f * ofGetHeight());
+	m_handles[3].setPos(0.25f * ofGetWidth(),0.75f * ofGetHeight());
+}
+
 
 //--------------------------------------------------------------
 void quadWarping::windowResized(int wold, int hold, int w, int h)

@@ -573,4 +573,18 @@ bool toolDevices::keyPressed(int key)
 	return false;
 }
 
+//--------------------------------------------------------------
+void toolDevices::enableWindowCallbacks()
+{
+	tool::enableWindowCallbacks();
+	if (mp_canvasDevice) mp_canvasDevice->EnableCallbacks();
+}
+
+//--------------------------------------------------------------
+void toolDevices::disableWindowCallbacks()
+{
+	tool::disableWindowCallbacks();
+	if (mp_canvasDevice) mp_canvasDevice->DisableCallbacks();
+}
+
 

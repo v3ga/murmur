@@ -13,6 +13,7 @@
 #include "quadWarping.h"
 
 class Device;
+class GLFWwindow;
 class toolSurfaces : public tool
 {
 	public:
@@ -35,6 +36,7 @@ class toolSurfaces : public tool
 		bool					keyPressed					(int key);
 		void					windowResized				(int w, int h);
 		void					windowResized				(int wold, int hold, int w, int h);
+		void					setWindowCurrent			(GLFWwindow* p){mp_windowCurrent=p;}
 	
 	
 		bool					loadMask					(string pathMask);
@@ -59,7 +61,10 @@ class toolSurfaces : public tool
 		};
 	
 	private:
+	
+		GLFWwindow*				mp_windowCurrent;
 
 		string					getQuadWarpingPathFile		();
+		void					computeRectSurfaceOff		();
 
 };

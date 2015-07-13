@@ -36,6 +36,9 @@ class toolAnimations : public tool
 		void							showAnimationPropsAll		(bool is=true);
 		void							showAnimationCurrentProperties();
 
+		void							enableWindowCallbacks		();
+		void							disableWindowCallbacks		();
+
 		void							initMidiAnimations			(Surface*);
 
 		ofxUILabel* 					mp_lblAnimDirJs;

@@ -740,7 +740,14 @@ void testApp::mouseDragged(int x, int y, int button)
 void testApp::mousePressed(int x, int y, int button)
 {
 	#if MURMUR_MULTI_WINDOWS
-    if (mp_glfw->getEventWindow() != mp_windows->at(0)) return;
+    if (mp_glfw->getEventWindow() == mp_windows->at(0))
+	{
+/*		if (toolManager.mp_toolTab)
+			toolManager.mp_toolTab->EnableCallbacks();
+		if (toolManager.mp_toolCurrent)
+			toolManager.mp_toolCurrent->enableWindowCallbacks();
+*/
+
 	#endif
 
 	if (isViewSimulation)
@@ -755,8 +762,34 @@ void testApp::mousePressed(int x, int y, int button)
 	{
 		toolSurfaces* pToolSurfaces = (toolSurfaces*) toolManager.getTool("Surfaces");
 		if (pToolSurfaces)
+		{
+			// BOF ...
+			pToolSurfaces->setWindowCurrent( mp_glfw->getEventWindow() );
 			pToolSurfaces->mousePressed(x, y, button);
+			pToolSurfaces->setWindowCurrent(0);
+		}
 	}
+	#if MURMUR_MULTI_WINDOWS
+	}
+    else if (mp_glfw->getEventWindow() == mp_windows->at(1))
+	{
+		toolSurfaces* pToolSurfaces = (toolSurfaces*) toolManager.getTool("Surfaces");
+		if (pToolSurfaces)
+		{
+			// BOF ...
+			pToolSurfaces->setWindowCurrent( mp_glfw->getEventWindow() );
+			pToolSurfaces->mousePressed(x, y, button);
+			pToolSurfaces->setWindowCurrent(0);
+		}
+
+
+/*		if (toolManager.mp_toolTab)
+			toolManager.mp_toolTab->DisableCallbacks();
+		if (toolManager.mp_toolCurrent)
+			toolManager.mp_toolCurrent->enableWindowCallbacks();
+*/
+	}
+	#endif
 }
 
 //--------------------------------------------------------------

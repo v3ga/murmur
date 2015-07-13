@@ -51,6 +51,7 @@ class quadWarping
 		void					load				(string pathFile);
 		void					moveSelectedHandle	(ofVec2f delta);
 		void					unselectHandle		();
+		void					resetHandles		();
 		void					selectHandle		(quadWarpingHandle* p);
 		void					windowResized		(int w, int h);
 		void					windowResized		(int wold, int hold,int w, int h);

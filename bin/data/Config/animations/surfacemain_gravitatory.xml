@@ -16,15 +16,15 @@
 <Widget>
     <Kind>4</Kind>
     <Name>sizeFactor</Name>
-    <Value>0.992125988</Value>
+    <Value>0.464566916</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>alphaFactor</Name>
-    <Value>0.992125988</Value>
+    <Value>0.236220479</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>angleSpeedFactor</Name>
-    <Value>0.677165329</Value>
+    <Value>0.598425210</Value>
 </Widget>

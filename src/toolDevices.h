@@ -34,6 +34,8 @@ class toolDevices : public tool
 		void					handleEvents				(ofxUIEventArgs& e);
 		bool					isHit						(int x, int y);
 		bool					keyPressed					(int key);
+		void					enableWindowCallbacks		();
+		void					disableWindowCallbacks		();
 
         DeviceManager*      	mp_deviceManager;
 		vector<string>			m_speakersId;
