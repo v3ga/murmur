@@ -35,7 +35,6 @@
     <sound file="m2.wav" tags="box2DCircles"></sound>
     <sound file="m4.wav" tags="box2DCircles"></sound>
     <sound file="m5.wav" tags="box2DCircles"></sound>
-    <sound file="main.wav" tags=""></sound>
     <sound file="o1.wav" tags=""></sound>
     <sound file="o2.wav" tags=""></sound>
     <sound file="o3.wav" tags=""></sound>

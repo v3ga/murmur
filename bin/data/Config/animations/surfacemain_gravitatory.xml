@@ -21,10 +21,25 @@
 <Widget>
     <Kind>4</Kind>
     <Name>alphaFactor</Name>
-    <Value>0.236220479</Value>
+    <Value>1.000000000</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>angleSpeedFactor</Name>
     <Value>0.598425210</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>obj. size min</Name>
+    <Value>25.080127716</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>obj. size max</Name>
+    <Value>40.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>obj. number</Name>
+    <Value>101.282051086</Value>
 </Widget>

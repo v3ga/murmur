@@ -16,7 +16,7 @@ ParticleGravitatory::ParticleGravitatory(AnimationGravitatory* pParent, string d
 	m_pos.set(x,y);
 	m_angle = ofRandom(TWO_PI);
 	m_angleSpeed = PI/2;
-	m_size = ofRandom(5,30);
+	m_size = ofRandom(pParent->m_sizeMin,pParent->m_sizeMax);
 	m_ageMax = ofRandom(15,30);
 	m_color = color;
 
@@ -82,14 +82,13 @@ void AnimationGravitatory::createUICustom()
 		addUISlider( m_properties.getFloat("alphaFactor") );
 		addUISlider( m_properties.getFloat("angleSpeedFactor") );
 
+		m_properties.add( new classProperty_float("obj. number", 	50, 	150, 	&m_nbObjects) );
+		m_properties.add( new classProperty_float("obj. size min", 	5,40,			&m_sizeMin) );
+		m_properties.add( new classProperty_float("obj. size max", 	5,100,			&m_sizeMax) );
 
-/*		m_properties.add( new classProperty_float("particles size", 1.0f, 5.0f, &m_particlesSize) );
-	
-
-		addUISlider( m_properties.getFloat("particles size") );
-
-*/
-
+		addUISlider( m_properties.getFloat("obj. size min") );
+		addUISlider( m_properties.getFloat("obj. size max") );
+		addUISlider( m_properties.getFloat("obj. number") );
 }
 
 //--------------------------------------------------------------
@@ -104,10 +103,14 @@ void AnimationGravitatory::VM_update(float dt)
 			particles[i]->update(dt);
 
 
+		int nbParticles = particles.size();
 		vector<ParticleGravitatory*>::iterator it2 = particles.begin();
 		while( it2 != particles.end())
 		{
-			if ( (*it2)->m_age >= (*it2)->m_ageMax){
+			//if ( (*it2)->m_age >= (*it2)->m_ageMax)
+			if (nbParticles > m_nbObjects)
+			{
+				nbParticles = particles.size();
 				delete *it2;
 				it2 = particles.erase(it2);
 			}

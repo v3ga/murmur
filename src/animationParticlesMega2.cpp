@@ -39,6 +39,8 @@ AnimationParticlesMega2::AnimationParticlesMega2(string name) : Animation(name)
 	m_particlesSize = 1.0f;
 	m_particlesPos = 0;
 	m_particlesColor = 0;
+
+	m_colorRadiusFactor = 1.0f;
 }
 
 
@@ -94,14 +96,14 @@ void AnimationParticlesMega2::createParticles()
 
 			m_particlesColor[i].set( ofRandom(0.0f,1.0f) );
 
-            Particle particle(m_particlesPos+i, xv, yv);
+            Particle particle(m_particlesPos+i, m_particlesColor+i, xv, yv);
             particleSystem.add(particle);
 
 
         }
 
 		m_particlesVbo.setVertexData(m_particlesPos, kParticles * 1024, GL_DYNAMIC_DRAW);
-//		m_particlesVbo.setColorData(m_particlesColor, kParticles * 1024, GL_DYNAMIC_DRAW);
+		m_particlesVbo.setColorData(m_particlesColor, kParticles * 1024, GL_DYNAMIC_DRAW);
 
         timeStep = 1;
         lineOpacity = 128;
@@ -129,16 +131,20 @@ void AnimationParticlesMega2::createUICustom()
 {
     if (mp_UIcanvas)
     {
+		mp_UIcanvas->addToggle("colorFromDevice", 	&m_isColorFromDevice);
+
 		m_properties.add( new classProperty_float("amp. attraction",1.0f, 100.0f, &m_ampAttraction) );
 		m_properties.add( new classProperty_float("amp. repulsion", 1.0f, 100.0f, &m_ampRepulsion) );
 		m_properties.add( new classProperty_float("radius repulsion", 40.0f, 300.0f, &m_repulsionRadius) );
 		m_properties.add( new classProperty_float("particles size", 1.0f, 5.0f, &m_particlesSize) );
+		m_properties.add( new classProperty_float("radius color factor", 1.0f, 10.0f, &m_colorRadiusFactor) );
 	
 
 		addUISlider( m_properties.getFloat("amp. attraction") );
 		addUISlider( m_properties.getFloat("amp. repulsion") );
 		addUISlider( m_properties.getFloat("radius repulsion") );
 		addUISlider( m_properties.getFloat("particles size") );
+		addUISlider( m_properties.getFloat("radius color factor") );
     }
 }
 
@@ -182,10 +188,10 @@ void AnimationParticlesMega2::VM_draw(float w, float h)
     particleSystem.setTimeStep(timeStep);
  
 	m_particlesVbo.updateVertexData(m_particlesPos, kParticles*1024);
-//	m_particlesVbo.update
+	m_particlesVbo.updateColorData(m_particlesColor, kParticles*1024);
     
 	ofEnableAlphaBlending();
-	ofSetColor(255, 255, 255, lineOpacity);
+//	ofSetColor(255, 255, 255, lineOpacity);
 	particleSystem.setupForces();
     
 	// apply per-particle forces
@@ -210,22 +216,18 @@ void AnimationParticlesMega2::VM_draw(float w, float h)
 	{
 		pParticleForce = it->second;
 	
+		particleSystem.m_color = m_isColorFromDevice ? pParticleForce->m_color : ofColor(255);
 		particleSystem.addAttractionForce(pParticleForce->m_anchor.x, pParticleForce->m_anchor.y, w, centerAttraction*m_ampAttraction);
-    	particleSystem.addRepulsionForce(pParticleForce->m_anchor.x, pParticleForce->m_anchor.y, pParticleForce->m_volume*m_repulsionRadius, pParticleForce->m_volume*m_ampRepulsion);
+    	particleSystem.addRepulsionForce(pParticleForce->m_anchor.x, pParticleForce->m_anchor.y, pParticleForce->m_volume*m_repulsionRadius, pParticleForce->m_volume*m_ampRepulsion, false);
+    	particleSystem.addRepulsionForce(pParticleForce->m_anchor.x, pParticleForce->m_anchor.y, pParticleForce->m_volume*m_repulsionRadius*m_colorRadiusFactor, 0, true);
 	}
 
         
     particleSystem.update();
 	ofSetColor(255, 255, 255, pointOpacity);
-//	particleSystem.draw();
 	glPointSize(particleSystem.getParticleSize());
 	m_particlesVbo.draw(GL_POINTS,0,kParticles*1024);
 	ofDisableAlphaBlending();
-    
-/*	ofSetColor(255, 255, 255);
-	ofDrawBitmapString(ofToString(kParticles) + "k particles", 32, 32);
-	ofDrawBitmapString(ofToString((int) ofGetFrameRate()) + " fps", 32, 52);
-*/
  }
 
 //--------------------------------------------------------------
@@ -263,6 +265,10 @@ void AnimationParticlesMega2::onNewPacket(DevicePacket* pDevicePacket, string de
 	 {
 		 pParticleForce->m_anchor.set(x,y);
 		 pParticleForce->m_volumeTarget = pDevicePacket->m_volume;
+		 
+		 Device* pDevice = GLOBALS->mp_deviceManager->getDeviceById( deviceId );
+
+		 pParticleForce->m_color = pDevice->m_color;
 		 //printf("pDevicePacket->m_volume = %.5f\n", pDevicePacket->m_volume);
 	 }
 
@@ -279,10 +285,12 @@ void AnimationParticlesMega2::onNewPacket(DevicePacket* pDevicePacket, string de
 
 
 
+//--------------------------------------------------------------
 ParticleSystem::ParticleSystem() :
 timeStep(1) {
 }
 
+//--------------------------------------------------------------
 void ParticleSystem::setup(int width, int height, int k) {
 	this->width = width;
 	this->height = height;
@@ -291,28 +299,35 @@ void ParticleSystem::setup(int width, int height, int k) {
 	xBins = (int) ceilf((float) width / (float) binSize);
 	yBins = (int) ceilf((float) height / (float) binSize);
 	bins.resize(xBins * yBins);
+
 }
 
+//--------------------------------------------------------------
 void ParticleSystem::setTimeStep(float timeStep) {
 	this->timeStep = timeStep;
 }
 
+//--------------------------------------------------------------
 void ParticleSystem::add(Particle particle) {
 	particles.push_back(particle);
 }
 
+//--------------------------------------------------------------
 unsigned ParticleSystem::size() const {
 	return particles.size();
 }
 
+//--------------------------------------------------------------
 Particle& ParticleSystem::operator[](unsigned i) {
 	return particles[i];
 }
 
+//--------------------------------------------------------------
 vector<Particle*> ParticleSystem::getNeighbors(Particle& particle, float radius) {
 	return getNeighbors(particle.mp_pos->x, particle.mp_pos->y, radius);
 }
 
+//--------------------------------------------------------------
 vector<Particle*> ParticleSystem::getNeighbors(float x, float y, float radius) {
 	vector<Particle*> region = getRegion(
                                          (int) (x - radius),
@@ -334,6 +349,7 @@ vector<Particle*> ParticleSystem::getNeighbors(float x, float y, float radius) {
 	return neighbors;
 }
 
+//--------------------------------------------------------------
 vector<Particle*> ParticleSystem::getRegion(unsigned minX, unsigned minY, unsigned maxX, unsigned maxY) {
 	vector<Particle*> region;
 	back_insert_iterator< vector<Particle*> > back = back_inserter(region);
@@ -356,6 +372,7 @@ vector<Particle*> ParticleSystem::getRegion(unsigned minX, unsigned minY, unsign
 	return region;
 }
 
+//--------------------------------------------------------------
 void ParticleSystem::setupForces() {
 	int n = bins.size();
 	for(int i = 0; i < n; i++) {
@@ -374,27 +391,34 @@ void ParticleSystem::setupForces() {
 	}
 }
 
-void ParticleSystem::addRepulsionForce(const Particle& particle, float radius, float scale) {
+//--------------------------------------------------------------
+void ParticleSystem::addRepulsionForce(const Particle& particle, float radius, float scale, bool doColor) {
 	addRepulsionForce(particle.mp_pos->x, particle.mp_pos->y, radius, scale);
 }
 
-void ParticleSystem::addRepulsionForce(float x, float y, float radius, float scale) {
-	addForce(x, y, radius, scale);
+//--------------------------------------------------------------
+void ParticleSystem::addRepulsionForce(float x, float y, float radius, float scale, bool doColor) {
+	addForce(x, y, radius, scale, doColor);
 }
 
-void ParticleSystem::addAttractionForce(const Particle& particle, float radius, float scale) {
-	addAttractionForce(particle.mp_pos->x, particle.mp_pos->y, radius, scale);
+//--------------------------------------------------------------
+void ParticleSystem::addAttractionForce(const Particle& particle, float radius, float scale, bool doColor) {
+	addAttractionForce(particle.mp_pos->x, particle.mp_pos->y, radius, scale, doColor);
 }
 
-void ParticleSystem::addAttractionForce(float x, float y, float radius, float scale) {
-	addForce(x, y, radius, -scale);
+//--------------------------------------------------------------
+void ParticleSystem::addAttractionForce(float x, float y, float radius, float scale, bool doColor) {
+	addForce(x, y, radius, -scale, doColor);
 }
 
-void ParticleSystem::addForce(const Particle& particle, float radius, float scale) {
-	addForce(particle.mp_pos->x, particle.mp_pos->y, radius, -scale);
+//--------------------------------------------------------------
+void ParticleSystem::addForce(const Particle& particle, float radius, float scale, bool doColor) {
+	addForce(particle.mp_pos->x, particle.mp_pos->y, radius, -scale, doColor);
 }
 
-void ParticleSystem::addForce(float targetX, float targetY, float radius, float scale) {
+//--------------------------------------------------------------
+void ParticleSystem::addForce(float targetX, float targetY, float radius, float scale, bool doColor)
+{
 	float minX = targetX - radius;
 	float minY = targetY - radius;
 	float maxX = targetX + radius;
@@ -451,6 +475,8 @@ void ParticleSystem::addForce(float targetX, float targetY, float radius, float 
                     yd *= length;
                     curParticle.xf += xd;
                     curParticle.yf += yd;
+					if (doColor)
+						*curParticle.mp_color = m_color;
 #else
                     length = sqrtf(length);
                     xd /= length;
@@ -458,6 +484,7 @@ void ParticleSystem::addForce(float targetX, float targetY, float radius, float 
                     effect = (1 - (length / radius)) * scale;
                     curParticle.xf += xd * effect;
                     curParticle.yf += yd * effect;
+					*curParticle.mp_color = m_color;
 #endif
 				}
 			}
@@ -465,14 +492,19 @@ void ParticleSystem::addForce(float targetX, float targetY, float radius, float 
 	}
 }
 
-void ParticleSystem::update() {
+//--------------------------------------------------------------
+void ParticleSystem::update()
+{
 	int n = particles.size();
 	for(int i = 0; i < n; i++)
+	{
 		particles[i].updatePosition(timeStep);
-
+	}
 }
 
-void ParticleSystem::draw() {
+//--------------------------------------------------------------
+void ParticleSystem::draw()
+{
 	int n = particles.size();
 	glPointSize(particleSize);
 	glEnable(GL_POINT_SPRITE);

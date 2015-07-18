@@ -15,7 +15,7 @@
 
 #include "tools.h"
 //#include "toolALB.h"
-#include "toolEdimbourgh.h"
+#include "toolTimeline.h"
 
 
 #if MURMUR_MULTI_WINDOWS
@@ -105,7 +105,7 @@ void testApp::setup()
 	toolNetwork* 		pToolNetwork 		= new toolNetwork(&toolManager);
 	toolSurfaces*		pToolSurfaces		= new toolSurfaces(&toolManager, mp_surfaceMain);
 //	toolALB*			pToolALB			= new toolALB(&toolManager);
-	toolEdimbourgh*		pToolEdimbourgh		= new toolEdimbourgh(&toolManager);
+	toolTimeline*		ptoolTimeline		= new toolTimeline(&toolManager);
 
 	toolManager.addTool( pToolConfiguration );
 	toolManager.addTool( new toolNetwork(&toolManager) );
@@ -115,14 +115,14 @@ void testApp::setup()
 	toolManager.addTool( new toolScene(&toolManager, mp_sceneVisualisation) );
 	toolManager.addTool( new toolSound(&toolManager) );
 //	toolManager.addTool( pToolALB );
-	toolManager.addTool( pToolEdimbourgh );
+	toolManager.addTool( ptoolTimeline );
 
 	toolManager.setLogo("murmur_logo.png");
 	toolManager.setFontName("Fonts/NewMedia Fett.ttf");
 	toolManager.createControls(ofVec2f(100,100),ofVec2f(200,200));
 	toolManager.loadData();
 	
-	pToolEdimbourgh->loadMidiSettings();
+	ptoolTimeline->loadMidiSettings();
  
     // Run network
 	// if (pToolNetwork) 			pToolNetwork->setup();
@@ -138,7 +138,7 @@ void testApp::setup()
 	if (pToolSurfaces)			pToolSurfaces->setup();
 	if (pToolAnimations)		pToolAnimations->setup();
 //	if (pToolALB)				pToolALB->setup();
-	if (pToolEdimbourgh)		pToolEdimbourgh->setup();
+	if (ptoolTimeline)		ptoolTimeline->setup();
 	
 	// Midi settings
 	if (pToolAnimations)		pToolAnimations->initMidiAnimations(mp_surfaceMain);
@@ -445,9 +445,9 @@ void testApp::newMidiMessage(ofxMidiMessage& midiMessage)
 	if (mp_surfaceMain)
 		mp_surfaceMain->getAnimationManager().newMidiMessage(midiMessage);
 
-	toolEdimbourgh* pToolEdimbourgh = (toolEdimbourgh*) toolManager.getTool("_Edimbourgh_");
-	if (pToolEdimbourgh)
-		pToolEdimbourgh->newMidiMessage(midiMessage);
+	toolTimeline* ptoolTimeline = (toolTimeline*) toolManager.getTool("Timeline");
+	if (ptoolTimeline)
+		ptoolTimeline->newMidiMessage(midiMessage);
 }
 
 //--------------------------------------------------------------

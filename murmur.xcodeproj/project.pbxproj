@@ -187,7 +187,7 @@
 		F9B803801B31926A00F12500 /* ofxMidiOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9B803661B31926A00F12500 /* ofxMidiOut.cpp */; };
 		F9B8038C1B31945F00F12500 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9B8038B1B31945F00F12500 /* CoreMIDI.framework */; };
 		F9B8038F1B31FF1F00F12500 /* classProperty.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9B8038D1B31FF1F00F12500 /* classProperty.cpp */; };
-		F9B803921B32120800F12500 /* toolEdimbourgh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9B803901B32120800F12500 /* toolEdimbourgh.cpp */; };
+		F9B803921B32120800F12500 /* toolTimeline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9B803901B32120800F12500 /* toolTimeline.cpp */; };
 		F9BC6AF6174512E000633C5C /* animationsFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9BC6AF4174512E000633C5C /* animationsFactory.cpp */; };
 		F9BC6AF91745149C00633C5C /* animationWaveShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9BC6AF71745149C00633C5C /* animationWaveShader.cpp */; };
 		F9BC6B0B17456DDD00633C5C /* soundManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9BC6B0917456DDC00633C5C /* soundManager.cpp */; };
@@ -242,6 +242,7 @@
 		F9BC6CFB174AC6B700633C5C /* ofxFFTLive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9BC6CF2174AC6B700633C5C /* ofxFFTLive.cpp */; };
 		F9BC6D1D174DEF5C00633C5C /* volumeAccum.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9BC6D1B174DEF5C00633C5C /* volumeAccum.cpp */; };
 		F9C38AFC1885AAF100219152 /* threadRasp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9C38AFA1885AAF100219152 /* threadRasp.cpp */; };
+		F9DC1BC51B55377B006BEA63 /* animationWaves.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9DC1BC31B55377B006BEA63 /* animationWaves.cpp */; };
 		F9DC7C2219CA16F500682D1A /* ofxJSSoundPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9DC7C1C19CA16F500682D1A /* ofxJSSoundPlayer.cpp */; };
 		F9DC7C2319CA16F500682D1A /* ofxJSVideoGrabber.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9DC7C1E19CA16F500682D1A /* ofxJSVideoGrabber.cpp */; };
 		F9DC7C2419CA16F500682D1A /* ofxJSVideoPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9DC7C2019CA16F500682D1A /* ofxJSVideoPlayer.cpp */; };
@@ -897,8 +898,8 @@
 		F9B8038B1B31945F00F12500 /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = ../../../../../../../../System/Library/Frameworks/CoreMIDI.framework; sourceTree = "<group>"; };
 		F9B8038D1B31FF1F00F12500 /* classProperty.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = classProperty.cpp; sourceTree = "<group>"; };
 		F9B8038E1B31FF1F00F12500 /* classProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = classProperty.h; sourceTree = "<group>"; };
-		F9B803901B32120800F12500 /* toolEdimbourgh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = toolEdimbourgh.cpp; sourceTree = "<group>"; };
-		F9B803911B32120800F12500 /* toolEdimbourgh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = toolEdimbourgh.h; sourceTree = "<group>"; };
+		F9B803901B32120800F12500 /* toolTimeline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = toolTimeline.cpp; sourceTree = "<group>"; };
+		F9B803911B32120800F12500 /* toolTimeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = toolTimeline.h; sourceTree = "<group>"; };
 		F9BC6AE71743BA7E00633C5C /* Particle2D.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Particle2D.js; sourceTree = "<group>"; };
 		F9BC6AE81743BA7E00633C5C /* Particle2DMass.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Particle2DMass.js; sourceTree = "<group>"; };
 		F9BC6AF4174512E000633C5C /* animationsFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animationsFactory.cpp; sourceTree = "<group>"; };
@@ -1032,6 +1033,8 @@
 		F9BC6D1C174DEF5C00633C5C /* volumeAccum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = volumeAccum.h; sourceTree = "<group>"; };
 		F9C38AFA1885AAF100219152 /* threadRasp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = threadRasp.cpp; sourceTree = "<group>"; };
 		F9C38AFB1885AAF100219152 /* threadRasp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = threadRasp.h; sourceTree = "<group>"; };
+		F9DC1BC31B55377B006BEA63 /* animationWaves.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animationWaves.cpp; sourceTree = "<group>"; };
+		F9DC1BC41B55377B006BEA63 /* animationWaves.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = animationWaves.h; sourceTree = "<group>"; };
 		F9DC7C1C19CA16F500682D1A /* ofxJSSoundPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxJSSoundPlayer.cpp; sourceTree = "<group>"; };
 		F9DC7C1D19CA16F500682D1A /* ofxJSSoundPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxJSSoundPlayer.h; sourceTree = "<group>"; };
 		F9DC7C1E19CA16F500682D1A /* ofxJSVideoGrabber.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxJSVideoGrabber.cpp; sourceTree = "<group>"; };
@@ -2128,6 +2131,8 @@
 				F9DE80A01B398FDC00F5A086 /* animationGravitatory.h */,
 				F9DE83321B3C590400F5A086 /* animationComposition.cpp */,
 				F9DE83331B3C590400F5A086 /* animationComposition.h */,
+				F9DC1BC31B55377B006BEA63 /* animationWaves.cpp */,
+				F9DC1BC41B55377B006BEA63 /* animationWaves.h */,
 			);
 			name = Animations;
 			sourceTree = "<group>";
@@ -2497,8 +2502,8 @@
 				F9AB0C081941B0DE0020D78A /* toolVideo.h */,
 				F94138C11A72F45A0047A441 /* toolALB.cpp */,
 				F94138C21A72F45A0047A441 /* toolALB.h */,
-				F9B803901B32120800F12500 /* toolEdimbourgh.cpp */,
-				F9B803911B32120800F12500 /* toolEdimbourgh.h */,
+				F9B803901B32120800F12500 /* toolTimeline.cpp */,
+				F9B803911B32120800F12500 /* toolTimeline.h */,
 			);
 			name = Tools;
 			sourceTree = "<group>";
@@ -3533,7 +3538,7 @@
 				F999312F17198ABD00272085 /* OscTypes.cpp in Sources */,
 				8463806619A4CE4F0071BFB4 /* ofxJSLight.cpp in Sources */,
 				F94A60E11A813EC900A850FA /* AnimationTunnelALB.cpp in Sources */,
-				F9B803921B32120800F12500 /* toolEdimbourgh.cpp in Sources */,
+				F9B803921B32120800F12500 /* toolTimeline.cpp in Sources */,
 				F999338C171B432900272085 /* deviceInfo.cpp in Sources */,
 				F999338F171B5E5600272085 /* oscReceiver.cpp in Sources */,
 				F9DE82E81B39FA7300F5A086 /* ofxTLImageSequence.cpp in Sources */,
@@ -3611,6 +3616,7 @@
 				F92BC4B9189F094600CA158A /* ofxUIMultiImageButton.cpp in Sources */,
 				F9AB0C051940FC2E0020D78A /* toolScene.cpp in Sources */,
 				F9BC6C69174A621600633C5C /* b2Body.cpp in Sources */,
+				F9DC1BC51B55377B006BEA63 /* animationWaves.cpp in Sources */,
 				F9BC6C6A174A621600633C5C /* b2ContactManager.cpp in Sources */,
 				F9BC6C6B174A621600633C5C /* b2Fixture.cpp in Sources */,
 				F9BC6C6C174A621600633C5C /* b2Island.cpp in Sources */,

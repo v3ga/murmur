@@ -195,11 +195,6 @@
 </Widget>
 <Widget>
     <Kind>17</Kind>
-    <Name>main.wav</Name>
-    <Value>0</Value>
-</Widget>
-<Widget>
-    <Kind>17</Kind>
     <Name>o1.wav</Name>
     <Value>0</Value>
 </Widget>

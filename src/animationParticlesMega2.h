@@ -14,6 +14,8 @@ class Particle
 {
 public:
 	ofVec3f* mp_pos;
+	ofFloatColor* mp_color;
+	int m_index;
 	float x, y;
 	float xv, yv;
 	float xf, yf;
@@ -23,11 +25,12 @@ public:
     xv(_xv), yv(_yv) {
 	}
 
-	Particle(ofVec3f* pPos,
+	Particle(ofVec3f* pPos,ofFloatColor* pColor,
              float _xv = 0, float _yv = 0) :
     xv(_xv), yv(_yv)
 	{
 		mp_pos = pPos;
+		mp_color = pColor;
 	}
 
 	void updatePosition(float timeStep) {
@@ -91,6 +94,7 @@ public:
 #define DRAW_FORCES
 #define USE_INVSQRT
 
+class AnimationParticlesMega2;
 class ParticleSystem {
 protected:
 	float timeStep;
@@ -113,18 +117,20 @@ public:
 	Particle& operator[](unsigned i);
     
 	void setupForces();
-	void addRepulsionForce(const Particle& particle, float radius, float scale);
-	void addRepulsionForce(float x, float y, float radius, float scale);
-	void addAttractionForce(const Particle& particle, float radius, float scale);
-	void addAttractionForce(float x, float y, float radius, float scale);
-	void addForce(const Particle& particle, float radius, float scale);
-	void addForce(float x, float y, float radius, float scale);
+	void addRepulsionForce(const Particle& particle, float radius, float scale, bool doColor=false);
+	void addRepulsionForce(float x, float y, float radius, float scale, bool doColor=false);
+	void addAttractionForce(const Particle& particle, float radius, float scale, bool doColor=false);
+	void addAttractionForce(float x, float y, float radius, float scale, bool doColor=false);
+	void addForce(const Particle& particle, float radius, float scale, bool doColor=false);
+	void addForce(float x, float y, float radius, float scale, bool doColor=false);
 	void update();
 	
 	void setParticleSize(float s_){particleSize = s_;}
 	float getParticleSize(){return particleSize;}
  
 	void draw();
+
+	ofColor m_color;
 };
 
 inline float InvSqrt(float x){
@@ -143,6 +149,7 @@ class ParticleForce
 
 	    ofVec2f             m_anchor;
 		float				m_volume, m_volumeTarget;
+		ofColor				m_color;
 	
 		void				update					(float dt);
 };
@@ -195,5 +202,7 @@ private:
 	ofVbo					m_particlesVbo;
 	ofVec3f*				m_particlesPos;
 	ofFloatColor*			m_particlesColor;
+	
+	float					m_colorRadiusFactor;
 	
 };

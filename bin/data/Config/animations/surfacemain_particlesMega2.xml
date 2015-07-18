@@ -99,14 +99,19 @@
     <Value>1</Value>
 </Widget>
 <Widget>
+    <Kind>2</Kind>
+    <Name>colorFromDevice</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
     <Kind>4</Kind>
     <Name>amp. attraction</Name>
-    <Value>44.653541565</Value>
+    <Value>22.894229889</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>amp. repulsion</Name>
-    <Value>50.110237122</Value>
+    <Value>13.375000000</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -117,4 +122,9 @@
     <Kind>4</Kind>
     <Name>particles size</Name>
     <Value>2.543307066</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>radius color factor</Name>
+    <Value>4.173076630</Value>
 </Widget>
