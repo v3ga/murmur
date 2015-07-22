@@ -23,7 +23,9 @@ toolDevices::toolDevices(toolManager* parent, DeviceManager* manager) : tool("De
 	mp_lblDeviceTitle = 0;
 
 	mp_toggleDeviceUseRawVol = 0;
+	mp_toggleDeviceMute = 0;
 	mp_sliderDeviceVolMax = 0;
+	mp_teDeviceVolMaxMax = 0;
 	mp_sliderDeviceVolHistorySize = 0;
 	mp_toggleDeviceEnableStandby = 0;
 	mp_sliderDeviceVolHistoryTh = 0;
@@ -149,16 +151,19 @@ void toolDevices::createControlsCustomFinalize()
     mp_canvasDevice->addWidgetDown(new ofxUISpacer(widthDefault, 1));
 
 	
-	if (GLOBALS->mp_app->isSimulation)
+//	if (GLOBALS->mp_app->isSimulation)
 	{
-		mp_canvasDevice->addWidgetDown( new ofxUIToggle("mute sound input", false, dim, dim) );
+		mp_toggleDeviceMute = new ofxUIToggle("mute sound input", false, dim, dim);
+		mp_canvasDevice->addWidgetDown( mp_toggleDeviceMute );
 
 		// TODO : link with sound input buffer size
 		// mp_graphSoundValues = new ofxUIMovingGraphThreshold("soundInputValues", );
 	}
  
 	mp_toggleDeviceUseRawVol = new ofxUIToggle("Use raw volume", false, dim,dim);
-    mp_sliderDeviceVolMax = new ofxUISlider("Vol. max", 0.005f, volMaxMax, 0.02f, widthDefault-10, dim );
+    mp_sliderDeviceVolMax = new ofxUISlider("Vol. max", 0.005f, volMaxMax, 0.02f, widthDefault-70, dim );
+	mp_teDeviceVolMaxMax = new ofxUITextInput("Vol. max max", "0.04", 60 );
+	mp_teDeviceVolMaxMax->setAutoClear(false);
     mp_sliderDeviceVolHistorySize = new ofxUISlider("Vol. history size", 50, 500, 400, widthDefault-10, dim );
     mp_toggleDeviceEnableStandby = new ofxUIToggle("Enable standby", true, dim, dim);
     mp_sliderDeviceVolHistoryTh = new ofxUISlider( "Vol. history standby", 0.0f, 0.75f, 0.5f, widthDefault-10, dim );
@@ -166,6 +171,8 @@ void toolDevices::createControlsCustomFinalize()
 	mp_sliderDeviceSampleVolStandby = new ofxUISlider( "Sample vol. standby", 0.0f, 1.0f, 0.35f, widthDefault-10, dim );
  
 	mp_canvasDevice->addWidgetDown(mp_sliderDeviceVolMax);
+	mp_canvasDevice->addWidgetRight(mp_teDeviceVolMaxMax);
+//    mp_canvasDevice->addWidgetDown(new ofxUISpacer(widthDefault, 1));
 	mp_canvasDevice->addWidgetDown(mp_sliderDeviceVolHistorySize);
 	mp_canvasDevice->addWidgetDown(mp_toggleDeviceUseRawVol);
 
@@ -359,8 +366,14 @@ void toolDevices::updateDeviceUI(Device* pDevice)
     if (pDevice)
     {
 		if (mp_toggleDeviceUseRawVol) mp_toggleDeviceUseRawVol->setValue( pDevice->getSoundInputUseRawVolume() );
-        if (mp_sliderDeviceVolMax) mp_sliderDeviceVolMax->setValue( pDevice->getSoundInputVolumeMax() );
-        if (mp_sliderDeviceVolHistorySize) mp_sliderDeviceVolHistorySize->setValue( float(pDevice->getSoundInputVolHistorySize()) );
+		if (mp_toggleDeviceMute) mp_toggleDeviceMute->setValue( pDevice->getSoundInputMute() );
+		if (mp_teDeviceVolMaxMax) mp_teDeviceVolMaxMax->setTextString( ofToString( pDevice->getSoundInputVolumeMaxMax() ) );
+		if (mp_sliderDeviceVolMax)
+		{
+			mp_sliderDeviceVolMax->setMax( pDevice->getSoundInputVolumeMaxMax() );
+			mp_sliderDeviceVolMax->setValue( pDevice->getSoundInputVolumeMax() );
+		}
+		if (mp_sliderDeviceVolHistorySize) mp_sliderDeviceVolHistorySize->setValue( float(pDevice->getSoundInputVolHistorySize()) );
         if (mp_sliderDeviceVolHistoryTh) mp_sliderDeviceVolHistoryTh->setValue( float(pDevice->getSoundInputVolHistoryTh()) );
         if (mp_toggleDeviceEnableStandby) mp_toggleDeviceEnableStandby->setValue( pDevice->getEnableStandbyMode() );
         if (mp_sliderDeviceTimeStandby) mp_sliderDeviceTimeStandby->setValue( pDevice->getTimeStandby() );
@@ -423,12 +436,28 @@ void toolDevices::handleEvents(ofxUIEventArgs& e)
 	else if (name == "mute sound input")
 	{
 		if (pDeviceCurrent)
+			pDeviceCurrent->setSoundInputMute( ((ofxUIToggle *) e.widget)->getValue() );
+
+/*		if (pDeviceCurrent)
 			pDeviceCurrent->mute( ((ofxUIToggle *) e.widget)->getValue() );
+*/
 	}
     else if (name == "Use raw volume")
 	{
         if (pDeviceCurrent)
             pDeviceCurrent->setSoundInputUseRawVolume ( e.getToggle()->getValue() );
+	}
+    else if (name == "Vol. max max")
+	{
+		int triggerType  = mp_teDeviceVolMaxMax->getInputTriggerType();
+		if (triggerType == OFX_UI_TEXTINPUT_ON_ENTER && mp_sliderDeviceVolMax)
+		{
+			float max = ofToFloat(mp_teDeviceVolMaxMax->getTextString());
+			mp_sliderDeviceVolMax->setMax( max);
+
+	        if (pDeviceCurrent)
+    	        pDeviceCurrent->setSoundInputVolumeMaxMax( max );
+		}
 	}
     else if (name == "Vol. max")
     {

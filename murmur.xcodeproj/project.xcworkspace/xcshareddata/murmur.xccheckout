@@ -14,12 +14,12 @@
 		<string>https://github.com/v3ga/ofxToolManager.git</string>
 		<key>087B3E30C5DAF41F45449A05D37C663C00261246</key>
 		<string>https://github.com/v3ga/ofxJavascript.git</string>
-		<key>4BA63F6230E5D3E779B604A0A76A5AD0E884E6D1</key>
-		<string>https://github.com/v3ga/murmur.git</string>
 		<key>9306F8A4B5C13BDC4DDB4D5C22AC1335F4D819E8</key>
 		<string>https://github.com/YCAMInterlab/ofxTimeline.git</string>
 		<key>A07761EFE28259701C86F29F3992B643D9DB6851</key>
 		<string>https://github.com/v3ga/ofxSoundPlayerMultiOutput.git</string>
+		<key>BCE1379D3F8F2F0815E31E4E935DB40A8EAF30B7</key>
+		<string>https://github.com/v3ga/murmur.git</string>
 		<key>e7f115c4-931f-11de-b51d-eb253e4b719b++505</key>
 		<string>https://ofxjavascript.googlecode.com/svn/trunk</string>
 	</dict>
@@ -31,12 +31,12 @@
 		<string>../../../of_v0.8.1_osx_release/addons/ofxToolManager</string>
 		<key>087B3E30C5DAF41F45449A05D37C663C00261246</key>
 		<string>../../../addons/ofxJavascript</string>
-		<key>4BA63F6230E5D3E779B604A0A76A5AD0E884E6D1</key>
-		<string>../..</string>
 		<key>9306F8A4B5C13BDC4DDB4D5C22AC1335F4D819E8</key>
 		<string>../../../addons/ofxTimeline</string>
 		<key>A07761EFE28259701C86F29F3992B643D9DB6851</key>
 		<string>../../../of_v0.8.1_osx_release/addons/ofxSoundPlayerMultiOutput</string>
+		<key>BCE1379D3F8F2F0815E31E4E935DB40A8EAF30B7</key>
+		<string>../..</string>
 		<key>e7f115c4-931f-11de-b51d-eb253e4b719b++505</key>
 		<string>../../../addons/ofxJavascript</string>
 	</dict>
@@ -50,30 +50,30 @@
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>4BA63F6230E5D3E779B604A0A76A5AD0E884E6D1</string>
+	<string>BCE1379D3F8F2F0815E31E4E935DB40A8EAF30B7</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>4BA63F6230E5D3E779B604A0A76A5AD0E884E6D1</string>
+			<string>BCE1379D3F8F2F0815E31E4E935DB40A8EAF30B7</string>
 			<key>IDESourceControlWCCName</key>
 			<string>murmur</string>
-		</dict>
-		<dict>
-			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
-			<string>public.vcs.git</string>
-			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>087B3E30C5DAF41F45449A05D37C663C00261246</string>
-			<key>IDESourceControlWCCName</key>
-			<string>ofxJavascript</string>
 		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.subversion</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>e7f115c4-931f-11de-b51d-eb253e4b719b++505</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ofxJavascript</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>087B3E30C5DAF41F45449A05D37C663C00261246</string>
 			<key>IDESourceControlWCCName</key>
 			<string>ofxJavascript</string>
 		</dict>

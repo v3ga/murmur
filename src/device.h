@@ -53,13 +53,16 @@ class Device
         float               getLength(){return m_length;}
     
         // Properties
-        void                setSoundInputVolumeMax    (float v);
-        void                setSoundInputVolumeMaxOSC (float v);
-    
+        void                setSoundInputVolumeMax    		(float v);
+        void                setSoundInputVolumeMaxOSC 		(float v);
+		void				setSoundInputVolumeMaxMax 		(float v);
+		void				setSoundInputVolumeMaxMaxOSC 	(float v);
+ 
         void                setSoundInputVolHistorySize(int nb);
         void                setSoundInputVolHistorySizeOSC(int nb);
 
         float               getSoundInputVolumeMax();
+        float               getSoundInputVolumeMaxMax();
         float               getSoundInputVolHistorySize();
 
         // Activity / Standby / Standup
@@ -212,6 +215,9 @@ class Device
 				void		setSoundInputUseRawVolume	(bool is);
 				bool		getSoundInputUseRawVolume	(){return m_soundInputUseRawVol;}
 				void		setSoundInputUseRawVolumeOSC(bool is);
+				void		setSoundInputMute			(bool is);
+				void		setSoundInputMuteOSC		(bool is);
+				bool		getSoundInputMute			(){return m_soundInputMute;}
 
 		// Sound playing
 		vector<int>			m_listSpeakerIds;
@@ -221,7 +227,9 @@ class Device
         // > only used on server side
         float               m_soundInputVolHistorySize;
         float               m_soundInputVolEmpiricalMax;
+        float               m_soundInputVolEmpiricalMaxMax;
 		bool				m_soundInputUseRawVol;
+		bool				m_soundInputMute;
         
         // Interface
         virtual void        update(float dt);

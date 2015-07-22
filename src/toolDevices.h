@@ -44,7 +44,9 @@ class toolDevices : public tool
 		ofxUICanvas*			mp_canvasDevice;
 		ofxUILabel*				mp_lblDeviceTitle;
 		ofxUIToggle*			mp_toggleDeviceUseRawVol;
+		ofxUIToggle*			mp_toggleDeviceMute;
 	    ofxUISlider*			mp_sliderDeviceVolMax;
+	    ofxUITextInput*			mp_teDeviceVolMaxMax;
     	ofxUISlider* 			mp_sliderDeviceVolHistorySize;
     	ofxUIToggle* 			mp_toggleDeviceEnableStandby;
     	ofxUISlider* 			mp_sliderDeviceVolHistoryTh;

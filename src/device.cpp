@@ -71,6 +71,7 @@ Device::Device(string id, int nbLEDs, float distLEDs)
 	mp_sampleStandBy = 0;
 	m_sampleVolStandby = 0.35f;
 	m_sampleNameStandby = "Sounds/StandBy/theme1-4.wav";
+	m_soundInputVolEmpiricalMaxMax = 0.04;
 
 	m_isEnableStandup	= false;
 	m_standupTh			= 0.55f;
@@ -86,6 +87,7 @@ Device::Device(string id, int nbLEDs, float distLEDs)
 	m_isReverseDirPackets = false;
 
 	m_soundInputUseRawVol = true;
+	m_soundInputMute = false;
 	
 	m_volHistoryPingTh = 0.5;
 }
@@ -296,6 +298,29 @@ void Device::setSoundInputVolumeMaxOSC(float v)
     }
 }
 
+//--------------------------------------------------------------
+void Device::setSoundInputVolumeMaxMax(float v)
+{
+	m_soundInputVolEmpiricalMaxMax = v;
+
+	if (m_isSendMessagesOSC == false) return;
+
+	ofxOscMessage m;
+	m.setAddress( OSC_ADDRESS_SET_DEVICE_PROP );
+    m.addStringArg(m_id);
+    m.addStringArg("volMaxMax");
+    m.addFloatArg(v);
+    m_oscSender.sendMessage(m);
+
+	LOG_MESSAGE_OSC(m,false);
+}
+
+//--------------------------------------------------------------
+void Device::setSoundInputVolumeMaxMaxOSC(float v)
+{
+	m_soundInputVolEmpiricalMaxMax = v;
+}
+
 
 //--------------------------------------------------------------
 void Device::setSoundInputVolHistoryTh(float th)
@@ -359,6 +384,12 @@ float Device::getSoundInputVolumeMax()
 //    if (mp_soundInput)
 //        return mp_soundInput->getVolEmpiricalMax();
     return m_soundInputVolEmpiricalMax;
+}
+
+//--------------------------------------------------------------
+float Device::getSoundInputVolumeMaxMax()
+{
+    return m_soundInputVolEmpiricalMaxMax;
 }
 
 //--------------------------------------------------------------
@@ -570,6 +601,30 @@ void Device::setSoundInputUseRawVolumeOSC(bool is)
 {
 	if (mp_soundInput)
 		mp_soundInput->useRawVolume(is);
+}
+
+//--------------------------------------------------------------
+void Device::setSoundInputMute(bool is)
+{
+	m_soundInputMute = is;
+
+	if (m_isSendMessagesOSC == false) return;
+
+	ofxOscMessage m;
+    m.setAddress( OSC_ADDRESS_SET_DEVICE_PROP );
+    m.addStringArg(m_id);
+    m.addStringArg("mute");
+    m.addIntArg(m_soundInputMute ? 1 : 0);
+    m_oscSender.sendMessage(m);
+
+}
+
+
+//--------------------------------------------------------------
+void Device::setSoundInputMuteOSC(bool is)
+{
+	if (mp_soundInput)
+		mp_soundInput->mute(is);
 }
 
 //--------------------------------------------------------------
@@ -925,7 +980,9 @@ void Device::loadXMLSurface(ofxXmlSettings& settings)
 void Device::loadXMLSoundInput(ofxXmlSettings& settings)
 {
   int	 	useRawVol 			= settings.getValue("device:soundInput:useRawVol",0.05f);
+  int		mute				= settings.getValue("device:soundInput:mute",0);
   float 	volMax 				= settings.getValue("device:soundInput:volMax",0.05f);
+  float 	volMaxMax 			= settings.getValue("device:soundInput:volMaxMax",0.05f);
   int 		volHistoryNb 		= settings.getValue("device:soundInput:volHistoryNb", 400);
   float 	volHistoryTh		= settings.getValue("device:soundInput:volHistoryTh",0.1f);
   int		enableStandby		= settings.getValue("device:enableStandby",1);
@@ -936,7 +993,9 @@ void Device::loadXMLSoundInput(ofxXmlSettings& settings)
 
 
    setSoundInputUseRawVolume(useRawVol==1 ? true : false );
+   setSoundInputMute(mute==1 ? true : false );
    setSoundInputVolumeMax( volMax );
+   setSoundInputVolumeMaxMax( volMaxMax );
    setSoundInputVolHistorySize( volHistoryNb );
    setSoundInputVolHistoryTh( volHistoryTh );
    setEnableStandbyMode( enableStandby == 1 ? true : false );
@@ -947,7 +1006,9 @@ void Device::loadXMLSoundInput(ofxXmlSettings& settings)
 
 
    OFAPPLOG->println(" - useRawVol="+ofToString(useRawVol));
+   OFAPPLOG->println(" - mute="+ofToString(mute));
    OFAPPLOG->println(" - volMax="+ofToString(volMax));
+   OFAPPLOG->println(" - volMaxMax="+ofToString(volMaxMax));
    OFAPPLOG->println(" - volHistoryNb="+ofToString(volHistoryNb));
    OFAPPLOG->println(" - volHistoryTh="+ofToString(volHistoryTh));
    OFAPPLOG->println(" - enableStandby="+ofToString(timeStandby));
@@ -1048,7 +1109,9 @@ void Device::saveXML(string dir)
         settings.pushTag("soundInput");
 
             settings.addValue("useRawVol", 			getSoundInputUseRawVolume());
+            settings.addValue("mute", 				getSoundInputMute());
             settings.addValue("volMax", 			getSoundInputVolumeMax());
+            settings.addValue("volMaxMax", 			getSoundInputVolumeMaxMax());
             settings.addValue("volHistoryNb", 		getSoundInputVolHistorySize());
             settings.addValue("volHistoryTh", 		getSoundInputVolHistoryTh());
 		settings.popTag();

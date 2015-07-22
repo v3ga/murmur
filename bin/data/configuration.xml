@@ -1,7 +1,7 @@
 <murmur>
 	<simulator>
         <!-- Activate or not simulation -->
-        <enable>1</enable>
+        <enable>0</enable>
 
         <!-- Sound input for simulators -->
         <soundInput>
@@ -62,7 +62,7 @@
 
     <!-- Raspberry -->
     <launchDevices>
-        <ip>192.168.2.7</ip>
+        <ip>192.168.0.39</ip>
     </launchDevices>
 
 

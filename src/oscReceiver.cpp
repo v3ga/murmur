@@ -70,6 +70,11 @@ void oscReceiver::update()
                     // Property
                     string propName = m_oscMessage.getArgAsString(indexArg++);
 
+					if (propName == "mute")
+                    {
+                        pDevice->setSoundInputMuteOSC( m_oscMessage.getArgAsInt32(indexArg)==1 ? true : false );
+                    }
+					else
 					if (propName == "useRawVol")
                     {
                         pDevice->setSoundInputUseRawVolumeOSC( m_oscMessage.getArgAsInt32(indexArg)==1 ? true : false );
@@ -78,6 +83,11 @@ void oscReceiver::update()
 					if (propName == "volMax")
                     {
                         pDevice->setSoundInputVolumeMaxOSC( m_oscMessage.getArgAsFloat(indexArg) );
+                    }
+					else
+					if (propName == "volMaxMax")
+                    {
+                        pDevice->setSoundInputVolumeMaxMaxOSC( m_oscMessage.getArgAsFloat(indexArg) );
                     }
                     else
                     if (propName == "volHistorySize")
