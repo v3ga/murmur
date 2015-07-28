@@ -17,7 +17,7 @@ ParticleGravitatory::ParticleGravitatory(AnimationGravitatory* pParent, string d
 	m_angle = ofRandom(TWO_PI);
 	m_angleSpeed = PI/2;
 	m_size = ofRandom(pParent->m_sizeMin,pParent->m_sizeMax);
-	m_ageMax = ofRandom(15,30);
+	m_ageMax = ofRandom(20,30);
 	m_color = color;
 
 
@@ -27,6 +27,8 @@ ParticleGravitatory::ParticleGravitatory(AnimationGravitatory* pParent, string d
 void ParticleGravitatory::update(float dt)
 {
 	//ofLog() << ofToString( cos( m_angle )*300*dt );
+
+	m_ageMax = mp_parent->m_ageMax;
 
 	m_pos.x += cos( m_angle )*200*dt;
 	m_pos.y += sin( m_angle )*200*dt;
@@ -38,7 +40,7 @@ void ParticleGravitatory::update(float dt)
 //--------------------------------------------------------------
 void ParticleGravitatory::draw()
 {
-	float alpha = (1.0f-m_age/m_ageMax) * 255.0f;
+	float alpha = ofClamp((1.0f-m_age/m_ageMax),0.0f,1.0f) * 255.0f;
 	ofSetColor(m_color,alpha*mp_parent->m_alphaFactor);
 	ofEllipse(m_pos.x,m_pos.y,m_size*mp_parent->m_sizeFactor,m_size*mp_parent->m_sizeFactor);
 }
@@ -82,35 +84,37 @@ void AnimationGravitatory::createUICustom()
 		addUISlider( m_properties.getFloat("alphaFactor") );
 		addUISlider( m_properties.getFloat("angleSpeedFactor") );
 
+		m_properties.add( new classProperty_float("obj. age max", 	1, 		20, 	&m_ageMax) );
 		m_properties.add( new classProperty_float("obj. number", 	50, 	150, 	&m_nbObjects) );
 		m_properties.add( new classProperty_float("obj. size min", 	5,40,			&m_sizeMin) );
 		m_properties.add( new classProperty_float("obj. size max", 	5,100,			&m_sizeMax) );
 
 		addUISlider( m_properties.getFloat("obj. size min") );
 		addUISlider( m_properties.getFloat("obj. size max") );
-		addUISlider( m_properties.getFloat("obj. number") );
+//		addUISlider( m_properties.getFloat("obj. number") );
+		addUISlider( m_properties.getFloat("obj. age max") );
 }
 
 //--------------------------------------------------------------
 void AnimationGravitatory::VM_update(float dt)
 {
 	map< string, vector<ParticleGravitatory*> >::iterator it = m_particlesDevice.begin();
-
 	for ( ; it != m_particlesDevice.end(); ++it )
 	{
 		vector<ParticleGravitatory*>& particles = it->second;
 		for (int i=0;i<particles.size();i++)
+		{
 			particles[i]->update(dt);
+		}
 
 
-		int nbParticles = particles.size();
 		vector<ParticleGravitatory*>::iterator it2 = particles.begin();
 		while( it2 != particles.end())
 		{
-			//if ( (*it2)->m_age >= (*it2)->m_ageMax)
-			if (nbParticles > m_nbObjects)
+			//int nbParticles = particles.size();
+			if ( (*it2)->m_age >= (*it2)->m_ageMax)
+			//if (nbParticles > m_nbObjects)
 			{
-				nbParticles = particles.size();
 				delete *it2;
 				it2 = particles.erase(it2);
 			}

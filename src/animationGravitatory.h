@@ -53,4 +53,5 @@ class AnimationGravitatory : public Animation
         float           m_sizeMin;
         float           m_sizeMax;
         float           m_nbObjects;
+		float			m_ageMax;
 };

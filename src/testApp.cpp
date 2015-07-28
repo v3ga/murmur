@@ -662,8 +662,8 @@ void testApp::keyPressed(int key)
 	#endif
 
 	
-	OFAPPLOG->begin("testApp::keyPressed()");
-	OFAPPLOG->println("-key='"+ofToString(key)+"'");
+//	OFAPPLOG->begin("testApp::keyPressed()");
+//	OFAPPLOG->println("-key='"+ofToString(key)+"'");
 	
 	toolConfiguration* 	pToolConfiguration 	= (toolConfiguration*) 		toolManager.getTool("Configuration");
 	toolAnimations* 	pToolAnimations 	= (toolAnimations*) 		toolManager.getTool("Animations");
@@ -696,7 +696,7 @@ void testApp::keyPressed(int key)
 		   }
 		}
 	}
-	OFAPPLOG->end();
+//	OFAPPLOG->end();
 
 	#if MURMUR_MULTI_WINDOWS
 	}
@@ -735,7 +735,6 @@ void testApp::mouseDragged(int x, int y, int button)
     if (isViewSimulation)
     {
         if (m_isUserControls) return;
-        
         if (mp_sceneVisualisation)
             mp_sceneVisualisation->mouseDragged(x, y);
     }
