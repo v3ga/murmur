@@ -17,6 +17,7 @@ classProperty_float::classProperty_float(string name, float min, float max, floa
 	mp_variable	= pValue;
 	m_type	= FLOAT;
 	m_ownsVariable = false;
+	m_isEnableEvents = false;
 }
 
 //--------------------------------------------------------------
@@ -27,6 +28,7 @@ classProperty_float::classProperty_float(string name, float min, float max) : cl
 	mp_variable	= new float();
 	m_type	= FLOAT;
 	m_ownsVariable = true;
+	m_isEnableEvents = false;
 }
 
 //--------------------------------------------------------------
@@ -42,6 +44,11 @@ classProperty_float::~classProperty_float()
 void classProperty_float::setValueFromMidiMessage(ofxMidiMessage& m)
 {
 	*mp_variable = ofMap(m.value,0,127, m_min, m_max);
+	if (m_isEnableEvents)
+	{
+		ofNotifyEvent(onValueChanged, *mp_variable, this);
+	}
+
 }
 
 

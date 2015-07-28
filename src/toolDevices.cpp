@@ -61,6 +61,14 @@ void toolDevices::setup()
 }
 
 //--------------------------------------------------------------
+void toolDevices::update()
+{
+//	OFAPPLOG->begin("toolDevices::update");
+	handleMidiMessages();
+//	OFAPPLOG->end();
+}
+
+//--------------------------------------------------------------
 void toolDevices::selectDeviceWithIndex(int index)
 {
     if (mp_deviceManager && index>=0 && index < mp_deviceManager->m_listDevices.size())
@@ -615,5 +623,63 @@ void toolDevices::disableWindowCallbacks()
 	tool::disableWindowCallbacks();
 	if (mp_canvasDevice) mp_canvasDevice->DisableCallbacks();
 }
+
+//--------------------------------------------------------------
+void toolDevices::loadMidiSettings()
+{
+	midiInterface::loadMidiSettings(m_properties);
+}
+
+//--------------------------------------------------------------
+void toolDevices::readMidiSettingsExtraBegin(int which, string propName)
+{
+	classProperty_float* pProp = new classProperty_float(propName, 0.0f,1.0f);
+	pProp->enableEvents();
+	ofAddListener(pProp->onValueChanged, this, &toolDevices::onDevicePropChanged);
+
+
+	m_properties.add( pProp );
+}
+
+//--------------------------------------------------------------
+void  toolDevices::newMidiMessage(ofxMidiMessage& eventArgs)
+{
+//	OFAPPLOG->println("toolDevices::newMidiMessage()");
+	midiInterface::newMidiMessage(eventArgs);
+}
+
+//--------------------------------------------------------------
+
+void toolDevices::handleMidiMessages()
+{
+	midiInterface::handleMidiMessages();
+}
+
+
+//--------------------------------------------------------------
+void toolDevices::onDevicePropChanged(const void* sender, float& value)
+{
+	if (mp_deviceManager)
+	{
+		classProperty_float* pProperty = (classProperty_float*) sender;
+		vector <string> parts = ofSplitString(pProperty->m_name, ".");
+		if (parts.size()==2){
+			Device* pDevice = mp_deviceManager->getDeviceById(parts[0]);
+			if (pDevice)
+			{
+				if (parts[1] == "soundInputVolEmpiricalMax")
+				{
+					pDevice->setSoundInputVolumeMax( value*pDevice->getSoundInputVolumeMaxMax() );
+					if (pDevice == mp_deviceManager->getDeviceCurrent())
+						updateDeviceUI(pDevice);
+				}
+			}
+		}
+	
+	}
+}
+
+
+
 
 

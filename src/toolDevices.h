@@ -10,9 +10,12 @@
 
 #include "tool.h"
 #include "device.h"
+#include "midiInterface.h"
+#include "classProperty.h"
+
 
 class ofxUIMovingGraphThreshold;
-class toolDevices : public tool
+class toolDevices : public tool, public midiInterface
 {
 	public:
 
@@ -20,6 +23,7 @@ class toolDevices : public tool
 
 	
 		void					setup						();
+		void					update						();
 		void					show						(bool is);
 		void					enableDrawCallback			(bool is);
 		void					createControlsCustom		();
@@ -36,6 +40,17 @@ class toolDevices : public tool
 		bool					keyPressed					(int key);
 		void					enableWindowCallbacks		();
 		void					disableWindowCallbacks		();
+
+		virtual string			getMidiSettingsPath			(){return "Gui/tools/midi/Devices.xml";}
+		void					loadMidiSettings			();
+		void					readMidiSettingsExtraBegin	(int which,string propName);
+		void 					newMidiMessage				(ofxMidiMessage& eventArgs);
+		void					handleMidiMessages			();
+
+		void					onDevicePropChanged			(const void* sender, float& value);
+ 
+
+	 	classProperties			m_properties;
 
         DeviceManager*      	mp_deviceManager;
 		vector<string>			m_speakersId;

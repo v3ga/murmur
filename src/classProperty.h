@@ -45,13 +45,18 @@ class classProperty_float : public classProperty
 		~classProperty_float();
 
 		void	setValueFromMidiMessage	(ofxMidiMessage& );
+		void	enableEvents			(bool is=true){m_isEnableEvents=is;}
 
 		float*			mp_variable;
 		float			m_min;
 		float			m_max;
  
 		bool			m_ownsVariable;
+		bool			m_isEnableEvents;
+ 
+		ofEvent<float>	onValueChanged; // not sure about this
 };
+
 
 //--------------------------------------------------------------
 class classProperty_bool : public classProperty

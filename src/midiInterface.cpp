@@ -29,12 +29,16 @@ void midiInterface::loadMidiSettings(classProperties& properties)
 				if (control>0)
 				{
 					string 	propName 	= m_midiSettings.getAttribute("midi", "property", "???", i);
+					readMidiSettingsExtraBegin(i,propName);
+					
 					classProperty* pProp = properties.get(propName);
 					if(pProp)
 					{
 						m_mapMidiToProp[control] = 	pProp;
 						OFAPPLOG->println(" - defining control "+ofToString(control) + " for property '"+pProp->m_name+"'");
+
 					}
+					readMidiSettingsExtraEnd(i,propName);
 				}
 			}
 		}
@@ -52,6 +56,16 @@ void midiInterface::loadMidiSettings(classProperties& properties)
 }
 
 //--------------------------------------------------------------
+void midiInterface::readMidiSettingsExtraBegin(int which, string propName)
+{
+}
+
+void midiInterface::readMidiSettingsExtraEnd(int which, string propName)
+{
+}
+
+
+//--------------------------------------------------------------
 void midiInterface::handleMidiMessages()
 {
 	m_midiMutex.lock();
@@ -65,12 +79,12 @@ void midiInterface::handleMidiMessages()
 		if ( m_mapMidiToProp.find( control ) != m_mapMidiToProp.end() )
 		{
 			classProperty* pProp = m_mapMidiToProp[control];
-
 			pProp->setValueFromMidiMessage( midiMessage );
 		}
 	}
 	m_midiMessagesToHandle.clear();
 	m_midiMutex.unlock();
+	
 }
 
 //--------------------------------------------------------------

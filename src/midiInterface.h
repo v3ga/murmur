@@ -16,8 +16,13 @@ class midiInterface
 	public:
 	
 		ofxXmlSettings			m_midiSettings;
-		virtual string			getMidiSettingsPath		(){return "";}
-		virtual	void			loadMidiSettings		(classProperties&);
+
+		virtual string			getMidiSettingsPath			(){return "";}
+		virtual	void			loadMidiSettings			(classProperties&);
+		virtual	void			readMidiSettingsExtraBegin	(int which, string propName); // <midi> node index
+		virtual	void			readMidiSettingsExtraEnd	(int which, string propName); // <midi> node index
+
+
 		virtual	void			handleMidiMessages		();
 		virtual void 			newMidiMessage			(ofxMidiMessage& eventArgs);
 
