@@ -93,6 +93,8 @@ class AnimationWaves : public Animation
 		float			m_ageMax;
 		float			m_valueTriggerIn;
 		float			m_valueTriggerOut;
+		bool			m_enableTimeResetAccum;
+		float			m_timeResetAccum;
 		float			m_nbWavePoints;
 		float			m_lineWidthWave;
 };

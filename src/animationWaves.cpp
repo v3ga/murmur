@@ -94,6 +94,15 @@ void WaveManager::update(float dt)
 
 	m_volumeAccum.m_valueTriggerIn 	= mp_parent->m_valueTriggerIn;
 	m_volumeAccum.m_valueTriggerOut = mp_parent->m_valueTriggerOut;
+	
+	m_volumeAccum.update(dt);
+	if (
+			mp_parent->m_enableTimeResetAccum &&
+			( m_volumeAccum.m_state == VolumeAccum::STATE_WAVE_INSIDE &&  m_volumeAccum.m_stateTime >= mp_parent->m_timeResetAccum )
+		)
+	{
+		m_volumeAccum.reset();
+	}
 
 
 	int nbWaves = m_waves.size();
@@ -238,6 +247,8 @@ AnimationWaves::AnimationWaves(string name) : Animation(name)
 	m_valueTriggerIn = 0.3f;
 	m_valueTriggerOut = 0.1f;
 	m_nbWavePoints = 10;
+	m_enableTimeResetAccum = false;
+	m_timeResetAccum = 0.5f;
 }
 
 //--------------------------------------------------------------
@@ -259,13 +270,15 @@ void AnimationWaves::createUICustom()
 		mp_UIcanvas->addToggle("colorFromDevice", 	&m_isColorFromDevice);
 	}
 
-	m_properties.add( new classProperty_float("nbWavePoints", 			3.0f, 20.0f, 	&m_nbWavePoints) );
+	m_properties.add( new classProperty_float("nbWavePoints", 		3.0f, 20.0f, 	&m_nbWavePoints) );
 	m_properties.add( new classProperty_float("speed", 				20.0f, 100.0f, 	&m_speed) );
 	m_properties.add( new classProperty_float("ageMax", 			1.0f, 20.0f, 	&m_ageMax) );
 	m_properties.add( new classProperty_float("waveDirAmp", 		0.0f, 3.0f, 	&m_waveDirAmp) );
 	m_properties.add( new classProperty_float("valueTriggerIn", 	0.0f, 1.0f, 	&m_valueTriggerIn) );
 	m_properties.add( new classProperty_float("valueTriggerOut", 	0.0f, 1.0f, 	&m_valueTriggerOut) );
 	m_properties.add( new classProperty_float("lineWidthWave", 		0.0f, 20.0f, 	&m_lineWidthWave) );
+	m_properties.add( new classProperty_bool("enableResetAccum", 					&m_enableTimeResetAccum) );
+	m_properties.add( new classProperty_float("timeResetAccum", 	0.1f, 1.0f,		&m_timeResetAccum) );
 	
 	
 	addUISlider( m_properties.getFloat("nbWavePoints") );
@@ -274,6 +287,8 @@ void AnimationWaves::createUICustom()
 	addUISlider( m_properties.getFloat("waveDirAmp") );
 	addUISlider( m_properties.getFloat("valueTriggerIn") );
 	addUISlider( m_properties.getFloat("valueTriggerOut") );
+	addUItoggle( m_properties.getBool("enableResetAccum"));
+	addUISlider( m_properties.getFloat("timeResetAccum") );
 //	addUISlider( m_properties.getFloat("lineWidthWave") );
 }
 
@@ -299,7 +314,7 @@ void AnimationWaves::VM_draw(float w, float h)
 	{
 		m_wavesDeviceIt->second->draw();
 	}
-	ofDisableAlphaBlending();
+//	ofDisableAlphaBlending();
 }
 
 //--------------------------------------------------------------

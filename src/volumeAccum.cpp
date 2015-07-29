@@ -19,6 +19,8 @@ VolumeAccum::VolumeAccum()
 	m_valueMean = 0.0f;
 	m_value = 0.0f;
 	
+	m_stateTime = 0.0f;
+	
 }
 
 //--------------------------------------------------------------
@@ -55,6 +57,7 @@ void VolumeAccum::add(float volume)
         if (volume <= m_valueTriggerOut)
         {
             m_state=STATE_WAVE_OUT;
+			m_stateTime=0.0f;
         }
     }
     else if (m_state == STATE_WAVE_OUT)
@@ -67,7 +70,24 @@ void VolumeAccum::add(float volume)
             
             m_state = STATE_WAVE_INSIDE;
             m_value=0;
+			m_stateTime=0.0f;
         }
     }
     
-   }
+}
+
+//--------------------------------------------------------------
+void VolumeAccum::update(float dt)
+{
+	m_stateTime += dt;
+}
+
+//--------------------------------------------------------------
+void VolumeAccum::reset()
+{
+	m_state = STATE_WAVE_OUT;
+	m_stateTime=0.0f;
+	m_value = 0.0f;
+}
+
+

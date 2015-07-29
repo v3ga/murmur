@@ -29,13 +29,19 @@ class VolumeAccum
 		float					m_valueMean;		// mean value for history values
 
         int                     m_state;
+		float					m_stateTime;
 
         cbTriggerIn             mpf_funcTriggerIn;
         void*                   mp_userData;
     
         void setTriggerInCb     (cbTriggerIn, void*);
         void add                (float volume);
-    
+		void update				(float dt);
+
+		void reset				();
+
+ 
+ 
         enum
         {
             STATE_WAVE_INSIDE = 1,
