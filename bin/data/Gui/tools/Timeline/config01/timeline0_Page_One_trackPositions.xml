@@ -1,8 +1,14 @@
 <positions>
+    <element name="chambreEcho_001.color">
+        <x>10.000000000</x>
+        <y>617.000000000</y>
+        <width>1004.000000000</width>
+        <height>40.000000000</height>
+    </element>
     <element name="chambreEcho_002.color">
-        <x>0.000000000</x>
-        <y>275.000000000</y>
-        <width>800.000000000</width>
+        <x>10.000000000</x>
+        <y>681.000000000</y>
+        <width>1004.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="deviceEchoSimulator01.color">
@@ -19,8 +25,8 @@
     </element>
     <element name="setAnim">
         <x>10.000000000</x>
-        <y>543.000000000</y>
+        <y>702.000000000</y>
         <width>1004.000000000</width>
-        <height>199.000000000</height>
+        <height>40.000000000</height>
     </element>
 </positions>

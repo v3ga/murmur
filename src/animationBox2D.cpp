@@ -184,7 +184,7 @@ void AnimationBox2D_circles::onNewPacket(DevicePacket* pDevicePacket, string dev
 	
     m_posAnchor.set(x,y);
     
-	if (pDevicePacket->m_volume>m_volTrigger)
+	if (pDevicePacket->m_volume>m_volTrigger && m_isBox2DCreated)
 	{
 		// playSound(deviceId);
 
@@ -192,7 +192,7 @@ void AnimationBox2D_circles::onNewPacket(DevicePacket* pDevicePacket, string dev
 
         m_circleSize = ofRandom(m_sizeMin,m_sizeMax);
 
-        //if (m_volumeAccumTarget>=10.5f)
+        if (true)
         {
             ofxBox2dCircle circle;
             circle.setPhysics(3.0, 0.53, 0.1);

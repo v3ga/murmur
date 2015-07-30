@@ -1,27 +1,27 @@
 <keyframes>
     <key>
+        <flag>box2DCircles</flag>
+        <time>00:00:02:098</time>
+        <value>0.600000024</value>
+    </key>
+    <key>
+        <flag>waves</flag>
+        <time>00:00:49:481</time>
+        <value>0.574999988</value>
+    </key>
+    <key>
         <flag>gravitatory</flag>
-        <time>00:00:00:019</time>
-        <value>1.000000000</value>
+        <time>00:02:06:932</time>
+        <value>0.074999988</value>
     </key>
     <key>
         <flag>shaderWave</flag>
-        <time>00:00:08:607</time>
-        <value>0.550000012</value>
+        <time>00:03:24:382</time>
+        <value>1.000000000</value>
     </key>
     <key>
         <flag>particlesMega2</flag>
-        <time>00:00:21:274</time>
-        <value>0.475000024</value>
-    </key>
-    <key>
-        <flag>box2DCircles</flag>
-        <time>00:00:33:346</time>
-        <value>0.699999988</value>
-    </key>
-    <key>
-        <flag>waves2</flag>
-        <time>00:00:50:498</time>
-        <value>0.475000024</value>
+        <time>00:04:34:301</time>
+        <value>0.625000000</value>
     </key>
 </keyframes>
