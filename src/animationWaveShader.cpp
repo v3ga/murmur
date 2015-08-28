@@ -143,7 +143,7 @@ void AnimationShaderWave::VM_draw(float w, float h)
 	}
 	if (m_isBlend)
 	{
-	   glDisable(GL_BLEND);
+//	   glDisable(GL_BLEND);
 	}
 }
 

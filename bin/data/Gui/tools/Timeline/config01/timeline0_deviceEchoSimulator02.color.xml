@@ -11,4 +11,22 @@
         <time>00:00:01:394</time>
         <value>0.500000000</value>
     </key>
+    <key>
+        <sampleX>0.245000526</sampleX>
+        <sampleY>0.739999950</sampleY>
+        <time>00:04:18:168</time>
+        <value>0.074999988</value>
+    </key>
+    <key>
+        <sampleX>0.230000123</sampleX>
+        <sampleY>0.454999954</sampleY>
+        <time>00:08:11:593</time>
+        <value>0.375000000</value>
+    </key>
+    <key>
+        <sampleX>0.310003936</sampleX>
+        <sampleY>0.679999948</sampleY>
+        <time>00:13:36:453</time>
+        <value>0.375000000</value>
+    </key>
 </keyframes>

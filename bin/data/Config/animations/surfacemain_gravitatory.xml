@@ -15,6 +15,11 @@
 </Widget>
 <Widget>
     <Kind>4</Kind>
+    <Name>volumeTh</Name>
+    <Value>0.202243596</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
     <Name>sizeFactor</Name>
     <Value>0.464566916</Value>
 </Widget>

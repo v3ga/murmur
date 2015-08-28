@@ -30,5 +30,9 @@ class toolScene : public tool
 
 		SceneVisualisation*		mp_sceneVisualisation;
 		bool					m_isDrawDeviceLightCurrent;
+		bool					m_isDrawDeviceLight;
 		bool					m_isDrawScene;
+ 
+		ofxUIToggle*			mp_tgDeviceLightCurrent;
+ 
 };

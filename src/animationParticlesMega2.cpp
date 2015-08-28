@@ -227,7 +227,7 @@ void AnimationParticlesMega2::VM_draw(float w, float h)
 	ofSetColor(255, 255, 255, pointOpacity);
 	glPointSize(particleSystem.getParticleSize());
 	m_particlesVbo.draw(GL_POINTS,0,kParticles*1024);
-	ofDisableAlphaBlending();
+//	ofDisableAlphaBlending();
  }
 
 //--------------------------------------------------------------

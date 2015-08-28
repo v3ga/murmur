@@ -19,8 +19,7 @@ ParticleGravitatory::ParticleGravitatory(AnimationGravitatory* pParent, string d
 	m_size = ofRandom(pParent->m_sizeMin,pParent->m_sizeMax);
 	m_ageMax = ofRandom(20,30);
 	m_color = color;
-
-
+	m_age = 0;
 }
 
 //--------------------------------------------------------------
@@ -51,6 +50,7 @@ AnimationGravitatory::AnimationGravitatory(string name) : Animation(name)
 	m_sizeFactor		= 1.0f;
 	m_alphaFactor		= 1.0f;
 	m_angleSpeedFactor	= 1.0f;
+	m_volumeTh			= 0.2f;
 }
 
 //--------------------------------------------------------------
@@ -60,7 +60,7 @@ AnimationGravitatory::~AnimationGravitatory()
 
 	for ( ; it != m_particlesDevice.end(); ++it )
 	{
-		 vector<ParticleGravitatory*>& particles = it->second;
+		vector<ParticleGravitatory*>& particles = it->second;
 		for (int i=0;i<particles.size();i++)
 			delete particles[i];
 		particles.clear();
@@ -76,10 +76,12 @@ void AnimationGravitatory::createUICustom()
 		mp_UIcanvas->addToggle("colorFromDevice", 	&m_isColorFromDevice);
 	}
 
+		m_properties.add( new classProperty_float("volumeTh",			0.05f, 1.0f, 	&m_volumeTh) );
 		m_properties.add( new classProperty_float("sizeFactor",			0.0f, 1.0f, 	&m_sizeFactor) );
 		m_properties.add( new classProperty_float("alphaFactor", 		0.0f, 1.0f, 	&m_alphaFactor) );
 		m_properties.add( new classProperty_float("angleSpeedFactor", 	0.0f, 1.0f, 	&m_angleSpeedFactor) );
 
+		addUISlider( m_properties.getFloat("volumeTh") );
 		addUISlider( m_properties.getFloat("sizeFactor") );
 		addUISlider( m_properties.getFloat("alphaFactor") );
 		addUISlider( m_properties.getFloat("angleSpeedFactor") );
@@ -91,7 +93,6 @@ void AnimationGravitatory::createUICustom()
 
 		addUISlider( m_properties.getFloat("obj. size min") );
 		addUISlider( m_properties.getFloat("obj. size max") );
-//		addUISlider( m_properties.getFloat("obj. number") );
 		addUISlider( m_properties.getFloat("obj. age max") );
 }
 
@@ -140,7 +141,7 @@ void AnimationGravitatory::VM_draw(float w, float h)
 			particles[i]->draw();
 	}
 
-	ofDisableAlphaBlending();
+	//ofDisableAlphaBlending();
 }
 
 
@@ -158,7 +159,7 @@ void AnimationGravitatory::onNewPacket(DevicePacket* pDevicePacket, string devic
 
 	vector<ParticleGravitatory*>& particles = m_particlesDevice[deviceId];
 	
-	if (pDevicePacket->m_volume>0.2f)
+	if (pDevicePacket->m_volume>=m_volumeTh)
 	{
 		particles.push_back( new ParticleGravitatory(this, deviceId,x,y,  m_isColorFromDevice ?  pDevicePacket->m_color : ofColor(255) ) );
 		//ofLog() << deviceId << " : " << ofToString( particles.size() ) << " particles";
