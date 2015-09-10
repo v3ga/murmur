@@ -134,6 +134,8 @@
 		F987127616C058DF0069F12A /* libJavascript.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = F987119C16C052C40069F12A /* libJavascript.dylib */; };
 		F987127716C058DF0069F12A /* libnspr4.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = F987119D16C052C40069F12A /* libnspr4.dylib */; };
 		F9876AD1173AF9B900DBE7C6 /* ofxLPD8806.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9876ABD173AF9B900DBE7C6 /* ofxLPD8806.cpp */; };
+		F9882D8F1BA1B7CB00B81023 /* toolMidi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9882D8D1BA1B7CB00B81023 /* toolMidi.cpp */; };
+		F9882D921BA1C10800B81023 /* animationVideo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9882D901BA1C10800B81023 /* animationVideo.cpp */; };
 		F99930B31719888600272085 /* ofxOscBundle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F99930991719888600272085 /* ofxOscBundle.cpp */; };
 		F99930B41719888600272085 /* ofxOscMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F999309B1719888600272085 /* ofxOscMessage.cpp */; };
 		F99930B51719888600272085 /* ofxOscReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F999309D1719888600272085 /* ofxOscReceiver.cpp */; };
@@ -744,6 +746,10 @@
 		F9876ABD173AF9B900DBE7C6 /* ofxLPD8806.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxLPD8806.cpp; sourceTree = "<group>"; };
 		F9876ABE173AF9B900DBE7C6 /* ofxLPD8806.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxLPD8806.h; sourceTree = "<group>"; };
 		F9876AE4173AFA2100DBE7C6 /* configuration.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = configuration.xml; sourceTree = "<group>"; };
+		F9882D8D1BA1B7CB00B81023 /* toolMidi.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = toolMidi.cpp; sourceTree = "<group>"; };
+		F9882D8E1BA1B7CB00B81023 /* toolMidi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = toolMidi.h; sourceTree = "<group>"; };
+		F9882D901BA1C10800B81023 /* animationVideo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animationVideo.cpp; sourceTree = "<group>"; };
+		F9882D911BA1C10800B81023 /* animationVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = animationVideo.h; sourceTree = "<group>"; };
 		F99930971719888600272085 /* ofxOsc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOsc.h; sourceTree = "<group>"; };
 		F99930981719888600272085 /* ofxOscArg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOscArg.h; sourceTree = "<group>"; };
 		F99930991719888600272085 /* ofxOscBundle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxOscBundle.cpp; sourceTree = "<group>"; };
@@ -2133,6 +2139,8 @@
 				F9DE83331B3C590400F5A086 /* animationComposition.h */,
 				F9DC1BC31B55377B006BEA63 /* animationWaves.cpp */,
 				F9DC1BC41B55377B006BEA63 /* animationWaves.h */,
+				F9882D901BA1C10800B81023 /* animationVideo.cpp */,
+				F9882D911BA1C10800B81023 /* animationVideo.h */,
 			);
 			name = Animations;
 			sourceTree = "<group>";
@@ -2504,6 +2512,8 @@
 				F94138C21A72F45A0047A441 /* toolALB.h */,
 				F9B803901B32120800F12500 /* toolTimeline.cpp */,
 				F9B803911B32120800F12500 /* toolTimeline.h */,
+				F9882D8D1BA1B7CB00B81023 /* toolMidi.cpp */,
+				F9882D8E1BA1B7CB00B81023 /* toolMidi.h */,
 			);
 			name = Tools;
 			sourceTree = "<group>";
@@ -3604,6 +3614,7 @@
 				F9BC6C63174A621600633C5C /* b2CircleShape.cpp in Sources */,
 				F9BC6C64174A621600633C5C /* b2PolygonShape.cpp in Sources */,
 				F9AB0BF91940FBAE0020D78A /* toolAnimations.cpp in Sources */,
+				F9882D921BA1C10800B81023 /* animationVideo.cpp in Sources */,
 				F92BC4E518A1544B00CA158A /* ofxMSAInteractiveObject.cpp in Sources */,
 				F9BC6C65174A621600633C5C /* b2BlockAllocator.cpp in Sources */,
 				F9DE82EC1B39FA7300F5A086 /* ofxTLKeyframes.cpp in Sources */,
@@ -3618,6 +3629,7 @@
 				F9BC6C69174A621600633C5C /* b2Body.cpp in Sources */,
 				F9DC1BC51B55377B006BEA63 /* animationWaves.cpp in Sources */,
 				F9BC6C6A174A621600633C5C /* b2ContactManager.cpp in Sources */,
+				F9882D8F1BA1B7CB00B81023 /* toolMidi.cpp in Sources */,
 				F9BC6C6B174A621600633C5C /* b2Fixture.cpp in Sources */,
 				F9BC6C6C174A621600633C5C /* b2Island.cpp in Sources */,
 				F9BC6C6D174A621600633C5C /* b2World.cpp in Sources */,

@@ -95,6 +95,7 @@ Animation::Animation(string name_) : midiInterface()
 {
 	M_zeroAll();
 	m_name			= name_;
+	setMidiName(m_name);
 }
 
 //--------------------------------------------------------------
@@ -116,6 +117,7 @@ Animation::Animation(string name_,string pathAbsScript_) : midiInterface()
     sm_mapJSObj_Anim[mp_obj] = this;
 
     // printf("#### setting private %s for obj %p, this=%p\n", ok == JS_TRUE ? "OK" : "NO", mp_obj, this);
+	setMidiName(m_name);
 }
 
 //--------------------------------------------------------------
@@ -814,29 +816,34 @@ void Animation::handleMidiMessages()
 	{
 		ofxMidiMessage& midiMessage = m_midiMessagesToHandle[i];
 
+		int port = midiMessage.portNum;
 		int control = midiMessage.control;
-
-		if ( m_mapMidiToProp.find( control ) != m_mapMidiToProp.end() )
+		
+		midiPort* pMidiPort = getMidiPort(port);
+		if (pMidiPort)
 		{
-			classProperty* pProp = m_mapMidiToProp[control];
+		 if ( pMidiPort->m_mapMidiControlToProp.find( control ) != pMidiPort->m_mapMidiControlToProp.end() )
+		 {
+			 classProperty* pProp = pMidiPort->m_mapMidiControlToProp[control];
 
-			pProp->setValueFromMidiMessage( midiMessage );
+			 pProp->setValueFromMidiMessage( midiMessage );
 
-			// ————————————————————————————————————————————————————————————————————————————————
-			// Special actions if it is js
-			if (mp_obj && mp_UIcanvas)
-			{
-				// Update layout
-				if (pProp->m_type == classProperty::FLOAT)
-				{
-					ofxUISlider* pSliderProp = (ofxUISlider*) mp_UIcanvas->getWidget( pProp->m_name );
-					if (pSliderProp){
-						pSliderProp->setValue( *((classProperty_float*)pProp)->mp_variable) ;
-						mp_UIcanvas->triggerEvent(pSliderProp);
-					}
-				}
-			}
-			// ————————————————————————————————————————————————————————————————————————————————
+			 // ————————————————————————————————————————————————————————————————————————————————
+			 // Special actions if it is js
+			 if (mp_obj && mp_UIcanvas)
+			 {
+				 // Update layout
+				 if (pProp->m_type == classProperty::FLOAT)
+				 {
+					 ofxUISlider* pSliderProp = (ofxUISlider*) mp_UIcanvas->getWidget( pProp->m_name );
+					 if (pSliderProp){
+						 pSliderProp->setValue( *((classProperty_float*)pProp)->mp_variable) ;
+						 mp_UIcanvas->triggerEvent(pSliderProp);
+					 }
+				 }
+			 }
+			 // ————————————————————————————————————————————————————————————————————————————————
+		 }
 		}
 	}
 	m_midiMessagesToHandle.clear();

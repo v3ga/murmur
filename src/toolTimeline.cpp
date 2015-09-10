@@ -30,6 +30,13 @@ toolTimeline::toolTimeline(toolManager* pParent) : tool("Timeline", pParent)
 
 	m_timelineCurrentFolder = getConfigPath("config01");
 	m_bAutoplay 			= false;
+
+		classProperty_bool* pPropPlayPause = new classProperty_bool("bPlayPause",0,classProperty_bool::MODE_BUTTON);
+		m_properties.add( pPropPlayPause );
+		classProperty_bool* pPropStop = new classProperty_bool("bStop",0,classProperty_bool::MODE_BUTTON);
+		m_properties.add( pPropStop );
+	
+	setMidiName("tool Timeline");
 }
 
 //--------------------------------------------------------------
@@ -92,14 +99,9 @@ void toolTimeline::createControlsCustom()
 
 
 		mp_canvas->autoSizeToFitWidgets();
-		
-		classProperty_bool* pPropPlayPause = new classProperty_bool("bPlayPause",0,classProperty_bool::MODE_BUTTON);
-		m_properties.add( pPropPlayPause );
-		ofAddListener(pPropPlayPause->onValueChanged, this, &toolTimeline::onPlayPause);
 
-		classProperty_bool* pPropStop = new classProperty_bool("bStop",0,classProperty_bool::MODE_BUTTON);
-		m_properties.add( pPropStop );
-		ofAddListener(pPropStop->onValueChanged, this, &toolTimeline::onStop);
+		ofAddListener(m_properties.getBool("bPlayPause")->onValueChanged, this, &toolTimeline::onPlayPause);
+		ofAddListener(m_properties.getBool("bStop")->onValueChanged, this, &toolTimeline::onStop);
 
 	}
 

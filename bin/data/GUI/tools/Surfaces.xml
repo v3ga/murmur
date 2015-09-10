@@ -11,12 +11,12 @@
 <Widget>
     <Kind>12</Kind>
     <Name>wFboSurface</Name>
-    <Value>2400</Value>
+    <Value>2560</Value>
 </Widget>
 <Widget>
     <Kind>12</Kind>
     <Name>hFboSurface</Name>
-    <Value>784</Value>
+    <Value>1024</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>

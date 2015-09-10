@@ -106,6 +106,7 @@ void testApp::setup()
 	toolSurfaces*		pToolSurfaces		= new toolSurfaces(&toolManager, mp_surfaceMain);
 //	toolALB*			pToolALB			= new toolALB(&toolManager);
 	toolTimeline*		pToolTimeline		= new toolTimeline(&toolManager);
+	toolMidi*			pToolMidi			= new toolMidi(&toolManager);
 
 	toolManager.addTool( pToolConfiguration );
 	toolManager.addTool( new toolNetwork(&toolManager) );
@@ -116,12 +117,30 @@ void testApp::setup()
 	toolManager.addTool( new toolSound(&toolManager) );
 //	toolManager.addTool( pToolALB );
 	toolManager.addTool( pToolTimeline );
+	toolManager.addTool( pToolMidi );
 
 	toolManager.setLogo("murmur_logo.png");
 	toolManager.setFontName("Fonts/NewMedia Fett.ttf");
+
+	// Midi settings
+	if (pToolAnimations)		pToolAnimations->initMidiAnimations(mp_surfaceMain);
+	if (pToolTimeline)			pToolTimeline->loadMidiSettings();
+	if (pToolDevices)			pToolDevices->loadMidiSettings();
+	if (pToolMidi){
+		pToolMidi->registerMidiInterface( pToolTimeline );
+		pToolMidi->registerMidiInterface( pToolDevices );
+		if (mp_surfaceMain)
+		{
+			for (int i=0; i< mp_surfaceMain->getAnimationManager().m_listAnimations.size(); i++)
+			{
+				pToolMidi->registerMidiInterface( mp_surfaceMain->getAnimationManager().m_listAnimations[i] );
+			}
+		}
+		pToolMidi->setMidiIns(&m_midiIns);
+	}
+
 	toolManager.createControls(ofVec2f(100,100),ofVec2f(200,200));
 	toolManager.loadData();
-	
  
     // Run network
 	// if (pToolNetwork) 			pToolNetwork->setup();
@@ -138,11 +157,8 @@ void testApp::setup()
 	if (pToolAnimations)		pToolAnimations->setup();
 //	if (pToolALB)				pToolALB->setup();
 	if (pToolTimeline)			pToolTimeline->setup();
+	if (pToolMidi)				pToolMidi->setup();
 	
-	// Midi settings
-	if (pToolAnimations)		pToolAnimations->initMidiAnimations(mp_surfaceMain);
-	if (pToolTimeline)			pToolTimeline->loadMidiSettings();
-	if (pToolDevices)			pToolDevices->loadMidiSettings();
 	
 	
 	// GO
@@ -186,7 +202,12 @@ void testApp::exit()
         mp_deviceManager->saveDevicesXML("Config/devices/");
 		mp_deviceManager->turnoffDevices();
 	}
-
+	
+	vector<ofxMidiIn*>::iterator itMidi = m_midiIns.begin();
+	for ( ; itMidi != m_midiIns.end(); ++itMidi){
+		delete *itMidi;
+	}
+	m_midiIns.clear();
 	
     delete mp_sceneVisualisation;
     delete mp_deviceManager;
@@ -426,15 +447,31 @@ void testApp::initJS()
 void testApp::initMidi()
 {
 	OFAPPLOG->begin("testApp::initMidi()");
-	m_midiIn.listPorts();
+	//m_midiIn.listPorts();
 
-	int midiInPort = m_settings.getValue("murmur:midi:port", 0);
+	m_settings.pushTag("midi");
+	
+	int nbMidiPorts = m_settings.getNumTags("port");
+	OFAPPLOG->println("- nb ports defined =  "+ofToString(nbMidiPorts));
 
-	OFAPPLOG->println("- opening port "+ofToString(midiInPort));
+	for (int i=0;i<nbMidiPorts;i++)
+	{
+		int midiInPort = m_settings.getValue("port", 0, i);
+		OFAPPLOG->println("- opening port "+ofToString(midiInPort));
+		
+		string name = ofxMidiIn::getPortName(midiInPort);
+		if (name != "")
+		{
+			ofxMidiIn* pMidiIn = new ofxMidiIn();
+			pMidiIn->openPort( midiInPort );
+			pMidiIn->addListener( this );
+			pMidiIn->setVerbose( true );
+		
+			m_midiIns.push_back( pMidiIn );
+		}
+	}
 
-	m_midiIn.openPort(midiInPort);
-	m_midiIn.addListener(this);
-	m_midiIn.setVerbose(true);
+	m_settings.popTag();
 	
 	OFAPPLOG->end();
 }
@@ -442,7 +479,6 @@ void testApp::initMidi()
 //--------------------------------------------------------------
 void testApp::newMidiMessage(ofxMidiMessage& midiMessage)
 {
-//	ofLog() << midiMessage.control << " / " << midiMessage.value;
 	if (mp_surfaceMain)
 		mp_surfaceMain->getAnimationManager().newMidiMessage(midiMessage);
 

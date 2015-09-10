@@ -22,6 +22,7 @@ AnimationBox2D::AnimationBox2D(string name) : Animation(name)
 	m_isRightWall	= true;
 	m_isTopWall		= true;
 	m_isBottomWall	= true;
+
 }
 
 //--------------------------------------------------------------
@@ -109,8 +110,21 @@ AnimationBox2D_circles::AnimationBox2D_circles(string name ) : AnimationBox2D(na
     m_sizeMax = 30;
 	m_sizeScale = 1.0f;
     m_nbObjects = 400;
+
 	
 	loadColors();
+
+	m_properties.add( new classProperty_float("gravity", 		-10,	10, 	&m_gravity) );
+	m_properties.add( new classProperty_float("obj. number", 	100, 	500, 	&m_nbObjects) );
+
+	m_properties.add( new classProperty_float("obj. size min", 	10,20,&m_sizeMin) );
+	m_properties.add( new classProperty_float("obj. size max", 	10,50,&m_sizeMax) );
+	m_properties.add( new classProperty_float("obj. scale", 	0.0f,1.0f,&m_sizeScale) );
+
+	m_properties.add( new classProperty_bool("left wall", 	&m_isLeftWall) );
+	m_properties.add( new classProperty_bool("right wall", 	&m_isRightWall) );
+	m_properties.add( new classProperty_bool("top wall", 	&m_isTopWall) );
+	m_properties.add( new classProperty_bool("bottom wall", &m_isBottomWall) );
 	
 	OFAPPLOG->end();
 }
@@ -240,8 +254,6 @@ void AnimationBox2D_circles::createUICustom()
 {
     if (mp_UIcanvas)
     {
-		m_properties.add( new classProperty_float("gravity", 		-10,	10, 	&m_gravity) );
-		m_properties.add( new classProperty_float("obj. number", 	100, 	500, 	&m_nbObjects) );
 
         mp_UIcanvas->addToggle("color", 							&m_isColor);
         mp_UIcanvas->addToggle("colorFromDevice", 					&m_isColorFromDevice);
@@ -249,19 +261,12 @@ void AnimationBox2D_circles::createUICustom()
 		addUISlider( m_properties.getFloat("gravity") );
         mp_UIcanvas->addSlider("vol. trigger", 		0.0f, 1.0f, 	&m_volTrigger);
 
-		m_properties.add( new classProperty_float("obj. size min", 	10,20,&m_sizeMin) );
-		m_properties.add( new classProperty_float("obj. size max", 	10,50,&m_sizeMax) );
-		m_properties.add( new classProperty_float("obj. scale", 	0.0f,1.0f,&m_sizeScale) );
 		addUISlider( m_properties.getFloat("obj. size min") );
 		addUISlider( m_properties.getFloat("obj. size max") );
 		addUISlider( m_properties.getFloat("obj. scale") );
 		addUISlider( m_properties.getFloat("obj. number") );
 
 //        mp_UIcanvas->addToggle("left wall", 	&m_isLeftWall);
-		m_properties.add( new classProperty_bool("left wall", 	&m_isLeftWall) );
-		m_properties.add( new classProperty_bool("right wall", 	&m_isRightWall) );
-		m_properties.add( new classProperty_bool("top wall", 	&m_isTopWall) );
-		m_properties.add( new classProperty_bool("bottom wall", &m_isBottomWall) );
 
 		addUItoggle( m_properties.getBool("left wall"));
 		addUItoggle( m_properties.getBool("right wall"));

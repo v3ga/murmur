@@ -16,4 +16,5 @@
 #include "toolAnimations.h"
 #include "toolScene.h"
 #include "toolSound.h"
+#include "toolMidi.h"
 

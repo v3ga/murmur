@@ -66,6 +66,7 @@ AnimationShaderWave::AnimationShaderWave(string name) : Animation(name)
 
 	
 	loadColors();
+	m_properties.add( new classProperty_float("intensity", 0.0f, 1.0f, &m_waveIntensity) );
 }
 
 //--------------------------------------------------------------
@@ -266,8 +267,6 @@ void AnimationShaderWave::createUICustom()
 {
     if (mp_UIcanvas)
     {
-		m_properties.add( new classProperty_float("intensity", 0.0f, 1.0f, &m_waveIntensity) );
-	
 		mp_UIcanvas->addIntSlider("sizeTexture", 400,1500, &m_waveVolumeTexture);
 		addUISlider( m_properties.getFloat("intensity") );
 //        mp_UIcanvas->addSlider("intensity", 0.0f, 1.0f, &m_waveIntensity);

@@ -131,7 +131,7 @@ class testApp : public ofBaseApp, public ofxMidiListener
         void                 audioIn(float * input, int bufferSize, int nChannels);
  
  		// Midi
-		ofxMidiIn 		    m_midiIn;
+		vector<ofxMidiIn*> 	m_midiIns;
 		void				initMidi				();
 		void 				newMidiMessage			(ofxMidiMessage& eventArgs);
  

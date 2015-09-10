@@ -20,6 +20,7 @@ ParticleGravitatory::ParticleGravitatory(AnimationGravitatory* pParent, string d
 	m_ageMax = ofRandom(20,30);
 	m_color = color;
 	m_age = 0;
+
 }
 
 //--------------------------------------------------------------
@@ -51,6 +52,16 @@ AnimationGravitatory::AnimationGravitatory(string name) : Animation(name)
 	m_alphaFactor		= 1.0f;
 	m_angleSpeedFactor	= 1.0f;
 	m_volumeTh			= 0.2f;
+
+		m_properties.add( new classProperty_float("volumeTh",			0.05f, 1.0f, 	&m_volumeTh) );
+		m_properties.add( new classProperty_float("sizeFactor",			0.0f, 1.0f, 	&m_sizeFactor) );
+		m_properties.add( new classProperty_float("alphaFactor", 		0.0f, 1.0f, 	&m_alphaFactor) );
+		m_properties.add( new classProperty_float("angleSpeedFactor", 	0.0f, 1.0f, 	&m_angleSpeedFactor) );
+
+		m_properties.add( new classProperty_float("obj. age max", 	1, 		20, 	&m_ageMax) );
+		m_properties.add( new classProperty_float("obj. number", 	50, 	150, 	&m_nbObjects) );
+		m_properties.add( new classProperty_float("obj. size min", 	5,40,			&m_sizeMin) );
+		m_properties.add( new classProperty_float("obj. size max", 	5,100,			&m_sizeMax) );
 }
 
 //--------------------------------------------------------------
@@ -76,20 +87,12 @@ void AnimationGravitatory::createUICustom()
 		mp_UIcanvas->addToggle("colorFromDevice", 	&m_isColorFromDevice);
 	}
 
-		m_properties.add( new classProperty_float("volumeTh",			0.05f, 1.0f, 	&m_volumeTh) );
-		m_properties.add( new classProperty_float("sizeFactor",			0.0f, 1.0f, 	&m_sizeFactor) );
-		m_properties.add( new classProperty_float("alphaFactor", 		0.0f, 1.0f, 	&m_alphaFactor) );
-		m_properties.add( new classProperty_float("angleSpeedFactor", 	0.0f, 1.0f, 	&m_angleSpeedFactor) );
 
 		addUISlider( m_properties.getFloat("volumeTh") );
 		addUISlider( m_properties.getFloat("sizeFactor") );
 		addUISlider( m_properties.getFloat("alphaFactor") );
 		addUISlider( m_properties.getFloat("angleSpeedFactor") );
 
-		m_properties.add( new classProperty_float("obj. age max", 	1, 		20, 	&m_ageMax) );
-		m_properties.add( new classProperty_float("obj. number", 	50, 	150, 	&m_nbObjects) );
-		m_properties.add( new classProperty_float("obj. size min", 	5,40,			&m_sizeMin) );
-		m_properties.add( new classProperty_float("obj. size max", 	5,100,			&m_sizeMax) );
 
 		addUISlider( m_properties.getFloat("obj. size min") );
 		addUISlider( m_properties.getFloat("obj. size max") );

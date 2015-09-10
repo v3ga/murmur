@@ -249,7 +249,18 @@ AnimationWaves::AnimationWaves(string name) : Animation(name)
 	m_nbWavePoints = 10;
 	m_enableTimeResetAccum = false;
 	m_timeResetAccum = 0.5f;
-}
+
+	m_properties.add( new classProperty_float("nbWavePoints", 		3.0f, 20.0f, 	&m_nbWavePoints) );
+	m_properties.add( new classProperty_float("speed", 				20.0f, 100.0f, 	&m_speed) );
+	m_properties.add( new classProperty_float("ageMax", 			1.0f, 20.0f, 	&m_ageMax) );
+	m_properties.add( new classProperty_float("waveDirAmp", 		0.0f, 3.0f, 	&m_waveDirAmp) );
+	m_properties.add( new classProperty_float("valueTriggerIn", 	0.0f, 1.0f, 	&m_valueTriggerIn) );
+	m_properties.add( new classProperty_float("valueTriggerOut", 	0.0f, 1.0f, 	&m_valueTriggerOut) );
+	m_properties.add( new classProperty_float("lineWidthWave", 		0.0f, 20.0f, 	&m_lineWidthWave) );
+	m_properties.add( new classProperty_bool("enableResetAccum", 					&m_enableTimeResetAccum) );
+	m_properties.add( new classProperty_float("timeResetAccum", 	0.1f, 1.0f,		&m_timeResetAccum) );
+	
+	}
 
 //--------------------------------------------------------------
 AnimationWaves::~AnimationWaves()
@@ -270,17 +281,7 @@ void AnimationWaves::createUICustom()
 		mp_UIcanvas->addToggle("colorFromDevice", 	&m_isColorFromDevice);
 	}
 
-	m_properties.add( new classProperty_float("nbWavePoints", 		3.0f, 20.0f, 	&m_nbWavePoints) );
-	m_properties.add( new classProperty_float("speed", 				20.0f, 100.0f, 	&m_speed) );
-	m_properties.add( new classProperty_float("ageMax", 			1.0f, 20.0f, 	&m_ageMax) );
-	m_properties.add( new classProperty_float("waveDirAmp", 		0.0f, 3.0f, 	&m_waveDirAmp) );
-	m_properties.add( new classProperty_float("valueTriggerIn", 	0.0f, 1.0f, 	&m_valueTriggerIn) );
-	m_properties.add( new classProperty_float("valueTriggerOut", 	0.0f, 1.0f, 	&m_valueTriggerOut) );
-	m_properties.add( new classProperty_float("lineWidthWave", 		0.0f, 20.0f, 	&m_lineWidthWave) );
-	m_properties.add( new classProperty_bool("enableResetAccum", 					&m_enableTimeResetAccum) );
-	m_properties.add( new classProperty_float("timeResetAccum", 	0.1f, 1.0f,		&m_timeResetAccum) );
-	
-	
+
 	addUISlider( m_properties.getFloat("nbWavePoints") );
 	addUISlider( m_properties.getFloat("speed") );
 	addUISlider( m_properties.getFloat("ageMax") );

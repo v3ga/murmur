@@ -1,0 +1,15 @@
+<Widget>
+    <Kind>22</Kind>
+    <Name>ports</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>0 - UC-16 USB MIDI Controller</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>1 - iCON iPAD V1.02</Name>
+    <Value>0</Value>
+</Widget>

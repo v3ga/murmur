@@ -18,6 +18,7 @@
 #include "animationGravitatory.h"
 #include "animationComposition.h"
 #include "animationWaves.h"
+#include "animationVideo.h"
 
 Animation* AnimationsFactory::create(string name)
 {
@@ -44,6 +45,8 @@ Animation* AnimationsFactory::create(string name)
         pAnimation = new AnimationComposition(name);
     else if (name == "waves")
         pAnimation = new AnimationWaves(name);
+    else if (name == "video")
+        pAnimation = new AnimationVideo(name);
  
     return pAnimation;
 }

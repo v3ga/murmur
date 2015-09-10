@@ -25,8 +25,11 @@ void midiInterface::loadMidiSettings(classProperties& properties)
 			int nb = m_midiSettings.getNumTags("midi");
 			for (int i=0;i<nb;i++)
 			{
-				int 	control 	= m_midiSettings.getAttribute("midi", "control", 0, i);
-				if (control>0)
+				int 	port		= m_midiSettings.getAttribute("midi", "port", 		0, i);
+				int 	control 	= m_midiSettings.getAttribute("midi", "control", 	0, i);
+//							OFAPPLOG->println(" - port="+ofToString(port)+",control="+ofToString(control));
+
+				if (port >=0 && control>0)
 				{
 					string 	propName 	= m_midiSettings.getAttribute("midi", "property", "???", i);
 					readMidiSettingsExtraBegin(i,propName);
@@ -34,10 +37,23 @@ void midiInterface::loadMidiSettings(classProperties& properties)
 					classProperty* pProp = properties.get(propName);
 					if(pProp)
 					{
-						m_mapMidiToProp[control] = 	pProp;
-						OFAPPLOG->println(" - defining control "+ofToString(control) + " for property '"+pProp->m_name+"'");
-
+						midiPort* pMidiPort = getMidiPort(port);
+						if (pMidiPort == 0){
+							pMidiPort = new midiPort(port);
+							m_midiPorts.push_back( pMidiPort );
+							OFAPPLOG->println(" - creating port["+ofToString(port)+"]");
+						}
+					
+						if (pMidiPort)
+						{
+							pMidiPort->addPropertyForControl(control, pProp);
+							OFAPPLOG->println(" - defining on port ["+ofToString(port)+"] control "+ofToString(control) + " for property '"+pProp->m_name+"' (size of port map="+(ofToString(pMidiPort->m_mapMidiControlToProp.size()))+")");
+						}
 					}
+					else
+						OFAPPLOG->println(" - property '"+propName+"' not found in interface");
+		 
+
 					readMidiSettingsExtraEnd(i,propName);
 				}
 			}
@@ -74,12 +90,19 @@ void midiInterface::handleMidiMessages()
 	{
 		ofxMidiMessage& midiMessage = m_midiMessagesToHandle[i];
 
+		int port = midiMessage.portNum;
 		int control = midiMessage.control;
+		ofLog() << port << "/" << control;
 
-		if ( m_mapMidiToProp.find( control ) != m_mapMidiToProp.end() )
+		classProperty* pProp = getPropertyForPortAndControl(port, control);
+
+//		if ( m_mapMidiToProp.find( control ) != m_mapMidiToProp.end() )
 		{
-			classProperty* pProp = m_mapMidiToProp[control];
-			pProp->setValueFromMidiMessage( midiMessage );
+//			classProperty* pProp = m_mapMidiToProp[control];
+			if (pProp){
+				pProp->setValueFromMidiMessage( midiMessage );
+				ofLog() << pProp->m_name;
+					}
 		}
 	}
 	m_midiMessagesToHandle.clear();
@@ -94,5 +117,33 @@ void midiInterface::newMidiMessage(ofxMidiMessage& midiMessage)
 	m_midiMessagesToHandle.push_back( ofxMidiMessage(midiMessage) ); // make a copy
 	m_midiMutex.unlock();
 }
+
+//--------------------------------------------------------------
+classProperty* midiInterface::getPropertyForPortAndControl(int port, int control)
+{
+	midiPort* pMidiPort = getMidiPort(port);
+	if (pMidiPort)
+		return pMidiPort->m_mapMidiControlToProp[control];
+
+/*	if ( m_mapPortToProp.find( port ) != m_mapPortToProp.end() )
+	{
+		ofLog() << ofToString( (*m_mapPortToProp[port]).size() ) << " / " << "pControl=" << ofToString( (int) (*m_mapPortToProp[port])[control] );
+		return (*m_mapPortToProp[port])[control];
+	}
+*/
+	return 0;
+}
+
+//--------------------------------------------------------------
+midiPort* midiInterface::getMidiPort(int which)
+{
+	vector<midiPort*>::iterator it = m_midiPorts.begin();
+	for ( ; it != m_midiPorts.end(); ++it){
+		if ((*it)->m_port == which)
+			return *it;
+	}
+	return 0;
+}
+
 
 

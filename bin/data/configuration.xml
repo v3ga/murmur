@@ -23,6 +23,42 @@
                 <length>4.0</length>
             </device>
 
+            <device>
+                <id>deviceEchoSimulator03</id>
+                <nbLEDs>160</nbLEDs>
+                <length>4.0</length>
+            </device>
+
+            <device>
+                <id>deviceEchoSimulator04</id>
+                <nbLEDs>160</nbLEDs>
+                <length>4.0</length>
+            </device>
+
+            <device>
+                <id>deviceEchoSimulator05</id>
+                <nbLEDs>160</nbLEDs>
+                <length>4.0</length>
+            </device>
+
+            <device>
+                <id>deviceEchoSimulator06</id>
+                <nbLEDs>160</nbLEDs>
+                <length>4.0</length>
+            </device>
+
+            <device>
+                <id>deviceEchoSimulator07</id>
+                <nbLEDs>160</nbLEDs>
+                <length>4.0</length>
+            </device>
+
+            <device>
+                <id>deviceEchoSimulator08</id>
+                <nbLEDs>160</nbLEDs>
+                <length>4.0</length>
+            </device>
+
 <!--
             <device>
                 <id>deviceEchoSimulator03</id>
@@ -69,6 +105,7 @@
     <!-- Midi -->
 	<midi>
 		<port>0</port>
+		<port>1</port>
 	</midi>
 
 </murmur>

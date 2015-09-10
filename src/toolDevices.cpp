@@ -50,6 +50,8 @@ toolDevices::toolDevices(toolManager* parent, DeviceManager* manager) : tool("De
 	mp_graphSoundValues = 0;
 	
 	mp_canvasColorMode = 0;
+	
+    setMidiName("tool Devices");
 }
 
 //--------------------------------------------------------------

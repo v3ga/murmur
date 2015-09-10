@@ -41,6 +41,12 @@ AnimationParticlesMega2::AnimationParticlesMega2(string name) : Animation(name)
 	m_particlesColor = 0;
 
 	m_colorRadiusFactor = 1.0f;
+
+		m_properties.add( new classProperty_float("amp. attraction",1.0f, 100.0f, &m_ampAttraction) );
+		m_properties.add( new classProperty_float("amp. repulsion", 1.0f, 100.0f, &m_ampRepulsion) );
+		m_properties.add( new classProperty_float("radius repulsion", 40.0f, 300.0f, &m_repulsionRadius) );
+		m_properties.add( new classProperty_float("particles size", 1.0f, 5.0f, &m_particlesSize) );
+		m_properties.add( new classProperty_float("radius color factor", 1.0f, 10.0f, &m_colorRadiusFactor) );
 }
 
 
@@ -133,11 +139,6 @@ void AnimationParticlesMega2::createUICustom()
     {
 		mp_UIcanvas->addToggle("colorFromDevice", 	&m_isColorFromDevice);
 
-		m_properties.add( new classProperty_float("amp. attraction",1.0f, 100.0f, &m_ampAttraction) );
-		m_properties.add( new classProperty_float("amp. repulsion", 1.0f, 100.0f, &m_ampRepulsion) );
-		m_properties.add( new classProperty_float("radius repulsion", 40.0f, 300.0f, &m_repulsionRadius) );
-		m_properties.add( new classProperty_float("particles size", 1.0f, 5.0f, &m_particlesSize) );
-		m_properties.add( new classProperty_float("radius color factor", 1.0f, 10.0f, &m_colorRadiusFactor) );
 	
 
 		addUISlider( m_properties.getFloat("amp. attraction") );
