@@ -33,7 +33,7 @@ class toolTimeline : public tool, public midiInterface
 		void					createTimeline			();
 
 		virtual string			getMidiSettingsPath		(){return "Gui/tools/midi/Timeline.xml";}
-		void					loadMidiSettings		(){midiInterface::loadMidiSettings(m_properties);}
+		void					loadMidiSettings		(){midiInterface::setClassProperties(&m_properties) ; midiInterface::loadMidiSettings();}
 		void					onPlayPause				(bool& value);
 		void					onStop					(bool& value);
 

@@ -10,8 +10,31 @@
 #include "ofAppLog.h"
 
 //--------------------------------------------------------------
-void midiInterface::loadMidiSettings(classProperties& properties)
+midiInterface::midiInterface()
 {
+	mp_classProperties = 0;
+}
+
+//--------------------------------------------------------------
+void midiInterface::deleteMidiPorts()
+{
+	vector<midiPort*>::iterator it = m_midiPorts.begin();
+	for ( ; it != m_midiPorts.end(); ++it)
+	{
+		delete *it;
+	}
+	m_midiPorts.clear();
+}
+
+
+//--------------------------------------------------------------
+void midiInterface::loadMidiSettings()
+{
+	if (mp_classProperties==0) return;
+
+	deleteMidiPorts();
+	
+
 	OFAPPLOG->begin("midiInterface::loadMidiSettings()");
 	string file = getMidiSettingsPath();
 	OFAPPLOG->println(" - file="+file);
@@ -34,7 +57,7 @@ void midiInterface::loadMidiSettings(classProperties& properties)
 					string 	propName 	= m_midiSettings.getAttribute("midi", "property", "???", i);
 					readMidiSettingsExtraBegin(i,propName);
 					
-					classProperty* pProp = properties.get(propName);
+					classProperty* pProp = mp_classProperties->get(propName);
 					if(pProp)
 					{
 						midiPort* pMidiPort = getMidiPort(port);
@@ -72,6 +95,39 @@ void midiInterface::loadMidiSettings(classProperties& properties)
 }
 
 //--------------------------------------------------------------
+void midiInterface::saveMidiSettings()
+{
+	ofxXmlSettings midiSettings;
+	
+	vector<midiPort*>::iterator it = m_midiPorts.begin();
+	int index = 0;
+	for ( ; it != m_midiPorts.end(); ++it)
+	{
+		int midiPort = (*it)->m_port;
+		
+		map<int,classProperty*>::iterator it2 = (*it)->m_mapMidiControlToProp.begin();
+		for ( ; it2!=(*it)->m_mapMidiControlToProp.end(); ++it2)
+		{
+			int midiControl = it2->first;
+			classProperty* pProperty = it2->second;
+		
+			if (pProperty)
+			{
+				midiSettings.addTag("midi");
+				midiSettings.setAttribute("midi", "port", 		midiPort, index);
+				midiSettings.setAttribute("midi", "control", 	midiControl, index);
+				midiSettings.setAttribute("midi", "property", 	pProperty->m_name, index);
+
+				index++;
+			}
+		}
+
+	}
+	
+	midiSettings.save( getMidiSettingsPath() );
+}
+
+//--------------------------------------------------------------
 void midiInterface::readMidiSettingsExtraBegin(int which, string propName)
 {
 }
@@ -89,21 +145,9 @@ void midiInterface::handleMidiMessages()
 	for (int i=0;i<nbMidiMessages;i++)
 	{
 		ofxMidiMessage& midiMessage = m_midiMessagesToHandle[i];
-
-		int port = midiMessage.portNum;
-		int control = midiMessage.control;
-		ofLog() << port << "/" << control;
-
-		classProperty* pProp = getPropertyForPortAndControl(port, control);
-
-//		if ( m_mapMidiToProp.find( control ) != m_mapMidiToProp.end() )
-		{
-//			classProperty* pProp = m_mapMidiToProp[control];
-			if (pProp){
-				pProp->setValueFromMidiMessage( midiMessage );
-				ofLog() << pProp->m_name;
-					}
-		}
+		classProperty* pProp = getPropertyForPortAndControl(midiMessage.portNum, midiMessage.control);
+		if (pProp)
+			pProp->setValueFromMidiMessage( midiMessage );
 	}
 	m_midiMessagesToHandle.clear();
 	m_midiMutex.unlock();
@@ -124,15 +168,64 @@ classProperty* midiInterface::getPropertyForPortAndControl(int port, int control
 	midiPort* pMidiPort = getMidiPort(port);
 	if (pMidiPort)
 		return pMidiPort->m_mapMidiControlToProp[control];
-
-/*	if ( m_mapPortToProp.find( port ) != m_mapPortToProp.end() )
-	{
-		ofLog() << ofToString( (*m_mapPortToProp[port]).size() ) << " / " << "pControl=" << ofToString( (int) (*m_mapPortToProp[port])[control] );
-		return (*m_mapPortToProp[port])[control];
-	}
-*/
 	return 0;
 }
+
+//--------------------------------------------------------------
+void midiInterface::setPortForProperty(int port, string propertyName)
+{
+	midiPort* pMidiPort = getMidiPort(port);
+}
+
+//--------------------------------------------------------------
+int midiInterface::getControlForProperty(string propertyName)
+{
+	vector<midiPort*>::iterator it = m_midiPorts.begin();
+	for ( ; it != m_midiPorts.end(); ++it)
+	{
+		map<int,classProperty*>::iterator it2 = (*it)->m_mapMidiControlToProp.begin();
+		for ( ; it2 != (*it)->m_mapMidiControlToProp.end(); ++it2)
+		{
+			if (it2->second->m_name == propertyName)
+				return it2->first;
+		}
+	}
+	return -1;
+}
+
+//--------------------------------------------------------------
+void midiInterface::setControlForProperty(int control, string propertyName)
+{
+	int currentControl = getControlForProperty(propertyName);
+	if (currentControl != control)
+	{
+		bool erased = false;
+		vector<midiPort*>::iterator it = m_midiPorts.begin();
+		for ( ; it != m_midiPorts.end(); ++it)
+		{
+			map<int,classProperty*>::iterator it2 = (*it)->m_mapMidiControlToProp.begin();
+			classProperty* pProperty = 0;
+			for ( ; it2 != (*it)->m_mapMidiControlToProp.end(); ++it2)
+			{
+				pProperty = it2->second;
+				if (pProperty->m_name == propertyName)
+				{
+					(*it)->m_mapMidiControlToProp.erase(it2);
+					erased = true;
+					// (*it)->m_mapMidiControlToProp.ins
+					break;
+				}
+			}
+			if (erased && pProperty)
+			{
+				(*it)->addPropertyForControl(control, pProperty);
+			}
+			
+		}
+		
+	}
+}
+
 
 //--------------------------------------------------------------
 midiPort* midiInterface::getMidiPort(int which)

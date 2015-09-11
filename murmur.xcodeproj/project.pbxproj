@@ -136,6 +136,8 @@
 		F9876AD1173AF9B900DBE7C6 /* ofxLPD8806.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9876ABD173AF9B900DBE7C6 /* ofxLPD8806.cpp */; };
 		F9882D8F1BA1B7CB00B81023 /* toolMidi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9882D8D1BA1B7CB00B81023 /* toolMidi.cpp */; };
 		F9882D921BA1C10800B81023 /* animationVideo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9882D901BA1C10800B81023 /* animationVideo.cpp */; };
+		F9882DB61BA20B2100B81023 /* HapSupport.c in Sources */ = {isa = PBXBuildFile; fileRef = F9882DAD1BA20B2100B81023 /* HapSupport.c */; };
+		F9882DB81BA20B2100B81023 /* ofxHapPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9882DB21BA20B2100B81023 /* ofxHapPlayer.cpp */; };
 		F99930B31719888600272085 /* ofxOscBundle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F99930991719888600272085 /* ofxOscBundle.cpp */; };
 		F99930B41719888600272085 /* ofxOscMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F999309B1719888600272085 /* ofxOscMessage.cpp */; };
 		F99930B51719888600272085 /* ofxOscReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F999309D1719888600272085 /* ofxOscReceiver.cpp */; };
@@ -750,6 +752,10 @@
 		F9882D8E1BA1B7CB00B81023 /* toolMidi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = toolMidi.h; sourceTree = "<group>"; };
 		F9882D901BA1C10800B81023 /* animationVideo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animationVideo.cpp; sourceTree = "<group>"; };
 		F9882D911BA1C10800B81023 /* animationVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = animationVideo.h; sourceTree = "<group>"; };
+		F9882DAD1BA20B2100B81023 /* HapSupport.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = HapSupport.c; sourceTree = "<group>"; };
+		F9882DAE1BA20B2100B81023 /* HapSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HapSupport.h; sourceTree = "<group>"; };
+		F9882DB21BA20B2100B81023 /* ofxHapPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxHapPlayer.cpp; sourceTree = "<group>"; };
+		F9882DB31BA20B2100B81023 /* ofxHapPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxHapPlayer.h; sourceTree = "<group>"; };
 		F99930971719888600272085 /* ofxOsc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOsc.h; sourceTree = "<group>"; };
 		F99930981719888600272085 /* ofxOscArg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOscArg.h; sourceTree = "<group>"; };
 		F99930991719888600272085 /* ofxOscBundle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxOscBundle.cpp; sourceTree = "<group>"; };
@@ -1221,6 +1227,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				F9882D931BA20B2000B81023 /* ofxHapPlayer */,
 				F9DE832D1B39FB0B00F5A086 /* ofxRange */,
 				F9DE83151B39FAF300F5A086 /* ofxTextInputField */,
 				F9DE80E21B39FA7100F5A086 /* ofxTimeline */,
@@ -2182,6 +2189,50 @@
 			children = (
 				F9876ABD173AF9B900DBE7C6 /* ofxLPD8806.cpp */,
 				F9876ABE173AF9B900DBE7C6 /* ofxLPD8806.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		F9882D931BA20B2000B81023 /* ofxHapPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				F9882DAA1BA20B2100B81023 /* libs */,
+				F9882DB11BA20B2100B81023 /* src */,
+			);
+			name = ofxHapPlayer;
+			path = ../../../addons/ofxHapPlayer;
+			sourceTree = "<group>";
+		};
+		F9882DAA1BA20B2100B81023 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				F9882DAB1BA20B2100B81023 /* HapSupport */,
+			);
+			path = libs;
+			sourceTree = "<group>";
+		};
+		F9882DAB1BA20B2100B81023 /* HapSupport */ = {
+			isa = PBXGroup;
+			children = (
+				F9882DAC1BA20B2100B81023 /* src */,
+			);
+			path = HapSupport;
+			sourceTree = "<group>";
+		};
+		F9882DAC1BA20B2100B81023 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				F9882DAD1BA20B2100B81023 /* HapSupport.c */,
+				F9882DAE1BA20B2100B81023 /* HapSupport.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		F9882DB11BA20B2100B81023 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				F9882DB21BA20B2100B81023 /* ofxHapPlayer.cpp */,
+				F9882DB31BA20B2100B81023 /* ofxHapPlayer.h */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -3465,6 +3516,7 @@
 				F98711B516C052C40069F12A /* ofxJSUtils.cpp in Sources */,
 				F98711C916C053AF0069F12A /* globals.cpp in Sources */,
 				F9DE82E11B39FA7300F5A086 /* ofxTLCameraTrack.cpp in Sources */,
+				F9882DB61BA20B2100B81023 /* HapSupport.c in Sources */,
 				F941397D1A77CB830047A441 /* ofxMultiGLFWWindow.cpp in Sources */,
 				F951EBFD195AC12300056B2A /* ofxCvHaarFinder.cpp in Sources */,
 				F98711CE16C053F50069F12A /* animations.cpp in Sources */,
@@ -3510,6 +3562,7 @@
 				F9DE82CC1B39FA7200F5A086 /* ofOpenALSoundPlayer_TimelineAdditions.cpp in Sources */,
 				F99930F9171989EB00272085 /* ofxEasingCirc.cpp in Sources */,
 				F92BC4BA189F094600CA158A /* ofxUIMultiImageToggle.cpp in Sources */,
+				F9882DB81BA20B2100B81023 /* ofxHapPlayer.cpp in Sources */,
 				F9DE80A11B398FDC00F5A086 /* animationGravitatory.cpp in Sources */,
 				F9B8037F1B31926A00F12500 /* ofxMidiMessage.cpp in Sources */,
 				F9DE83341B3C590400F5A086 /* animationComposition.cpp in Sources */,

@@ -804,7 +804,8 @@ ofColor Animation::chooseRandomColor()
 //--------------------------------------------------------------
 void Animation::loadMidiSettings()
 {
-	midiInterface::loadMidiSettings(m_properties);
+	midiInterface::setClassProperties(&m_properties) ;
+	midiInterface::loadMidiSettings();
 }
 
 //--------------------------------------------------------------
