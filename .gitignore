@@ -112,4 +112,6 @@ Desktop.ini
 # Murmur specifics
 #########################
 *.wav
+*.mov
+*.mp4
 

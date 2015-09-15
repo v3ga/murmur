@@ -163,6 +163,19 @@ void midiInterface::newMidiMessage(ofxMidiMessage& midiMessage)
 }
 
 //--------------------------------------------------------------
+bool midiInterface::isPortValid(int port)
+{
+	vector<midiPort*>::iterator it = m_midiPorts.begin();
+	for ( ; it != m_midiPorts.end(); ++it)
+	{
+		if ((*it)->m_port == port)
+			return true;
+	}
+	return false;
+}
+
+
+//--------------------------------------------------------------
 classProperty* midiInterface::getPropertyForPortAndControl(int port, int control)
 {
 	midiPort* pMidiPort = getMidiPort(port);
@@ -172,10 +185,39 @@ classProperty* midiInterface::getPropertyForPortAndControl(int port, int control
 }
 
 //--------------------------------------------------------------
+int midiInterface::getPortForProperty(string propertyName)
+{
+	vector<midiPort*>::iterator it = m_midiPorts.begin();
+	for ( ; it != m_midiPorts.end(); ++it)
+	{
+		map<int,classProperty*>::iterator it2 = (*it)->m_mapMidiControlToProp.begin();
+		for ( ; it2 != (*it)->m_mapMidiControlToProp.end(); ++it2)
+		{
+			if (it2->second->m_name == propertyName)
+				return (*it)->m_port;
+		}
+	}
+
+	return -1;
+}
+
+
+//--------------------------------------------------------------
 void midiInterface::setPortForProperty(int port, string propertyName)
 {
-	midiPort* pMidiPort = getMidiPort(port);
+	int currentPort = getPortForProperty(propertyName);
+	if (currentPort>-1 && currentPort != port && isPortValid(port))
+	{
+		midiPort* pMidiPort = getMidiPort(currentPort);
+		if (pMidiPort)
+		{
+		}
+	}
+	
+	return currentPort;
 }
+
+
 
 //--------------------------------------------------------------
 int midiInterface::getControlForProperty(string propertyName)

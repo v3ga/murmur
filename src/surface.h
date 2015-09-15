@@ -27,47 +27,50 @@ class Surface
             EStandby_pre_standby         = 1,
             EStandby_standby             = 2
         };
+ 
+		typedef void (*FRenderOffscreen)(Surface*,void*);
 
 
-		void			zeroAll			();
+		void			zeroAll					();
     
-        ofFbo&          getOffscreen    (){return m_fbo;}
-        void            setDimensions	(int w, int h, int nbSamples=0);
-		int				getQuality		(){return getNbSamples();}
-		int				getNbSamples	(){return m_fboNbSamples;}
+        ofFbo&          getOffscreen    		(){return m_fbo;}
+        void            setDimensions			(int w, int h, int nbSamples=0);
+		int				getQuality				(){return getNbSamples();}
+		int				getNbSamples			(){return m_fboNbSamples;}
 
-        void            setup           ();
-        void            update          (float dt);
-        void            renderOffscreen (bool isRenderDevicePoints=false);
-        void            addDevice       (Device*);
-        vector<Device*>&getListDevices  (){return m_listDevices;}
-        void            onNewPacket     (DevicePacket*, string deviceId);
-        void            drawDevicePointSurface(ofRectangle&);
-        void            drawCacheLEDs   (float d);
-        float           getWidthPixels  (){return m_fbo.getWidth();}
-        float           getHeightPixels (){return m_fbo.getHeight();}
-        string          getId           (){return m_id;}
+        void            setup           		();
+        void            update          		(float dt);
+        void            renderOffscreen 		(bool isRenderDevicePoints=false);
+		void			setRenderOffscreenCb	(FRenderOffscreen pFunction, void* pUserData){mpf_renderOffscreenCallback = pFunction; mp_renderOffscreenUserData=pUserData;}
+        void            addDevice       		(Device*);
+        vector<Device*>&getListDevices 			(){return m_listDevices;}
+        void            onNewPacket     		(DevicePacket*, string deviceId);
+        void            drawDevicePointSurface	(ofRectangle&);
+        void            drawCacheLEDs   		(float d);
+        float           getWidthPixels  		(){return m_fbo.getWidth();}
+        float           getHeightPixels 		(){return m_fbo.getHeight();}
+        string          getId           		(){return m_id;}
     
-        void            setDurationTransition(float d){m_durationTransition=d;}
-        void            setDurationAnimation(float d){m_durationAnimation=d;}
-        void            setTimelineActive(bool is);
-        bool            isTimelineActive(){return m_isTimelineActive;}
+        void            setDurationTransition	(float d){m_durationTransition=d;}
+        void            setDurationAnimation	(float d){m_durationAnimation=d;}
+        void            setTimelineActive		(bool is);
+        bool            isTimelineActive		(){return m_isTimelineActive;}
     
-        AnimationManager& getAnimationManager(){return m_animationManager;}
+        AnimationManager& getAnimationManager	(){return m_animationManager;}
     
         void            saveAnimationsProperties();
         void            loadAnimationsProperties();
 	
-		void			setPublishSyphon(bool is=true);
-		void			publishSyphon	();
+		void			setPublishSyphon		(bool is=true);
+		void			publishSyphon			();
 	
-		void			drawRenderTarget();
-		void			setRenderTarget	(bool is=true);
+		void			drawRenderTarget		();
+		void			setRenderTarget			(bool is=true);
 		void			setRenderTargetLineWidth(float w=2.0f);
 
-		void			setDrawMask(bool is=true){m_isDrawMask = is;}
-		void			setMask(ofImage* image){mp_mask = image;}
-		void			drawMask();
+		void			setDrawMask				(bool is=true){m_isDrawMask = is;}
+		void			setMask					(ofImage* image){mp_mask = image;}
+		void			drawMask				();
 	
 		float			getVolumePacketsHistoryMean	(){return m_volumePacketsHistoryMean;}
 		string			getStateActivity			();
@@ -88,14 +91,18 @@ class Surface
 		float			m_durationPreStandby;
 	
 
-        string           m_id;
+        string          m_id;
+		int				m_fboNbSamples;
+
     private:
         int                 m_stateActivity;
 		ofFbo               m_fbo;
-		int					m_fboNbSamples;
         AnimationManager    m_animationManager;
         vector<Device*>     m_listDevices;
         ofVec2f             m_devicePoint;
+ 
+		FRenderOffscreen	mpf_renderOffscreenCallback;
+		void*				mp_renderOffscreenUserData;
     
         float               m_durationTransition;
         float               m_durationAnimation;

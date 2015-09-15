@@ -237,7 +237,7 @@ void toolMidi::handleEventsMidiInterface(ofxUIEventArgs& e)
 			{
 				string propName = e.getName().substr(7);
 				int control = atoi( pTe->getTextString().c_str() );
-				ofLog() << " - changing control value to " << ofToString( control ) << " for " << propName;
+				// ofLog() << " - changing control value to " << ofToString( control ) << " for " << propName;
 				mp_midiInterfaceCurrent->setControlForProperty(control, propName);
 				doSave = true;
 			}

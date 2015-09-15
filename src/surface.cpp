@@ -75,6 +75,9 @@ void Surface::zeroAll()
 	
 	setMask(0);
 	m_isDrawMask = false;
+	
+	mpf_renderOffscreenCallback = 0;
+	mp_renderOffscreenUserData = 0;
 }
 
 //--------------------------------------------------------------
@@ -231,15 +234,14 @@ void Surface::setup()
 		
 
 		// TEMP
-/*
+
 		AnimationComposition* pAnimation = new AnimationComposition("composition01");
+		pAnimation->add( "video" );
 		pAnimation->add( "box2DCircles" );
-		pAnimation->add( "particlesMega2" );
 		
 		m_animationManager.M_addAnimation(pAnimation);
-*/
+
 		// TEMP
-		
 
         surfaceSettings.popTag();
     }
@@ -271,7 +273,7 @@ void Surface::setDimensions(int w, int h, int nbSamples)
 	if (m_fboNbSamples > ofFbo::maxSamples())
 		m_fboNbSamples = ofFbo::maxSamples();
 
-	m_fbo.allocate(w,h,GL_RGB, m_fboNbSamples); // TODO : GL_RGBA ??? 
+	m_fbo.allocate(w,h,GL_RGBA, m_fboNbSamples); // TODO : GL_RGBA ???
 }
 
 //--------------------------------------------------------------
@@ -455,11 +457,22 @@ void Surface::drawMask()
 //--------------------------------------------------------------
 void Surface::renderOffscreen(bool isRenderDevicePoints)
 {
-    m_fbo.begin();
-	    m_animationManager.M_drawCanvas(m_fbo.getWidth(),m_fbo.getHeight());
-		drawRenderTarget();
-		drawMask();
-    m_fbo.end();
+	if (mpf_renderOffscreenCallback == 0)
+	{
+	    m_fbo.begin();
+		    m_animationManager.M_drawCanvas(m_fbo.getWidth(),m_fbo.getHeight());
+    	m_fbo.end();
+	}
+	else
+	{
+		(*mpf_renderOffscreenCallback)(this, mp_renderOffscreenUserData); // responsible for filling the fbo
+	}
+
+	m_fbo.begin();
+	drawRenderTarget();
+	drawMask();
+	m_fbo.end();
+
 }
 
 //--------------------------------------------------------------

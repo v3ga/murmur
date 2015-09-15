@@ -13,8 +13,8 @@
     <color>
         <enable>1</enable>
         <colorMode_manual_hsb>
-            <hue>221.250015259</hue>
-            <saturation>239.881423950</saturation>
+            <hue>0.000000000</hue>
+            <saturation>214.523803711</saturation>
         </colorMode_manual_hsb>
     </color>
     <packets>
@@ -28,7 +28,7 @@
     <sampleVolStandby>0.790322602</sampleVolStandby>
     <enableStandby>0</enableStandby>
     <surface id="main">
-        <xNorm>0.000000000</xNorm>
-        <yNorm>0.000000000</yNorm>
+        <xNorm>0.340000004</xNorm>
+        <yNorm>1.000000000</yNorm>
     </surface>
 </device>

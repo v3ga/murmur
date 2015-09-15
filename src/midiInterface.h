@@ -58,10 +58,17 @@ class midiInterface
 		virtual	void			handleMidiMessages			();
 		virtual void 			newMidiMessage				(ofxMidiMessage& eventArgs);
  
+
+		bool					isPortValid					(int port);
  		classProperty*			getPropertyForPortAndControl(int port, int control);
+
+		int						getPortForProperty			(string propertyName);
 		void					setPortForProperty			(int port, string propertyName);
+ 
 		int						getControlForProperty		(string propertyName);
 		void					setControlForProperty		(int control, string propertyName);
+ 
+
 		virtual	void			deleteMidiPorts				();
  
  		vector<midiPort*>		m_midiPorts;
