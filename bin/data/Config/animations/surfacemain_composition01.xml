@@ -8,3 +8,8 @@
     <Name>volume</Name>
     <Value>1.000000000</Value>
 </Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>renderNormal</Name>
+    <Value>0</Value>
+</Widget>

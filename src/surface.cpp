@@ -238,6 +238,9 @@ void Surface::setup()
 		AnimationComposition* pAnimation = new AnimationComposition("composition01");
 		pAnimation->add( "video" );
 		pAnimation->add( "box2DCircles" );
+
+//		pAnimation->add( "shaderWave" );
+//		pAnimation->add( "box2DCircles" );
 		
 		m_animationManager.M_addAnimation(pAnimation);
 
@@ -274,6 +277,8 @@ void Surface::setDimensions(int w, int h, int nbSamples)
 		m_fboNbSamples = ofFbo::maxSamples();
 
 	m_fbo.allocate(w,h,GL_RGBA, m_fboNbSamples); // TODO : GL_RGBA ???
+	ofVec2f dims = ofVec2f(m_fbo.getWidth(),m_fbo.getHeight());
+	ofNotifyEvent(m_eventOffscreenChanged, dims, this);
 }
 
 //--------------------------------------------------------------

@@ -13,16 +13,23 @@
 //--------------------------------------------------------------
 AnimationComposition::AnimationComposition(string name) : Animation(name)
 {
-
+	m_bAllocateRenderBuffers = true;
+	m_bRenderNormal = false;
 }
 
 
 //--------------------------------------------------------------
 void AnimationComposition::createUICustom()
 {
+	
+	if (mp_UIcanvas)
+	{
+		mp_UIcanvas->addToggle("renderNormal",	&m_bRenderNormal);
+	}
+
 	if (m_animations.size()>0)
 	{
-	
+		
 /*
 		m_animations[0]->mp_UIcanvas = new ofxUICanvas(mp_UIcanvas->getRect()->getWidth(), mp_UIcanvas->getRect()->getHeight());
 
@@ -36,6 +43,39 @@ void AnimationComposition::createUICustom()
 }
 
 //--------------------------------------------------------------
+void AnimationComposition::loadMidiSettings()
+{
+	vector<Animation*>::iterator it = m_animations.begin();
+	for ( ; it != m_animations.end(); ++it)
+	 	(*it)->loadMidiSettings();
+}
+
+//--------------------------------------------------------------
+void AnimationComposition::setRenderNormal(bool is)
+{
+	m_bRenderNormal = is;
+	Surface* pSurface = GLOBALS->getSurfaceMain();
+
+
+		for (int i=0;i<m_animations.size(); i++){
+			m_animations[i]->setDrawBackground(!is);
+		}
+
+
+	if (m_bRenderNormal)
+	{
+	 	if (pSurface)
+			pSurface->setRenderOffscreenCb(0,0);
+
+	}
+	else
+	{
+	 	if (pSurface)
+			pSurface->setRenderOffscreenCb((Surface::FRenderOffscreen)onSurfaceRenderOffscreen, this);
+	}
+}
+
+//--------------------------------------------------------------
 void AnimationComposition::add(string name)
 {
 	// limit to 2 animations for the moment
@@ -43,7 +83,7 @@ void AnimationComposition::add(string name)
 	{
 		Animation* pAnimation = AnimationsFactory::create(name);
 		if (pAnimation){
-			//pAnimation->setDrawBackground(false);
+			pAnimation->setDrawBackground(false);
 			m_animations.push_back(pAnimation);
 		}
 	}
@@ -66,13 +106,15 @@ void AnimationComposition::VM_enter()
  
 	Surface* pSurface = GLOBALS->getSurfaceMain();
  	if (pSurface)
+	{
 		pSurface->setRenderOffscreenCb((Surface::FRenderOffscreen)onSurfaceRenderOffscreen, this);
+		ofAddListener(pSurface->m_eventOffscreenChanged, this, &AnimationComposition::onSurfaceOffscreenChanged);
 
+	}
 	
-	if (!m_fboAnimation1.isAllocated()) m_fboAnimation1.allocate(2560,1024, GL_RGBA);
-	if (!m_fboAnimation2.isAllocated()) m_fboAnimation2.allocate(2560,1024, GL_RGBA);
-
 	m_shader.load("Shaders/animCompo.vert", "Shaders/animCompoMultiply.frag");
+	allocateRenderBuffers();
+	setRenderNormal(false);
 }
 
 //--------------------------------------------------------------
@@ -81,23 +123,39 @@ void AnimationComposition::VM_update(float dt)
 	vector<Animation*>::iterator it = m_animations.begin();
 	for ( ; it != m_animations.end(); ++it)
 	 	(*it)->VM_update(dt);
+
+	if (m_bAllocateRenderBuffers)
+	{
+		m_bAllocateRenderBuffers=false;
+		Surface* pSurface = GLOBALS->getSurfaceMain();
+		if (pSurface)
+		{
+			float w = pSurface->getOffscreen().getWidth();
+			float h = pSurface->getOffscreen().getHeight();
+			int nbSamples = pSurface->m_fboNbSamples;
+		
+			m_fboAnimation1.allocate(w,h, GL_RGBA,nbSamples);
+			m_fboAnimation2.allocate(w,h, GL_RGBA,nbSamples);
+		}
+	}
 }
 
 //--------------------------------------------------------------
 void AnimationComposition::VM_draw(float w, float h)
 {
-/*
-	drawBackground(0);
-	vector<Animation*>::iterator it = m_animations.begin();
-	for ( ; it != m_animations.end(); ++it)
+	if (m_bRenderNormal)
 	{
-		ofPushStyle();
-		ofPushMatrix();
-	 	(*it)->VM_draw(w,h);
-		ofPopMatrix();
-		ofPopStyle();
+		drawBackground(0);
+		vector<Animation*>::iterator it = m_animations.begin();
+		for ( ; it != m_animations.end(); ++it)
+		{
+			ofPushStyle();
+			ofPushMatrix();
+	 		(*it)->VM_draw(w,h);
+			ofPopMatrix();
+			ofPopStyle();
+		}
 	}
-*/
 }
 
 //--------------------------------------------------------------
@@ -124,34 +182,84 @@ void AnimationComposition::onNewPacket(DevicePacket* pDevice, string deviceId, f
 //--------------------------------------------------------------
 void AnimationComposition::onSurfaceRenderOffscreen(Surface* pSurface, AnimationComposition* pThis)
 {
-	ofFbo& fboFinal = pSurface->getOffscreen();
-	
-	
-	
-	if (pThis->m_animations.size()==2)
+	if (pThis->m_bRenderNormal == false)
 	{
-		pThis->m_fboAnimation1.begin();
-		pThis->m_animations[0]->VM_draw(pThis->m_fboAnimation1.getWidth(), pThis->m_fboAnimation1.getHeight());
-		pThis->m_fboAnimation1.end();
-
-		pThis->m_fboAnimation2.begin();
-		pThis->m_animations[1]->VM_draw(pThis->m_fboAnimation2.getWidth(), pThis->m_fboAnimation2.getHeight());
-		pThis->m_fboAnimation2.end();
-	}
-
+		ofFbo& fboFinal = pSurface->getOffscreen();
 	
-	fboFinal.begin();
+		if (pThis->m_animations.size()==2)
+		{
+			pThis->m_fboAnimation1.begin();
+			pThis->m_animations[0]->VM_draw(pThis->m_fboAnimation1.getWidth(), pThis->m_fboAnimation1.getHeight());
+			pThis->m_fboAnimation1.end();
 
-	pThis->m_shader.begin();
-	pThis->m_shader.setUniformTexture("tex1", pThis->m_fboAnimation1.getTextureReference(), 1);
-	pThis->m_shader.setUniformTexture("tex2", pThis->m_fboAnimation2.getTextureReference(), 2);
-	pThis->m_fboAnimation1.draw(0,0);
-	//	pThis->m_animations[0]->VM_draw(fboFinal.getWidth(), fboFinal.getHeight());
-	pThis->m_shader.end();
+			pThis->m_fboAnimation2.begin();
+			pThis->m_animations[1]->VM_draw(pThis->m_fboAnimation2.getWidth(), pThis->m_fboAnimation2.getHeight());
+			pThis->m_fboAnimation2.end();
 
-	fboFinal.end();
+			fboFinal.begin();
 
+			pThis->m_shader.begin();
+			pThis->m_shader.setUniformTexture("tex1", pThis->m_fboAnimation1.getTextureReference(), 1);
+			pThis->m_shader.setUniformTexture("tex2", pThis->m_fboAnimation2.getTextureReference(), 2);
+			pThis->m_fboAnimation1.draw(0,0);
+			pThis->m_shader.end();
+
+			fboFinal.end();
+
+		}
+		else
+		{
+			fboFinal.begin();
+			ofBackground(0);
+			fboFinal.end();
+		}
+	}
 }
+
+//--------------------------------------------------------------
+void AnimationComposition::onSurfaceOffscreenChanged(ofVec2f& dimensions)
+{
+	allocateRenderBuffers();
+}
+
+//--------------------------------------------------------------
+void AnimationComposition::allocateRenderBuffers()
+{
+	m_bAllocateRenderBuffers = true;
+}
+
+//--------------------------------------------------------------
+void AnimationComposition::handleMidiMessages()
+{
+	vector<Animation*>::iterator it = m_animations.begin();
+	for ( ; it != m_animations.end(); ++it){
+	 	(*it)->handleMidiMessages();
+	}
+}
+
+//--------------------------------------------------------------
+void AnimationComposition::newMidiMessage(ofxMidiMessage& eventArgs)
+{
+	vector<Animation*>::iterator it = m_animations.begin();
+	for ( ; it != m_animations.end(); ++it){
+	 	(*it)->newMidiMessage(eventArgs);
+	}
+}
+
+//--------------------------------------------------------------
+void AnimationComposition::guiEvent(ofxUIEventArgs &e)
+{
+	Animation::guiEvent(e);
+	
+	string name = e.getName();
+	if (name == "renderNormal")
+	{
+		setRenderNormal(m_bRenderNormal);
+	}
+}
+
+
+
 
 
 

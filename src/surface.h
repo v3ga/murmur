@@ -29,6 +29,7 @@ class Surface
         };
  
 		typedef void (*FRenderOffscreen)(Surface*,void*);
+		ofEvent<ofVec2f> m_eventOffscreenChanged;
 
 
 		void			zeroAll					();
