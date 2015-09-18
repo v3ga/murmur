@@ -457,11 +457,12 @@ void testApp::initMidi()
 	for (int i=0;i<nbMidiPorts;i++)
 	{
 		int midiInPort = m_settings.getValue("port", 0, i);
-		OFAPPLOG->println("- opening port "+ofToString(midiInPort));
 		
 		string name = ofxMidiIn::getPortName(midiInPort);
 		if (name != "")
 		{
+			OFAPPLOG->println("- opening port "+ofToString(midiInPort)+" / "+name);
+
 			ofxMidiIn* pMidiIn = new ofxMidiIn();
 			pMidiIn->openPort( midiInPort );
 			pMidiIn->addListener( this );

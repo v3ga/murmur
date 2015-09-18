@@ -11,6 +11,7 @@
 #include "globals.h"
 #include "surface.h"
 #include "animations.h"
+#include "toolMidi.h"
 
 string toolTimeline::sm_timelineDir = "Gui/tools/Timeline/";
 
@@ -27,14 +28,17 @@ toolTimeline::toolTimeline(toolManager* pParent) : tool("Timeline", pParent)
 	mp_btnNewTimeline		= 0;
 	mp_ddConfigTimeline		= 0;
 	mp_btnLoadTimeline		= 0;
+	mp_tgPlayWithTimecode	= 0;
 
 	m_timelineCurrentFolder = getConfigPath("config01");
 	m_bAutoplay 			= false;
+	
+	m_bPlayWithTimecode		= false;
 
-		classProperty_bool* pPropPlayPause = new classProperty_bool("bPlayPause",0,classProperty_bool::MODE_BUTTON);
-		m_properties.add( pPropPlayPause );
-		classProperty_bool* pPropStop = new classProperty_bool("bStop",0,classProperty_bool::MODE_BUTTON);
-		m_properties.add( pPropStop );
+	classProperty_bool* pPropPlayPause = new classProperty_bool("bPlayPause",0,classProperty_bool::MODE_BUTTON);
+	m_properties.add( pPropPlayPause );
+	classProperty_bool* pPropStop = new classProperty_bool("bStop",0,classProperty_bool::MODE_BUTTON);
+	m_properties.add( pPropStop );
 	
 	setMidiName("tool Timeline");
 }
@@ -93,9 +97,16 @@ void toolTimeline::createControlsCustom()
 		mp_canvas->addWidgetRight( mp_btnLoadTimeline );
 
 
+	    mp_canvas->addWidgetDown(new ofxUILabel("Timecode", OFX_UI_FONT_MEDIUM) );
+    	mp_canvas->addWidgetDown(new ofxUISpacer(widthDefault, 1) );
+		mp_tgPlayWithTimecode = new ofxUIToggle("Play with timecode", &m_bPlayWithTimecode, dim, dim);
+		mp_canvas->addWidgetDown( mp_tgPlayWithTimecode );
+
+
 	    mp_canvas->addWidgetDown(new ofxUILabel("Transitions", OFX_UI_FONT_MEDIUM) );
     	mp_canvas->addWidgetDown(new ofxUISpacer(widthDefault, 1) );
 		mp_canvas->addWidgetDown(new ofxUISlider("transition duration (s)", 0.1f, 1.0f, 0.15f, widthDefault, dim ));
+
 
 
 		mp_canvas->autoSizeToFitWidgets();
@@ -115,10 +126,17 @@ void toolTimeline::setup()
 	OFAPPLOG->begin("toolTimeline::setup()");
 	OFAPPLOG->begin(" - autoplay = " + ofToString(m_bAutoplay));
 
-	if (m_bAutoplay)
+	if (m_bPlayWithTimecode == false)
 	{
-		m_timeline.play();
-		updateLayout();
+		if (m_bAutoplay)
+		{
+			m_timeline.play();
+			updateLayout();
+		}
+	}
+	else
+	{
+		m_bAutoplay = false;
 	}
 	OFAPPLOG->end();
 }
@@ -184,7 +202,7 @@ void toolTimeline::update()
 			if (pDeviceColorTrack == 0)
 			{
 				pDeviceColorTrack = m_timeline.addColors(ofxTLTrackName);
-			m_timeline.loadTracksFromFolder(m_timelineCurrentFolder);
+				m_timeline.loadTracksFromFolder(m_timelineCurrentFolder);
 
 			 }
 			
@@ -194,7 +212,11 @@ void toolTimeline::update()
 				pDeviceManager->m_listDevices[i]->setColorHueSaturation( colorDevice.getHue(), colorDevice.getSaturation());
 			}
 		}
-	
+	}
+
+	if (m_bPlayWithTimecode)
+	{
+		m_timeline.setCurrentTimeMillis( toolMidi::sm_timecodeMillis );
 	}
 }
 
@@ -202,7 +224,7 @@ void toolTimeline::update()
 void toolTimeline::updateLayout()
 {
 	if (mp_btnPlayPauseTimeline)
-		mp_btnPlayPauseTimeline->getLabelWidget()->setLabel( m_timeline.getIsPlaying() ? "Pause" : "Play" );
+		mp_btnPlayPauseTimeline->getLabelWidget()->setLabel( m_timeline.getIsPlaying() && !m_bPlayWithTimecode ? "Pause" : "Play" );
 	if (mp_teDurationTimeline)
 		mp_teDurationTimeline->setTextString( ofToString( m_timeline.getDurationInSeconds() ) );
 }

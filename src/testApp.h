@@ -138,5 +138,4 @@ class testApp : public ofBaseApp, public ofxMidiListener
 		// DEBUG
 		 timelineSimple		m_timelineSimple;
 		 static	void		sM_timelineSimpleEvent	(testApp*, timelineSimpleEvent* pEvent);
-    
 };

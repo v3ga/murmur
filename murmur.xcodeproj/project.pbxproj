@@ -73,6 +73,7 @@
 		F92BC4CD189F094600CA158A /* ofxUIWidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F92BC4A1189F094600CA158A /* ofxUIWidget.cpp */; };
 		F92BC4CE189F094600CA158A /* ofxUIWidgetWithLabel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F92BC4A2189F094600CA158A /* ofxUIWidgetWithLabel.cpp */; };
 		F92BC4E518A1544B00CA158A /* ofxMSAInteractiveObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F92BC4E318A1544B00CA158A /* ofxMSAInteractiveObject.cpp */; };
+		F931D6821BAAED370097E5AE /* ofxMTCReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F931D67F1BAAED370097E5AE /* ofxMTCReceiver.cpp */; };
 		F93407041906B69D003F4D97 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F93407031906B69C003F4D97 /* QTKit.framework */; };
 		F93407061906B6AD003F4D97 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F93407051906B6AD003F4D97 /* CoreVideo.framework */; };
 		F93407081906B6DE003F4D97 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F93407071906B6DE003F4D97 /* Carbon.framework */; };
@@ -471,6 +472,8 @@
 		F92BC4E118A1544B00CA158A /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		F92BC4E318A1544B00CA158A /* ofxMSAInteractiveObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxMSAInteractiveObject.cpp; sourceTree = "<group>"; };
 		F92BC4E418A1544B00CA158A /* ofxMSAInteractiveObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMSAInteractiveObject.h; sourceTree = "<group>"; };
+		F931D67F1BAAED370097E5AE /* ofxMTCReceiver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxMTCReceiver.cpp; sourceTree = "<group>"; };
+		F931D6801BAAED370097E5AE /* ofxMTCReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMTCReceiver.h; sourceTree = "<group>"; };
 		F93407031906B69C003F4D97 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = ../../../../../../../../System/Library/Frameworks/QTKit.framework; sourceTree = "<group>"; };
 		F93407051906B6AD003F4D97 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = ../../../../../../../../System/Library/Frameworks/CoreVideo.framework; sourceTree = "<group>"; };
 		F93407071906B6DE003F4D97 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = ../../../../../../../../System/Library/Frameworks/Carbon.framework; sourceTree = "<group>"; };
@@ -1227,6 +1230,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				F931D67C1BAAED370097E5AE /* ofxMTCReceiver */,
 				F9882D931BA20B2000B81023 /* ofxHapPlayer */,
 				F9DE832D1B39FB0B00F5A086 /* ofxRange */,
 				F9DE83151B39FAF300F5A086 /* ofxTextInputField */,
@@ -1445,6 +1449,24 @@
 			children = (
 				F92BC4E318A1544B00CA158A /* ofxMSAInteractiveObject.cpp */,
 				F92BC4E418A1544B00CA158A /* ofxMSAInteractiveObject.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		F931D67C1BAAED370097E5AE /* ofxMTCReceiver */ = {
+			isa = PBXGroup;
+			children = (
+				F931D67E1BAAED370097E5AE /* src */,
+			);
+			name = ofxMTCReceiver;
+			path = ../../../addons/ofxMTCReceiver;
+			sourceTree = "<group>";
+		};
+		F931D67E1BAAED370097E5AE /* src */ = {
+			isa = PBXGroup;
+			children = (
+				F931D67F1BAAED370097E5AE /* ofxMTCReceiver.cpp */,
+				F931D6801BAAED370097E5AE /* ofxMTCReceiver.h */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -3631,6 +3653,7 @@
 				F96B927E172FBD6E007B1CFF /* data.cpp in Sources */,
 				F96B92851731A8A3007B1CFF /* oscDefs.cpp in Sources */,
 				F9DE82ED1B39FA7300F5A086 /* ofxTLLFO.cpp in Sources */,
+				F931D6821BAAED370097E5AE /* ofxMTCReceiver.cpp in Sources */,
 				F9B803761B31926A00F12500 /* ofxRtMidiOut.cpp in Sources */,
 				F96B928D173692C8007B1CFF /* silhouetteNode.cpp in Sources */,
 				F9876AD1173AF9B900DBE7C6 /* ofxLPD8806.cpp in Sources */,

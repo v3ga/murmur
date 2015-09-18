@@ -9,6 +9,9 @@
 #include "toolMidi.h"
 #include "ofxMidi.h"
 #include "midiInterface.h"
+#include "ofAppLog.h"
+
+int toolMidi::sm_timecodeMillis = 0;
 
 //--------------------------------------------------------------
 toolMidi::toolMidi(toolManager* parent) : tool("Midi", parent)
@@ -17,6 +20,8 @@ toolMidi::toolMidi(toolManager* parent) : tool("Midi", parent)
 	mp_ddMidiInterfaces 			= 0;
 	mp_canvasMidiInterfaceCurrent	= 0;
 	mp_midiInterfaceCurrent			= 0;
+	
+	mp_lblTimecodeValue				= 0;
 }
 
 //--------------------------------------------------------------
@@ -32,7 +37,7 @@ void toolMidi::createControlsCustom()
 	{
 		ofxUIWidgetFontType fontType = OFX_UI_FONT_SMALL;
 		float dim = 16;
-		int widthDefault = 440;
+		int widthDefault = 320;
 
 	    mp_canvas->addWidgetDown( new ofxUILabel("Midi",OFX_UI_FONT_LARGE) );
     	mp_canvas->addWidgetDown( new ofxUISpacer(widthDefault-8, 2) );
@@ -123,14 +128,28 @@ void toolMidi::createControlsCustom()
 
 
 			mp_canvas->autoSizeToFitWidgets();
-
-
 		 }
 		
+		 mp_canvasTimecode = new ofxUICanvas(240+widthDefault+10, 0, widthDefault, 300);
+
+	    mp_canvasTimecode->addWidgetDown( new ofxUILabel("Timecode",OFX_UI_FONT_LARGE) );
+    	mp_canvasTimecode->addWidgetDown( new ofxUISpacer(widthDefault-8, 2) );
+		mp_canvasTimecode->addWidgetDown( new ofxUILabel(100, "Port",OFX_UI_FONT_SMALL) );
+		ofxUITextInput* pTePortTimecode = new ofxUITextInput("tePortTimecode", ofToString( 0 ), 24, dim, 100+5);
+		mp_canvasTimecode->addWidgetRight( pTePortTimecode );
+		mp_canvasTimecode->addWidgetDown( new ofxUILabel(100, "Value",OFX_UI_FONT_SMALL) );
+		mp_lblTimecodeValue = new ofxUILabel(100, "1234",OFX_UI_FONT_SMALL);
+	    mp_canvasTimecode->addWidgetRight( mp_lblTimecodeValue );
 		
 
+		m_portTimecode = getPortTimecode( pTePortTimecode->getTextString() );
+	  	onPortTimecodeChanged();
+
+
 		ofAddListener(mp_canvas->newGUIEvent, this, &toolMidi::handleEvents);
+		ofAddListener(mp_canvasTimecode->newGUIEvent, this, &toolMidi::handleEventsTimecode);
 	}
+	
 }
 
 //--------------------------------------------------------------
@@ -169,6 +188,11 @@ void toolMidi::show(bool is)
 		{
 			mp_canvasMidiInterfaceCurrent->setVisible(true);
 		}
+		if (mp_canvasTimecode)
+		{
+			mp_canvasTimecode->setVisible(true);
+		}
+
 	}
 	tool::show(is);
 
@@ -176,13 +200,30 @@ void toolMidi::show(bool is)
 //--------------------------------------------------------------
 void toolMidi::setup()
 {
+	ofAddListener( m_MTCReceiver.MTCEvent, this, &toolMidi::handleMTCMessage  );
+}
 
+//--------------------------------------------------------------
+void toolMidi::handleMTCMessage(MTCEventArgs& e)
+{
+	int currentMillis = e.timeAsMillis;
+	sm_timecodeMillis = currentMillis;
 }
 
 
 //--------------------------------------------------------------
 void toolMidi::update()
 {
+	updateLayout();
+}
+
+//--------------------------------------------------------------
+void toolMidi::updateLayout()
+{
+	if (mp_lblTimecodeValue)
+	{
+		mp_lblTimecodeValue->setLabel( m_MTCReceiver.timeAsString( sm_timecodeMillis ) );
+	}
 }
 
 //--------------------------------------------------------------
@@ -270,6 +311,20 @@ void toolMidi::handleEventsMidiInterface(ofxUIEventArgs& e)
   }
 }
 
+//--------------------------------------------------------------
+void toolMidi::handleEventsTimecode(ofxUIEventArgs& e)
+{
+  if (e.getKind() == OFX_UI_WIDGET_TEXTINPUT)
+  {
+	  ofxUITextInput* pTe = (ofxUITextInput*) e.widget;
+	  if (pTe->getInputTriggerType() == OFX_UI_TEXTINPUT_ON_ENTER)
+	  {
+		m_portTimecode = getPortTimecode( pTe->getTextString() );
+	  	onPortTimecodeChanged();
+	  }
+   }
+}
+
 
 //--------------------------------------------------------------
 void toolMidi::hideMidiInterfaces()
@@ -280,8 +335,24 @@ void toolMidi::hideMidiInterfaces()
 		it->second->setVisible(false);
 		it->second->DisableCallbacks();
 	}
-
+	
+	if (mp_canvasTimecode){
+		mp_canvasTimecode->setVisible(false);
+		mp_canvasTimecode->DisableCallbacks();
+	}
 }
+
+//--------------------------------------------------------------
+void toolMidi::onPortTimecodeChanged()
+{
+	OFAPPLOG->begin("toolMidi::onPortTimecodeChanged()");
+	OFAPPLOG->println(" - init receiver with port "+ofToString(m_portTimecode));
+	sm_timecodeMillis = 0;
+	m_MTCReceiver.close();
+	m_MTCReceiver.init(m_portTimecode);
+	OFAPPLOG->end();
+}
+
 
 
 

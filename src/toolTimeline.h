@@ -51,6 +51,8 @@ class toolTimeline : public tool, public midiInterface
 		ofxUIButton*			mp_btnPlayPauseTimeline;
 		ofxUIButton*			mp_btnStopTimeline;
 		ofxUITextInput*			mp_teDurationTimeline;
+		ofxUIToggle*			mp_tgPlayWithTimecode;
+ 
 
 		ofxUITextInput*			mp_teNameNewTimeline;
 		ofxUIButton*			mp_btnNewTimeline;
@@ -59,6 +61,8 @@ class toolTimeline : public tool, public midiInterface
 
 		string					m_timelineCurrentFolder;
 		bool					m_bAutoplay;
+ 
+		bool					m_bPlayWithTimecode;		// toolMidi
  
  	protected:
 		void					createNewTimeline			();
