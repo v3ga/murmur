@@ -73,6 +73,10 @@
 		F92BC4CD189F094600CA158A /* ofxUIWidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F92BC4A1189F094600CA158A /* ofxUIWidget.cpp */; };
 		F92BC4CE189F094600CA158A /* ofxUIWidgetWithLabel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F92BC4A2189F094600CA158A /* ofxUIWidgetWithLabel.cpp */; };
 		F92BC4E518A1544B00CA158A /* ofxMSAInteractiveObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F92BC4E318A1544B00CA158A /* ofxMSAInteractiveObject.cpp */; };
+		F93043BE1BB145880081AD88 /* animationLinesFF.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F93043BC1BB145880081AD88 /* animationLinesFF.cpp */; };
+		F93043C11BB145C30081AD88 /* animationAgentsFF.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F93043BF1BB145C30081AD88 /* animationAgentsFF.cpp */; };
+		F93043C41BB145EA0081AD88 /* animationGridsFF.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F93043C21BB145EA0081AD88 /* animationGridsFF.cpp */; };
+		F93043C71BB146250081AD88 /* animationRadarFF.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F93043C51BB146250081AD88 /* animationRadarFF.cpp */; };
 		F931D6821BAAED370097E5AE /* ofxMTCReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F931D67F1BAAED370097E5AE /* ofxMTCReceiver.cpp */; };
 		F93407041906B69D003F4D97 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F93407031906B69C003F4D97 /* QTKit.framework */; };
 		F93407061906B6AD003F4D97 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F93407051906B6AD003F4D97 /* CoreVideo.framework */; };
@@ -472,6 +476,14 @@
 		F92BC4E118A1544B00CA158A /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		F92BC4E318A1544B00CA158A /* ofxMSAInteractiveObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxMSAInteractiveObject.cpp; sourceTree = "<group>"; };
 		F92BC4E418A1544B00CA158A /* ofxMSAInteractiveObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMSAInteractiveObject.h; sourceTree = "<group>"; };
+		F93043BC1BB145880081AD88 /* animationLinesFF.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animationLinesFF.cpp; sourceTree = "<group>"; };
+		F93043BD1BB145880081AD88 /* animationLinesFF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = animationLinesFF.h; sourceTree = "<group>"; };
+		F93043BF1BB145C30081AD88 /* animationAgentsFF.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animationAgentsFF.cpp; sourceTree = "<group>"; };
+		F93043C01BB145C30081AD88 /* animationAgentsFF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = animationAgentsFF.h; sourceTree = "<group>"; };
+		F93043C21BB145EA0081AD88 /* animationGridsFF.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animationGridsFF.cpp; sourceTree = "<group>"; };
+		F93043C31BB145EA0081AD88 /* animationGridsFF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = animationGridsFF.h; sourceTree = "<group>"; };
+		F93043C51BB146250081AD88 /* animationRadarFF.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animationRadarFF.cpp; sourceTree = "<group>"; };
+		F93043C61BB146250081AD88 /* animationRadarFF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = animationRadarFF.h; sourceTree = "<group>"; };
 		F931D67F1BAAED370097E5AE /* ofxMTCReceiver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxMTCReceiver.cpp; sourceTree = "<group>"; };
 		F931D6801BAAED370097E5AE /* ofxMTCReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMTCReceiver.h; sourceTree = "<group>"; };
 		F93407031906B69C003F4D97 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = ../../../../../../../../System/Library/Frameworks/QTKit.framework; sourceTree = "<group>"; };
@@ -2170,6 +2182,14 @@
 				F9DC1BC41B55377B006BEA63 /* animationWaves.h */,
 				F9882D901BA1C10800B81023 /* animationVideo.cpp */,
 				F9882D911BA1C10800B81023 /* animationVideo.h */,
+				F93043BC1BB145880081AD88 /* animationLinesFF.cpp */,
+				F93043BD1BB145880081AD88 /* animationLinesFF.h */,
+				F93043BF1BB145C30081AD88 /* animationAgentsFF.cpp */,
+				F93043C01BB145C30081AD88 /* animationAgentsFF.h */,
+				F93043C21BB145EA0081AD88 /* animationGridsFF.cpp */,
+				F93043C31BB145EA0081AD88 /* animationGridsFF.h */,
+				F93043C51BB146250081AD88 /* animationRadarFF.cpp */,
+				F93043C61BB146250081AD88 /* animationRadarFF.h */,
 			);
 			name = Animations;
 			sourceTree = "<group>";
@@ -3642,6 +3662,7 @@
 				F9DC7C2B19CA170900682D1A /* ofxJSOscMessage.cpp in Sources */,
 				F94139491A77938A0047A441 /* ofxJSONElement.cpp in Sources */,
 				F92BC4B7189F094600CA158A /* ofxUIMinimalSlider.cpp in Sources */,
+				F93043BE1BB145880081AD88 /* animationLinesFF.cpp in Sources */,
 				F9B8037E1B31926A00F12500 /* ofxMidiIn.cpp in Sources */,
 				F94139451A77938A0047A441 /* json_reader.cpp in Sources */,
 				F9DE82F61B39FA7300F5A086 /* ofxTLZoomer.cpp in Sources */,
@@ -3650,6 +3671,7 @@
 				F96B927B172EDB57007B1CFF /* MSAObjCPointer.cpp in Sources */,
 				F92BC4BE189F094600CA158A /* ofxUIRectangle.cpp in Sources */,
 				F92BC4C8189F094600CA158A /* ofxUITextInput.cpp in Sources */,
+				F93043C11BB145C30081AD88 /* animationAgentsFF.cpp in Sources */,
 				F96B927E172FBD6E007B1CFF /* data.cpp in Sources */,
 				F96B92851731A8A3007B1CFF /* oscDefs.cpp in Sources */,
 				F9DE82ED1B39FA7300F5A086 /* ofxTLLFO.cpp in Sources */,
@@ -3680,6 +3702,7 @@
 				F9BC6C5D174A621600633C5C /* b2CollideCircle.cpp in Sources */,
 				F9DE82E41B39FA7300F5A086 /* ofxTLCurves.cpp in Sources */,
 				F92BC4AE189F094600CA158A /* ofxUIFPSSlider.cpp in Sources */,
+				F93043C71BB146250081AD88 /* animationRadarFF.cpp in Sources */,
 				F92BC4B4189F094600CA158A /* ofxUILabel.cpp in Sources */,
 				F9BC6C5E174A621600633C5C /* b2CollidePolygon.cpp in Sources */,
 				F9BC6C5F174A621600633C5C /* b2Collision.cpp in Sources */,
@@ -3730,6 +3753,7 @@
 				F9DC7C2219CA16F500682D1A /* ofxJSSoundPlayer.cpp in Sources */,
 				F9BC6C75174A621700633C5C /* b2DistanceJoint.cpp in Sources */,
 				F9BC6C76174A621700633C5C /* b2FrictionJoint.cpp in Sources */,
+				F93043C41BB145EA0081AD88 /* animationGridsFF.cpp in Sources */,
 				F92BC4C0189F094600CA158A /* ofxUIScrollableCanvas.cpp in Sources */,
 				F92BC4B5189F094600CA158A /* ofxUILabelButton.cpp in Sources */,
 				F9BC6C77174A621700633C5C /* b2GearJoint.cpp in Sources */,
