@@ -45,6 +45,8 @@ toolDevices::toolDevices(toolManager* parent, DeviceManager* manager) : tool("De
 
 	mp_toggleDeviceEnableStandup = 0;
 	mp_sliderStandupVol = 0;
+	
+	mp_toggleDeviceGenerative = 0;
 
 	
 	mp_graphSoundValues = 0;
@@ -205,6 +207,12 @@ void toolDevices::createControlsCustomFinalize()
 	mp_canvasDevice->addWidgetDown( mp_toggleDeviceEnableStandup );
 	mp_canvasDevice->addWidgetDown( mp_sliderStandupVol );
 */
+
+    mp_canvasDevice->addWidgetDown(new ofxUILabel("Generativity", OFX_UI_FONT_MEDIUM));
+    mp_canvasDevice->addWidgetDown(new ofxUISpacer(widthDefault, 1));
+	mp_toggleDeviceGenerative = new ofxUIToggle("enableGenerative",	false, dim, dim);
+	mp_canvasDevice->addWidgetDown(mp_toggleDeviceGenerative);
+
 
     mp_canvasDevice->addWidgetDown(new ofxUILabel("Color", OFX_UI_FONT_MEDIUM));
     mp_canvasDevice->addWidgetDown(new ofxUISpacer(widthDefault, 1));
@@ -395,6 +403,8 @@ void toolDevices::updateDeviceUI(Device* pDevice)
 		if (mp_togglePacketsInvert) mp_togglePacketsInvert->setValue( pDevice->m_isInvertPacketsVolume );
 		if (mp_togglePacketsReverse) mp_togglePacketsReverse->setValue( pDevice->m_isReverseDirPackets );
 		if (mp_sliderDeviceVolHistoryPingTh) mp_sliderDeviceVolHistoryPingTh->setValue( pDevice->m_volHistoryPingTh );
+		
+		if (mp_toggleDeviceGenerative) mp_toggleDeviceGenerative->setValue( pDevice->isGenerative() );
 
 		if (mp_canvasDevice)
 		{
@@ -552,6 +562,12 @@ void toolDevices::handleEvents(ofxUIEventArgs& e)
 		ofxUILabelButton* pBtn = (ofxUILabelButton*) e.widget;
 		if (pDeviceCurrent && pBtn->getValue())
 			pDeviceCurrent->resetVolHistoryPing();
+	}
+	else if (name == "enableGenerative")
+	{
+        if (pDeviceCurrent){
+			pDeviceCurrent->setGenerative( e.getToggle()->getValue() );
+		}
 	}
 
 

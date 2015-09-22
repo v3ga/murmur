@@ -90,6 +90,8 @@ Device::Device(string id, int nbLEDs, float distLEDs)
 	m_soundInputMute = false;
 	
 	m_volHistoryPingTh = 0.5;
+	
+	m_bGenerative = true;
 }
 
 //--------------------------------------------------------------
@@ -345,6 +347,28 @@ void Device::setSoundInputVolHistoryThOSC(float th)
 {
     m_volHistoryTh = th;
 }
+
+//--------------------------------------------------------------
+void Device::setGenerative(bool is)
+{
+	m_bGenerative = is;
+
+	if (m_isSendMessagesOSC == false) return;
+
+    ofxOscMessage m;
+	m.setAddress( OSC_ADDRESS_SET_DEVICE_PROP );
+    m.addStringArg(m_id);
+    m.addStringArg("enableGenerative");
+	m.addIntArg( is ? 1 : 0);
+    m_oscSender.sendMessage(m);
+}
+
+//--------------------------------------------------------------
+void Device::setGenerativeOSC(bool is)
+{
+	m_bGenerative = is;
+}
+
 
 //--------------------------------------------------------------
 void Device::turnoff()
@@ -1066,6 +1090,15 @@ void Device::loadXMLPing(ofxXmlSettings& settings)
 }
 
 //--------------------------------------------------------------
+void Device::loadXMLGenerative(ofxXmlSettings& settings)
+{
+	int generative = settings.getValue("device:enableGenerative", 			1);
+	setGenerative(generative>0?true:false);
+}
+
+
+
+//--------------------------------------------------------------
 void Device::loadXMLData(ofxXmlSettings& settings)
 {
 	loadXMLSoundInput(settings);
@@ -1074,6 +1107,7 @@ void Device::loadXMLData(ofxXmlSettings& settings)
 	loadXMLSoundOutput(settings);
 	loadXMLPackets(settings);
 	loadXMLPing(settings);
+	loadXMLGenerative(settings);
 }
 
 //--------------------------------------------------------------
@@ -1144,6 +1178,7 @@ void Device::saveXML(string dir)
         settings.popTag();
 
 
+    settings.addValue("enableGenerative", 	isGenerative() ? 1 : 0);
 
 
     settings.addValue("enableStandby", 		getEnableStandbyMode() ? 1 : 0);

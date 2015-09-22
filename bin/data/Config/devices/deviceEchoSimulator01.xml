@@ -2,7 +2,7 @@
     <soundInput>
         <useRawVol>0</useRawVol>
         <mute>0</mute>
-        <volMax>0.049370077</volMax>
+        <volMax>0.084920004</volMax>
         <volMaxMax>0.189999998</volMaxMax>
         <volHistoryNb>64.000000000</volHistoryNb>
         <volHistoryTh>0.142741933</volHistoryTh>
@@ -13,8 +13,8 @@
     <color>
         <enable>1</enable>
         <colorMode_manual_hsb>
-            <hue>15.130000114</hue>
-            <saturation>252.976196289</saturation>
+            <hue>0.000000000</hue>
+            <saturation>214.523803711</saturation>
         </colorMode_manual_hsb>
     </color>
     <packets>
@@ -23,6 +23,7 @@
     <ping>
         <value>0.500000000</value>
     </ping>
+    <enableGenerative>1</enableGenerative>
     <enableStandby>0</enableStandby>
     <timeStandby>5.000000000</timeStandby>
     <sampleVolStandby>0.790322602</sampleVolStandby>

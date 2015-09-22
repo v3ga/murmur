@@ -148,6 +148,7 @@ class Device
 		void				loadXMLPackets		(ofxXmlSettings&);
 		virtual	void		loadXMLData			(ofxXmlSettings&);
 		void 				loadXMLPing			(ofxXmlSettings&);
+		void 				loadXMLGenerative	(ofxXmlSettings&);
 
  
         // Attach point (used only on server side)
@@ -230,6 +231,13 @@ class Device
         float               m_soundInputVolEmpiricalMaxMax;
 		bool				m_soundInputUseRawVol;
 		bool				m_soundInputMute;
+ 
+		// Mute graphics
+		// > only used in software
+		bool				m_bGenerative;
+		void				setGenerative				(bool is);
+		void				setGenerativeOSC			(bool is);
+		bool				isGenerative				(){return m_bGenerative;}
         
         // Interface
         virtual void        update(float dt);

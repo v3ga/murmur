@@ -151,6 +151,12 @@ void oscReceiver::update()
 						int value = m_oscMessage.getArgAsInt32(indexArg++);
 						pDevice->reversePacketsDirOSC(value>0 ? true : false);
 					}
+                    else
+                    if (propName == "enableGenerative")
+					{
+						int value = m_oscMessage.getArgAsInt32(indexArg++);
+						pDevice->setGenerativeOSC(value>0 ? true : false);
+					}
 
                 }
             }
@@ -176,8 +182,10 @@ void oscReceiver::update()
 					// Get the surface of device and update animation
 					Surface* pSurface = Globals::instance()->mp_app->getSurfaceForDevice(pDevice);
 				
-					if (pSurface)
+					if (pSurface && pDevice->isGenerative())
+					{
 						pSurface->onNewPacket( pDevice->getLastPacket(), pDevice->m_id );
+					}
 				}
 			}
             else
