@@ -23,6 +23,8 @@ class toolMidi : public tool
 
 		void					show					(bool is);
 		void					setup					();
+		void					loadData				();
+		void					saveData				();
 		void					update					();
 		void					updateLayout			();
 		void					createControlsCustom	();
@@ -30,6 +32,7 @@ class toolMidi : public tool
 		void					handleEventsMidiInterface(ofxUIEventArgs& e);
 		void					handleEventsTimecode	(ofxUIEventArgs& e);
 		void					handleMTCMessage		(MTCEventArgs& e);
+ 
 
 
 		void					hideMidiInterfaces		();
@@ -41,7 +44,9 @@ class toolMidi : public tool
 	private:
 		int						getPortTimecode			(string s){return ofToInt(s);}
 		void					onPortTimecodeChanged	();
-	
+ 
+		string					getTimecodePathFile		();
+ 
 
 		vector<ofxMidiIn*>*		mp_midiIns;
 		vector<midiInterface*>	m_midiInterfaces;
@@ -49,6 +54,7 @@ class toolMidi : public tool
  
 		 ofxMTCReceiver			m_MTCReceiver;
 		 int					m_portTimecode;
+		 bool					m_bDriveTimeline;
 
 
  

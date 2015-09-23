@@ -45,6 +45,11 @@
 </Widget>
 <Widget>
     <Kind>17</Kind>
+    <Name>radarFF</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
     <Name>waves2.js</Name>
     <Value>0</Value>
 </Widget>

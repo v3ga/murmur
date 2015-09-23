@@ -23,7 +23,7 @@
     <ping>
         <value>0.500000000</value>
     </ping>
-    <enableGenerative>0</enableGenerative>
+    <enableGenerative>1</enableGenerative>
     <enableStandby>0</enableStandby>
     <timeStandby>5.000000000</timeStandby>
     <sampleVolStandby>0.349999994</sampleVolStandby>

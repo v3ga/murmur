@@ -77,6 +77,8 @@
 		F93043C11BB145C30081AD88 /* animationAgentsFF.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F93043BF1BB145C30081AD88 /* animationAgentsFF.cpp */; };
 		F93043C41BB145EA0081AD88 /* animationGridsFF.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F93043C21BB145EA0081AD88 /* animationGridsFF.cpp */; };
 		F93043C71BB146250081AD88 /* animationRadarFF.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F93043C51BB146250081AD88 /* animationRadarFF.cpp */; };
+		F93043CB1BB292010081AD88 /* RadarFFElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F93043C91BB292010081AD88 /* RadarFFElement.cpp */; };
+		F93043D11BB2A81C0081AD88 /* RadarFFElement_filled.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F93043CF1BB2A81C0081AD88 /* RadarFFElement_filled.cpp */; };
 		F931D6821BAAED370097E5AE /* ofxMTCReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F931D67F1BAAED370097E5AE /* ofxMTCReceiver.cpp */; };
 		F93407041906B69D003F4D97 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F93407031906B69C003F4D97 /* QTKit.framework */; };
 		F93407061906B6AD003F4D97 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F93407051906B6AD003F4D97 /* CoreVideo.framework */; };
@@ -484,6 +486,10 @@
 		F93043C31BB145EA0081AD88 /* animationGridsFF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = animationGridsFF.h; sourceTree = "<group>"; };
 		F93043C51BB146250081AD88 /* animationRadarFF.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animationRadarFF.cpp; sourceTree = "<group>"; };
 		F93043C61BB146250081AD88 /* animationRadarFF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = animationRadarFF.h; sourceTree = "<group>"; };
+		F93043C91BB292010081AD88 /* RadarFFElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RadarFFElement.cpp; sourceTree = "<group>"; };
+		F93043CA1BB292010081AD88 /* RadarFFElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadarFFElement.h; sourceTree = "<group>"; };
+		F93043CF1BB2A81C0081AD88 /* RadarFFElement_filled.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RadarFFElement_filled.cpp; sourceTree = "<group>"; };
+		F93043D01BB2A81C0081AD88 /* RadarFFElement_filled.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadarFFElement_filled.h; sourceTree = "<group>"; };
 		F931D67F1BAAED370097E5AE /* ofxMTCReceiver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxMTCReceiver.cpp; sourceTree = "<group>"; };
 		F931D6801BAAED370097E5AE /* ofxMTCReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMTCReceiver.h; sourceTree = "<group>"; };
 		F93407031906B69C003F4D97 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = ../../../../../../../../System/Library/Frameworks/QTKit.framework; sourceTree = "<group>"; };
@@ -1465,6 +1471,25 @@
 			path = src;
 			sourceTree = "<group>";
 		};
+		F93043C81BB291CE0081AD88 /* FF */ = {
+			isa = PBXGroup;
+			children = (
+				F93043BC1BB145880081AD88 /* animationLinesFF.cpp */,
+				F93043BD1BB145880081AD88 /* animationLinesFF.h */,
+				F93043BF1BB145C30081AD88 /* animationAgentsFF.cpp */,
+				F93043C01BB145C30081AD88 /* animationAgentsFF.h */,
+				F93043C21BB145EA0081AD88 /* animationGridsFF.cpp */,
+				F93043C31BB145EA0081AD88 /* animationGridsFF.h */,
+				F93043C51BB146250081AD88 /* animationRadarFF.cpp */,
+				F93043C61BB146250081AD88 /* animationRadarFF.h */,
+				F93043C91BB292010081AD88 /* RadarFFElement.cpp */,
+				F93043CA1BB292010081AD88 /* RadarFFElement.h */,
+				F93043CF1BB2A81C0081AD88 /* RadarFFElement_filled.cpp */,
+				F93043D01BB2A81C0081AD88 /* RadarFFElement_filled.h */,
+			);
+			name = FF;
+			sourceTree = "<group>";
+		};
 		F931D67C1BAAED370097E5AE /* ofxMTCReceiver */ = {
 			isa = PBXGroup;
 			children = (
@@ -2158,6 +2183,7 @@
 		F987123116C057330069F12A /* Animations */ = {
 			isa = PBXGroup;
 			children = (
+				F93043C81BB291CE0081AD88 /* FF */,
 				F98711CB16C053F50069F12A /* animations.h */,
 				F98711CA16C053F50069F12A /* animations.cpp */,
 				F9BC6AF5174512E000633C5C /* animationsFactory.h */,
@@ -2182,14 +2208,6 @@
 				F9DC1BC41B55377B006BEA63 /* animationWaves.h */,
 				F9882D901BA1C10800B81023 /* animationVideo.cpp */,
 				F9882D911BA1C10800B81023 /* animationVideo.h */,
-				F93043BC1BB145880081AD88 /* animationLinesFF.cpp */,
-				F93043BD1BB145880081AD88 /* animationLinesFF.h */,
-				F93043BF1BB145C30081AD88 /* animationAgentsFF.cpp */,
-				F93043C01BB145C30081AD88 /* animationAgentsFF.h */,
-				F93043C21BB145EA0081AD88 /* animationGridsFF.cpp */,
-				F93043C31BB145EA0081AD88 /* animationGridsFF.h */,
-				F93043C51BB146250081AD88 /* animationRadarFF.cpp */,
-				F93043C61BB146250081AD88 /* animationRadarFF.h */,
 			);
 			name = Animations;
 			sourceTree = "<group>";
@@ -3678,6 +3696,7 @@
 				F931D6821BAAED370097E5AE /* ofxMTCReceiver.cpp in Sources */,
 				F9B803761B31926A00F12500 /* ofxRtMidiOut.cpp in Sources */,
 				F96B928D173692C8007B1CFF /* silhouetteNode.cpp in Sources */,
+				F93043D11BB2A81C0081AD88 /* RadarFFElement_filled.cpp in Sources */,
 				F9876AD1173AF9B900DBE7C6 /* ofxLPD8806.cpp in Sources */,
 				F9DE82F21B39FA7300F5A086 /* ofxTLTrack.cpp in Sources */,
 				F92BC4BD189F094600CA158A /* ofxUIRangeSlider.cpp in Sources */,
@@ -3761,6 +3780,7 @@
 				F9BC6C78174A621700633C5C /* b2Joint.cpp in Sources */,
 				F9BC6C79174A621700633C5C /* b2LineJoint.cpp in Sources */,
 				F9DE82EF1B39FA7300F5A086 /* ofxTLPageTabs.cpp in Sources */,
+				F93043CB1BB292010081AD88 /* RadarFFElement.cpp in Sources */,
 				F9AB0C021940FBF00020D78A /* toolSurfaces.cpp in Sources */,
 				F9BC6C7A174A621700633C5C /* b2MouseJoint.cpp in Sources */,
 				F935C2721A1C9245001EBD51 /* deviceEcho.cpp in Sources */,

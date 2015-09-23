@@ -19,6 +19,7 @@
 #include "animationComposition.h"
 #include "animationWaves.h"
 #include "animationVideo.h"
+#include "animationRadarFF.h"
 
 Animation* AnimationsFactory::create(string name)
 {
@@ -47,6 +48,8 @@ Animation* AnimationsFactory::create(string name)
         pAnimation = new AnimationWaves(name);
     else if (name == "video")
         pAnimation = new AnimationVideo(name);
+    else if (name == "radarFF")
+        pAnimation = new AnimationRadarFF(name);
  
     return pAnimation;
 }

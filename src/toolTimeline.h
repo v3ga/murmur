@@ -36,9 +36,7 @@ class toolTimeline : public tool, public midiInterface
 		void					loadMidiSettings		(){midiInterface::setClassProperties(&m_properties) ; midiInterface::loadMidiSettings();}
 		void					onPlayPause				(bool& value);
 		void					onStop					(bool& value);
-
-
-
+ 
 
 	 	classProperties			m_properties;
 		ofxTimeline				m_timeline;

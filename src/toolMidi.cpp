@@ -9,6 +9,7 @@
 #include "toolMidi.h"
 #include "ofxMidi.h"
 #include "midiInterface.h"
+#include "toolTimeline.h"
 #include "ofAppLog.h"
 
 int toolMidi::sm_timecodeMillis = 0;
@@ -22,6 +23,8 @@ toolMidi::toolMidi(toolManager* parent) : tool("Midi", parent)
 	mp_midiInterfaceCurrent			= 0;
 	
 	mp_lblTimecodeValue				= 0;
+	
+	m_bDriveTimeline				= false;
 }
 
 //--------------------------------------------------------------
@@ -140,6 +143,7 @@ void toolMidi::createControlsCustom()
 		mp_canvasTimecode->addWidgetDown( new ofxUILabel(100, "Value",OFX_UI_FONT_SMALL) );
 		mp_lblTimecodeValue = new ofxUILabel(100, "1234",OFX_UI_FONT_SMALL);
 	    mp_canvasTimecode->addWidgetRight( mp_lblTimecodeValue );
+
 		
 
 		m_portTimecode = getPortTimecode( pTePortTimecode->getTextString() );
@@ -201,6 +205,39 @@ void toolMidi::show(bool is)
 void toolMidi::setup()
 {
 	ofAddListener( m_MTCReceiver.MTCEvent, this, &toolMidi::handleMTCMessage  );
+}
+
+//--------------------------------------------------------------
+void toolMidi::loadData()
+{
+	tool::loadData();
+
+	ofxXmlSettings timecode;
+	if ( timecode.loadFile(getTimecodePathFile()) )
+	{
+		m_portTimecode = timecode.getValue("timecode:port", 0);
+	}
+	
+}
+
+//--------------------------------------------------------------
+void toolMidi::saveData()
+{
+	tool::saveData();
+
+	ofxXmlSettings timecode;
+	timecode.addTag("timecode");
+	timecode.pushTag("timecode");
+	
+	timecode.addValue("port", m_portTimecode);
+
+	
+	if (timecode.saveFile(getTimecodePathFile()))
+	{
+		OFAPPLOG->println("saved "+getTimecodePathFile());
+	}
+	
+	OFAPPLOG->end();
 }
 
 //--------------------------------------------------------------
@@ -320,6 +357,7 @@ void toolMidi::handleEventsTimecode(ofxUIEventArgs& e)
 	  if (pTe->getInputTriggerType() == OFX_UI_TEXTINPUT_ON_ENTER)
 	  {
 		m_portTimecode = getPortTimecode( pTe->getTextString() );
+		pTe->setTextString( ofToString(m_portTimecode) );
 	  	onPortTimecodeChanged();
 	  }
    }
@@ -351,6 +389,12 @@ void toolMidi::onPortTimecodeChanged()
 	m_MTCReceiver.close();
 	m_MTCReceiver.init(m_portTimecode);
 	OFAPPLOG->end();
+}
+
+//--------------------------------------------------------------
+string toolMidi::getTimecodePathFile()
+{
+   return mp_toolManager->m_relPathData + "/" + "Midi_timecode.xml";
 }
 
 

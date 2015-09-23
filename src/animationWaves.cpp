@@ -296,6 +296,8 @@ void AnimationWaves::createUICustom()
 //--------------------------------------------------------------
 void AnimationWaves::VM_update(float dt)
 {
+	updateUIVolume();
+
 	m_wavesDeviceIt = m_wavesDevice.begin();
 	for ( ; m_wavesDeviceIt != m_wavesDevice.end(); ++m_wavesDeviceIt)
 	{
@@ -333,6 +335,9 @@ void AnimationWaves::guiEvent(ofxUIEventArgs &e)
 //--------------------------------------------------------------
 void AnimationWaves::onNewPacket(DevicePacket* pDevicePacket, string deviceId, float x, float y)
 {
+	accumulateVolume(pDevicePacket->m_volume, deviceId);
+
+
 	if (m_wavesDevice.find(deviceId) == m_wavesDevice.end())
 	{
 		m_wavesDevice[deviceId] = new WaveManager(this);
