@@ -7,11 +7,14 @@
 //
 
 #include "RadarFFElement.h"
+#include "animationRadarFF.h"
 
 //--------------------------------------------------------------
-RadarFFElement::RadarFFElement(float x, float y)
+RadarFFElement::RadarFFElement(AnimationRadarFF* pParent, float x, float y)
 {
-	m_type = TYPE_SIMPLE;
+	mp_parent = pParent;
+
+	m_age = 0.0f;
 
 	m_color.set(255);
 	
@@ -25,6 +28,8 @@ RadarFFElement::RadarFFElement(float x, float y)
 	m_angleBegin = 0.0f;
 	m_angleEnd = 360.0f;
 	
+	m_rotSpeed = ofRandom(-20,20);
+	
 	
 }
 
@@ -36,7 +41,13 @@ RadarFFElement::~RadarFFElement()
 //--------------------------------------------------------------
 void RadarFFElement::update(float dt)
 {
+	m_age += dt;
 	m_radius += m_radiusSpeed*dt;
+	m_rot += m_rotSpeed*dt;
+	if (m_age >= 0.9f*mp_parent->m_ageMax){
+		m_color.a = (unsigned char)(255.0f*(m_age-0.9f*mp_parent->m_ageMax)/(0.1f*mp_parent->m_ageMax));
+	}
+
 	updateCustom(dt);
 }
 
@@ -51,12 +62,9 @@ void RadarFFElement::updateCustom(float dt)
 //--------------------------------------------------------------
 void RadarFFElement::draw()
 {
-	if (m_type == TYPE_SIMPLE)
-	{
-		ofSetColor(m_color); // TEMP , adjust to device color
-		//ofEllipse(m_pos.x, m_pos.y, 2.0*m_radius, 2.0*m_radius);
-		m_arc.draw();
-	}
+   ofSetColor(m_color); // TEMP , adjust to device color
+   //ofEllipse(m_pos.x, m_pos.y, 2.0*m_radius, 2.0*m_radius);
+   m_arc.draw();
 }
 
 

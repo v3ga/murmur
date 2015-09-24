@@ -12,10 +12,11 @@
 class RadarFFElement_filled : public RadarFFElement
 {
 	public:
-	   	RadarFFElement_filled	(float x, float y);
+	   	RadarFFElement_filled	(AnimationRadarFF* pParent, float x, float y);
+	   	~RadarFFElement_filled	();
 
 		void			updateCustom		(float dt);
 		void 			draw				();
 
-		ofMesh			m_mesh;
+		ofVboMesh		m_mesh;
 };

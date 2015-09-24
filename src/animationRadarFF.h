@@ -25,10 +25,19 @@ class AnimationRadarFF : public Animation
 
 		virtual	void			onVolumAccumEvent		(string deviceId);
 
+ 		float					m_ageMax;
+
 	private:
 		vector<RadarFFElement*> m_elements;
  
 		float					m_w,m_h;
  
-		ofPath	path;
+ 		float					m_speed;
+ 
+		float					m_filled_radiusWidth;
+		float					m_filled_bradiusRandom;
+ 
+		float					m_dotted_radiusWidth;
+
+		float					m_radial_radiusWidth;
 };

@@ -9,24 +9,18 @@
 #pragma once
 #include "ofMain.h"
 
+class AnimationRadarFF;
 class RadarFFElement
 {
 	public:
-	   RadarFFElement			(float x, float y);
-	   ~RadarFFElement			();
+	   RadarFFElement			(AnimationRadarFF* pParent, float x, float y);
+	   virtual ~RadarFFElement	();
+ 
+	   // Animation parent
+	   AnimationRadarFF*		mp_parent;
 	
-		// Type
- 		int						m_type;
-		enum{
-			TYPE_SIMPLE			= 0,
-			TYPE_FILLED			= 1,
-			TYPE_DOTTED			= 2,
-			TYPE_RADIAL			= 3
-		};
- 
- 
-		// Type data
-		ofPolyline				m_arc;
+		// Age
+		float					m_age;
 	
 		// Color
 		ofColor					m_color;
@@ -46,6 +40,11 @@ class RadarFFElement
 
 		// Rotation around z-axis
 		float					m_rot;
+		float					m_rotSpeed;
+ 
+		// Struct. to compute points along arc
+		ofPolyline				m_arc;
+
  
 		virtual void			draw					();
 		virtual void			update					(float dt);

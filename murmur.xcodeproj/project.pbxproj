@@ -79,6 +79,8 @@
 		F93043C71BB146250081AD88 /* animationRadarFF.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F93043C51BB146250081AD88 /* animationRadarFF.cpp */; };
 		F93043CB1BB292010081AD88 /* RadarFFElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F93043C91BB292010081AD88 /* RadarFFElement.cpp */; };
 		F93043D11BB2A81C0081AD88 /* RadarFFElement_filled.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F93043CF1BB2A81C0081AD88 /* RadarFFElement_filled.cpp */; };
+		F93043D81BB2F7E60081AD88 /* RadarFFElement_dotted.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F93043D61BB2F7E60081AD88 /* RadarFFElement_dotted.cpp */; };
+		F93043DB1BB302A10081AD88 /* RadarFFElement_radial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F93043D91BB302A10081AD88 /* RadarFFElement_radial.cpp */; };
 		F931D6821BAAED370097E5AE /* ofxMTCReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F931D67F1BAAED370097E5AE /* ofxMTCReceiver.cpp */; };
 		F93407041906B69D003F4D97 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F93407031906B69C003F4D97 /* QTKit.framework */; };
 		F93407061906B6AD003F4D97 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F93407051906B6AD003F4D97 /* CoreVideo.framework */; };
@@ -490,6 +492,10 @@
 		F93043CA1BB292010081AD88 /* RadarFFElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadarFFElement.h; sourceTree = "<group>"; };
 		F93043CF1BB2A81C0081AD88 /* RadarFFElement_filled.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RadarFFElement_filled.cpp; sourceTree = "<group>"; };
 		F93043D01BB2A81C0081AD88 /* RadarFFElement_filled.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadarFFElement_filled.h; sourceTree = "<group>"; };
+		F93043D61BB2F7E60081AD88 /* RadarFFElement_dotted.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RadarFFElement_dotted.cpp; sourceTree = "<group>"; };
+		F93043D71BB2F7E60081AD88 /* RadarFFElement_dotted.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadarFFElement_dotted.h; sourceTree = "<group>"; };
+		F93043D91BB302A10081AD88 /* RadarFFElement_radial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RadarFFElement_radial.cpp; sourceTree = "<group>"; };
+		F93043DA1BB302A10081AD88 /* RadarFFElement_radial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadarFFElement_radial.h; sourceTree = "<group>"; };
 		F931D67F1BAAED370097E5AE /* ofxMTCReceiver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxMTCReceiver.cpp; sourceTree = "<group>"; };
 		F931D6801BAAED370097E5AE /* ofxMTCReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMTCReceiver.h; sourceTree = "<group>"; };
 		F93407031906B69C003F4D97 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = ../../../../../../../../System/Library/Frameworks/QTKit.framework; sourceTree = "<group>"; };
@@ -1486,6 +1492,10 @@
 				F93043CA1BB292010081AD88 /* RadarFFElement.h */,
 				F93043CF1BB2A81C0081AD88 /* RadarFFElement_filled.cpp */,
 				F93043D01BB2A81C0081AD88 /* RadarFFElement_filled.h */,
+				F93043D61BB2F7E60081AD88 /* RadarFFElement_dotted.cpp */,
+				F93043D71BB2F7E60081AD88 /* RadarFFElement_dotted.h */,
+				F93043D91BB302A10081AD88 /* RadarFFElement_radial.cpp */,
+				F93043DA1BB302A10081AD88 /* RadarFFElement_radial.h */,
 			);
 			name = FF;
 			sourceTree = "<group>";
@@ -3578,6 +3588,7 @@
 				F9DE82E11B39FA7300F5A086 /* ofxTLCameraTrack.cpp in Sources */,
 				F9882DB61BA20B2100B81023 /* HapSupport.c in Sources */,
 				F941397D1A77CB830047A441 /* ofxMultiGLFWWindow.cpp in Sources */,
+				F93043D81BB2F7E60081AD88 /* RadarFFElement_dotted.cpp in Sources */,
 				F951EBFD195AC12300056B2A /* ofxCvHaarFinder.cpp in Sources */,
 				F98711CE16C053F50069F12A /* animations.cpp in Sources */,
 				F92BC4C3189F094600CA158A /* ofxUISpacer.cpp in Sources */,
@@ -3673,6 +3684,7 @@
 				F92BC4AD189F094600CA158A /* ofxUIFPS.cpp in Sources */,
 				F96B924E172EB837007B1CFF /* scene.cpp in Sources */,
 				F951EC09196359E600056B2A /* quadWarping.cpp in Sources */,
+				F93043DB1BB302A10081AD88 /* RadarFFElement_radial.cpp in Sources */,
 				F96B9251172EB8A0007B1CFF /* sceneVisualisation.cpp in Sources */,
 				F96B9254172EBE17007B1CFF /* deviceNode.cpp in Sources */,
 				F951EB78195AC0D800056B2A /* ofxQuadWarp.cpp in Sources */,
