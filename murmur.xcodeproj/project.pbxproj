@@ -255,6 +255,7 @@
 		F9BC6CFB174AC6B700633C5C /* ofxFFTLive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9BC6CF2174AC6B700633C5C /* ofxFFTLive.cpp */; };
 		F9BC6D1D174DEF5C00633C5C /* volumeAccum.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9BC6D1B174DEF5C00633C5C /* volumeAccum.cpp */; };
 		F9C38AFC1885AAF100219152 /* threadRasp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9C38AFA1885AAF100219152 /* threadRasp.cpp */; };
+		F9D992831BB5448A004CAFD2 /* LineFFElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9D992811BB5448A004CAFD2 /* LineFFElement.cpp */; };
 		F9DC1BC51B55377B006BEA63 /* animationWaves.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9DC1BC31B55377B006BEA63 /* animationWaves.cpp */; };
 		F9DC7C2219CA16F500682D1A /* ofxJSSoundPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9DC7C1C19CA16F500682D1A /* ofxJSSoundPlayer.cpp */; };
 		F9DC7C2319CA16F500682D1A /* ofxJSVideoGrabber.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9DC7C1E19CA16F500682D1A /* ofxJSVideoGrabber.cpp */; };
@@ -1072,6 +1073,8 @@
 		F9BC6D1C174DEF5C00633C5C /* volumeAccum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = volumeAccum.h; sourceTree = "<group>"; };
 		F9C38AFA1885AAF100219152 /* threadRasp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = threadRasp.cpp; sourceTree = "<group>"; };
 		F9C38AFB1885AAF100219152 /* threadRasp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = threadRasp.h; sourceTree = "<group>"; };
+		F9D992811BB5448A004CAFD2 /* LineFFElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LineFFElement.cpp; sourceTree = "<group>"; };
+		F9D992821BB5448A004CAFD2 /* LineFFElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineFFElement.h; sourceTree = "<group>"; };
 		F9DC1BC31B55377B006BEA63 /* animationWaves.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animationWaves.cpp; sourceTree = "<group>"; };
 		F9DC1BC41B55377B006BEA63 /* animationWaves.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = animationWaves.h; sourceTree = "<group>"; };
 		F9DC7C1C19CA16F500682D1A /* ofxJSSoundPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxJSSoundPlayer.cpp; sourceTree = "<group>"; };
@@ -1480,22 +1483,12 @@
 		F93043C81BB291CE0081AD88 /* FF */ = {
 			isa = PBXGroup;
 			children = (
-				F93043BC1BB145880081AD88 /* animationLinesFF.cpp */,
-				F93043BD1BB145880081AD88 /* animationLinesFF.h */,
+				F9D992801BB5446D004CAFD2 /* Lines */,
+				F9D9927F1BB54379004CAFD2 /* Radars */,
 				F93043BF1BB145C30081AD88 /* animationAgentsFF.cpp */,
 				F93043C01BB145C30081AD88 /* animationAgentsFF.h */,
 				F93043C21BB145EA0081AD88 /* animationGridsFF.cpp */,
 				F93043C31BB145EA0081AD88 /* animationGridsFF.h */,
-				F93043C51BB146250081AD88 /* animationRadarFF.cpp */,
-				F93043C61BB146250081AD88 /* animationRadarFF.h */,
-				F93043C91BB292010081AD88 /* RadarFFElement.cpp */,
-				F93043CA1BB292010081AD88 /* RadarFFElement.h */,
-				F93043CF1BB2A81C0081AD88 /* RadarFFElement_filled.cpp */,
-				F93043D01BB2A81C0081AD88 /* RadarFFElement_filled.h */,
-				F93043D61BB2F7E60081AD88 /* RadarFFElement_dotted.cpp */,
-				F93043D71BB2F7E60081AD88 /* RadarFFElement_dotted.h */,
-				F93043D91BB302A10081AD88 /* RadarFFElement_radial.cpp */,
-				F93043DA1BB302A10081AD88 /* RadarFFElement_radial.h */,
 			);
 			name = FF;
 			sourceTree = "<group>";
@@ -3032,6 +3025,34 @@
 			name = Utils;
 			sourceTree = "<group>";
 		};
+		F9D9927F1BB54379004CAFD2 /* Radars */ = {
+			isa = PBXGroup;
+			children = (
+				F93043C51BB146250081AD88 /* animationRadarFF.cpp */,
+				F93043C61BB146250081AD88 /* animationRadarFF.h */,
+				F93043C91BB292010081AD88 /* RadarFFElement.cpp */,
+				F93043CA1BB292010081AD88 /* RadarFFElement.h */,
+				F93043CF1BB2A81C0081AD88 /* RadarFFElement_filled.cpp */,
+				F93043D01BB2A81C0081AD88 /* RadarFFElement_filled.h */,
+				F93043D61BB2F7E60081AD88 /* RadarFFElement_dotted.cpp */,
+				F93043D71BB2F7E60081AD88 /* RadarFFElement_dotted.h */,
+				F93043D91BB302A10081AD88 /* RadarFFElement_radial.cpp */,
+				F93043DA1BB302A10081AD88 /* RadarFFElement_radial.h */,
+			);
+			name = Radars;
+			sourceTree = "<group>";
+		};
+		F9D992801BB5446D004CAFD2 /* Lines */ = {
+			isa = PBXGroup;
+			children = (
+				F93043BC1BB145880081AD88 /* animationLinesFF.cpp */,
+				F93043BD1BB145880081AD88 /* animationLinesFF.h */,
+				F9D992811BB5448A004CAFD2 /* LineFFElement.cpp */,
+				F9D992821BB5448A004CAFD2 /* LineFFElement.h */,
+			);
+			name = Lines;
+			sourceTree = "<group>";
+		};
 		F9DC7C2E19CA174300682D1A /* ofxSoundPlayerMultiOutput */ = {
 			isa = PBXGroup;
 			children = (
@@ -3625,6 +3646,7 @@
 				F9AB0BF31940FB0D0020D78A /* toolNetwork.cpp in Sources */,
 				F99930F7171989EB00272085 /* ofxEasingBack.cpp in Sources */,
 				F94AF64119D498790026A5A3 /* Boid.cpp in Sources */,
+				F9D992831BB5448A004CAFD2 /* LineFFElement.cpp in Sources */,
 				F99930F8171989EB00272085 /* ofxEasingBounce.cpp in Sources */,
 				F9DE82F41B39FA7300F5A086 /* ofxTLVideoThumb.cpp in Sources */,
 				F92BC4C7189F094600CA158A /* ofxUITextArea.cpp in Sources */,

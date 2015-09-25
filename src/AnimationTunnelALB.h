@@ -13,7 +13,7 @@
 class TunnelElementALB
 {
     public:
-        TunnelElementALB           (ofMesh* pMesh, ofVec3f pos, ofVec3f dir, float dirSpeed, int leftOrRight);
+        TunnelElementALB        (ofMesh* pMesh, ofVec3f pos, ofVec3f dir, float dirSpeed, int leftOrRight);
     
 		void					setRotation	(ofMatrix4x4& m);
 		void					update		(float dt);

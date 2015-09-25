@@ -20,6 +20,7 @@
 #include "animationWaves.h"
 #include "animationVideo.h"
 #include "animationRadarFF.h"
+#include "animationLinesFF.h"
 
 Animation* AnimationsFactory::create(string name)
 {
@@ -50,6 +51,8 @@ Animation* AnimationsFactory::create(string name)
         pAnimation = new AnimationVideo(name);
     else if (name == "radarFF")
         pAnimation = new AnimationRadarFF(name);
+    else if (name == "linesFF")
+        pAnimation = new AnimationLinesFF(name);
  
     return pAnimation;
 }

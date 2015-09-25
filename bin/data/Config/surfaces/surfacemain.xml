@@ -1,5 +1,6 @@
 <surface id="main">
     <animations type="cpp">
+<!--
         <animation>waves</animation>
   		<animation>gravitatory</animation>
         <animation>shaderWave</animation>
@@ -7,9 +8,9 @@
         <animation>box2DCircles</animation>
         <animation>video</animation>
         <animation>radarFF</animation>
-<!--
         <animation>tunnelALB</animation>
 -->
+        <animation>linesFF</animation>
     </animations>
 
     <animations type="js" folder="edimbourgh">
