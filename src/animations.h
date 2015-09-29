@@ -96,7 +96,6 @@ class Animation : public midiInterface
 		virtual	void			loadMidiSettings		();
 		virtual	void			handleMidiMessages		();
 		virtual void 			newMidiMessage			(ofxMidiMessage& eventArgs);
- 
 
         // UI
         ofxUICanvas*            mp_UIcanvas;
@@ -104,11 +103,15 @@ class Animation : public midiInterface
 
 		ofxUIMovingGraphThreshold* mp_UIVolumeTh;
 		ofxUILabel*				 mp_lblVolValues;
+ 
+		ofxUITextInput*			mp_teConfigName;
 
         virtual void            setUICanvas             (ofxUICanvas* p){mp_UIcanvas=p;}
 		void					addUISlider				(classProperty_float*);
+		void					addUISlider				(classProperty_int*);
 		void					addUItoggle				(classProperty_bool*);
         virtual void            createUI                ();
+		virtual	void			createUIConfiguration	();
 		virtual	void			createUIVolume			();
 		virtual	void			createUISound			();
         virtual void            createUICustom          (){};
@@ -120,11 +123,24 @@ class Animation : public midiInterface
 				void			updateUIVolume			();
 
 
+		// Default properties
         virtual void            saveProperties          (string id);
         virtual void            loadProperties          (string id);
         string                  getPropertiesFilename   (string id, bool isExtension=true); // id from surface
 
+		// Properties saved as configuration
+ 		vector<string>			m_configurations;
+ 				string			m_configurationCurrent;
+				void			createDirConfiguration	();
+		virtual	void			populateConfigurations	();
+		virtual	void			saveConfiguration		(string filename);
+		virtual	void			loadConfiguration		(string filename);
+		virtual void			loadConfigurationPrev	();
+		virtual	void			loadConfigurationNext	();
+				int				getConfigurationIndex	(string filename);
+ 
 
+		// Class properties
 		classProperties			m_properties;
  
         // SUPER DIRTY

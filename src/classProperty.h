@@ -57,6 +57,27 @@ class classProperty_float : public classProperty
 		ofEvent<float>	onValueChanged; // not sure about this
 };
 
+//--------------------------------------------------------------
+class classProperty_int : public classProperty
+{
+	public:
+		classProperty_int(string name, int min, int max, int* pValue);
+		classProperty_int(string name, int min, int max);
+		~classProperty_int();
+
+		void	setValueFromMidiMessage	(ofxMidiMessage& );
+		void	enableEvents			(bool is=true){m_isEnableEvents=is;}
+
+		int*			mp_variable;
+		int				m_min;
+		int				m_max;
+ 
+		bool			m_ownsVariable;
+		bool			m_isEnableEvents;
+ 
+		ofEvent<int>	onValueChanged; // not sure about this
+};
+
 
 //--------------------------------------------------------------
 class classProperty_bool : public classProperty
@@ -92,6 +113,7 @@ class classProperties
 		void					add						(classProperty*);
 		classProperty*			get						(string name);
 		classProperty_float*	getFloat				(string name);
+		classProperty_int*		getInt					(string name);
 		classProperty_bool* 	getBool					(string name);
 
 	 	map<string, classProperty*> m_list;

@@ -1,0 +1,14 @@
+<positions>
+    <element name="deviceEchoSimulator01.color">
+        <x>10.000000000</x>
+        <y>746.000000000</y>
+        <width>1004.000000000</width>
+        <height>50.000000000</height>
+    </element>
+    <element name="deviceEchoSimulator02.color">
+        <x>10.000000000</x>
+        <y>820.000000000</y>
+        <width>1004.000000000</width>
+        <height>50.000000000</height>
+    </element>
+</positions>

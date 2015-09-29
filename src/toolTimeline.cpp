@@ -138,6 +138,18 @@ void toolTimeline::setup()
 	{
 		m_bAutoplay = false;
 	}
+	
+	
+	// Script
+	// Load globals
+	ofxJSScript* pScript = ofxJSLoadFromData("Scripts/timeline.js", "timeline"); // "exampleId" is used for error reporting
+	if (pScript){
+		bool evalOk = ofxJSEval(pScript);
+		if (evalOk){
+		}
+	}
+	
+	
 	OFAPPLOG->end();
 }
 
@@ -168,8 +180,15 @@ void toolTimeline::createTimeline()
 	m_timeline.setup();
 	m_timeline.setWorkingFolder(m_timelineCurrentFolder);
 	m_timeline.setAutosave(false);
+
+
 	m_timeline.addFlags("setAnim");
+	m_timeline.addFlags("scripts");
 	m_timeline.loadTracksFromFolder(m_timelineCurrentFolder);
+
+	m_timeline.addPage("Devices");
+	
+	
 
 	// Load extra data
 	string extraDataFilename = m_timelineCurrentFolder+"infos.xml";
@@ -197,10 +216,10 @@ void toolTimeline::update()
 		{
 			string ofxTLTrackName = pDeviceManager->m_listDevices[i]->m_id+".color";
 			ofxTLTrack* pDeviceColorTrack = m_timeline.getTrack( ofxTLTrackName );
-			
 
 			if (pDeviceColorTrack == 0)
 			{
+				m_timeline.setCurrentPage("Devices");
 				pDeviceColorTrack = m_timeline.addColors(ofxTLTrackName);
 				m_timeline.loadTracksFromFolder(m_timelineCurrentFolder);
 
@@ -210,6 +229,7 @@ void toolTimeline::update()
 			{
 				ofColor colorDevice = ((ofxTLColorTrack*)pDeviceColorTrack)->getColor();
 				pDeviceManager->m_listDevices[i]->setColorHueSaturation( colorDevice.getHue(), colorDevice.getSaturation());
+			//pDeviceColorTrack->setDrawRect(ofRectangle(0,0, 200, 50));
 			}
 		}
 	}
@@ -349,6 +369,13 @@ void toolTimeline::bangFired(ofxTLBangEventArgs& args)
 			else
 				animManager.M_setAnimation( animParts[0] );
 		}
+	}
+	else if (trackName == "scripts")
+	{
+		string jsFunction = "timeline_"+args.flag;
+		// Simply call the function with timeline prefixed
+		ofxJSValue retVal;
+		ofxJSCallFunctionNameGlobal_NoArgs(jsFunction.c_str(),retVal);
 	}
 }
 

@@ -21,6 +21,8 @@ toolAnimations::toolAnimations(toolManager* parent) : tool("Animations", parent)
 	
 	m_listLogJsMax		= 17;
 	m_isEnableDrawCallback = true;
+	
+	mp_animationCurrent	= 0;
 }
 
 
@@ -28,7 +30,10 @@ toolAnimations::toolAnimations(toolManager* parent) : tool("Animations", parent)
 void toolAnimations::setup()
 {
 	OFAPPLOG->begin("toolAnimations::setup()");
+	
+
 	showAnimationCurrentProperties();
+	applyAnimationCurrentConfiguration();
 
 	OFAPPLOG->println("- setting log for JS");
 	ofxJSPrintCallback((void*)this, toolAnimations::logJS);
@@ -266,6 +271,23 @@ bool toolAnimations::isSequenceActive()
 //--------------------------------------------------------------
 bool toolAnimations::keyPressed(int key)
 {
+	if (key == OF_KEY_UP)
+	{
+		if (mp_animationCurrent)
+		{
+			mp_animationCurrent->loadConfigurationPrev();
+			return true;
+		}
+	}
+	else if (key == OF_KEY_DOWN)
+	{
+		if (mp_animationCurrent)
+		{
+			mp_animationCurrent->loadConfigurationNext();
+			return true;
+		}
+	}
+
 	return false;
 }
 
@@ -274,6 +296,9 @@ void toolAnimations::showAnimationPropsAll(bool is)
 {
 	toolSurfaces* pToolSurfaces = (toolSurfaces*) mp_toolManager->getTool("Surfaces");
 	if (pToolSurfaces == 0) return;
+
+   	mp_animationCurrent = 0;
+
 
     Surface* pSurfaceCurrent = pToolSurfaces->getSurfaceForDeviceCurrent();
     if (pSurfaceCurrent)
@@ -318,12 +343,25 @@ void toolAnimations::showAnimationCurrentProperties()
 		   mp_animationUI = pAnimationCurrent->getUI();
 		   mp_animationUI->setVisible(mp_canvas->isVisible() && m_isEnableDrawCallback);
 		   mp_animationUI->disableAppDrawCallback();
+		
+		   mp_animationCurrent = pAnimationCurrent;
 		}else{
 		   OFAPPLOG->println("- no animation was set...");
 		}
    }
    OFAPPLOG->end();
 }
+
+//--------------------------------------------------------------
+void toolAnimations::applyAnimationCurrentConfiguration()
+{
+	if (mp_animationCurrent && mp_animationCurrent->m_configurationCurrent != "")
+	{
+	   OFAPPLOG->println("- loading "+mp_animationCurrent->m_configurationCurrent+" for animation "+mp_animationCurrent->m_name);
+	   mp_animationCurrent->loadConfiguration( mp_animationCurrent->m_configurationCurrent );
+	}
+}
+
 
 //--------------------------------------------------------------
 void toolAnimations::updateDeviceAnimationTitle()

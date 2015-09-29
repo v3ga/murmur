@@ -96,6 +96,7 @@ Animation::Animation(string name_) : midiInterface()
 	M_zeroAll();
 	m_name			= name_;
 	setMidiName(m_name);
+	populateConfigurations();
 }
 
 //--------------------------------------------------------------
@@ -118,6 +119,7 @@ Animation::Animation(string name_,string pathAbsScript_) : midiInterface()
 
     // printf("#### setting private %s for obj %p, this=%p\n", ok == JS_TRUE ? "OK" : "NO", mp_obj, this);
 	setMidiName(m_name);
+	populateConfigurations();
 }
 
 //--------------------------------------------------------------
@@ -138,6 +140,7 @@ void Animation::M_zeroAll()
 	mp_UIVolumeTh	= 0;
 	m_volValuesMeanTh = 0.5f;
 	mp_lblVolValues = 0;
+	mp_teConfigName = 0;
 	
 	m_isColor				= false;
 	m_isColorFromDevice		= false;
@@ -208,6 +211,7 @@ void Animation::createUI()
     }
  
 	createUIVolume();
+	createUIConfiguration();
 	createUISound();
     createUICustom();
 
@@ -219,6 +223,13 @@ void Animation::addUISlider(classProperty_float* pProp)
 {
     if (mp_UIcanvas)
         mp_UIcanvas->addSlider(pProp->m_name, pProp->m_min, pProp->m_max, pProp->mp_variable);
+}
+
+//--------------------------------------------------------------
+void Animation::addUISlider(classProperty_int* pProp)
+{
+    if (mp_UIcanvas)
+        mp_UIcanvas->addIntSlider(pProp->m_name, pProp->m_min, pProp->m_max, pProp->mp_variable);
 }
 
 //--------------------------------------------------------------
@@ -259,6 +270,22 @@ void Animation::createUIVolume()
 		mp_UIcanvas->addWidgetDown( mp_UIVolumeTh );
 		mp_UIcanvas->addWidgetDown( new ofxUISlider("volValuesMeanTh", 0.0f,1.0f, &m_volValuesMeanTh, ANIM_UI_WIDTH_DEFAULT, 16) );
 	}
+}
+//--------------------------------------------------------------
+void Animation::createUIConfiguration()
+{
+	if (mp_UIcanvas == 0) return;
+
+	mp_UIcanvas->addWidgetDown(new ofxUILabel("Configurations", OFX_UI_FONT_MEDIUM));
+    mp_UIcanvas->addWidgetDown(new ofxUISpacer(ANIM_UI_WIDTH_DEFAULT, 2));
+
+	mp_teConfigName = new ofxUITextInput("teConfigName", "", 200, 16);
+	mp_teConfigName->setAutoUnfocus(true);
+	mp_teConfigName->setAutoClear(false);
+	
+	mp_UIcanvas->addWidgetDown(mp_teConfigName);
+	mp_UIcanvas->addWidgetRight(new ofxUILabelButton("Save", 100, false, OFX_UI_FONT_SMALL));
+	mp_UIcanvas->addWidgetRight(new ofxUILabelButton("Load", 100, false, OFX_UI_FONT_SMALL));
 }
 
 //--------------------------------------------------------------
@@ -396,6 +423,7 @@ void Animation::guiEvent(ofxUIEventArgs &e)
 {
 	string name = e.widget->getName();
 	int kind = e.widget->getKind();
+	
 
 
     if (kind == OFX_UI_WIDGET_SLIDER_H || kind == OFX_UI_WIDGET_SLIDER_V)
@@ -431,9 +459,6 @@ void Animation::guiEvent(ofxUIEventArgs &e)
 					m_soundPlayer.add( m_listSoundNames[i] );
 				}
 			}
-
-
-			// jsCallSoundChanged();
 		}
 		else
 		{
@@ -446,6 +471,27 @@ void Animation::guiEvent(ofxUIEventArgs &e)
     	        args[0] = string_TO_ofxJSValue( name );
         	    args[1] = int_TO_ofxJSValue( valToggle ? 1 : 0 );
 				ofxJSCallFunctionNameObject_IfExists(mp_obj,"eventUI", args,2,retVal);
+			}
+		}
+	}
+    else if (kind == OFX_UI_WIDGET_LABELBUTTON)
+	{
+		
+		if ( e.getButton()->getValue())
+		{
+			if (name == "Save")
+			{
+				string filename = mp_teConfigName->getTextString();
+				saveConfiguration(filename);
+
+				m_configurationCurrent = filename;
+			}
+			else if (name == "Load")
+			{
+				string filename = mp_teConfigName->getTextString();
+				loadConfiguration(filename);
+
+				m_configurationCurrent = filename;
 			}
 		}
 	}
@@ -467,8 +513,12 @@ void Animation::loadProperties(string id)
     if (mp_UIcanvas)
     {
         mp_UIcanvas->loadSettings( getPropertiesFilename(id) );
+		
+		// save current config name, not too good ...
+		if (mp_teConfigName){
+			m_configurationCurrent = mp_teConfigName->getTextString();
+		}
     }
-			//m_soundPlayer.print(m_name);
 }
 
 //--------------------------------------------------------------
@@ -476,6 +526,107 @@ string Animation::getPropertiesFilename(string id, bool isExtension)
 {
     return "Config/animations/"+id+"_"+this->m_name+ ( isExtension ? ".xml" : "");
 }
+
+//--------------------------------------------------------------
+void Animation::createDirConfiguration()
+{
+	ofDirectory dir( ofToDataPath("Config/animations/"+m_name) );
+	bool bDirExists = dir.exists();
+
+	if (bDirExists == false)
+		bDirExists = dir.create();
+}
+
+//--------------------------------------------------------------
+void Animation::populateConfigurations()
+{
+	OFAPPLOG->begin("Animation::populateConfigurations()");
+
+	createDirConfiguration();
+
+	ofDirectory dir( ofToDataPath("Config/animations/"+m_name) );
+	
+	if (dir.exists())
+	{
+		m_configurations.clear();
+	
+		dir.allowExt("xml");
+		dir.listDir();
+	 
+		for(int i = 0; i < dir.numFiles(); i++)
+		{
+			OFAPPLOG->println("- filename = "+dir.getFile(i).getFileName());
+		
+			m_configurations.push_back(dir.getFile(i).getFileName());
+		}
+	}
+	
+	OFAPPLOG->end();
+}
+
+//--------------------------------------------------------------
+void Animation::saveConfiguration(string filename)
+{
+	createDirConfiguration();
+    if (mp_UIcanvas)
+    {
+        mp_UIcanvas->saveSettings( ofToDataPath("Config/animations/"+m_name+"/"+filename) );
+		populateConfigurations();
+    }
+}
+
+//--------------------------------------------------------------
+void Animation::loadConfiguration(string filename)
+{
+    if (mp_UIcanvas)
+    {
+        mp_UIcanvas->loadSettings( ofToDataPath("Config/animations/"+m_name+"/"+filename) );
+    }
+}
+
+//--------------------------------------------------------------
+void Animation::loadConfigurationPrev()
+{
+	if (m_configurations.size()>1 && m_configurationCurrent!="")
+	{
+		int index = getConfigurationIndex(m_configurationCurrent);
+		if (index>=0){
+			index = index-1;
+			if (index<0)
+				index = m_configurations.size()-1;
+			m_configurationCurrent = m_configurations[index];
+			loadConfiguration(m_configurationCurrent);
+		}
+	}
+}
+
+
+//--------------------------------------------------------------
+void Animation::loadConfigurationNext()
+{
+	if (m_configurations.size()>1 && m_configurationCurrent!="")
+	{
+		int index = getConfigurationIndex(m_configurationCurrent);
+		if (index>=0){
+			index = (index+1)%m_configurations.size();
+			m_configurationCurrent = m_configurations[index];
+			loadConfiguration(m_configurationCurrent);
+		}
+	}
+}
+
+//--------------------------------------------------------------
+int Animation::getConfigurationIndex(string filename)
+{
+	int nbConfigurations = m_configurations.size();
+	for (int i=0;i<nbConfigurations;i++)
+	{
+		if (m_configurations[i] == filename)
+			return i;
+	}
+	return -1;
+}
+
 
 
 //--------------------------------------------------------------

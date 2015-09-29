@@ -9,6 +9,7 @@
 #include "LineFFElement.h"
 #include "animationLinesFF.h"
 
+//--------------------------------------------------------------
 LineFFElement::LineFFElement(AnimationLinesFF* pParent, ofVec3f pos, ofVec3f dir)
 {
 	mp_parent = pParent;
@@ -22,6 +23,7 @@ LineFFElement::LineFFElement(AnimationLinesFF* pParent, ofVec3f pos, ofVec3f dir
 
 }
 
+//--------------------------------------------------------------
 void LineFFElement::update(float dt)
 {
 	m_pos += m_dir*mp_parent->m_dirSpeed*dt;
@@ -31,6 +33,7 @@ void LineFFElement::update(float dt)
 		m_radius += (mp_parent->m_radius-m_radius)*0.8*dt;
 }
 
+//--------------------------------------------------------------
 void LineFFElement::draw()
 {
 	ofPushMatrix();

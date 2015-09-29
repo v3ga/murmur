@@ -256,6 +256,7 @@
 		F9BC6D1D174DEF5C00633C5C /* volumeAccum.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9BC6D1B174DEF5C00633C5C /* volumeAccum.cpp */; };
 		F9C38AFC1885AAF100219152 /* threadRasp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9C38AFA1885AAF100219152 /* threadRasp.cpp */; };
 		F9D992831BB5448A004CAFD2 /* LineFFElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9D992811BB5448A004CAFD2 /* LineFFElement.cpp */; };
+		F9D993931BBA9CE2004CAFD2 /* blur.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9D993911BBA9CE2004CAFD2 /* blur.cpp */; };
 		F9DC1BC51B55377B006BEA63 /* animationWaves.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9DC1BC31B55377B006BEA63 /* animationWaves.cpp */; };
 		F9DC7C2219CA16F500682D1A /* ofxJSSoundPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9DC7C1C19CA16F500682D1A /* ofxJSSoundPlayer.cpp */; };
 		F9DC7C2319CA16F500682D1A /* ofxJSVideoGrabber.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9DC7C1E19CA16F500682D1A /* ofxJSVideoGrabber.cpp */; };
@@ -1075,6 +1076,8 @@
 		F9C38AFB1885AAF100219152 /* threadRasp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = threadRasp.h; sourceTree = "<group>"; };
 		F9D992811BB5448A004CAFD2 /* LineFFElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LineFFElement.cpp; sourceTree = "<group>"; };
 		F9D992821BB5448A004CAFD2 /* LineFFElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineFFElement.h; sourceTree = "<group>"; };
+		F9D993911BBA9CE2004CAFD2 /* blur.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = blur.cpp; sourceTree = "<group>"; };
+		F9D993921BBA9CE2004CAFD2 /* blur.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = blur.h; sourceTree = "<group>"; };
 		F9DC1BC31B55377B006BEA63 /* animationWaves.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animationWaves.cpp; sourceTree = "<group>"; };
 		F9DC1BC41B55377B006BEA63 /* animationWaves.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = animationWaves.h; sourceTree = "<group>"; };
 		F9DC7C1C19CA16F500682D1A /* ofxJSSoundPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxJSSoundPlayer.cpp; sourceTree = "<group>"; };
@@ -3021,6 +3024,8 @@
 				F94139831A78D7EA0047A441 /* timelineSimple.h */,
 				F96FCD4A1B4C75E500E3CF39 /* midiInterface.cpp */,
 				F96FCD4B1B4C75E500E3CF39 /* midiInterface.h */,
+				F9D993911BBA9CE2004CAFD2 /* blur.cpp */,
+				F9D993921BBA9CE2004CAFD2 /* blur.h */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -3798,6 +3803,7 @@
 				F92BC4AA189F094600CA158A /* ofxUIDragableLabelButton.cpp in Sources */,
 				F92BC4CD189F094600CA158A /* ofxUIWidget.cpp in Sources */,
 				F9BC6C72174A621600633C5C /* b2PolygonAndCircleContact.cpp in Sources */,
+				F9D993931BBA9CE2004CAFD2 /* blur.cpp in Sources */,
 				F9BC6C73174A621700633C5C /* b2PolygonContact.cpp in Sources */,
 				F92BC4A8189F094600CA158A /* ofxUICanvas.cpp in Sources */,
 				F9BC6C74174A621700633C5C /* b2TOISolver.cpp in Sources */,

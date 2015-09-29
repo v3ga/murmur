@@ -77,8 +77,9 @@ void AnimationLinesFF::VM_draw(float w, float h)
 	m_cam.setPosition(0,0,1000);
 	m_cam.begin(ofRectangle(0,0,w,h));
 
-	ofBackground(0);
-	ofDrawAxis(50);
+	//ofBackground(0);
+	//ofDrawAxis(50);
+	drawBackground(0);
 
 	ofSetColor(255);
 	vector<LineFFElement*>::iterator it = m_lines.begin();

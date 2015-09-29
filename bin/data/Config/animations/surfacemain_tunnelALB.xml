@@ -4,6 +4,11 @@
     <Value>0.500000000</Value>
 </Widget>
 <Widget>
+    <Kind>12</Kind>
+    <Name>teConfigName</Name>
+    <Value></Value>
+</Widget>
+<Widget>
     <Kind>4</Kind>
     <Name>volume</Name>
     <Value>0.190322578</Value>

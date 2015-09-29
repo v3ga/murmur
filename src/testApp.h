@@ -1,7 +1,6 @@
 #pragma once
 
 #define MURMUR_MULTI_WINDOWS	1
-
 #include "ofMain.h"
 #include "murmur.h"
 #include "ofxUI.h"

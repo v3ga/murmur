@@ -53,6 +53,48 @@ void classProperty_float::setValueFromMidiMessage(ofxMidiMessage& m)
 
 
 //--------------------------------------------------------------
+classProperty_int::classProperty_int(string name, int min, int max, int* pValue) : classProperty(name)
+{
+	m_min 	= min;
+	m_max 	= max;
+	mp_variable	= pValue;
+//	m_type	= INT;
+	m_ownsVariable = false;
+	m_isEnableEvents = false;
+}
+
+//--------------------------------------------------------------
+classProperty_int::classProperty_int(string name, int min, int max) : classProperty(name)
+{
+	m_min 	= min;
+	m_max 	= max;
+	mp_variable	= new int();
+//	m_type	= INT;
+	m_ownsVariable = true;
+	m_isEnableEvents = false;
+}
+
+//--------------------------------------------------------------
+classProperty_int::~classProperty_int()
+{
+	if (m_ownsVariable){
+		delete mp_variable;
+	}
+}
+
+
+//--------------------------------------------------------------
+void classProperty_int::setValueFromMidiMessage(ofxMidiMessage& m)
+{
+	*mp_variable = ofMap(m.value,0,127, m_min, m_max);
+	if (m_isEnableEvents)
+	{
+		ofNotifyEvent(onValueChanged, *mp_variable, this);
+	}
+}
+
+
+//--------------------------------------------------------------
 classProperty_bool::classProperty_bool(string name, bool* pValue) : classProperty(name)
 {
 	mp_variable	= pValue;
@@ -167,6 +209,15 @@ classProperty_float* classProperties::getFloat(string name)
 	classProperty* pProp = get(name);
 	if (pProp)
 		return static_cast<classProperty_float*>( pProp );
+	return 0;
+}
+
+//--------------------------------------------------------------
+classProperty_int* classProperties::getInt(string name)
+{
+	classProperty* pProp = get(name);
+	if (pProp)
+		return static_cast<classProperty_int*>( pProp );
 	return 0;
 }
 

@@ -237,7 +237,7 @@ void Surface::setup()
 
 		AnimationComposition* pAnimation = new AnimationComposition("composition01");
 		pAnimation->add( "video" );
-		pAnimation->add( "box2DCircles" );
+		pAnimation->add( "gridsFF" );
 
 //		pAnimation->add( "shaderWave" );
 //		pAnimation->add( "box2DCircles" );

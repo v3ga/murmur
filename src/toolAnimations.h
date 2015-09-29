@@ -32,9 +32,10 @@ class toolAnimations : public tool
 		void							showNextAnimation			();
 		bool							isSequenceActive			();
 
-		void							updateDeviceAnimationTitle	();
-		void							showAnimationPropsAll		(bool is=true);
-		void							showAnimationCurrentProperties();
+		void							updateDeviceAnimationTitle			();
+		void							showAnimationPropsAll				(bool is=true);
+		void							showAnimationCurrentProperties		();
+		void							applyAnimationCurrentConfiguration	();
 
 		void							enableWindowCallbacks		();
 		void							disableWindowCallbacks		();
@@ -48,6 +49,7 @@ class toolAnimations : public tool
 		bool							m_isEnableDrawCallback;
 
         map<Animation*, ofxUICanvas*> 	m_mapAnimationUI;
+		Animation*						mp_animationCurrent;
 
 		vector<string>					m_listLogJs;
 		int								m_listLogJsMax;

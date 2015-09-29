@@ -6,11 +6,16 @@
 <Widget>
     <Kind>17</Kind>
     <Name>tool Timeline</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>17</Kind>
     <Name>tool Devices</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>gridsFF</Name>
     <Value>0</Value>
 </Widget>
 <Widget>
@@ -20,7 +25,12 @@
 </Widget>
 <Widget>
     <Kind>17</Kind>
-    <Name>waves2.js</Name>
+    <Name>radarFF</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>tunnelALB</Name>
     <Value>0</Value>
 </Widget>
 <Widget>

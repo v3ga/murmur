@@ -6,7 +6,7 @@
 <Widget>
     <Kind>12</Kind>
     <Name>teConfigName</Name>
-    <Value>yep.xml</Value>
+    <Value>yep2.xml</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -26,7 +26,7 @@
 <Widget>
     <Kind>4</Kind>
     <Name>radius</Name>
-    <Value>93.512817383</Value>
+    <Value>0.000000000</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -36,10 +36,10 @@
 <Widget>
     <Kind>4</Kind>
     <Name>rot</Name>
-    <Value>76.153846741</Value>
+    <Value>87.692306519</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>rotSpeed</Name>
-    <Value>55.384616852</Value>
+    <Value>19.615385056</Value>
 </Widget>

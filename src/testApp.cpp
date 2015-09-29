@@ -704,7 +704,8 @@ void testApp::keyPressed(int key)
 	
 	toolConfiguration* 	pToolConfiguration 	= (toolConfiguration*) 		toolManager.getTool("Configuration");
 	toolAnimations* 	pToolAnimations 	= (toolAnimations*) 		toolManager.getTool("Animations");
-	
+
+	 
 	if (toolManager.keyPressed(key) == false)
 	{
 		if (key == 's')
