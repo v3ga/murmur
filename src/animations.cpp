@@ -145,8 +145,11 @@ void Animation::M_zeroAll()
 	m_isColor				= false;
 	m_isColorFromDevice		= false;
 	
+	m_bResetOnEnter = false;
+	
 	setDrawBackground(true);
 }
+
 
 //--------------------------------------------------------------
 bool Animation::M_loadScript(const char* s)
@@ -193,6 +196,7 @@ bool Animation::M_reloadScript()
 //--------------------------------------------------------------
 void Animation::VM_setArgs(string args)
 {
+	loadConfiguration(args);
 }
 
 //--------------------------------------------------------------
@@ -286,6 +290,11 @@ void Animation::createUIConfiguration()
 	mp_UIcanvas->addWidgetDown(mp_teConfigName);
 	mp_UIcanvas->addWidgetRight(new ofxUILabelButton("Save", 100, false, OFX_UI_FONT_SMALL));
 	mp_UIcanvas->addWidgetRight(new ofxUILabelButton("Load", 100, false, OFX_UI_FONT_SMALL));
+	
+	ofxUIToggle* pTgReset = new ofxUIToggle("resetOnEnter", &m_bResetOnEnter, 16,16);
+    mp_UIcanvas->addWidgetDown(pTgReset);
+	pTgReset->getLabelWidget()->setLabel("reset on enter");
+	
 }
 
 //--------------------------------------------------------------

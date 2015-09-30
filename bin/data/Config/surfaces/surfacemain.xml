@@ -8,10 +8,22 @@
         <animation>box2DCircles</animation>
         <animation>video</animation>
 -->
-        <animation>gridsFF</animation>
-        <animation>linesFF</animation>
-        <animation>radarFF</animation>
-        <animation>tunnelALB</animation>
+        <animation name="video"></animation>
+        <animation name="gridsFF"></animation>
+        <animation name="linesFF"></animation>
+        <animation name="radarFF"></animation>
+        <animation name="tunnelALB"></animation>
+<!--
+        <animation name="composition">
+
+			<composition>
+				<animation name="video"></animation>
+				<animation name="gridsFF"></animation>
+			</composition>
+
+
+		</animation>
+-->
     </animations>
 
     <animations type="js" folder="murmur">
@@ -24,16 +36,5 @@
     <animations type="js" folder="workshops/stereolux_jcc2">
 -->
     </animations>
-
-    <timeline>
-	     <!--
-		<animation>tunnel</animation>
-        -->
-		<animation>particlesMega2</animation>
-        <animation>box2DCircles</animation>
-        <animation>shaderWave</animation>
-        <animation>waves2.js</animation>
-    </timeline>
-    
 </surface>
 

@@ -40,7 +40,7 @@ AnimationGridsFF::AnimationGridsFF(string name) : Animation(name)
 	loadShader();
 	m_blur.loadShaders(ofToDataPath("Shaders"));
 	
-	mp_animShaderWave = new AnimationShaderWave("animWave_gridsFF");
+	mp_animShaderWave = new AnimationShaderWave("gridsFF_wave");
 	mp_animShaderWave->M_loadShader("wave");
 }
 

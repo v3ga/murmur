@@ -15,6 +15,11 @@
 </Widget>
 <Widget>
     <Kind>17</Kind>
+    <Name>video</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
     <Name>gridsFF</Name>
     <Value>0</Value>
 </Widget>
@@ -31,10 +36,5 @@
 <Widget>
     <Kind>17</Kind>
     <Name>tunnelALB</Name>
-    <Value>0</Value>
-</Widget>
-<Widget>
-    <Kind>17</Kind>
-    <Name>composition01</Name>
     <Value>0</Value>
 </Widget>

@@ -13,6 +13,7 @@
 #include "device.h"
 #include "tool.h"
 #include "toolDevices.h"
+#include "surface.h"
 
 //--------------------------------------------------------------
 bool setupJS()
@@ -37,7 +38,11 @@ bool setupJS()
 
     ofxJSDefineFunctionGlobal("setDeviceColorHueSaturation",   	&setDeviceColorHueSaturation,   3);
     ofxJSDefineFunctionGlobal("setDeviceColor",   				&setDeviceColor,   				1);
+
+    ofxJSDefineFunctionGlobal("setAnimation",   				&setAnimation,   				2);
+    ofxJSDefineFunctionGlobal("setAnimationDirect",   			&setAnimationDirect,   			2);
  
+
  
     
 	// Load globals
@@ -297,5 +302,35 @@ ofxJSDeclareFunctionCpp(setDeviceColor)
 				ofSetColor( ofColor::fromHsb(pDevice->m_colorHsv[0],pDevice->m_colorHsv[1],255) );
 			}
 		}
+	}
+}
+
+//--------------------------------------------------------------
+ofxJSDeclareFunctionCpp(setAnimation)
+{
+	AnimationManager& animManager = GLOBALS->getSurfaceMain()->getAnimationManager();
+
+	if (argc==1)
+	{
+		animManager.M_setAnimation(ofxJSValue_TO_string(argv[0]));
+	}
+	else if (argc==2)
+	{
+		animManager.M_setAnimation(ofxJSValue_TO_string(argv[0]), ofxJSValue_TO_string(argv[1]));
+	}
+}
+
+//--------------------------------------------------------------
+ofxJSDeclareFunctionCpp(setAnimationDirect)
+{
+	AnimationManager& animManager = GLOBALS->getSurfaceMain()->getAnimationManager();
+
+	if (argc==1)
+	{
+		animManager.M_setAnimationDirect(ofxJSValue_TO_string(argv[0]));
+	}
+	else if (argc==2)
+	{
+		animManager.M_setAnimationDirect(ofxJSValue_TO_string(argv[0]), ofxJSValue_TO_string(argv[1]));
 	}
 }

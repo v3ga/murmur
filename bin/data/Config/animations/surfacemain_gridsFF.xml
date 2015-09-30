@@ -6,7 +6,12 @@
 <Widget>
     <Kind>12</Kind>
     <Name>teConfigName</Name>
-    <Value>test3.xml</Value>
+    <Value>test.xml</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>resetOnEnter</Name>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -26,12 +31,12 @@
 <Widget>
     <Kind>42</Kind>
     <Name>rows</Name>
-    <Value>26</Value>
+    <Value>5</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
     <Name>square cells</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>

@@ -1,22 +1,22 @@
 <keyframes>
     <key>
-        <flag>hello</flag>
+        <flag>grid03</flag>
+        <time>00:00:41:952</time>
+        <value>0.675000012</value>
+    </key>
+    <key>
+        <flag>grid01</flag>
         <time>00:01:57:729</time>
         <value>0.550000012</value>
+    </key>
+    <key>
+        <flag>grid02</flag>
+        <time>00:02:43:505</time>
+        <value>0.300000012</value>
     </key>
     <key>
         <flag>hello</flag>
         <time>00:05:01:839</time>
         <value>0.699999988</value>
-    </key>
-    <key>
-        <flag />
-        <time>00:05:10:498</time>
-        <value>1.000000000</value>
-    </key>
-    <key>
-        <flag>hello</flag>
-        <time>00:05:35:362</time>
-        <value>0.774999976</value>
     </key>
 </keyframes>

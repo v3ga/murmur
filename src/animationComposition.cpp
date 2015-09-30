@@ -14,32 +14,13 @@
 AnimationComposition::AnimationComposition(string name) : Animation(name)
 {
 	m_bAllocateRenderBuffers = true;
-	m_bRenderNormal = false;
+	m_bRenderNormal = true;
 }
 
 
 //--------------------------------------------------------------
 void AnimationComposition::createUICustom()
 {
-	
-	if (mp_UIcanvas)
-	{
-		mp_UIcanvas->addToggle("renderNormal",	&m_bRenderNormal);
-	}
-
-	if (m_animations.size()>0)
-	{
-		
-/*
-		m_animations[0]->mp_UIcanvas = new ofxUICanvas(mp_UIcanvas->getRect()->getWidth(), mp_UIcanvas->getRect()->getHeight());
-
-		m_animations[0]->createUICustom();
-
-		mp_UIcanvas->addWidgetDown(m_animations[0]->mp_UIcanvas);
-		m_animations[0]->mp_UIcanvas->setVisible(true);
-*/
-
-	}
 }
 
 //--------------------------------------------------------------
@@ -114,7 +95,7 @@ void AnimationComposition::VM_enter()
 	
 	m_shader.load("Shaders/animCompo.vert", "Shaders/animCompoMultiply.frag");
 	allocateRenderBuffers();
-	setRenderNormal(false);
+	setRenderNormal(true);
 }
 
 //--------------------------------------------------------------
@@ -254,7 +235,7 @@ void AnimationComposition::guiEvent(ofxUIEventArgs &e)
 	string name = e.getName();
 	if (name == "renderNormal")
 	{
-		setRenderNormal(m_bRenderNormal);
+		//setRenderNormal(m_bRenderNormal);
 	}
 }
 

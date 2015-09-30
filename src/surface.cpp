@@ -164,15 +164,18 @@ void Surface::setup()
 				for (int j=0;j<nbAnimations;j++)
 				{
             
-            		string animName = surfaceSettings.getValue("animation","",j);
-            		//printf("    - %s\n", animName.c_str());
+//            		string animName = surfaceSettings.getValue("animation","",j);
+            		string animName = surfaceSettings.getAttribute("animation", "name", "", j);
 		            OFAPPLOG->println("  - "+animName);
 			
             		if (animName != "")
 					{
                 		Animation* pAnimation = AnimationsFactory::create( animName );
                 		if (pAnimation!=0)
+						{
+						    
                     		m_animationManager.M_addAnimation(pAnimation);
+						}
 					}
         		}
 				surfaceSettings.popTag();
@@ -235,14 +238,14 @@ void Surface::setup()
 
 		// TEMP
 
-		AnimationComposition* pAnimation = new AnimationComposition("composition01");
-		pAnimation->add( "video" );
-		pAnimation->add( "gridsFF" );
+//		AnimationComposition* pAnimation = new AnimationComposition("composition01");
+//		pAnimation->add( "video" );
+//		pAnimation->add( "gridsFF" );
 
 //		pAnimation->add( "shaderWave" );
 //		pAnimation->add( "box2DCircles" );
 		
-		m_animationManager.M_addAnimation(pAnimation);
+	//	m_animationManager.M_addAnimation(pAnimation);
 
 		// TEMP
 

@@ -122,6 +122,10 @@ class Animation : public midiInterface
 		virtual	bool			guiEventTogglesSound	(string name);
 				void			updateUIVolume			();
 
+		// Settings
+		// When instanced from surface xml, animation can read settings from <animation node>
+		virtual	void			readSettings			(ofxXmlSettings& settings, int which){}
+
 
 		// Default properties
         virtual void            saveProperties          (string id);
@@ -138,6 +142,8 @@ class Animation : public midiInterface
 		virtual void			loadConfigurationPrev	();
 		virtual	void			loadConfigurationNext	();
 				int				getConfigurationIndex	(string filename);
+ 
+		bool					m_bResetOnEnter;
  
 
 		// Class properties

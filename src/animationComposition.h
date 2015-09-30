@@ -13,7 +13,6 @@
 class AnimationCompoConfiguration
 {
 	public:
-	
 		string					m_animationName1, m_animationName2;
 };
 
@@ -47,7 +46,7 @@ class AnimationComposition : public Animation
  
 	protected:
 		vector<Animation*>						m_animations;
-		vector<AnimationCompoConfiguration>		m_configurations;
+		vector<AnimationCompoConfiguration>		m_compositions;
 
 		ofFbo									m_fboAnimation1, m_fboAnimation2;
  

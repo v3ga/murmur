@@ -33,6 +33,10 @@ ofxJSDeclareFunctionCpp(setVolumeSoundMainNormalized); // pass value between 0 a
 ofxJSDeclareFunctionCpp(setDeviceColorHueSaturation);
 ofxJSDeclareFunctionCpp(setDeviceColor);
 
+ofxJSDeclareFunctionCpp(setAnimation);
+ofxJSDeclareFunctionCpp(setAnimationDirect);
+
+
 
 static char s_jsStringBuffer[2048];
 static string s_jsTemp;
