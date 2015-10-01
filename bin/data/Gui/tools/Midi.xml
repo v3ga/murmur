@@ -15,7 +15,12 @@
 </Widget>
 <Widget>
     <Kind>17</Kind>
-    <Name>video</Name>
+    <Name>particlesMega2</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>shaderWave</Name>
     <Value>0</Value>
 </Widget>
 <Widget>
@@ -36,5 +41,15 @@
 <Widget>
     <Kind>17</Kind>
     <Name>tunnelALB</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>video</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>composition</Name>
     <Value>0</Value>
 </Widget>

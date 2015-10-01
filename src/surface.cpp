@@ -163,18 +163,18 @@ void Surface::setup()
         		OFAPPLOG->println("nbAnimations="+ofToString(nbAnimations));
 				for (int j=0;j<nbAnimations;j++)
 				{
-            
-//            		string animName = surfaceSettings.getValue("animation","",j);
             		string animName = surfaceSettings.getAttribute("animation", "name", "", j);
 		            OFAPPLOG->println("  - "+animName);
 			
             		if (animName != "")
 					{
                 		Animation* pAnimation = AnimationsFactory::create( animName );
-                		if (pAnimation!=0)
+                		if (pAnimation)
 						{
-						    
+							surfaceSettings.pushTag("animation", j);
+							pAnimation->readSurfaceSettings(surfaceSettings);
                     		m_animationManager.M_addAnimation(pAnimation);
+							surfaceSettings.popTag();
 						}
 					}
         		}
@@ -232,22 +232,6 @@ void Surface::setup()
 			}
 			
 		}
-		
-//        surfaceSettings.pushTag("animations");
-		
-
-		// TEMP
-
-//		AnimationComposition* pAnimation = new AnimationComposition("composition01");
-//		pAnimation->add( "video" );
-//		pAnimation->add( "gridsFF" );
-
-//		pAnimation->add( "shaderWave" );
-//		pAnimation->add( "box2DCircles" );
-		
-	//	m_animationManager.M_addAnimation(pAnimation);
-
-		// TEMP
 
         surfaceSettings.popTag();
     }
@@ -257,13 +241,10 @@ void Surface::setup()
 		OFAPPLOG->println("cannot load 'surfaceMain.xml'");
     }
 
-	// Midi settings
-	// int nbAnimations =
-
 	
 	// Scripts
 	ofDirectory dirScripts("Scripts");
-    m_animationManager.M_readSettings(surfaceSettings);
+   // m_animationManager.M_readSettings(surfaceSettings);
 
 	
 	OFAPPLOG->println("setting animation index 0");
@@ -473,7 +454,8 @@ void Surface::renderOffscreen(bool isRenderDevicePoints)
 	}
 	else
 	{
-		(*mpf_renderOffscreenCallback)(this, mp_renderOffscreenUserData); // responsible for filling the fbo
+		if (mpf_renderOffscreenCallback)
+			(*mpf_renderOffscreenCallback)(this, mp_renderOffscreenUserData); // responsible for filling the fbo
 	}
 
 	m_fbo.begin();

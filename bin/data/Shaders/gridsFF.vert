@@ -16,8 +16,6 @@ void main()
 	float d = texture(tex0, texcoord).r;
 	float angle = d*6.28;
 	newPosition.z = position.z+d*amplitude;
-	//newPosition.x = position.x+cos(angle)*15.0;
-	//newPosition.y = position.y+sin(angle)*15.0;
 
 	texCoordVarying = texcoord;
 	gl_Position = modelViewProjectionMatrix * newPosition;

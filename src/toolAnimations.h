@@ -24,6 +24,7 @@ class toolAnimations : public tool
 		void							createControlsAnimations	(Surface*);
 		void							handleEvents				(ofxUIEventArgs& e);
 		bool							isHit						(int x, int y);
+		bool							hasKeyboardFocus			();
 		static void						logJS						(void* pData, const string& message);
 		bool							keyPressed					(int key);
 		void							show						(bool is);

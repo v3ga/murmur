@@ -48,10 +48,12 @@ class AnimationGridsFF : public Animation
  
 		bool					m_bDebug;
  
+		float					m_colorFromDeviceLuminance;
+		int						m_speed;
 		float					m_amplitude;
+		float					m_rotationX;
 		float					m_blurAmount;
 		int						m_blurNbPasses;
-
 
 		AnimationShaderWave*	mp_animShaderWave;
 };

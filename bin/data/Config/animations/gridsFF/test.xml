@@ -9,6 +9,11 @@
     <Value>test.xml</Value>
 </Widget>
 <Widget>
+    <Kind>2</Kind>
+    <Name>resetOnEnter</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
     <Kind>4</Kind>
     <Name>volume</Name>
     <Value>0.487096786</Value>
@@ -19,14 +24,24 @@
     <Value>0</Value>
 </Widget>
 <Widget>
+    <Kind>2</Kind>
+    <Name>colorFromDevice</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>luminance</Name>
+    <Value>0.573717952</Value>
+</Widget>
+<Widget>
     <Kind>42</Kind>
     <Name>columns</Name>
-    <Value>10</Value>
+    <Value>85</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>
     <Name>rows</Name>
-    <Value>5</Value>
+    <Value>43</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -36,7 +51,7 @@
 <Widget>
     <Kind>4</Kind>
     <Name>scale</Name>
-    <Value>0.461538464</Value>
+    <Value>0.712820530</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -45,8 +60,13 @@
 </Widget>
 <Widget>
     <Kind>4</Kind>
+    <Name>rotation</Name>
+    <Value>11.538455963</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
     <Name>blurAmount</Name>
-    <Value>1.000000000</Value>
+    <Value>9.365384102</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>

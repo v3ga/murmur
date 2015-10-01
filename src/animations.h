@@ -124,7 +124,7 @@ class Animation : public midiInterface
 
 		// Settings
 		// When instanced from surface xml, animation can read settings from <animation node>
-		virtual	void			readSettings			(ofxXmlSettings& settings, int which){}
+		virtual	void			readSurfaceSettings		(ofxXmlSettings& settings){}
 
 
 		// Default properties

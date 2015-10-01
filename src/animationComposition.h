@@ -10,10 +10,26 @@
 #include "animations.h"
 #include "surface.h"
 
-class AnimationCompoConfiguration
+struct AnimationCompoConfiguration
 {
-	public:
-		string					m_animationName1, m_animationName2;
+		AnimationCompoConfiguration(string name, string anim1,string config1, string anim2, string config2)
+		{
+			m_name				= name;
+		
+			m_animationName1 	= anim1;
+			m_animationConfig1	= config1;
+
+			m_animationName2 	= anim2;
+			m_animationConfig2	= config2;
+		}
+ 
+		string					m_name;
+
+		string					m_animationName1;
+		string					m_animationConfig1;
+ 
+		string 					m_animationName2;
+		string					m_animationConfig2;
 };
 
 
@@ -21,13 +37,17 @@ class AnimationComposition : public Animation
 {
 	public:
 		AnimationComposition							(string name);
- 
-
+		~AnimationComposition							();
 
 				void			setRenderNormal			(bool is=true);
-		virtual void			add						(string name);
+		virtual	Animation*		getAnimation			(string name);
+		virtual void			addAnimation			(string name);
+		virtual	void			setBlending				(string name);
+		virtual	void			setComposition			(string name);
+		virtual	void			readSurfaceSettings		(ofxXmlSettings& settings);
         virtual void            loadProperties          (string id);
 		virtual	void			loadMidiSettings		();
+		virtual	void			loadConfiguration		(string filename);
 		virtual	void			createUICustom			();
 		virtual void			VM_enter				();
 		virtual void			VM_update				(float dt);
@@ -46,7 +66,8 @@ class AnimationComposition : public Animation
  
 	protected:
 		vector<Animation*>						m_animations;
-		vector<AnimationCompoConfiguration>		m_compositions;
+		vector<AnimationCompoConfiguration*>	m_compositions;
+		string									m_compositionCurrent, m_compositionWanted;
 
 		ofFbo									m_fboAnimation1, m_fboAnimation2;
  
@@ -55,4 +76,9 @@ class AnimationComposition : public Animation
  
 		void									allocateRenderBuffers();
 		bool									m_bAllocateRenderBuffers;
+ 
+		ofxUIRadio*								mp_radioCompositions;
+		ofxUIRadio*								mp_radioBlending;
+ 
+		bool									isNameComposition(string name);
 };

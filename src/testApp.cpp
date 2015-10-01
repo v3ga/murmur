@@ -104,7 +104,6 @@ void testApp::setup()
 	toolDevices*		pToolDevices		= new toolDevices(&toolManager, mp_deviceManager);
 	toolNetwork* 		pToolNetwork 		= new toolNetwork(&toolManager);
 	toolSurfaces*		pToolSurfaces		= new toolSurfaces(&toolManager, mp_surfaceMain);
-//	toolALB*			pToolALB			= new toolALB(&toolManager);
 	toolTimeline*		pToolTimeline		= new toolTimeline(&toolManager);
 	toolMidi*			pToolMidi			= new toolMidi(&toolManager);
 
@@ -115,7 +114,6 @@ void testApp::setup()
 	toolManager.addTool( pToolAnimations );
 	toolManager.addTool( new toolScene(&toolManager, mp_sceneVisualisation) );
 	toolManager.addTool( new toolSound(&toolManager) );
-//	toolManager.addTool( pToolALB );
 	toolManager.addTool( pToolTimeline );
 	toolManager.addTool( pToolMidi );
 
@@ -155,7 +153,6 @@ void testApp::setup()
 	if (pToolDevices)			pToolDevices->setup();
 	if (pToolSurfaces)			pToolSurfaces->setup();
 	if (pToolAnimations)		pToolAnimations->setup();
-//	if (pToolALB)				pToolALB->setup();
 	if (pToolTimeline)			pToolTimeline->setup();
 	if (pToolMidi)				pToolMidi->setup();
 	
@@ -168,11 +165,6 @@ void testApp::setup()
 	m_windowSize.set(ofGetWidth(),ofGetHeight());
 
 	OFAPPLOG->end();
-
-//	m_timelineSimple.load("Exports/ALB/timeline.xml");
-//	m_timelineSimple.setEventsCallback( (timelineSimpleEvent::timelineSimpleCb) sM_timelineSimpleEvent, this);
-	
-//	m_timelineSimple.start();
 }
 
 
@@ -697,44 +689,26 @@ void testApp::keyPressed(int key)
     if (mp_glfw->getEventWindow() == mp_windows->at(0))
 	{
 	#endif
-
-	
-//	OFAPPLOG->begin("testApp::keyPressed()");
-//	OFAPPLOG->println("-key='"+ofToString(key)+"'");
 	
 	toolConfiguration* 	pToolConfiguration 	= (toolConfiguration*) 		toolManager.getTool("Configuration");
 	toolAnimations* 	pToolAnimations 	= (toolAnimations*) 		toolManager.getTool("Animations");
 
 	 
-	if (toolManager.keyPressed(key) == false)
+	if (toolManager.keyPressed(key) == false && toolManager.hasKeyboardFocus() == false)
 	{
-		if (key == 's')
-    	{
-			if (pToolConfiguration)
-				pToolConfiguration->toggleViewSimulation();
-    	}
-		else if (key == 'f' || key == 'F')
-		{
-			if (pToolConfiguration)
-				pToolConfiguration->toggleFullscreen();
-		}
-		else
-		{
-		   if (key == OF_KEY_LEFT)
-		   {
-			   if (pToolAnimations && !pToolAnimations->isSequenceActive()){
-				   pToolAnimations->showPrevAnimation();
-			   }
-		   }
-		   else if (key == OF_KEY_RIGHT)
-		   {
-			   if (pToolAnimations && !pToolAnimations->isSequenceActive()){
-				   pToolAnimations->showNextAnimation();
-			   }
-		   }
-		}
+	  if (key == OF_KEY_LEFT)
+	  {
+		  if (pToolAnimations && !pToolAnimations->isSequenceActive()){
+			  pToolAnimations->showPrevAnimation();
+		  }
+	  }
+	  else if (key == OF_KEY_RIGHT)
+	  {
+		  if (pToolAnimations && !pToolAnimations->isSequenceActive()){
+			  pToolAnimations->showNextAnimation();
+		  }
+	  }
 	}
-//	OFAPPLOG->end();
 
 	#if MURMUR_MULTI_WINDOWS
 	}
@@ -764,13 +738,15 @@ void testApp::mouseMoved(int x, int y){
 }
 
 //--------------------------------------------------------------
+static bool init_mouseDragged = false; // dirty hack otherwise mouse dragged at start
 void testApp::mouseDragged(int x, int y, int button)
 {
 	#if MURMUR_MULTI_WINDOWS
     if (mp_glfw->getEventWindow() != mp_windows->at(0)) return;
 	#endif
 
-    if (isViewSimulation)
+
+    if (isViewSimulation && init_mouseDragged)
     {
         if (m_isUserControls) return;
         if (mp_sceneVisualisation)
@@ -784,11 +760,12 @@ void testApp::mousePressed(int x, int y, int button)
 	#if MURMUR_MULTI_WINDOWS
     if (mp_glfw->getEventWindow() == mp_windows->at(0))
 	{
-/*		if (toolManager.mp_toolTab)
-			toolManager.mp_toolTab->EnableCallbacks();
-		if (toolManager.mp_toolCurrent)
-			toolManager.mp_toolCurrent->enableWindowCallbacks();
-*/
+
+	if (!init_mouseDragged)
+	{
+		init_mouseDragged = true;
+		return;
+	}
 
 	#endif
 

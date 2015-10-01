@@ -92,6 +92,14 @@ bool toolAnimations::isHit(int x, int y)
 }
 
 //--------------------------------------------------------------
+bool toolAnimations::hasKeyboardFocus()
+{
+	ofLog() << tool::hasKeyboardFocus() << " — " << (mp_animationUI && mp_animationUI->hasKeyboardFocus());
+	return ( tool::hasKeyboardFocus() || (mp_animationUI && mp_animationUI->hasKeyboardFocus()) );
+}
+
+
+//--------------------------------------------------------------
 void toolAnimations::createControlsCustom()
 {
 	if (mp_canvas)
