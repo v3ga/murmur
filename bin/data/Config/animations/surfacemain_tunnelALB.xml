@@ -21,27 +21,27 @@
 <Widget>
     <Kind>4</Kind>
     <Name>vol. th</Name>
-    <Value>0.592948735</Value>
+    <Value>0.208333328</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>h1</Name>
-    <Value>50.000000000</Value>
+    <Value>33.937007904</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>h2</Name>
-    <Value>1.576923132</Value>
+    <Value>15.354330063</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>w</Name>
-    <Value>5.926281929</Value>
+    <Value>20.409448624</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>speed</Name>
-    <Value>701.282043457</Value>
+    <Value>1059.055053711</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -51,7 +51,7 @@
 <Widget>
     <Kind>4</Kind>
     <Name>angle</Name>
-    <Value>2.564102650</Value>
+    <Value>4.166666508</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -61,5 +61,5 @@
 <Widget>
     <Kind>2</Kind>
     <Name>right</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>

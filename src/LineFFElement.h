@@ -21,6 +21,7 @@ class LineFFElement
 
 		AnimationLinesFF* 	mp_parent;
 
+		ofColor				m_color;
 		ofVec3f				m_pos, m_dir;
 		float				m_rot;
 		float				m_radius, m_radiusTarget;

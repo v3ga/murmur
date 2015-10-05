@@ -56,6 +56,7 @@ void SoundInput::setup(int deviceId, int nChannels)
 
     m_soundStreamInput.start();
 	mute(false);
+	setInputVolumeModulate(1.0f);
 	
 	mp_sample = 0;
 	m_sampleData = 0;
@@ -90,6 +91,7 @@ void SoundInput::setup(int nChannels)
     initAudioBuffers();
     setVolHistorySize(400);
 	mute(false);
+	setInputVolumeModulate(1.0f);
 }
 
 //--------------------------------------------------------------
@@ -336,6 +338,8 @@ void SoundInput::processAudio(float * input, int bufferSize, int nChannels)
 	        m_smoothedVol *= 0.93;
     	    m_smoothedVol += 0.07 * curVol;
 	 	}
+		
+		m_smoothedVol *= m_inputVolumeModulate;
 		 
 #if SOUNDINPUT_USE_FFT
         m_fft.audioIn(input, bufferSize, nChannels);
@@ -361,10 +365,12 @@ void SoundInput::processAudio(float * input, int bufferSize, int nChannels)
         curVol /= (float)numCounted;
         
         // this is how we get the root of rms :)
-        curVol = sqrt( curVol );
+        curVol = m_inputVolumeModulate*sqrt( curVol );
         
         m_smoothedVol *= 0.93;
         m_smoothedVol += 0.07 * curVol;
+
+		m_smoothedVol *= m_inputVolumeModulate;
      
         //bufferCounter++;
     }

@@ -17,12 +17,23 @@ void blur::loadShaders(string dir)
 
 void blur::allocate(int w, int h)
 {
-	m_fboX.allocate(w,h);
-	m_fboY.allocate(w,h);
+			
+	ofFbo::Settings settings;
+	settings.width = (int)w;
+	settings.height = (int)h;
+	settings.internalformat = GL_RGB;
+	settings.useDepth = false;
+	settings.useStencil = false;
+
+
+	m_fboX.allocate(settings);
+	m_fboY.allocate(settings);
 }
 
 void blur::apply(ofFbo& fbo, float blurAmount, int nbPasses)
 {
+	
+
 	int w = m_fboX.getWidth();
 	int h = m_fboX.getHeight();
 	ofFbo* input = &fbo;

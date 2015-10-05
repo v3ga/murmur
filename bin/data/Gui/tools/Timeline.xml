@@ -1,7 +1,7 @@
 <Widget>
     <Kind>2</Kind>
     <Name>Loop</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -56,5 +56,5 @@
 <Widget>
     <Kind>4</Kind>
     <Name>transition duration (s)</Name>
-    <Value>1.000000000</Value>
+    <Value>0.234999999</Value>
 </Widget>

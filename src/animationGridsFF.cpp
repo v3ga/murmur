@@ -67,7 +67,7 @@ void AnimationGridsFF::createUICustom()
 		addUISlider(m_properties.getInt("columns"));
 		addUISlider(m_properties.getInt("rows"));
         mp_UIcanvas->addToggle("square cells", &m_bSquare);
-		mp_UIcanvas->addSlider("scale", 0.2,1.0f, &m_meshGridRatio);
+		mp_UIcanvas->addSlider("scale", 0.2,1.5f, &m_meshGridRatio);
 		addUISlider(m_properties.getInt("speed"));
 		addUISlider(m_properties.getFloat("amplitude"));
 		addUISlider(m_properties.getFloat("rotation"));
@@ -75,6 +75,13 @@ void AnimationGridsFF::createUICustom()
 		addUISlider(m_properties.getInt("blurPasses"));
 	}
 }
+
+//--------------------------------------------------------------
+void AnimationGridsFF::VM_enter()
+{
+	setDrawBackground();
+}
+
 
 //--------------------------------------------------------------
 void AnimationGridsFF::VM_update(float dt)

@@ -19,6 +19,7 @@ class AnimationRadarFF : public Animation
  
 		void					createUICustom			();
  
+		virtual	void			VM_enter				();
         virtual void			VM_update				(float dt);
         virtual void			VM_draw					(float w, float h);
         virtual void            onNewPacket             (DevicePacket*, string deviceId, float x, float y);
@@ -40,4 +41,6 @@ class AnimationRadarFF : public Animation
 		float					m_dotted_radiusWidth;
 
 		float					m_radial_radiusWidth;
+ 
+		map<string,ofColor>		m_lastPackeColor;
 };

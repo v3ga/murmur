@@ -6,7 +6,7 @@
 <Widget>
     <Kind>12</Kind>
     <Name>teConfigName</Name>
-    <Value>videolines.xml</Value>
+    <Value>test3.xml</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -31,20 +31,15 @@
 <Widget>
     <Kind>2</Kind>
     <Name>videoGrids</Name>
-    <Value>0</Value>
-</Widget>
-<Widget>
-    <Kind>2</Kind>
-    <Name>videoGrids2</Name>
-    <Value>0</Value>
-</Widget>
-<Widget>
-    <Kind>2</Kind>
-    <Name>videoLines</Name>
     <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
     <Name>particlesGrids</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>radarWaves</Name>
     <Value>0</Value>
 </Widget>

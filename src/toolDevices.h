@@ -66,6 +66,10 @@ class toolDevices : public tool, public midiInterface
     	ofxUISlider* 			mp_sliderDeviceVolHistorySize;
     	ofxUIToggle* 			mp_toggleDeviceEnableStandby;
     	ofxUISlider* 			mp_sliderDeviceVolHistoryTh;
+ 
+		ofxUIToggle*			mp_toggleDeviceBPMEnable;
+		ofxUIIntSlider*			mp_sliderDeviceBPM;
+
     	ofxUISlider* 			mp_sliderDeviceTimeStandby;
     	ofxUISlider* 			mp_sliderDeviceSampleVolStandby;
 

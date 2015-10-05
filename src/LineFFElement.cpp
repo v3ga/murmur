@@ -41,6 +41,7 @@ void LineFFElement::draw()
  
 	ofTranslate(m_radius*cos(ofDegToRad(m_rot)), m_radius*sin(ofDegToRad(m_rot)));
 	ofRotateZ(m_rot);
+	ofSetColor(m_color);
 	mp_meshPlane->draw();
 	ofPopMatrix();
 }

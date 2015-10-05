@@ -498,9 +498,8 @@ void Animation::guiEvent(ofxUIEventArgs &e)
 			else if (name == "Load")
 			{
 				string filename = mp_teConfigName->getTextString();
-				loadConfiguration(filename);
-
 				m_configurationCurrent = filename;
+				loadConfiguration(filename);
 			}
 		}
 	}
@@ -589,8 +588,14 @@ void Animation::loadConfiguration(string filename)
 {
     if (mp_UIcanvas)
     {
-        mp_UIcanvas->loadSettings( ofToDataPath("Config/animations/"+m_name+"/"+filename) );
-    }
+		if (filename == "" && m_configurations.size()>0)
+		{
+			filename = m_configurations[0];
+    	}
+		ofLog() << filename;
+		
+		mp_UIcanvas->loadSettings( ofToDataPath("Config/animations/"+m_name+"/"+filename) );
+	}
 }
 
 //--------------------------------------------------------------
@@ -1274,6 +1279,13 @@ void AnimationManager::M_update(float dt)
 		if (m_state == STATE_TRANSITION_IN) 
 			M_changeState(STATE_PLAY);
 	}
+}
+
+//--------------------------------------------------------------
+void AnimationManager::M_drawCanvasBefore(float w, float h)
+{
+	if (mp_animationCurrent)
+		mp_animationCurrent->VM_drawBefore(w,h);
 }
 
 //--------------------------------------------------------------

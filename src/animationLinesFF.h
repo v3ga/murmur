@@ -39,4 +39,6 @@ class AnimationLinesFF : public Animation
 		float					m_w,m_h;
  
 		ofMesh					m_meshPlane;
+ 
+		ofColor					m_lastPacketColor;
 };

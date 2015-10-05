@@ -132,6 +132,24 @@ class Device
  
 		virtual	void		mute(bool is=true){if(mp_soundInput) mp_soundInput->mute(is);}
 
+		// BPM
+		int					m_bpm;
+		bool				m_bpmEnable;
+ 
+		float				m_bpmPeriod;
+		float				m_bpmTime;
+		float				m_bpmSoundValue;
+ 
+		int					getBPM						(){return m_bpm;}
+		void				setBPM						(int v);
+		void				setBPMOSC					(int v);
+		void				computeBPM					();
+		void				updateBPM					(float dt);
+ 
+		bool				isBPMEnabled				(){return m_bpmEnable;}
+		void				setBPMEnable				(bool is);
+		void				setBPMEnableOSC				(bool is);
+ 
 		// Sample (stand by)
 		Sample*				mp_sampleStandBy;
 		float				m_sampleVolStandby;
@@ -149,6 +167,7 @@ class Device
 		virtual	void		loadXMLData			(ofxXmlSettings&);
 		void 				loadXMLPing			(ofxXmlSettings&);
 		void 				loadXMLGenerative	(ofxXmlSettings&);
+		void				loadXMLBPM			(ofxXmlSettings&);
 
  
         // Attach point (used only on server side)

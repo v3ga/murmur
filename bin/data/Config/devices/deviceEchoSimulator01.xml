@@ -1,6 +1,6 @@
 <device id="deviceEchoSimulator01">
     <soundInput>
-        <useRawVol>0</useRawVol>
+        <useRawVol>1</useRawVol>
         <mute>0</mute>
         <volMax>0.023499999</volMax>
         <volMaxMax>0.189999998</volMaxMax>
@@ -24,6 +24,10 @@
         <value>0.500000000</value>
     </ping>
     <enableGenerative>1</enableGenerative>
+    <bpm>
+        <enable>1</enable>
+        <value>131</value>
+    </bpm>
     <enableStandby>0</enableStandby>
     <timeStandby>5.000000000</timeStandby>
     <sampleVolStandby>0.790322602</sampleVolStandby>

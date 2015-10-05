@@ -73,8 +73,16 @@ Device::Device(string id, int nbLEDs, float distLEDs)
 	m_sampleNameStandby = "Sounds/StandBy/theme1-4.wav";
 	m_soundInputVolEmpiricalMaxMax = 0.04;
 
+
+	m_bpmEnable			= false;
+	m_bpm				= 120;
+	
+	m_bpmTime			= 0.0f;
+	
+
 	m_isEnableStandup	= false;
 	m_standupTh			= 0.55f;
+	
 	
 	m_color.setHsb(200, 255, 255); // Brightness not used as set by packets
 	m_colorMode = colorMode_manual_hsb;
@@ -548,6 +556,69 @@ void Device::setStandupVolOSC(float v)
 	m_standupTh = v;
 }
 
+//--------------------------------------------------------------
+void Device::setBPM(int v)
+{
+	OFAPPLOG->println("Device::setBPM("+ofToString(v)+") for device '"+this->m_id+"'");
+	m_bpm = v;
+	computeBPM();
+
+	if (m_isSendMessagesOSC == false) return;
+
+    ofxOscMessage m;
+    m.setAddress( OSC_ADDRESS_SET_DEVICE_PROP );
+    m.addStringArg(m_id);
+    m.addStringArg("bpm");
+    m.addIntArg(m_bpm);
+    m_oscSender.sendMessage(m);
+
+	LOG_MESSAGE_OSC(m,false);
+
+}
+
+//--------------------------------------------------------------
+void Device::setBPMOSC(int v)
+{
+	OFAPPLOG->println("Device::setBPMOSC("+ofToString(v)+") for device '"+this->m_id+"'");
+	m_bpm = v;
+	computeBPM();
+}
+
+//--------------------------------------------------------------
+void Device::computeBPM()
+{
+	m_bpmPeriod = 60.0f/(float)m_bpm*0.5f;
+	if (m_bpmEnable){
+		m_bpmTime = 0.0f;
+	}
+}
+
+//--------------------------------------------------------------
+void Device::setBPMEnable(bool is)
+{
+	m_bpmEnable = is;
+	computeBPM();
+
+	if (m_isSendMessagesOSC == false) return;
+
+    ofxOscMessage m;
+    m.setAddress( OSC_ADDRESS_SET_DEVICE_PROP );
+    m.addStringArg(m_id);
+    m.addStringArg("bpmEnable");
+    m.addIntArg(is ? 1 : 0);
+    m_oscSender.sendMessage(m);
+
+	LOG_MESSAGE_OSC(m,false);
+}
+
+//--------------------------------------------------------------
+void Device::setBPMEnableOSC(bool is)
+{
+	m_bpmEnable = is;
+	computeBPM();
+}
+
+
 
 
 //--------------------------------------------------------------
@@ -970,10 +1041,34 @@ void Device::checkForActivity(float dt)
 }
 
 //--------------------------------------------------------------
+void Device::updateBPM(float dt)
+{
+	if (m_bpmEnable)
+	{
+		m_bpmTime += dt;
+		if (m_bpmTime>=m_bpmPeriod)
+		{
+			m_bpmTime = 0.0f;
+			m_bpmSoundValue = (m_bpmSoundValue == 1.0f) ? 0.0f : 1.0f;
+			if (mp_soundInput)
+				mp_soundInput->setInputVolumeModulate( m_bpmSoundValue );
+				//ofLog() << "HERE";
+		}
+	}
+	else
+	{
+		if (mp_soundInput)
+			mp_soundInput->setInputVolumeModulate( 1.0f );
+	}
+
+}
+
+//--------------------------------------------------------------
 void Device::update(float dt)
 {
     checkForActivity(dt);
-    
+	updateBPM(dt);
+ 
     if (mp_soundInput)
     {
         // Update sound data
@@ -1096,7 +1191,16 @@ void Device::loadXMLGenerative(ofxXmlSettings& settings)
 	setGenerative(generative>0?true:false);
 }
 
+//--------------------------------------------------------------
+void Device::loadXMLBPM(ofxXmlSettings& settings)
+{
+  bool		bpmEnable		= settings.getValue("device:bpm:enable",0) > 0 ? true : false;
+  int	 	bpm 			= settings.getValue("device:bpm:value",90);
+  if (bpm<=0) bpm = 100;
 
+  setBPMEnable(bpmEnable);
+  setBPM(bpm);
+}
 
 //--------------------------------------------------------------
 void Device::loadXMLData(ofxXmlSettings& settings)
@@ -1108,6 +1212,7 @@ void Device::loadXMLData(ofxXmlSettings& settings)
 	loadXMLPackets(settings);
 	loadXMLPing(settings);
 	loadXMLGenerative(settings);
+	loadXMLBPM(settings);
 }
 
 //--------------------------------------------------------------
@@ -1179,6 +1284,13 @@ void Device::saveXML(string dir)
 
 
     settings.addValue("enableGenerative", 	isGenerative() ? 1 : 0);
+
+	settings.addTag("bpm");
+	settings.pushTag("bpm");
+	settings.addValue("enable", m_bpmEnable ? 1 : 0);
+	settings.addValue("value", m_bpm);
+	settings.popTag();
+
 
 
     settings.addValue("enableStandby", 		getEnableStandbyMode() ? 1 : 0);

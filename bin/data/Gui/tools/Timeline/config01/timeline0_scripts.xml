@@ -1,5 +1,15 @@
 <keyframes>
     <key>
+        <flag>videolines</flag>
+        <time>00:00:09:681</time>
+        <value>0.502702713</value>
+    </key>
+    <key>
+        <flag>radarwaves</flag>
+        <time>00:00:26:892</time>
+        <value>0.518918931</value>
+    </key>
+    <key>
         <flag>grid03</flag>
         <time>00:00:41:952</time>
         <value>0.675000012</value>

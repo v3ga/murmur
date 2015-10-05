@@ -446,6 +446,7 @@ void Surface::drawMask()
 //--------------------------------------------------------------
 void Surface::renderOffscreen(bool isRenderDevicePoints)
 {
+	m_animationManager.M_drawCanvasBefore(m_fbo.getWidth(),m_fbo.getHeight());
 	if (mpf_renderOffscreenCallback == 0)
 	{
 	    m_fbo.begin();

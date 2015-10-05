@@ -61,14 +61,14 @@
     </element>
     <element name="scripts">
         <x>0.000000000</x>
-        <y>116.000000000</y>
+        <y>76.000000000</y>
         <width>800.000000000</width>
-        <height>40.000000000</height>
+        <height>185.000000000</height>
     </element>
     <element name="setAnim">
         <x>0.000000000</x>
         <y>52.000000000</y>
         <width>800.000000000</width>
-        <height>40.000000000</height>
+        <height>0.000000000</height>
     </element>
 </positions>

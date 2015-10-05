@@ -41,6 +41,8 @@ void AnimationLinesFF::createUICustom()
 {
     if (mp_UIcanvas)
     {
+        mp_UIcanvas->addToggle("colorFromDevice", &m_isColorFromDevice);
+
 		addUISlider( m_properties.getFloat("dirSpeed") );
 		addUISlider( m_properties.getFloat("zMax") );
 		addUISlider( m_properties.getFloat("radius") );
@@ -77,23 +79,23 @@ void AnimationLinesFF::VM_draw(float w, float h)
 	m_cam.setPosition(0,0,1000);
 	m_cam.begin(ofRectangle(0,0,w,h));
 
-	//ofBackground(0);
-	//ofDrawAxis(50);
 	drawBackground(0);
 
-	ofSetColor(255);
+	ofPushStyle();
 	vector<LineFFElement*>::iterator it = m_lines.begin();
 	for (; it != m_lines.end(); ++it)
 		(*it)->draw();
 
 	m_cam.end();
+	ofPopStyle();
 }
 
 //--------------------------------------------------------------
 void AnimationLinesFF::onNewPacket(DevicePacket* pDevicePacket, string deviceId, float x, float y)
 {
 //	accumulateVolume(pDevicePacket->m_volume, deviceId);
-	if (pDevicePacket->m_volume >= 0.5f)
+	m_lastPacketColor = pDevicePacket->m_color;
+	if (pDevicePacket->m_volume >= m_volValuesMeanTh)
 	{
 		onVolumAccumEvent(deviceId);
 	}
@@ -116,6 +118,7 @@ void AnimationLinesFF::onVolumAccumEvent(string deviceId)
 			LineFFElement* pLine = new LineFFElement(this, posFar,-dir);
 			pLine->m_radius 	= m_radius;
 			pLine->m_rot 		= m_rot;
+			pLine->m_color		= m_isColorFromDevice ? m_lastPacketColor : ofColor(255);
 			
 			m_lines.push_back(pLine);
 		}

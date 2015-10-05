@@ -13,11 +13,14 @@
 //--------------------------------------------------------------
 AnimationComposition::AnimationComposition(string name) : Animation(name)
 {
-	m_bAllocateRenderBuffers = true;
+	m_bAllocateRenderBuffers = false;
 	m_bRenderNormal = false;
+	m_bRenderNormalWanted = false;
 	
 	mp_radioBlending = 0;
 	mp_radioCompositions=0;
+
+	m_isLoadingConfiguration = false;
 }
 
 //--------------------------------------------------------------
@@ -54,6 +57,8 @@ void AnimationComposition::createUICustom()
 			compositionNames.push_back(m_compositions[i]->m_name);
 
 		mp_radioCompositions = new ofxUIRadio("radioCompositions", compositionNames, OFX_UI_ORIENTATION_VERTICAL, 16, 16);
+		vector<ofxUIToggle *> toggles = mp_radioCompositions->getToggles();
+		for (int i=0;i<toggles.size();i++) toggles[i]->setValue(false);
 		mp_UIcanvas->addWidgetDown(mp_radioCompositions);
 
 
@@ -71,32 +76,36 @@ void AnimationComposition::loadMidiSettings()
 //--------------------------------------------------------------
 void AnimationComposition::loadConfiguration(string filename)
 {
-	OFAPPLOG->begin("AnimationComposition::loadConfiguration("+filename+")");
+	m_isLoadingConfiguration = true;
+	OFAPPLOG->begin("AnimationComposition::loadConfiguration('"+filename+"')");
 	Animation::loadConfiguration(filename);
 	OFAPPLOG->end();
+	m_isLoadingConfiguration = false;
+   setRenderNormal(m_bRenderNormalWanted);
 }
 
 
 //--------------------------------------------------------------
 void AnimationComposition::setRenderNormal(bool is)
 {
+	//if (is == m_bRenderNormal) return;
+	
 	m_bRenderNormal = is;
-	Surface* pSurface = GLOBALS->getSurfaceMain();
 
-
+/*
 	for (int i=0;i<m_animations.size(); i++){
 		m_animations[i]->setDrawBackground(!is);
 	}
 
+*/
 
-	if (m_bRenderNormal)
-	{
-	 	if (pSurface)
-			pSurface->setRenderOffscreenCb(0,0);
+	Surface* pSurface = GLOBALS->getSurfaceMain();
+	if (pSurface)
+		pSurface->setRenderOffscreenCb(0,0);
 
-	}
-	else
+	if (m_bRenderNormal == false)
 	{
+		allocateRenderBuffers();
 	 	if (pSurface)
 			pSurface->setRenderOffscreenCb((Surface::FRenderOffscreen)onSurfaceRenderOffscreen, this);
 	}
@@ -137,13 +146,14 @@ void AnimationComposition::setBlending(string name)
 	}
 	else
 	{
-		setRenderNormal(true);
+		//setRenderNormal(true);
 	}
 }
 
 //--------------------------------------------------------------
 void AnimationComposition::setComposition( string name )
 {
+	OFAPPLOG->begin("AnimationComposition::setComposition("+name+")");
 	vector<AnimationCompoConfiguration*>::iterator it = m_compositions.begin();
 	AnimationCompoConfiguration* pComposition = 0;
 	for ( ; it != m_compositions.end(); ++it)
@@ -158,8 +168,14 @@ void AnimationComposition::setComposition( string name )
 	{
 		if (m_animations.size()>0)
 		{
-			if (m_animations[0]) m_animations[0]->setDrawBackground();
-			if (m_animations[1]) m_animations[1]->setDrawBackground();
+			if (m_animations[0]){
+				m_animations[0]->VM_exit();
+				m_animations[0]->setDrawBackground();
+			}
+			if (m_animations[1]){
+				m_animations[1]->VM_exit();
+				m_animations[1]->setDrawBackground();
+			}
 		}
 		m_animations.clear();
 
@@ -169,16 +185,26 @@ void AnimationComposition::setComposition( string name )
 
 		if (pAnim1 && pAnim2)
 		{
+			OFAPPLOG->println("- anim1 = "+pAnim1->m_name);
+			OFAPPLOG->println("- anim2 = "+pAnim2->m_name);
+
 			m_animations.push_back( pAnim1 );
 			m_animations.push_back( pAnim2 );
 			
-			pAnim1->setDrawBackground(true);
-			pAnim2->setDrawBackground(false);
 			
 			pAnim1->loadConfiguration(pComposition->m_animationConfig1);
 			pAnim2->loadConfiguration(pComposition->m_animationConfig2);
+			
+			pAnim1->VM_enter();
+			pAnim2->VM_enter();
+
+			pAnim1->setDrawBackground(true);
+			pAnim2->setDrawBackground(false);
+			
+
 		}
 	}
+	OFAPPLOG->end();
 	
 }
 //--------------------------------------------------------------
@@ -215,12 +241,14 @@ void AnimationComposition::readSurfaceSettings(ofxXmlSettings& settings)
 //--------------------------------------------------------------
 void AnimationComposition::loadProperties(string id)
 {
-
+m_isLoadingConfiguration = true;
 	vector<Animation*>::iterator it = m_animations.begin();
 	for ( ; it != m_animations.end(); ++it)
 	 	(*it)->loadProperties( id+"_"+(*it)->m_name );
 
 	Animation::loadProperties(id);
+m_isLoadingConfiguration = false;
+	
 }
 
 //--------------------------------------------------------------
@@ -229,64 +257,9 @@ void AnimationComposition::VM_enter()
 	vector<Animation*>::iterator it = m_animations.begin();
 	for ( ; it != m_animations.end(); ++it)
 	 	(*it)->VM_enter();
- 
-	Surface* pSurface = GLOBALS->getSurfaceMain();
- 	if (pSurface)
-	{
-		pSurface->setRenderOffscreenCb((Surface::FRenderOffscreen)onSurfaceRenderOffscreen, this);
-		ofAddListener(pSurface->m_eventOffscreenChanged, this, &AnimationComposition::onSurfaceOffscreenChanged);
 
-	}
 	
-	allocateRenderBuffers();
-	if (m_compositionCurrent!="") setComposition(m_compositionCurrent);
-}
-
-//--------------------------------------------------------------
-void AnimationComposition::VM_update(float dt)
-{
-	vector<Animation*>::iterator it = m_animations.begin();
-	for ( ; it != m_animations.end(); ++it)
-	 	(*it)->VM_update(dt);
-
-	if (m_bAllocateRenderBuffers)
-	{
-		m_bAllocateRenderBuffers=false;
-		Surface* pSurface = GLOBALS->getSurfaceMain();
-		if (pSurface)
-		{
-			float w = pSurface->getOffscreen().getWidth();
-			float h = pSurface->getOffscreen().getHeight();
-			int nbSamples = pSurface->m_fboNbSamples;
-		
-			m_fboAnimation1.allocate(w,h, GL_RGBA,nbSamples);
-			m_fboAnimation2.allocate(w,h, GL_RGBA,nbSamples);
-		}
-	}
-}
-
-//--------------------------------------------------------------
-void AnimationComposition::VM_draw(float w, float h)
-{
-	if ( m_compositionCurrent != m_compositionWanted )
-	{
-		m_compositionCurrent = m_compositionWanted;
-		setComposition(m_compositionCurrent);
-	}
-
-	if (m_bRenderNormal)
-	{
-		drawBackground(0);
-		vector<Animation*>::iterator it = m_animations.begin();
-		for ( ; it != m_animations.end(); ++it)
-		{
-			ofPushStyle();
-			ofPushMatrix();
-	 		(*it)->VM_draw(w,h);
-			ofPopMatrix();
-			ofPopStyle();
-		}
-	}
+	//if (m_compositionCurrent!="") setComposition(m_compositionCurrent);
 }
 
 //--------------------------------------------------------------
@@ -304,6 +277,69 @@ void AnimationComposition::VM_exit()
 		pSurface->setRenderOffscreenCb(0,0);
 }
 
+//--------------------------------------------------------------
+void AnimationComposition::VM_update(float dt)
+{
+
+	vector<Animation*>::iterator it = m_animations.begin();
+	for ( ; it != m_animations.end(); ++it)
+	 	(*it)->VM_update(dt);
+}
+
+//--------------------------------------------------------------
+void AnimationComposition::VM_drawBefore(float w, float h)
+{
+		//setRenderNormal(m_bRenderNormalWanted);
+
+	vector<Animation*>::iterator it = m_animations.begin();
+	for ( ; it != m_animations.end(); ++it)
+	 	(*it)->VM_drawBefore(w,h);
+
+	if (m_bAllocateRenderBuffers && w>0 && h>0 && !m_fboAnimation1.isAllocated() && !m_fboAnimation2.isAllocated())
+	{
+		m_bAllocateRenderBuffers=false;
+		Surface* pSurface = GLOBALS->getSurfaceMain();
+		if (pSurface)
+		{
+			float w = pSurface->getOffscreen().getWidth();
+			float h = pSurface->getOffscreen().getHeight();
+			int nbSamples = pSurface->m_fboNbSamples;
+			
+			ofFbo::Settings settings;
+			settings.width = (int)w;
+			settings.height = (int)h;
+			settings.internalformat = GL_RGB;
+			settings.useDepth = false;
+			settings.useStencil = false;
+		
+			m_fboAnimation1.allocate(settings);
+			m_fboAnimation2.allocate(settings);
+		}
+	}
+}
+
+//--------------------------------------------------------------
+void AnimationComposition::VM_draw(float w, float h)
+{
+	//setComposition(m_compositionWanted);
+
+	if (m_bRenderNormal)
+	{
+		drawBackground(0);
+		vector<Animation*>::iterator it = m_animations.begin();
+		for ( ; it != m_animations.end(); ++it)
+		{
+			ofPushStyle();
+			ofPushMatrix();
+	 		(*it)->VM_draw(w,h);
+			ofPopMatrix();
+			ofPopStyle();
+		}
+	}
+}
+
+
+
 
 //--------------------------------------------------------------
 void AnimationComposition::onNewPacket(DevicePacket* pDevice, string deviceId, float x, float y)
@@ -316,46 +352,45 @@ void AnimationComposition::onNewPacket(DevicePacket* pDevice, string deviceId, f
 //--------------------------------------------------------------
 void AnimationComposition::onSurfaceRenderOffscreen(Surface* pSurface, AnimationComposition* pThis)
 {
-	if (pThis->m_bRenderNormal == false)
-	{
-		ofFbo& fboFinal = pSurface->getOffscreen();
-	
-		if (pThis->m_animations.size()==2 && pThis->m_animations[0] && pThis->m_animations[1] && pThis->m_fboAnimation1.isAllocated() && pThis->m_fboAnimation2.isAllocated())
-		{
-			pThis->m_fboAnimation1.begin();
-			ofBackground(0);
-			pThis->m_animations[0]->VM_draw(pThis->m_fboAnimation1.getWidth(), pThis->m_fboAnimation1.getHeight());
-			pThis->m_fboAnimation1.end();
+   ofFbo& fboFinal = pSurface->getOffscreen();
 
-			pThis->m_fboAnimation2.begin();
-			ofBackground(0);
-			pThis->m_animations[1]->VM_draw(pThis->m_fboAnimation2.getWidth(), pThis->m_fboAnimation2.getHeight());
-			pThis->m_fboAnimation2.end();
+   //ofLog() << pThis->m_animations.size();
 
-			fboFinal.begin();
+   if (pThis->m_animations.size()==2 && pThis->m_animations[0] && pThis->m_animations[1] && pThis->m_fboAnimation1.isAllocated() && pThis->m_fboAnimation2.isAllocated())
+   {
+	   pThis->m_fboAnimation1.begin();
+	   ofBackground(0);
+	   pThis->m_animations[0]->VM_draw(pThis->m_fboAnimation1.getWidth(), pThis->m_fboAnimation1.getHeight());
+	   pThis->m_fboAnimation1.end();
 
-			pThis->m_shader.begin();
-			pThis->m_shader.setUniformTexture("tex1", pThis->m_fboAnimation1.getTextureReference(), 1);
-			pThis->m_shader.setUniformTexture("tex2", pThis->m_fboAnimation2.getTextureReference(), 2);
-			pThis->m_fboAnimation1.draw(0,0);
-			pThis->m_shader.end();
+	   pThis->m_fboAnimation2.begin();
+	   ofBackground(0);
+	   pThis->m_animations[1]->VM_draw(pThis->m_fboAnimation2.getWidth(), pThis->m_fboAnimation2.getHeight());
+	   pThis->m_fboAnimation2.end();
 
-			fboFinal.end();
+	   fboFinal.begin();
 
-		}
-		else
-		{
-			fboFinal.begin();
-			ofBackground(0);
-			fboFinal.end();
-		}
-	}
+	   pThis->m_shader.begin();
+	   pThis->m_shader.setUniformTexture("tex1", pThis->m_fboAnimation1.getTextureReference(), 1);
+	   pThis->m_shader.setUniformTexture("tex2", pThis->m_fboAnimation2.getTextureReference(), 2);
+	   pThis->m_fboAnimation1.draw(0,0); // just to draw a quad on screen
+	   pThis->m_shader.end();
+
+	   fboFinal.end();
+
+   }
+   else
+   {
+	   fboFinal.begin();
+	   ofBackground(255,0,0);
+	   fboFinal.end();
+   }
 }
 
 //--------------------------------------------------------------
 void AnimationComposition::onSurfaceOffscreenChanged(ofVec2f& dimensions)
 {
-	allocateRenderBuffers();
+	//allocateRenderBuffers();
 }
 
 //--------------------------------------------------------------
@@ -391,7 +426,11 @@ void AnimationComposition::guiEvent(ofxUIEventArgs &e)
 	string name = e.getName();
 	if (name == "renderNormal")
 	{
-		setRenderNormal(e.getToggle()->getValue());
+		if (!m_isLoadingConfiguration)
+			setRenderNormal(e.getToggle()->getValue());
+		else
+			m_bRenderNormalWanted = e.getToggle()->getValue();
+		//ofLog() << "m_bRenderNormalWanted=" << m_bRenderNormalWanted;
 	}
 	else
 	{
@@ -405,7 +444,7 @@ void AnimationComposition::guiEvent(ofxUIEventArgs &e)
 				if (e.getToggle()->getValue()>0)
 				{
 					OFAPPLOG->println("- setting composition "+name);
-					m_compositionWanted = name;
+					setComposition(name);
 				}
 			}
 		}

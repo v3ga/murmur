@@ -82,6 +82,7 @@ AnimationShaderWave::~AnimationShaderWave()
 void AnimationShaderWave::VM_enter()
 {
     M_loadShader("wave");
+	setDrawBackground();
     //printf(">>>> %d\n", m_imgSoundInput.getPixelsRef().size());
 }
 

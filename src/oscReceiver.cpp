@@ -157,6 +157,18 @@ void oscReceiver::update()
 						int value = m_oscMessage.getArgAsInt32(indexArg++);
 						pDevice->setGenerativeOSC(value>0 ? true : false);
 					}
+                    else
+                    if (propName == "bpmEnable")
+					{
+						int value = m_oscMessage.getArgAsInt32(indexArg++);
+						pDevice->setBPMEnableOSC(value>0 ? true : false);
+					}
+                    else
+                    if (propName == "bpm")
+					{
+						int value = m_oscMessage.getArgAsInt32(indexArg++);
+						pDevice->setBPMOSC(value);
+					}
 
                 }
             }

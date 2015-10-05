@@ -51,9 +51,10 @@ class AnimationComposition : public Animation
 		virtual	void			createUICustom			();
 		virtual void			VM_enter				();
 		virtual void			VM_update				(float dt);
+ 		virtual void			VM_drawBefore			(float w, float h);
 		virtual void			VM_draw					(float w, float h);
 		virtual void			VM_exit					();
- 
+
 		static	void			onSurfaceRenderOffscreen(Surface*, AnimationComposition* pThis);
 				void			onSurfaceOffscreenChanged(ofVec2f& dim);
 
@@ -72,6 +73,7 @@ class AnimationComposition : public Animation
 		ofFbo									m_fboAnimation1, m_fboAnimation2;
  
 		bool									m_bRenderNormal; // without blending shaders
+		bool									m_bRenderNormalWanted;
 		ofShader								m_shader;
  
 		void									allocateRenderBuffers();
@@ -81,4 +83,5 @@ class AnimationComposition : public Animation
 		ofxUIRadio*								mp_radioBlending;
  
 		bool									isNameComposition(string name);
+		bool									m_isLoadingConfiguration;
 };

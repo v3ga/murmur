@@ -29,6 +29,10 @@ toolDevices::toolDevices(toolManager* parent, DeviceManager* manager) : tool("De
 	mp_sliderDeviceVolHistorySize = 0;
 	mp_toggleDeviceEnableStandby = 0;
 	mp_sliderDeviceVolHistoryTh = 0;
+	
+	mp_toggleDeviceBPMEnable = 0;
+	mp_sliderDeviceBPM = 0;
+	
 	mp_sliderDeviceTimeStandby = 0;
 	mp_sliderDeviceSampleVolStandby = 0;
 
@@ -187,6 +191,17 @@ void toolDevices::createControlsCustomFinalize()
 //    mp_canvasDevice->addWidgetDown(new ofxUISpacer(widthDefault, 1));
 	mp_canvasDevice->addWidgetDown(mp_sliderDeviceVolHistorySize);
 	mp_canvasDevice->addWidgetDown(mp_toggleDeviceUseRawVol);
+	
+    mp_canvasDevice->addWidgetDown(new ofxUILabel("BPM", OFX_UI_FONT_MEDIUM));
+    mp_canvasDevice->addWidgetDown(new ofxUISpacer(widthDefault, 1));
+
+
+	mp_toggleDeviceBPMEnable = new ofxUIToggle("BPM enable", true, dim, dim);
+	mp_sliderDeviceBPM = new ofxUIIntSlider( "BPM", 90, 160, 120, widthDefault-10, dim );
+
+    mp_canvasDevice->addWidgetDown(mp_toggleDeviceBPMEnable);
+    mp_canvasDevice->addWidgetDown(mp_sliderDeviceBPM);
+	
 
     mp_canvasDevice->addWidgetDown(new ofxUILabel("Stand by", OFX_UI_FONT_MEDIUM));
     mp_canvasDevice->addWidgetDown(new ofxUISpacer(widthDefault, 1));
@@ -405,6 +420,9 @@ void toolDevices::updateDeviceUI(Device* pDevice)
 		if (mp_sliderDeviceVolHistoryPingTh) mp_sliderDeviceVolHistoryPingTh->setValue( pDevice->m_volHistoryPingTh );
 		
 		if (mp_toggleDeviceGenerative) mp_toggleDeviceGenerative->setValue( pDevice->isGenerative() );
+		
+		if (mp_toggleDeviceBPMEnable) mp_toggleDeviceBPMEnable->setValue( pDevice->isBPMEnabled() );
+		if (mp_sliderDeviceBPM) mp_sliderDeviceBPM->setValue( pDevice->getBPM() );
 
 		if (mp_canvasDevice)
 		{
@@ -567,6 +585,18 @@ void toolDevices::handleEvents(ofxUIEventArgs& e)
 	{
         if (pDeviceCurrent){
 			pDeviceCurrent->setGenerative( e.getToggle()->getValue() );
+		}
+	}
+	else if (name == "BPM")
+	{
+        if (pDeviceCurrent){
+			pDeviceCurrent->setBPM( ((ofxUIIntSlider*)e.widget)->getScaledValue() );
+		}
+	}
+	else if (name == "BPM enable")
+	{
+        if (pDeviceCurrent){
+			pDeviceCurrent->setBPMEnable( e.getToggle()->getValue() );
 		}
 	}
 

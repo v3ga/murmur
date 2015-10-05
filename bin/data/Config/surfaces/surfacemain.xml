@@ -3,31 +3,25 @@
 <!--
         <animation>waves</animation>
   		<animation>gravitatory</animation>
-        <animation>box2DCircles</animation>
         <animation>video</animation>
+        <animation name="box2DCircles"></animation>
 
 -->
-        <animation name="particlesMega2"></animation>
-        <animation name="shaderWave"></animation>
+        <animation name="agentsFF"></animation>
+
         <animation name="gridsFF"></animation>
+        <animation name="shaderWave"></animation>
+        <animation name="particlesMega2"></animation>
         <animation name="linesFF"></animation>
         <animation name="radarFF"></animation>
         <animation name="tunnelALB"></animation>
         <animation name="video"></animation>
+
         <animation name="composition">
+
 			<composition name="videoGrids">
 				<animation name="video" configuration="test.xml"></animation>
 				<animation name="gridsFF" configuration="test.xml"></animation>
-			</composition>
-
-			<composition name="videoGrids2">
-				<animation name="video" configuration="test.xml"></animation>
-				<animation name="gridsFF" configuration="test2.xml"></animation>
-			</composition>
-
-			<composition name="videoLines">
-				<animation name="video" configuration="test.xml"></animation>
-				<animation name="linesFF" configuration="yep2.xml"></animation>
 			</composition>
 
 			<composition name="particlesGrids">
@@ -41,9 +35,15 @@
 				<animation name="radarFF" configuration="abc.xml"></animation>
 			</composition>
 
+			<composition name="gridAgents">
+				<animation name="agentsFF" configuration="tempest.xml"></animation>
+				<animation name="gridsFF" configuration="test3.xml"></animation>
+			</composition>
+
 
 
 		</animation>
+
     </animations>
 
     <animations type="js" folder="murmur">

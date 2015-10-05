@@ -82,6 +82,7 @@ void AnimationVideo::VM_draw(float w, float h)
 		ofRectangle rectVideo(0,0,m_player.getWidth(),m_player.getHeight());
 		rectVideo.scaleTo(rectSurface);
 
+		ofSetColor(255,255);
 		m_player.draw(0,0,w,h);
 	}
 	else

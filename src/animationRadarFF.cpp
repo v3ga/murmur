@@ -54,6 +54,8 @@ void AnimationRadarFF::createUICustom()
 		float dim = 16;
 		int widthDefault = 320;
 
+       //mp_UIcanvas->addToggle("colorFromDevice", &m_isColorFromDevice);
+
 		addUISlider( m_properties.getFloat("age max") );
 		addUISlider( m_properties.getFloat("speed") );
 
@@ -77,6 +79,13 @@ void AnimationRadarFF::createUICustom()
 	
 	}
 }
+
+//--------------------------------------------------------------
+void AnimationRadarFF::VM_enter()
+{
+	setDrawBackground();
+}
+
 
 //--------------------------------------------------------------
 void AnimationRadarFF::VM_update(float dt)
@@ -159,8 +168,11 @@ void AnimationRadarFF::onVolumAccumEvent(string deviceId)
 		}
 
 		if (pRadar)
-			m_elements.push_back(pRadar);
+		{
+			pRadar->m_color =  m_isColorFromDevice ? m_lastPackeColor[deviceId] : ofColor(255) ;
 
+			m_elements.push_back(pRadar);
+		}
 	
 		
 
@@ -170,6 +182,12 @@ void AnimationRadarFF::onVolumAccumEvent(string deviceId)
 //--------------------------------------------------------------
 void AnimationRadarFF::onNewPacket(DevicePacket* pDevicePacket, string deviceId, float x, float y)
 {
+	//m_lastPackeColor[deviceId] = pDevicePacket->m_color;
 	accumulateVolume(pDevicePacket->m_volume, deviceId);
+	if (pDevicePacket->m_volume >= m_volValuesMeanTh)
+	{
+	//	onVolumAccumEvent(deviceId);
+	}
+
 }
 

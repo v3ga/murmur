@@ -19,6 +19,7 @@ class AnimationGridsFF : public Animation
  
  
 		virtual	void			createUICustom			();
+		virtual	void			VM_enter				();
         virtual void			VM_update				(float dt);
         virtual void			VM_draw					(float w, float h);
 		virtual void			onNewPacket				(DevicePacket* pDevicePacket, string deviceId, float x, float y);

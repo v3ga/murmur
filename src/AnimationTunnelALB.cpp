@@ -69,7 +69,23 @@ AnimationTunnelALB::AnimationTunnelALB(string name) : Animation(name)
 	m_emitRight		= true;
 	
 	//m_volAccum.setTriggerInCb(sM_volTriggerIn, this);
+	
+	m_properties.add( new classProperty_float("vol. th", 	0.0f, 1.0f, &m_volAccum.m_valueTriggerIn) );
+	m_properties.add( new classProperty_float("h1", 		10.0f, 50.0f, &m_h1Mesh) );
+	m_properties.add( new classProperty_float("h2", 		10.0f, 50.0f, &m_h2Mesh) );
+	m_properties.add( new classProperty_float("w", 			1.0f, 30.0f, &m_wMesh) );
+	m_properties.add( new classProperty_float("speed", 		100.0f, 1500.0f, &m_dirSpeed) );
+	m_properties.add( new classProperty_float("zmax", 		100.0f, 2000.0f, &m_zMax) );
+	m_properties.add( new classProperty_float("angle", 		0.0f, 20.0f, &m_dirAngle) );
+	m_properties.add( new classProperty_bool("left", 		&m_emitLeft) );
+	m_properties.add( new classProperty_bool("right", 		&m_emitRight) );
+
 	updateRotations();
+
+
+	
+	
+	
 }
 
 //--------------------------------------------------------------
@@ -178,6 +194,7 @@ void AnimationTunnelALB::deleteMeshes()
 //--------------------------------------------------------------
 void AnimationTunnelALB::VM_enter()
 {
+	setDrawBackground();
 	if (mp_meshes[0] == 0)
 		createMeshes();
 }
@@ -250,31 +267,12 @@ void AnimationTunnelALB::onNewPacket(DevicePacket* pDevicePacket, string deviceI
 		m_posFar = m_cam.getPosition()+m_zMax*dir;
 
 
-//	m_dirLeft.set	( ofVec3f( cos(ofDegToRad(90+m_dirAngle)), 0, sin(ofDegToRad(90+m_dirAngle)) ) );
-  	//m_dirRight.set	( ofVec3f( cos(ofDegToRad(90-m_dirAngle)), 0, sin(ofDegToRad(90-m_dirAngle)) ) );
-m_dirLeft = (m_cam.screenToWorld(ofVec3f(m_w/2,m_h/2,0))-m_posFar).normalized();
-m_dirRight =(m_cam.screenToWorld(ofVec3f(m_w/2,m_h/2,0))-m_posFar).normalized();
+		m_dirLeft = (m_cam.screenToWorld(ofVec3f(m_w/2,m_h/2,0))-m_posFar).normalized();
+		m_dirRight =(m_cam.screenToWorld(ofVec3f(m_w/2,m_h/2,0))-m_posFar).normalized();
 
 
-m_dirLeft = m_mRotationLeft*m_dirLeft;
-m_dirRight = m_mRotationRight*m_dirRight;
-/*
-ofMatrix4x4 m;
-
-ofVec3f k = m_dirLeft;
-ofVec3f i = ofVec3f(1.0f,0.0f,0.0f);
-ofVec3f j = k.crossed(i);
-
-m.set(
-i.x, j.x, k.x, 0,
-i.y, j.y, k.y, 0,
-i.z, j.z, k.z, 0,
-0, 0, 0, 1
-
-);
-
-*/
-		//m_dirLeft
+		m_dirLeft = m_mRotationLeft*m_dirLeft;
+		m_dirRight = m_mRotationRight*m_dirRight;
 
 		if (m_emitRight)
 		{
@@ -301,15 +299,15 @@ void AnimationTunnelALB::createUICustom()
 {
     if (mp_UIcanvas)
     {
-        mp_UIcanvas->addSlider("vol. th", 	0.0f, 1.0f, 	&m_volAccum.m_valueTriggerIn);
-        mp_UIcanvas->addSlider("h1", 		10, 50, 		&m_h1Mesh);
-        mp_UIcanvas->addSlider("h2", 		1, 10, 			&m_h2Mesh);
-        mp_UIcanvas->addSlider("w", 		1, 30, 			&m_wMesh);
-        mp_UIcanvas->addSlider("speed", 	100.0f, 1500.0f, &m_dirSpeed);
-        mp_UIcanvas->addSlider("zmax",		100.0f,2000.0f,&m_zMax);
-        mp_UIcanvas->addSlider("angle",		0,20,			&m_dirAngle);
-        mp_UIcanvas->addToggle("left", 						&m_emitLeft);
-        mp_UIcanvas->addToggle("right", 					&m_emitRight);
+		addUISlider( m_properties.getFloat("vol. th") );
+		addUISlider( m_properties.getFloat("h1") );
+		addUISlider( m_properties.getFloat("h2") );
+		addUISlider( m_properties.getFloat("w") );
+		addUISlider( m_properties.getFloat("speed") );
+		addUISlider( m_properties.getFloat("zmax") );
+		addUISlider( m_properties.getFloat("angle") );
+		addUItoggle( m_properties.getBool("left") );
+		addUItoggle( m_properties.getBool("right") );
     }
 }
 
@@ -319,8 +317,8 @@ void AnimationTunnelALB::updateRotations()
 	m_mRotationLeft.makeIdentityMatrix();
 	m_mRotationRight.makeIdentityMatrix();
 
-  m_mRotationLeft.rotate(m_dirAngle, 0, 1, 0);
-  m_mRotationRight.rotate(-m_dirAngle, 0, 1, 0);
+  	m_mRotationLeft.rotate(m_dirAngle, 0, 1, 0);
+  	m_mRotationRight.rotate(-m_dirAngle, 0, 1, 0);
 }
 
 
@@ -328,7 +326,9 @@ void AnimationTunnelALB::updateRotations()
 void AnimationTunnelALB::guiEvent(ofxUIEventArgs &e)
 {
 	if (e.getName() == "h1" || e.getName() == "h2" || e.getName() == "w")
+	{
 		modifyMeshes();
+	}
 	else
 	if (e.getName() == "speed")
 	{

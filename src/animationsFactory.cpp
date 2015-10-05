@@ -22,6 +22,7 @@
 #include "animationRadarFF.h"
 #include "animationLinesFF.h"
 #include "animationGridsFF.h"
+#include "animationAgentsFF.h"
 
 Animation* AnimationsFactory::create(string name)
 {
@@ -56,6 +57,8 @@ Animation* AnimationsFactory::create(string name)
         pAnimation = new AnimationLinesFF(name);
     else if (name == "gridsFF")
         pAnimation = new AnimationGridsFF(name);
+    else if (name == "agentsFF")
+        pAnimation = new AnimationAgentsFF(name);
  
     return pAnimation;
 }

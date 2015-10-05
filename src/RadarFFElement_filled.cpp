@@ -15,7 +15,7 @@ RadarFFElement_filled::RadarFFElement_filled(AnimationRadarFF* pParent, float x,
 	m_mesh.enableIndices();
 	m_mesh.disableNormals();
 	m_mesh.disableTextures();
-	m_mesh.disableColors();
+	m_mesh.enableColors();
 	m_mesh.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
 }
 
@@ -63,10 +63,10 @@ void RadarFFElement_filled::updateCustom(float dt)
 //--------------------------------------------------------------
 void RadarFFElement_filled::draw()
 {
-	ofSetColor(m_color);
 	ofPushMatrix();
 	ofTranslate(m_pos);
 	ofRotate(m_rot);
+	ofSetColor(m_color);
 	m_mesh.draw();
 	ofPopMatrix();
 }

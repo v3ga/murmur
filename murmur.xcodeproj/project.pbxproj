@@ -315,6 +315,11 @@
 		F9E11C5317C3A2F000AD3DFD /* SyphonNameboundClient.m in Sources */ = {isa = PBXBuildFile; fileRef = F9E11C4817C3A2F000AD3DFD /* SyphonNameboundClient.m */; };
 		F9E11C5417C3A2F000AD3DFD /* ofxSyphonClient.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9E11C4D17C3A2F000AD3DFD /* ofxSyphonClient.mm */; };
 		F9E11C5517C3A2F000AD3DFD /* ofxSyphonServer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9E11C4F17C3A2F000AD3DFD /* ofxSyphonServer.mm */; };
+		F9E206041BBEB2C000E4E4A3 /* ParticleSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9E206021BBEB2C000E4E4A3 /* ParticleSystem.cpp */; };
+		F9E206071BBEB32E00E4E4A3 /* Particle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9E206051BBEB32E00E4E4A3 /* Particle.cpp */; };
+		F9E2060A1BBEB39200E4E4A3 /* ParticleForce.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9E206081BBEB39200E4E4A3 /* ParticleForce.cpp */; };
+		F9E2062E1BBEBEC400E4E4A3 /* GpuParticles.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9E206281BBEBEC400E4E4A3 /* GpuParticles.cpp */; };
+		F9E2064E1BBECED200E4E4A3 /* ofxVectorField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9E2064A1BBECED200E4E4A3 /* ofxVectorField.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1198,6 +1203,17 @@
 		F9E11C4D17C3A2F000AD3DFD /* ofxSyphonClient.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ofxSyphonClient.mm; sourceTree = "<group>"; };
 		F9E11C4E17C3A2F000AD3DFD /* ofxSyphonServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSyphonServer.h; sourceTree = "<group>"; };
 		F9E11C4F17C3A2F000AD3DFD /* ofxSyphonServer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ofxSyphonServer.mm; sourceTree = "<group>"; };
+		F9E206021BBEB2C000E4E4A3 /* ParticleSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParticleSystem.cpp; sourceTree = "<group>"; };
+		F9E206031BBEB2C000E4E4A3 /* ParticleSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParticleSystem.h; sourceTree = "<group>"; };
+		F9E206051BBEB32E00E4E4A3 /* Particle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Particle.cpp; sourceTree = "<group>"; };
+		F9E206061BBEB32E00E4E4A3 /* Particle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Particle.h; sourceTree = "<group>"; };
+		F9E206081BBEB39200E4E4A3 /* ParticleForce.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParticleForce.cpp; sourceTree = "<group>"; };
+		F9E206091BBEB39200E4E4A3 /* ParticleForce.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParticleForce.h; sourceTree = "<group>"; };
+		F9E206281BBEBEC400E4E4A3 /* GpuParticles.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GpuParticles.cpp; sourceTree = "<group>"; };
+		F9E206291BBEBEC400E4E4A3 /* GpuParticles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GpuParticles.h; sourceTree = "<group>"; };
+		F9E2062A1BBEBEC400E4E4A3 /* ofxGpuParticles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxGpuParticles.h; sourceTree = "<group>"; };
+		F9E2064A1BBECED200E4E4A3 /* ofxVectorField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxVectorField.cpp; sourceTree = "<group>"; };
+		F9E2064B1BBECED200E4E4A3 /* ofxVectorField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxVectorField.h; sourceTree = "<group>"; };
 		F9F47B931899260300DDE2E3 /* murmur.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = murmur.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1260,6 +1276,8 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				F9E206351BBECED200E4E4A3 /* ofxVectorField */,
+				F9E2060C1BBEBEC400E4E4A3 /* ofxGpuParticles */,
 				F931D67C1BAAED370097E5AE /* ofxMTCReceiver */,
 				F9882D931BA20B2000B81023 /* ofxHapPlayer */,
 				F9DE832D1B39FB0B00F5A086 /* ofxRange */,
@@ -1486,12 +1504,10 @@
 		F93043C81BB291CE0081AD88 /* FF */ = {
 			isa = PBXGroup;
 			children = (
+				F9E206331BBEBF6200E4E4A3 /* Grids */,
+				F9E206321BBEBF5800E4E4A3 /* Agents */,
 				F9D992801BB5446D004CAFD2 /* Lines */,
 				F9D9927F1BB54379004CAFD2 /* Radars */,
-				F93043BF1BB145C30081AD88 /* animationAgentsFF.cpp */,
-				F93043C01BB145C30081AD88 /* animationAgentsFF.h */,
-				F93043C21BB145EA0081AD88 /* animationGridsFF.cpp */,
-				F93043C31BB145EA0081AD88 /* animationGridsFF.h */,
 			);
 			name = FF;
 			sourceTree = "<group>";
@@ -2190,14 +2206,13 @@
 			isa = PBXGroup;
 			children = (
 				F93043C81BB291CE0081AD88 /* FF */,
+				F9E206011BBEB2A400E4E4A3 /* Particles */,
 				F98711CB16C053F50069F12A /* animations.h */,
 				F98711CA16C053F50069F12A /* animations.cpp */,
 				F9BC6AF5174512E000633C5C /* animationsFactory.h */,
 				F9BC6AF4174512E000633C5C /* animationsFactory.cpp */,
 				F9BC6AF81745149C00633C5C /* animationWaveShader.h */,
 				F9BC6AF71745149C00633C5C /* animationWaveShader.cpp */,
-				F9BC6B561746831900633C5C /* animationParticlesMega2.h */,
-				F9BC6B551746831900633C5C /* animationParticlesMega2.cpp */,
 				F9BC6B5A174A616A00633C5C /* animationBox2D.h */,
 				F9BC6B59174A616A00633C5C /* animationBox2D.cpp */,
 				F90A221D174FA39A005DE613 /* animationTunnel.h */,
@@ -3496,6 +3511,76 @@
 			path = src;
 			sourceTree = "<group>";
 		};
+		F9E206011BBEB2A400E4E4A3 /* Particles */ = {
+			isa = PBXGroup;
+			children = (
+				F9BC6B561746831900633C5C /* animationParticlesMega2.h */,
+				F9BC6B551746831900633C5C /* animationParticlesMega2.cpp */,
+				F9E206051BBEB32E00E4E4A3 /* Particle.cpp */,
+				F9E206061BBEB32E00E4E4A3 /* Particle.h */,
+				F9E206021BBEB2C000E4E4A3 /* ParticleSystem.cpp */,
+				F9E206031BBEB2C000E4E4A3 /* ParticleSystem.h */,
+				F9E206081BBEB39200E4E4A3 /* ParticleForce.cpp */,
+				F9E206091BBEB39200E4E4A3 /* ParticleForce.h */,
+			);
+			name = Particles;
+			sourceTree = "<group>";
+		};
+		F9E2060C1BBEBEC400E4E4A3 /* ofxGpuParticles */ = {
+			isa = PBXGroup;
+			children = (
+				F9E206271BBEBEC400E4E4A3 /* src */,
+			);
+			name = ofxGpuParticles;
+			path = ../../../addons/ofxGpuParticles;
+			sourceTree = "<group>";
+		};
+		F9E206271BBEBEC400E4E4A3 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				F9E206281BBEBEC400E4E4A3 /* GpuParticles.cpp */,
+				F9E206291BBEBEC400E4E4A3 /* GpuParticles.h */,
+				F9E2062A1BBEBEC400E4E4A3 /* ofxGpuParticles.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		F9E206321BBEBF5800E4E4A3 /* Agents */ = {
+			isa = PBXGroup;
+			children = (
+				F93043BF1BB145C30081AD88 /* animationAgentsFF.cpp */,
+				F93043C01BB145C30081AD88 /* animationAgentsFF.h */,
+			);
+			name = Agents;
+			sourceTree = "<group>";
+		};
+		F9E206331BBEBF6200E4E4A3 /* Grids */ = {
+			isa = PBXGroup;
+			children = (
+				F93043C21BB145EA0081AD88 /* animationGridsFF.cpp */,
+				F93043C31BB145EA0081AD88 /* animationGridsFF.h */,
+			);
+			name = Grids;
+			sourceTree = "<group>";
+		};
+		F9E206351BBECED200E4E4A3 /* ofxVectorField */ = {
+			isa = PBXGroup;
+			children = (
+				F9E206491BBECED200E4E4A3 /* src */,
+			);
+			name = ofxVectorField;
+			path = ../../../addons/ofxVectorField;
+			sourceTree = "<group>";
+		};
+		F9E206491BBECED200E4E4A3 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				F9E2064A1BBECED200E4E4A3 /* ofxVectorField.cpp */,
+				F9E2064B1BBECED200E4E4A3 /* ofxVectorField.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -3666,6 +3751,7 @@
 				F9DE83341B3C590400F5A086 /* animationComposition.cpp in Sources */,
 				F99930FA171989EB00272085 /* ofxEasingCubic.cpp in Sources */,
 				F9DE82E31B39FA7300F5A086 /* ofxTLColorTrack.cpp in Sources */,
+				F9E206071BBEB32E00E4E4A3 /* Particle.cpp in Sources */,
 				F9AB0BEF1940FA760020D78A /* tool.cpp in Sources */,
 				F92BC4A3189F094600CA158A /* ofxUI2DGraph.cpp in Sources */,
 				F99930FB171989EB00272085 /* ofxEasingElastic.cpp in Sources */,
@@ -3686,6 +3772,7 @@
 				F9B803751B31926A00F12500 /* ofxRtMidiIn.cpp in Sources */,
 				F92BC4B3189F094600CA158A /* ofxUIImageToggle.cpp in Sources */,
 				F999312817198ABD00272085 /* NetworkingUtils.cpp in Sources */,
+				F9E2062E1BBEBEC400E4E4A3 /* GpuParticles.cpp in Sources */,
 				F999312917198ABD00272085 /* UdpSocket.cpp in Sources */,
 				F92BC4AF189F094600CA158A /* ofxUIImage.cpp in Sources */,
 				F999312C17198ABD00272085 /* OscOutboundPacketStream.cpp in Sources */,
@@ -3719,9 +3806,11 @@
 				F9DC7C2B19CA170900682D1A /* ofxJSOscMessage.cpp in Sources */,
 				F94139491A77938A0047A441 /* ofxJSONElement.cpp in Sources */,
 				F92BC4B7189F094600CA158A /* ofxUIMinimalSlider.cpp in Sources */,
+				F9E2060A1BBEB39200E4E4A3 /* ParticleForce.cpp in Sources */,
 				F93043BE1BB145880081AD88 /* animationLinesFF.cpp in Sources */,
 				F9B8037E1B31926A00F12500 /* ofxMidiIn.cpp in Sources */,
 				F94139451A77938A0047A441 /* json_reader.cpp in Sources */,
+				F9E206041BBEB2C000E4E4A3 /* ParticleSystem.cpp in Sources */,
 				F9DE82F61B39FA7300F5A086 /* ofxTLZoomer.cpp in Sources */,
 				F9B8037D1B31926A00F12500 /* ofxMidi.cpp in Sources */,
 				F96B9267172EDB14007B1CFF /* MSACoreGL.cpp in Sources */,
@@ -3827,6 +3916,7 @@
 				F9BC6C7B174A621700633C5C /* b2PrismaticJoint.cpp in Sources */,
 				F9BC6C7C174A621700633C5C /* b2PulleyJoint.cpp in Sources */,
 				F951EBF9195AC12300056B2A /* ofxCvColorImage.cpp in Sources */,
+				F9E2064E1BBECED200E4E4A3 /* ofxVectorField.cpp in Sources */,
 				F9DE82DF1B39FA7300F5A086 /* ofxTLAudioTrack.cpp in Sources */,
 				F9BC6C7D174A621700633C5C /* b2RevoluteJoint.cpp in Sources */,
 				F9DE82E61B39FA7300F5A086 /* ofxTLEmptyTrack.cpp in Sources */,

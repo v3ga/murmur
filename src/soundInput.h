@@ -56,6 +56,8 @@ class SoundInput
  
 		bool				getUseRawVol	(){return m_useRawVol;}
  
+		void				setInputVolumeModulate(float f){m_inputVolumeModulate=f;}
+ 
     private:
         //ofSoundStream*       mp_soundStreamInput;
         ofSoundStream       m_soundStreamInput;
@@ -65,6 +67,7 @@ class SoundInput
 
 		bool				m_isMute;
 		bool				m_isStopInput;
+		float				m_inputVolumeModulate; // multiply the value retrived in audio in by this value
 
         vector <float>      m_mono;
         vector <float>      m_left;

@@ -72,6 +72,7 @@ class Animation : public midiInterface
 		virtual	void			VM_enter				();
 				void			M_update				(float dt);
 		virtual void			VM_update				(float dt);
+		virtual void			VM_drawBefore			(float w, float h){}
 		virtual void			VM_draw					(float w, float h);
         virtual void            VM_doTransition         (int which, float t);
         virtual	void			VM_exit					();
@@ -88,7 +89,7 @@ class Animation : public midiInterface
  		// Background
 		bool					m_bDrawBackground;
 		void					setDrawBackground		(bool is=true){m_bDrawBackground = is;}
- 		void					drawBackground			(float grey){if (m_bDrawBackground) ofBackground(grey);}
+ 		void					drawBackground			(float grey){if (m_bDrawBackground) ofBackground(grey,255);}
 		void					drawBackground			(float r, float g, float b, float a){if (m_bDrawBackground) ofBackground(r,g,b,a);}
  
 		// Midi
@@ -246,6 +247,7 @@ class AnimationManager
 		bool					M_isAutoClear			();
 
 		void					M_update				(float dt);
+		void					M_drawCanvasBefore		(float w, float h);
 		void					M_drawCanvas			(float w, float h);
 		void					M_drawTransition		(float w, float h);
 
