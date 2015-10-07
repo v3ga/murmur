@@ -81,6 +81,7 @@ class AnimationComposition : public Animation
  
 		ofxUIRadio*								mp_radioCompositions;
 		ofxUIRadio*								mp_radioBlending;
+		string									m_nameBlending;
  
 		bool									isNameComposition(string name);
 		bool									m_isLoadingConfiguration;

@@ -1,5 +1,4 @@
 #version 150
-#pragma include "blendFunctions.glsl"
 
 uniform sampler2DRect tex1;
 uniform sampler2DRect tex2;
@@ -12,7 +11,7 @@ void main(void)
 {
 	vec4 c1 = texture(tex1, varyingtexcoord);
 	vec4 c2 = texture(tex2, varyingtexcoord);
-	outputColor = vec4(BlendAddf(c2.rgb,c1.rgb), 1.0);
+//   	outputColor = max(c1.rgb-c2.rgb, vec3(0.0,0.0,0.0));
+	vec3 add = min(c2.xyz+c1.xyz,vec3(1.0));
+	outputColor = vec4(add,1.0);
 }
-
-

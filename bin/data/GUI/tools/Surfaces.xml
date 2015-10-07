@@ -6,22 +6,22 @@
 <Widget>
     <Kind>12</Kind>
     <Name>hSurface</Name>
-    <Value>10.15</Value>
+    <Value>3.15</Value>
 </Widget>
 <Widget>
     <Kind>12</Kind>
     <Name>wFboSurface</Name>
-    <Value>1600</Value>
+    <Value>3450</Value>
 </Widget>
 <Widget>
     <Kind>12</Kind>
     <Name>hFboSurface</Name>
-    <Value>1000</Value>
+    <Value>525</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>
     <Name>quality</Name>
-    <Value>1</Value>
+    <Value>4</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>

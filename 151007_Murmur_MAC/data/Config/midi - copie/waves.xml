@@ -1,6 +1,0 @@
-<midi control="9" property="nbWavePoints" />
-<midi control="5" property="speed" />
-<midi control="28" property="ageMax" />
-<midi control="18" property="waveDirAmp" />
-<midi control="38" property="valueTriggerIn" />
-<midi control="24" property="valueTriggerOut" />

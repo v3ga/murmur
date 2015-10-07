@@ -21,12 +21,22 @@
 <Widget>
     <Kind>2</Kind>
     <Name>renderNormal</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
     <Name>multiply</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>difference</Name>
     <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>add</Name>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>

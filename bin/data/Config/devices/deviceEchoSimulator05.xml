@@ -23,7 +23,7 @@
     <ping>
         <value>0.500000000</value>
     </ping>
-    <enableGenerative>0</enableGenerative>
+    <enableGenerative>1</enableGenerative>
     <bpm>
         <enable>0</enable>
         <value>90</value>
@@ -33,7 +33,7 @@
     <sampleVolStandby>0.790322602</sampleVolStandby>
     <enableStandby>0</enableStandby>
     <surface id="main">
-        <xNorm>0.633750021</xNorm>
-        <yNorm>0.500000000</yNorm>
+        <xNorm>0.477499992</xNorm>
+        <yNorm>0.656071424</yNorm>
     </surface>
 </device>

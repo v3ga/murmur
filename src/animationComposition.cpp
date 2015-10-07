@@ -44,10 +44,16 @@ void AnimationComposition::createUICustom()
 		
 		vector<string> blendingNames;
 		blendingNames.push_back("multiply");
-//		blendingNames.push_back("difference");
+		blendingNames.push_back("difference");
+		blendingNames.push_back("add");
 		mp_radioBlending = new ofxUIRadio("radioBlending",  blendingNames, OFX_UI_ORIENTATION_HORIZONTAL, 16, 16);
 
 		mp_UIcanvas->addWidgetDown(mp_radioBlending);
+
+		ofxUILabelButton* pBtnReload = new ofxUILabelButton("reloadShader", false, 330, 16, 0,0, OFX_UI_FONT_SMALL);
+		mp_UIcanvas->addWidgetDown( pBtnReload );
+		pBtnReload->getLabelWidget()->setLabel("Reload shader");
+
 
 		mp_UIcanvas->addWidgetDown(new ofxUILabel("Compositions", OFX_UI_FONT_MEDIUM));
     	mp_UIcanvas->addWidgetDown(new ofxUISpacer(330, 2));
@@ -135,6 +141,7 @@ void AnimationComposition::addAnimation(string name)
 //--------------------------------------------------------------
 void AnimationComposition::setBlending(string name)
 {
+	m_nameBlending = name;
 	if (name == "multiply")
 	{
 		m_shader.load("Shaders/animCompo.vert", "Shaders/animCompoMultiply.frag");
@@ -143,6 +150,11 @@ void AnimationComposition::setBlending(string name)
 	if (name == "difference")
 	{
 		m_shader.load("Shaders/animCompo.vert", "Shaders/animCompoDifference.frag");
+	}
+	else
+	if (name == "add")
+	{
+		m_shader.load("Shaders/animCompo.vert", "Shaders/animCompoAdd.frag");
 	}
 	else
 	{
@@ -433,10 +445,18 @@ void AnimationComposition::guiEvent(ofxUIEventArgs &e)
 		//ofLog() << "m_bRenderNormalWanted=" << m_bRenderNormalWanted;
 	}
 	else
+	if (name == "reloadShader")
+	{
+		if (e.getButton()->getValue()>0)
+		{
+			setBlending(m_nameBlending);
+		}
+	}
+	else
 	{
 		if (e.getKind() == OFX_UI_WIDGET_TOGGLE)
 		{
-			if (name == "multiply" || name == "difference"){
+			if (name == "multiply" || name == "difference" || name == "add" ){
 				setBlending(name);
 			}
 			else if (isNameComposition(name))

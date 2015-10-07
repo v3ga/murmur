@@ -1,11 +1,11 @@
-<device id="deviceEchoSimulator07">
+<device id="deviceEchoSimulator09">
     <soundInput>
-        <useRawVol>0</useRawVol>
+        <useRawVol>1</useRawVol>
         <mute>0</mute>
-        <volMax>0.018320000</volMax>
+        <volMax>0.023499999</volMax>
         <volMaxMax>0.189999998</volMaxMax>
         <volHistoryNb>64.000000000</volHistoryNb>
-        <volHistoryTh>0.183870971</volHistoryTh>
+        <volHistoryTh>0.142741933</volHistoryTh>
     </soundInput>
     <soundOutput>
         <speaker>0</speaker>
@@ -23,17 +23,17 @@
     <ping>
         <value>0.500000000</value>
     </ping>
-    <enableGenerative>0</enableGenerative>
+    <enableGenerative>1</enableGenerative>
     <bpm>
         <enable>0</enable>
-        <value>90</value>
+        <value>131</value>
     </bpm>
     <enableStandby>0</enableStandby>
     <timeStandby>5.000000000</timeStandby>
     <sampleVolStandby>0.790322602</sampleVolStandby>
     <enableStandby>0</enableStandby>
     <surface id="main">
-        <xNorm>0.663749993</xNorm>
-        <yNorm>0.401428580</yNorm>
+        <xNorm>0.928749979</xNorm>
+        <yNorm>0.278214306</yNorm>
     </surface>
 </device>

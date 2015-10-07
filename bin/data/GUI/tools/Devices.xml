@@ -1,7 +1,7 @@
 <Widget>
     <Kind>22</Kind>
     <Name>Devices</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>17</Kind>
@@ -26,5 +26,30 @@
 <Widget>
     <Kind>17</Kind>
     <Name>deviceEchoSimulator05</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>deviceEchoSimulator06</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>deviceEchoSimulator07</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>deviceEchoSimulator08</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>deviceEchoSimulator09</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>deviceEchoSimulator10</Name>
     <Value>0</Value>
 </Widget>
