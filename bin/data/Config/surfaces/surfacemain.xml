@@ -24,6 +24,11 @@
 				<animation name="gridsFF" configuration="test.xml"></animation>
 			</composition>
 
+			<composition name="videoAgents">
+				<animation name="video" configuration="test.xml"></animation>
+				<animation name="agentsFF" configuration="tempest.xml"></animation>
+			</composition>
+
 			<composition name="particlesGrids">
 				<animation name="particlesMega2" configuration="particles1.xml"></animation>
 				<animation name="gridsFF" configuration="test3.xml"></animation>

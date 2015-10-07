@@ -320,6 +320,7 @@
 		F9E2060A1BBEB39200E4E4A3 /* ParticleForce.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9E206081BBEB39200E4E4A3 /* ParticleForce.cpp */; };
 		F9E2062E1BBEBEC400E4E4A3 /* GpuParticles.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9E206281BBEBEC400E4E4A3 /* GpuParticles.cpp */; };
 		F9E2064E1BBECED200E4E4A3 /* ofxVectorField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9E2064A1BBECED200E4E4A3 /* ofxVectorField.cpp */; };
+		F9E206641BC5525100E4E4A3 /* floatRelax.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9E206621BC5525100E4E4A3 /* floatRelax.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -952,14 +953,6 @@
 		F9BC6AF5174512E000633C5C /* animationsFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = animationsFactory.h; sourceTree = "<group>"; };
 		F9BC6AF71745149C00633C5C /* animationWaveShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animationWaveShader.cpp; sourceTree = "<group>"; };
 		F9BC6AF81745149C00633C5C /* animationWaveShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = animationWaveShader.h; sourceTree = "<group>"; };
-		F9BC6AFF17452D6600633C5C /* noise.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = noise.frag; sourceTree = "<group>"; };
-		F9BC6B0017452D6600633C5C /* noise.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = noise.vert; sourceTree = "<group>"; };
-		F9BC6B0117452D6600633C5C /* plasma.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = plasma.frag; sourceTree = "<group>"; };
-		F9BC6B0217452D6600633C5C /* plasma.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = plasma.vert; sourceTree = "<group>"; };
-		F9BC6B0317452D6600633C5C /* wave.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = wave.frag; sourceTree = "<group>"; };
-		F9BC6B0417452D6600633C5C /* wave.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = wave.vert; sourceTree = "<group>"; };
-		F9BC6B0517452D6600633C5C /* wave_direction.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = wave_direction.frag; sourceTree = "<group>"; };
-		F9BC6B0617452D6600633C5C /* wave_direction.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = wave_direction.vert; sourceTree = "<group>"; };
 		F9BC6B0717452D6600633C5C /* wave.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = wave.frag; sourceTree = "<group>"; };
 		F9BC6B0817452D6600633C5C /* wave.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = wave.vert; sourceTree = "<group>"; };
 		F9BC6B0917456DDC00633C5C /* soundManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = soundManager.cpp; sourceTree = "<group>"; };
@@ -1214,6 +1207,16 @@
 		F9E2062A1BBEBEC400E4E4A3 /* ofxGpuParticles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxGpuParticles.h; sourceTree = "<group>"; };
 		F9E2064A1BBECED200E4E4A3 /* ofxVectorField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxVectorField.cpp; sourceTree = "<group>"; };
 		F9E2064B1BBECED200E4E4A3 /* ofxVectorField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxVectorField.h; sourceTree = "<group>"; };
+		F9E206551BC3CEBF00E4E4A3 /* animCompo.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = animCompo.vert; sourceTree = "<group>"; };
+		F9E206561BC3CEBF00E4E4A3 /* animCompoDifference.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = animCompoDifference.frag; sourceTree = "<group>"; };
+		F9E206571BC3CEC600E4E4A3 /* animCompoMultiply.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = animCompoMultiply.frag; sourceTree = "<group>"; };
+		F9E206581BC3CED600E4E4A3 /* blur.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = blur.vert; sourceTree = "<group>"; };
+		F9E206591BC3CED600E4E4A3 /* blurX.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = blurX.frag; sourceTree = "<group>"; };
+		F9E2065A1BC3CED600E4E4A3 /* blurY.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = blurY.frag; sourceTree = "<group>"; };
+		F9E2065B1BC3CED600E4E4A3 /* gridsFF.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = gridsFF.frag; sourceTree = "<group>"; };
+		F9E2065C1BC3CED600E4E4A3 /* gridsFF.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = gridsFF.vert; sourceTree = "<group>"; };
+		F9E206621BC5525100E4E4A3 /* floatRelax.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = floatRelax.cpp; sourceTree = "<group>"; };
+		F9E206631BC5525100E4E4A3 /* floatRelax.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = floatRelax.h; sourceTree = "<group>"; };
 		F9F47B931899260300DDE2E3 /* murmur.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = murmur.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -2742,26 +2745,18 @@
 		F9BC6AFD17452D6600633C5C /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
-				F9BC6AFE17452D6600633C5C /* _old */,
+				F9E206581BC3CED600E4E4A3 /* blur.vert */,
+				F9E206591BC3CED600E4E4A3 /* blurX.frag */,
+				F9E2065A1BC3CED600E4E4A3 /* blurY.frag */,
+				F9E2065B1BC3CED600E4E4A3 /* gridsFF.frag */,
+				F9E2065C1BC3CED600E4E4A3 /* gridsFF.vert */,
+				F9E206571BC3CEC600E4E4A3 /* animCompoMultiply.frag */,
+				F9E206551BC3CEBF00E4E4A3 /* animCompo.vert */,
+				F9E206561BC3CEBF00E4E4A3 /* animCompoDifference.frag */,
 				F9BC6B0717452D6600633C5C /* wave.frag */,
 				F9BC6B0817452D6600633C5C /* wave.vert */,
 			);
 			path = Shaders;
-			sourceTree = "<group>";
-		};
-		F9BC6AFE17452D6600633C5C /* _old */ = {
-			isa = PBXGroup;
-			children = (
-				F9BC6AFF17452D6600633C5C /* noise.frag */,
-				F9BC6B0017452D6600633C5C /* noise.vert */,
-				F9BC6B0117452D6600633C5C /* plasma.frag */,
-				F9BC6B0217452D6600633C5C /* plasma.vert */,
-				F9BC6B0317452D6600633C5C /* wave.frag */,
-				F9BC6B0417452D6600633C5C /* wave.vert */,
-				F9BC6B0517452D6600633C5C /* wave_direction.frag */,
-				F9BC6B0617452D6600633C5C /* wave_direction.vert */,
-			);
-			path = _old;
 			sourceTree = "<group>";
 		};
 		F9BC6B4A17467A5000633C5C /* ofxMSAPingPong */ = {
@@ -3041,6 +3036,8 @@
 				F96FCD4B1B4C75E500E3CF39 /* midiInterface.h */,
 				F9D993911BBA9CE2004CAFD2 /* blur.cpp */,
 				F9D993921BBA9CE2004CAFD2 /* blur.h */,
+				F9E206621BC5525100E4E4A3 /* floatRelax.cpp */,
+				F9E206631BC5525100E4E4A3 /* floatRelax.h */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -3767,6 +3764,7 @@
 				8491EE3919A649F600469AE8 /* ofxJSNode.cpp in Sources */,
 				F999312717198ABD00272085 /* IpEndpointName.cpp in Sources */,
 				F9DE82E21B39FA7300F5A086 /* ofxTLColors.cpp in Sources */,
+				F9E206641BC5525100E4E4A3 /* floatRelax.cpp in Sources */,
 				F92BC4C1189F094600CA158A /* ofxUISlider.cpp in Sources */,
 				F9AB0C091941B0DE0020D78A /* toolVideo.cpp in Sources */,
 				F9B803751B31926A00F12500 /* ofxRtMidiIn.cpp in Sources */,

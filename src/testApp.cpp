@@ -165,6 +165,7 @@ void testApp::setup()
 	m_windowSize.set(ofGetWidth(),ofGetHeight());
 
 	OFAPPLOG->end();
+
 }
 
 
@@ -451,15 +452,18 @@ void testApp::initMidi()
 		int midiInPort = m_settings.getValue("port", 0, i);
 		
 		string name = ofxMidiIn::getPortName(midiInPort);
-		if (name != "")
+		//if (name != "")
 		{
-			OFAPPLOG->println("- opening port "+ofToString(midiInPort)+" / "+name);
+			OFAPPLOG->println("- opening port "+ofToString(midiInPort)+" / "+(name=="" ? "INVALID" : name));
 
 			ofxMidiIn* pMidiIn = new ofxMidiIn();
-			pMidiIn->openPort( midiInPort );
-			pMidiIn->addListener( this );
-			pMidiIn->setVerbose( true );
-		
+			if (pMidiIn->openPort( midiInPort ))
+			{
+				pMidiIn->addListener( this );
+				pMidiIn->setVerbose( true );
+			}
+			
+			// Push it anyway
 			m_midiIns.push_back( pMidiIn );
 		}
 	}
@@ -546,6 +550,7 @@ void testApp::draw()
 		 }
 		 
 		 toolManager.drawUI();
+
 	 }
 	 else
 	 {
@@ -692,7 +697,7 @@ void testApp::keyPressed(int key)
 	
 	toolConfiguration* 	pToolConfiguration 	= (toolConfiguration*) 		toolManager.getTool("Configuration");
 	toolAnimations* 	pToolAnimations 	= (toolAnimations*) 		toolManager.getTool("Animations");
-
+	
 	 
 	if (toolManager.keyPressed(key) == false && toolManager.hasKeyboardFocus() == false)
 	{

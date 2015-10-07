@@ -11,6 +11,8 @@
 #include "timelineSimple.h"
 #include "ofxMidi.h"
 
+#include "ofxHapPlayer.h"
+
 class Scene;
 class SceneVisualisation;
 class Surface;
@@ -137,4 +139,6 @@ class testApp : public ofBaseApp, public ofxMidiListener
 		// DEBUG
 		 timelineSimple		m_timelineSimple;
 		 static	void		sM_timelineSimpleEvent	(testApp*, timelineSimpleEvent* pEvent);
+ 
+
 };

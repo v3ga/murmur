@@ -1,0 +1,5 @@
+<midi port="0" control="1" property="amp. attraction"></midi>
+<midi port="0" control="2" property="amp. repulsion"></midi>
+<midi port="0" control="3" property="particles size"></midi>
+<midi port="0" control="4" property="radius color factor"></midi>
+<midi port="0" control="5" property="radius repulsion"></midi>

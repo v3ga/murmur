@@ -11,7 +11,7 @@
         <speaker>1</speaker>
     </soundOutput>
     <color>
-        <enable>1</enable>
+        <enable>0</enable>
         <colorMode_manual_hsb>
             <hue>127.500000000</hue>
             <saturation>106.250000000</saturation>
@@ -23,9 +23,9 @@
     <ping>
         <value>0.500000000</value>
     </ping>
-    <enableGenerative>0</enableGenerative>
+    <enableGenerative>1</enableGenerative>
     <bpm>
-        <enable>1</enable>
+        <enable>0</enable>
         <value>100</value>
     </bpm>
     <enableStandby>0</enableStandby>
@@ -33,7 +33,7 @@
     <sampleVolStandby>0.349999994</sampleVolStandby>
     <enableStandby>0</enableStandby>
     <surface id="main">
-        <xNorm>0.292499989</xNorm>
-        <yNorm>0.268750012</yNorm>
+        <xNorm>0.324999988</xNorm>
+        <yNorm>0.414000005</yNorm>
     </surface>
 </device>

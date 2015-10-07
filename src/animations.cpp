@@ -216,6 +216,7 @@ void Animation::createUI()
  
 	createUIVolume();
 	createUIConfiguration();
+	createUIMidi();
 	createUISound();
     createUICustom();
 
@@ -295,6 +296,18 @@ void Animation::createUIConfiguration()
     mp_UIcanvas->addWidgetDown(pTgReset);
 	pTgReset->getLabelWidget()->setLabel("reset on enter");
 	
+}
+
+//--------------------------------------------------------------
+void Animation::createUIMidi()
+{
+	if (mp_UIcanvas == 0) return;
+	mp_UIcanvas->addWidgetDown(new ofxUILabel("Midi", OFX_UI_FONT_MEDIUM));
+    mp_UIcanvas->addWidgetDown(new ofxUISpacer(ANIM_UI_WIDTH_DEFAULT, 2));
+
+	ofxUILabelButton* pBtn = new ofxUILabelButton("exportTemplate", false, ANIM_UI_WIDTH_DEFAULT, 16, 0,0, OFX_UI_FONT_SMALL);
+	mp_UIcanvas->addWidgetDown( pBtn );
+	pBtn->getLabelWidget()->setLabel("Export template");
 }
 
 //--------------------------------------------------------------
@@ -501,6 +514,10 @@ void Animation::guiEvent(ofxUIEventArgs &e)
 				m_configurationCurrent = filename;
 				loadConfiguration(filename);
 			}
+			else if (name == "exportTemplate")
+			{
+				 exportMidiSettingsTemplate();
+			}
 		}
 	}
 }
@@ -586,16 +603,18 @@ void Animation::saveConfiguration(string filename)
 //--------------------------------------------------------------
 void Animation::loadConfiguration(string filename)
 {
+	OFAPPLOG->begin("Animation::loadConfiguration("+filename+")");
     if (mp_UIcanvas)
     {
 		if (filename == "" && m_configurations.size()>0)
 		{
 			filename = m_configurations[0];
     	}
-		ofLog() << filename;
+		//ofLog() << filename;
 		
 		mp_UIcanvas->loadSettings( ofToDataPath("Config/animations/"+m_name+"/"+filename) );
 	}
+	OFAPPLOG->end();
 }
 
 //--------------------------------------------------------------
@@ -993,6 +1012,8 @@ void Animation::handleMidiMessages()
 			 classProperty* pProp = pMidiPort->m_mapMidiControlToProp[control];
 
 			 pProp->setValueFromMidiMessage( midiMessage );
+			 onPropertyMidiModified(pProp);
+
 
 			 // ————————————————————————————————————————————————————————————————————————————————
 			 // Special actions if it is js

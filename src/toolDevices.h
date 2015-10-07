@@ -41,7 +41,7 @@ class toolDevices : public tool, public midiInterface
 		void					enableWindowCallbacks		();
 		void					disableWindowCallbacks		();
 
-		virtual string			getMidiSettingsPath			(){return "Gui/tools/midi/Devices.xml";}
+		virtual string			getMidiSettingsPath			(string suffix=""){return "Gui/tools/midi/Devices.xml";}
 		void					loadMidiSettings			();
 		void					readMidiSettingsExtraBegin	(int which,string propName);
 		void 					newMidiMessage				(ofxMidiMessage& eventArgs);

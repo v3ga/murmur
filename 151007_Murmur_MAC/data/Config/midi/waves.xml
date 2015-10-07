@@ -1,0 +1,6 @@
+<midi port="0" control="5" property="speed"></midi>
+<midi port="0" control="9" property="nbWavePoints"></midi>
+<midi port="0" control="18" property="waveDirAmp"></midi>
+<midi port="0" control="24" property="valueTriggerOut"></midi>
+<midi port="0" control="28" property="ageMax"></midi>
+<midi port="0" control="38" property="valueTriggerIn"></midi>

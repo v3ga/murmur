@@ -41,41 +41,46 @@ void AnimationVideo::createUICustom()
 //--------------------------------------------------------------
 void AnimationVideo::setVideo(string name)
 {
+	OFAPPLOG->begin("AnimationVideo::setVideo("+name+")");
 	m_bHasLoadedVideo = m_player.loadMovie(name);
+	OFAPPLOG->println(" - loading movie, m_bHasLoadedVideo="+ofToString(m_bHasLoadedVideo));
 	if (m_bHasLoadedVideo)
+	{
+		OFAPPLOG->println(" - play movie");
 		m_player.play();
+	}
+	OFAPPLOG->end();
 }
 
 //--------------------------------------------------------------
 void AnimationVideo::VM_enter()
 {
-	if (m_bHasLoadedVideo)
-		m_player.play();
+	m_player.play();
 }
 
 //--------------------------------------------------------------
 void AnimationVideo::VM_exit()
 {
-	if (m_bHasLoadedVideo)
-		m_player.stop();
+	m_player.stop();
 }
 
 //--------------------------------------------------------------
 void AnimationVideo::VM_update(float dt)
 {
+/*	if (!m_bLoadVideo)
+	{
+		m_bLoadVideo = true;
+		setVideo(m_videoPath);
+	}
+*/
+
 	m_player.update();
 }
 
 //--------------------------------------------------------------
 void AnimationVideo::VM_draw(float w, float h)
 {
-	if (!m_bLoadVideo)
-	{
-		m_bLoadVideo = true;
-		setVideo(m_videoPath);
-	}
 
-	
 	if (m_bHasLoadedVideo)
 	{
 		ofRectangle rectSurface(0,0,w,h);
@@ -83,22 +88,29 @@ void AnimationVideo::VM_draw(float w, float h)
 		rectVideo.scaleTo(rectSurface);
 
 		ofSetColor(255,255);
-		m_player.draw(0,0,w,h);
+		ofBackground(0);
+		m_player.draw(rectVideo.x,rectVideo.y,rectVideo.width,rectVideo.height);
+//		OFAPPLOG->println("player width="+ofToString(m_player.getWidth())+" ,height="+ofToString(m_player.getHeight()));
+//		OFAPPLOG->println("player.isLoaded()="+ofToString(m_player.isLoaded()));
 	}
 	else
 	{
-		ofBackground(0);
+		ofBackground(255,0,0);
 	}
+	
 }
 
 //--------------------------------------------------------------
 void AnimationVideo::guiEvent(ofxUIEventArgs &e)
 {
+	OFAPPLOG->begin("AnimationVideo::guiEvent()");
 	Animation::guiEvent(e);
 
 	string name = e.getName();
 	int kind = e.getKind();
 
+
+	OFAPPLOG->println(" - name="+name);
 	if (kind == OFX_UI_WIDGET_TEXTINPUT)
 	{
 		if (name == "teVideoPath")
@@ -106,11 +118,13 @@ void AnimationVideo::guiEvent(ofxUIEventArgs &e)
 			if (mp_teVideoPath->getTextString() != "")
 			{
 				m_videoPath = "Video/"+mp_teVideoPath->getTextString();
-				
-				ofLog() << m_videoPath;
+				OFAPPLOG->println(" - m_videoPath = "+m_videoPath);
 
 				m_bLoadVideo = false;
 				m_bHasLoadedVideo = false;
+				
+				 setVideo(m_videoPath);
+
 			}
 		}
 	}
@@ -122,8 +136,8 @@ void AnimationVideo::guiEvent(ofxUIEventArgs &e)
 			if (e.getButton()->getValue()>0)
 			{
 				ofFileDialogResult result = ofSystemLoadDialog("Load video", true, ofToDataPath("Video",true));
-				//ofLog() << " path= " << result.getPath();
-				//ofLog() << " name= " << result.getName();
+				ofLog() << " path= " << result.getPath();
+				ofLog() << " name= " << result.getName();
 				
 				if (mp_teVideoPath && result.getName() != "")
 				{
@@ -135,6 +149,30 @@ void AnimationVideo::guiEvent(ofxUIEventArgs &e)
 			}
 	   }
 	}
+	OFAPPLOG->end();
 }
+
+//--------------------------------------------------------------
+void AnimationVideo::loadConfiguration(string filename)
+{
+	OFAPPLOG->begin("AnimationVideo::loadConfiguration("+filename+")");
+	Animation::loadConfiguration(filename);
+
+/*
+	if (mp_teVideoPath)
+	{
+		m_bLoadVideo = false;
+		m_bHasLoadedVideo = false;
+		m_videoPath = "Video/"+mp_teVideoPath->getTextString();
+		OFAPPLOG->println(" - m_videoPath = "+m_videoPath);
+	}
+	else
+	{
+		OFAPPLOG->println(" - mp_teVideoPath is NULL ");
+	}
+*/
+	OFAPPLOG->end();
+}
+
 
 

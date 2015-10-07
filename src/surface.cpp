@@ -12,6 +12,7 @@
 #include "ofxXmlSettings.h"
 #include "animationsFactory.h"
 
+
 // TEMP
 #include "animationComposition.h"
 
@@ -482,19 +483,29 @@ void Surface::drawDevicePointSurface(ofRectangle& rect)
 {
     ofPushStyle();
     ofSetColor(255,255,255,255);
-	ofDisableAlphaBlending();
+	ofEnableAlphaBlending();
     
     vector<Device*>::iterator itDevices = m_listDevices.begin();
     ofVec2f posSurface;
     Device* pDevice=0;
     for (;itDevices!=m_listDevices.end();++itDevices)
     {
+	
         pDevice = *itDevices;
         posSurface.set(rect.getX()+pDevice->m_pointSurface.x*rect.getWidth(), rect.getY()+pDevice->m_pointSurface.y*rect.getHeight());
 
-        ofLine(posSurface.x,rect.getY(), posSurface.x, rect.getY()+rect.getHeight());
-        ofLine(rect.getX(),posSurface.y, rect.getX()+rect.getWidth(),posSurface.y);
-    }
+		if (GLOBALS->mp_deviceManager->getDeviceCurrent() == pDevice)
+		{
+			ofSetColor(255,255,255,255);
+    	}
+		else
+			ofSetColor(255,255,254,100);
+	 
+			ofLine(posSurface.x,posSurface.y-40, posSurface.x, posSurface.y+40);
+        	ofLine(posSurface.x-40,posSurface.y, posSurface.x+40,posSurface.y);
+			ofDrawBitmapString(pDevice->m_id, posSurface.x+4, posSurface.y-4);
+
+	}
 
     ofPopStyle();
 }

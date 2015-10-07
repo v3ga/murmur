@@ -1,0 +1,43 @@
+<scene>
+
+	<silhouettes>
+		<silhouette device="deviceEchoSimulator01">
+			<position x="-6.0" y="0.0" z="4.5"/>
+		</silhouette>
+
+		<silhouette device="deviceEchoSimulator02">
+			<position x="-5.0" y="0.0" z="4.5"/>
+		</silhouette>
+
+		<silhouette device="deviceEchoSimulator03">
+			<position x="-4.0" y="0.0" z="4.5"/>
+		</silhouette>
+
+		<silhouette device="deviceEchoSimulator04">
+			<position x="-3.0" y="0.0" z="4.5"/>
+		</silhouette>
+
+		<silhouette device="deviceEchoSimulator05">
+			<position x="3.0" y="0.0" z="4.5"/>
+		</silhouette>
+
+		<silhouette device="deviceEchoSimulator06">
+			<position x="4.0" y="0.0" z="4.5"/>
+		</silhouette>
+
+		<silhouette device="deviceEchoSimulator07">
+			<position x="5.0" y="0.0" z="4.5"/>
+		</silhouette>
+
+		<silhouette device="deviceEchoSimulator08">
+			<position x="6.0" y="0.0" z="4.5"/>
+		</silhouette>
+
+<!--
+		<silhouette device="deviceEchoSimulator03">
+			<position x="2.0" y="0.0" z="4.5"/>
+		</silhouette>
+-->
+	</silhouettes>
+
+</scene>

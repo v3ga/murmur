@@ -11,7 +11,7 @@
         <speaker>0</speaker>
     </soundOutput>
     <color>
-        <enable>1</enable>
+        <enable>0</enable>
         <colorMode_manual_hsb>
             <hue>0.000000000</hue>
             <saturation>0.000000000</saturation>

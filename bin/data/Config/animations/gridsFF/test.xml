@@ -36,12 +36,12 @@
 <Widget>
     <Kind>42</Kind>
     <Name>columns</Name>
-    <Value>85</Value>
+    <Value>136</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>
     <Name>rows</Name>
-    <Value>43</Value>
+    <Value>85</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -51,7 +51,12 @@
 <Widget>
     <Kind>4</Kind>
     <Name>scale</Name>
-    <Value>0.712820530</Value>
+    <Value>0.862499952</Value>
+</Widget>
+<Widget>
+    <Kind>42</Kind>
+    <Name>speed</Name>
+    <Value>509</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -61,7 +66,7 @@
 <Widget>
     <Kind>4</Kind>
     <Name>rotation</Name>
-    <Value>11.538455963</Value>
+    <Value>0.000000000</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -72,4 +77,14 @@
     <Kind>42</Kind>
     <Name>blurPasses</Name>
     <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>torsionFactor</Name>
+    <Value>1.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>torsionRadius</Name>
+    <Value>0.423076928</Value>
 </Widget>

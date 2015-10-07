@@ -24,6 +24,7 @@ class AnimationVideo : public Animation
 		virtual	void			VM_enter				();
 		virtual	void			VM_exit					();
         virtual void            guiEvent                (ofxUIEventArgs &e);
+		virtual	void			loadConfiguration		(string filename);
 
 		void					setVideo				(string name);
  

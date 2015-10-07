@@ -1,0 +1,4 @@
+<midi control="5" property="amp. attraction" />
+<midi control="9" property="amp. repulsion" />
+<midi control="28" property="radius repulsion" />
+<midi control="31" property="particles size" />

@@ -290,6 +290,16 @@ void AnimationTunnelALB::onNewPacket(DevicePacket* pDevicePacket, string deviceI
 }
 
 //--------------------------------------------------------------
+void AnimationTunnelALB::onPropertyMidiModified(classProperty* pProperty)
+{
+	if (pProperty)
+	{
+		handlePropertyModified(pProperty->m_name);
+		ofLog() << "handlePropertyModified("+pProperty->m_name+")";
+	}
+}
+
+//--------------------------------------------------------------
 void AnimationTunnelALB::sM_volTriggerIn(void* pUserData,VolumeAccum*)
 {
 }
@@ -325,22 +335,33 @@ void AnimationTunnelALB::updateRotations()
 //--------------------------------------------------------------
 void AnimationTunnelALB::guiEvent(ofxUIEventArgs &e)
 {
-	if (e.getName() == "h1" || e.getName() == "h2" || e.getName() == "w")
+	if (e.getName() == "h1" || e.getName() == "h2" || e.getName() == "w" || e.getName() == "speed" || e.getName() == "angle")
+	{
+		handlePropertyModified(e.getName());
+	}
+}
+
+//--------------------------------------------------------------
+void AnimationTunnelALB::handlePropertyModified(string name)
+{
+	if (name == "h1" || name == "h2" || name == "w")
 	{
 		modifyMeshes();
 	}
 	else
-	if (e.getName() == "speed")
+	if (name == "speed")
 	{
 		int nbElements = m_elements.size();
 		for (int i=0;i<nbElements;i++)
 			m_elements[i]->m_dirSpeed = m_dirSpeed;
 	}
 	else
-		if (e.getName() == "angle")
-		{
-			updateRotations();
-		}
+	if (name == "angle")
+	{
+	  updateRotations();
+	}
+
 }
+
 
 

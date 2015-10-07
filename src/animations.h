@@ -93,7 +93,7 @@ class Animation : public midiInterface
 		void					drawBackground			(float r, float g, float b, float a){if (m_bDrawBackground) ofBackground(r,g,b,a);}
  
 		// Midi
-		virtual	string			getMidiSettingsPath		(){ return "Config/midi/"+m_name+".xml"; }
+		virtual	string			getMidiSettingsPath		(string suffix=""){ return "Config/midi/"+m_name+suffix+".xml"; }
 		virtual	void			loadMidiSettings		();
 		virtual	void			handleMidiMessages		();
 		virtual void 			newMidiMessage			(ofxMidiMessage& eventArgs);
@@ -113,6 +113,7 @@ class Animation : public midiInterface
 		void					addUItoggle				(classProperty_bool*);
         virtual void            createUI                ();
 		virtual	void			createUIConfiguration	();
+        virtual void            createUIMidi         	();
 		virtual	void			createUIVolume			();
 		virtual	void			createUISound			();
         virtual void            createUICustom          (){};

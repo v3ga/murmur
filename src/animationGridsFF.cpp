@@ -10,6 +10,7 @@
 
 #include "animationGridsFF.h"
 #include "animationWaveShader.h"
+#include "globals.h"
 
 //--------------------------------------------------------------
 AnimationGridsFF::AnimationGridsFF(string name) : Animation(name)
@@ -29,8 +30,10 @@ AnimationGridsFF::AnimationGridsFF(string name) : Animation(name)
 	m_blurNbPasses		= 2;
 	m_colorFromDeviceLuminance = 0.5f;
 	m_speed				= 500;
-
-	
+	m_torsion			= 0.0f;
+ 	m_torsionFactor		= 1.0f;
+	m_torsionRelaxation = 0.9f;
+ 
 	m_properties.add( new classProperty_int("columns",2,150,&m_meshGridColumns ) );
 	m_properties.add( new classProperty_int("rows",2,50,&m_meshGridRows ) );
 	m_properties.add( new classProperty_int("speed",500,1500,&m_speed ) );
@@ -39,8 +42,14 @@ AnimationGridsFF::AnimationGridsFF(string name) : Animation(name)
 	m_properties.add( new classProperty_float("blurAmount",1,30,&m_blurAmount ) );
 	m_properties.add( new classProperty_int("blurPasses",1,5,&m_blurNbPasses ) );
 	m_properties.add( new classProperty_float("luminance",0,1,&m_colorFromDeviceLuminance ) );
+	m_properties.add( new classProperty_float("torsionRelaxation",0.5f,1.0f,&m_torsionRelaxation ) );
+	m_properties.add( new classProperty_float("torsionFactor",0,1,&m_torsionFactor ) );
+	m_properties.add( new classProperty_float("torsionRadius",0,1,&m_torsionRadius ) );
 	
+	m_imgTorsion.loadImage("Images/degrade_radial_0.2.png");
 
+	//m_fboTorsionScale = 0.25f;
+	
 	loadShader();
 	m_blur.loadShaders(ofToDataPath("Shaders"));
 	
@@ -73,6 +82,9 @@ void AnimationGridsFF::createUICustom()
 		addUISlider(m_properties.getFloat("rotation"));
 		addUISlider(m_properties.getFloat("blurAmount"));
 		addUISlider(m_properties.getInt("blurPasses"));
+		addUISlider(m_properties.getFloat("torsionRelaxation"));
+		addUISlider(m_properties.getFloat("torsionFactor"));
+		addUISlider(m_properties.getFloat("torsionRadius"));
 	}
 }
 
@@ -87,6 +99,18 @@ void AnimationGridsFF::VM_enter()
 void AnimationGridsFF::VM_update(float dt)
 {
 	updateUIVolume();
+
+	vector<Device*>& devices = GLOBALS->mp_deviceManager->m_listDevices;
+		
+	Device* pDevice = 0;
+	vector<Device*>::iterator it = devices.begin();
+	for ( ; it != devices.end(); ++it)
+	{
+		pDevice = *it;
+		getDeviceTorsion( pDevice->getID() )->m_relaxation = m_torsionRelaxation; // update directly
+		getDeviceTorsion( pDevice->getID() )->update( dt );
+	}
+	
 	if (mp_animShaderWave)
 		mp_animShaderWave->VM_update(dt);
 
@@ -103,13 +127,13 @@ void AnimationGridsFF::VM_update(float dt)
 		m_fbo.end();
 		m_blur.apply(m_fbo,m_blurAmount,m_blurNbPasses);
 	}
-
 }
 
 //--------------------------------------------------------------
 void AnimationGridsFF::VM_draw(float w, float h)
 {
-	if (w!=m_w && h!=m_h){
+	if (w!=m_w && h!=m_h)
+	{
 		m_w = w;
 		m_h = h;
 
@@ -132,20 +156,57 @@ void AnimationGridsFF::VM_draw(float w, float h)
 	
 	if (m_blur.get().isAllocated())
 	{
-		m_blur.get().getTextureReference().bind();
-	
-		m_shader.begin();
-		m_shader.setUniform1f("amplitude", m_amplitude);
-		m_shader.setUniform1i("colorFromDevice", m_isColorFromDevice ? 1 : 0);
-		m_shader.setUniform1f("luminance", m_colorFromDeviceLuminance);
-		ofPushMatrix();
-		ofTranslate(w/2,h/2);
-		ofRotateX(m_rotationX);
-		m_meshGrid.draw();
-		ofPopMatrix();
-		m_shader.end();
+		for (int i=0 ; i<20; i++)
+		{
+			m_devicePos[i]=0.0f;
+			m_deviceTorsion[i]=0.0f;
+		}
 
-		m_blur.get().getTextureReference().unbind();
+		int index=0;
+		vector<Device*>& devices = GLOBALS->mp_deviceManager->m_listDevices;
+		
+		Device* pDevice = 0;
+		vector<Device*>::iterator it = devices.begin();
+		for ( ; it != devices.end(); ++it)
+		{
+			pDevice = *it;
+			if (pDevice->isGenerative())
+			{
+				m_devicePos[2*index] 	= pDevice->m_pointSurface.x*m_fbo.getWidth()-w/2;
+				m_devicePos[2*index+1]	= pDevice->m_pointSurface.y*m_fbo.getHeight()-h/2;
+				
+				m_deviceTorsion[index]	= m_torsionFactor * getDeviceTorsion( pDevice->getID() )->m_value * TWO_PI;
+
+				index++;
+			}
+			else
+			{
+				m_devicePos[2*index] 	= 0.0f;
+				m_devicePos[2*index+1]	= 0.0f;
+
+				m_deviceTorsion[index] 	= 0.0f;
+			}
+		}
+	
+		if (pDevice)
+		{
+			m_shader.begin();
+			m_shader.setUniform1f("amplitude", m_amplitude);
+			m_shader.setUniform1i("colorFromDevice", m_isColorFromDevice ? 1 : 0);
+			m_shader.setUniform1f("luminance", m_colorFromDeviceLuminance);
+			m_shader.setUniformTexture("tex0", m_blur.get().getTextureReference(), 0);
+			m_shader.setUniform2fv("devicePos", m_devicePos, index*2);
+			m_shader.setUniform1i("devicePosNb", index);
+			m_shader.setUniform1fv("torsion", m_deviceTorsion, index);
+			m_shader.setUniform1f("torsionRadius", m_torsionRadius * min(w,h));
+
+			ofPushMatrix();
+			ofTranslate(w/2,h/2);
+			ofRotateX(m_rotationX);
+			m_meshGrid.draw();
+			ofPopMatrix();
+			m_shader.end();
+		}
 
 	}
 }
@@ -229,7 +290,10 @@ void AnimationGridsFF::loadShader()
 //--------------------------------------------------------------
 void AnimationGridsFF::onNewPacket(DevicePacket* pDevicePacket, string deviceId, float x, float y)
 {
+
 	accumulateVolume(pDevicePacket->m_volume, deviceId);
+
+	getDeviceTorsion(deviceId)->set( pDevicePacket->m_volume );
 	
 	if (mp_animShaderWave)
 		mp_animShaderWave->onNewPacket(pDevicePacket, deviceId, x,y);
@@ -263,6 +327,20 @@ void AnimationGridsFF::guiEvent(ofxUIEventArgs &e)
 		}
 	}
 }
+
+//--------------------------------------------------------------
+floatRelax*	AnimationGridsFF::getDeviceTorsion(string deviceId)
+{
+	map<string, floatRelax*>::iterator it =  m_deviceTorsionValues.find(deviceId);
+
+	if (it == m_deviceTorsionValues.end())
+	{
+		m_deviceTorsionValues[deviceId] = new floatRelax();
+	}
+
+	return m_deviceTorsionValues[deviceId];
+}
+
 
 
 

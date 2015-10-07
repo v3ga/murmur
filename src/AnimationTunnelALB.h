@@ -40,6 +40,10 @@ class AnimationTunnelALB : public Animation
         virtual void			VM_update               (float dt);
         virtual void			VM_draw					(float w, float h);
         virtual void            onNewPacket             (DevicePacket*, string deviceId, float x, float y);
+		virtual	void			onPropertyMidiModified	(classProperty* pProperty);
+ 
+				void			handlePropertyModified	(string name);
+
 
         virtual void            createUICustom          ();
         virtual void            guiEvent                (ofxUIEventArgs &e);

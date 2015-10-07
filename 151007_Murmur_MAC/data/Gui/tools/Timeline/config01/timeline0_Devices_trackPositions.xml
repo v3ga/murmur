@@ -1,0 +1,50 @@
+<positions>
+    <element name="chambreEcho_002.color">
+        <x>10.000000000</x>
+        <y>830.000000000</y>
+        <width>1004.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="deviceEchoSimulator01.color">
+        <x>0.000000000</x>
+        <y>70.000000000</y>
+        <width>1024.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="deviceEchoSimulator02.color">
+        <x>0.000000000</x>
+        <y>134.000000000</y>
+        <width>1024.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="deviceEchoSimulator03.color">
+        <x>0.000000000</x>
+        <y>198.000000000</y>
+        <width>1024.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="deviceEchoSimulator04.color">
+        <x>0.000000000</x>
+        <y>262.000000000</y>
+        <width>1024.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="deviceEchoSimulator05.color">
+        <x>0.000000000</x>
+        <y>326.000000000</y>
+        <width>1024.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="scripts">
+        <x>10.000000000</x>
+        <y>702.000000000</y>
+        <width>1004.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="setAnim">
+        <x>10.000000000</x>
+        <y>638.000000000</y>
+        <width>1004.000000000</width>
+        <height>40.000000000</height>
+    </element>
+</positions>

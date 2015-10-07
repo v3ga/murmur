@@ -90,13 +90,17 @@ void toolMidi::createControlsCustom()
 							{
 						    	pMidiCanvas->addWidgetDown( new ofxUILabel(widthDefault/2, it->second->m_name,OFX_UI_FONT_SMALL) );
 
-								ofxUITextInput* pTePort = new ofxUITextInput("tePort_"+it->second->m_name, ofToString( 0 ), 24, dim, widthDefault/2);
+								ofxUITextInput* pTePort = new ofxUITextInput("tePort_"+it->second->m_name, ofToString( pMidiPort->m_port ), 24, dim, widthDefault/2);
 								ofxUITextInput* pTeControl = new ofxUITextInput("teCtrl_"+it->second->m_name, ofToString( it->first ), 24, dim, widthDefault/2);
+								pTePort->setAutoUnfocus(true);
+								pTePort->setAutoClear(false);
 								pTeControl->setAutoUnfocus(true);
 								pTeControl->setAutoClear(false);
 //								pTeControl->setInputTriggerType();
 						    	pMidiCanvas->addWidgetRight( pTePort );
 						    	pMidiCanvas->addWidgetRight( pTeControl );
+								
+								pMidiCanvas->disableAppDrawCallback();
 							}
 						}
 					}
@@ -104,7 +108,7 @@ void toolMidi::createControlsCustom()
 
 				if (!hasProperties)
 				{
-					pMidiCanvas->addWidgetDown( new ofxUILabel("No midi properties defined.",OFX_UI_FONT_SMALL) );
+					pMidiCanvas->addWidgetDown( new ofxUILabel("No midi properties defined.\n\nCreate '"+pMidiInterface->m_name+".xml' file manually in data/Config/midi",OFX_UI_FONT_SMALL) );
 				}
 
 				//pMidiCanvas->autoSizeToFitWidgets();
@@ -143,6 +147,7 @@ void toolMidi::createControlsCustom()
 		mp_canvasTimecode->addWidgetDown( new ofxUILabel(100, "Value",OFX_UI_FONT_SMALL) );
 		mp_lblTimecodeValue = new ofxUILabel(100, "1234",OFX_UI_FONT_SMALL);
 	    mp_canvasTimecode->addWidgetRight( mp_lblTimecodeValue );
+		mp_canvasTimecode->disableAppDrawCallback();
 
 		
 
@@ -191,10 +196,13 @@ void toolMidi::show(bool is)
 		if (mp_canvasMidiInterfaceCurrent)
 		{
 			mp_canvasMidiInterfaceCurrent->setVisible(true);
+		    mp_canvasMidiInterfaceCurrent->disableAppDrawCallback();
+
 		}
 		if (mp_canvasTimecode)
 		{
 			mp_canvasTimecode->setVisible(true);
+			mp_canvasTimecode->disableAppDrawCallback();
 		}
 
 	}
@@ -205,6 +213,16 @@ void toolMidi::show(bool is)
 void toolMidi::setup()
 {
 	ofAddListener( m_MTCReceiver.MTCEvent, this, &toolMidi::handleMTCMessage  );
+}
+
+//--------------------------------------------------------------
+void toolMidi::drawUI()
+{
+	tool::drawUI();
+	if (mp_canvasMidiInterfaceCurrent)
+		mp_canvasMidiInterfaceCurrent->draw();
+	if (mp_canvasTimecode)
+		mp_canvasTimecode->draw();
 }
 
 //--------------------------------------------------------------
@@ -284,6 +302,7 @@ void toolMidi::handleEvents(ofxUIEventArgs& e)
 				 {
 					pMidiInterfaceCanvas->setPosition(mp_canvas->getRect()->getX(),mp_canvas->getRect()->getY() + mp_canvas->getRect()->getHeight());
 					pMidiInterfaceCanvas->setVisible(true);
+					pMidiInterfaceCanvas->disableAppDrawCallback();
 					
 					mp_canvasMidiInterfaceCurrent = pMidiInterfaceCanvas;
 					mp_midiInterfaceCurrent = pMidiInterface;
@@ -294,6 +313,10 @@ void toolMidi::handleEvents(ofxUIEventArgs& e)
 					mp_midiInterfaceCurrent = 0;
 				}
 			}
+			
+			if (mp_canvasTimecode)
+				mp_canvasTimecode->setVisible(true);
+			
 		}
     }
 }
@@ -308,14 +331,14 @@ void toolMidi::handleEventsMidiInterface(ofxUIEventArgs& e)
 	  {
 		bool doSave = false;
 		
-	  	// Port ou controle ?
+	  	// Port or control ?
 		if ( e.getName().substr(0,7) == "teCtrl_" )
 		{
 			if (mp_midiInterfaceCurrent)
 			{
 				string propName = e.getName().substr(7);
 				int control = atoi( pTe->getTextString().c_str() );
-				// ofLog() << " - changing control value to " << ofToString( control ) << " for " << propName;
+				ofLog() << " - changing control value to " << ofToString( control ) << " for " << propName;
 				mp_midiInterfaceCurrent->setControlForProperty(control, propName);
 				doSave = true;
 			}
@@ -325,6 +348,17 @@ void toolMidi::handleEventsMidiInterface(ofxUIEventArgs& e)
 		if ( e.getName().substr(0,7) == "tePort_" )
 		{
 			string propName = e.getName().substr(7);
+			if (mp_midiInterfaceCurrent)
+			{
+				int port = atoi( pTe->getTextString().c_str() );
+			
+				ofLog() << " - changing port value to " << ofToString( port ) <<   " for " << propName;
+				
+				mp_midiInterfaceCurrent->setPortForProperty(port, propName);
+				doSave = true;
+				
+				pTe->setTextString( ofToString(port) );
+			}
 		}
 	  
 		if (doSave)

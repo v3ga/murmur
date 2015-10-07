@@ -21,7 +21,7 @@
 <Widget>
     <Kind>2</Kind>
     <Name>renderNormal</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -31,6 +31,11 @@
 <Widget>
     <Kind>2</Kind>
     <Name>videoGrids</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>videoAgents</Name>
     <Value>0</Value>
 </Widget>
 <Widget>
@@ -41,7 +46,7 @@
 <Widget>
     <Kind>2</Kind>
     <Name>radarWaves</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>

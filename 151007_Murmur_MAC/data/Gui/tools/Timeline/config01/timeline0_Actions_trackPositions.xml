@@ -1,0 +1,74 @@
+<positions>
+    <element name="chambreEcho_001.color">
+        <x>0.000000000</x>
+        <y>116.000000000</y>
+        <width>800.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="chambreEcho_002.color">
+        <x>10.000000000</x>
+        <y>681.000000000</y>
+        <width>1004.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="deviceEchoSimulator01.color">
+        <x>10.000000000</x>
+        <y>766.000000000</y>
+        <width>1004.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="deviceEchoSimulator02.color">
+        <x>10.000000000</x>
+        <y>830.000000000</y>
+        <width>1004.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="deviceEchoSimulator03.color">
+        <x>0.000000000</x>
+        <y>244.000000000</y>
+        <width>1024.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="deviceEchoSimulator04.color">
+        <x>0.000000000</x>
+        <y>308.000000000</y>
+        <width>1024.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="deviceEchoSimulator05.color">
+        <x>0.000000000</x>
+        <y>372.000000000</y>
+        <width>1024.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="deviceEchoSimulator06.color">
+        <x>0.000000000</x>
+        <y>436.000000000</y>
+        <width>1024.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="deviceEchoSimulator07.color">
+        <x>0.000000000</x>
+        <y>500.000000000</y>
+        <width>1024.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="deviceEchoSimulator08.color">
+        <x>0.000000000</x>
+        <y>564.000000000</y>
+        <width>1024.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="scripts">
+        <x>0.000000000</x>
+        <y>116.000000000</y>
+        <width>800.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="setAnim">
+        <x>0.000000000</x>
+        <y>52.000000000</y>
+        <width>800.000000000</width>
+        <height>40.000000000</height>
+    </element>
+</positions>

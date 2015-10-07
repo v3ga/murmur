@@ -22,6 +22,7 @@ class toolMidi : public tool
 		void					registerMidiInterface	(midiInterface*);
 
 		void					show					(bool is);
+		void					drawUI					();
 		void					setup					();
 		void					loadData				();
 		void					saveData				();

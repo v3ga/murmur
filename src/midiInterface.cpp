@@ -136,6 +136,32 @@ void midiInterface::readMidiSettingsExtraEnd(int which, string propName)
 {
 }
 
+//--------------------------------------------------------------
+void midiInterface::exportMidiSettingsTemplate()
+{
+	if (mp_classProperties)
+	{
+		ofxXmlSettings midiSettingsTemplate;
+	 	map<string, classProperty*>& mapProps = mp_classProperties->m_list;
+	 	map<string, classProperty*>::iterator it = mapProps.begin();
+		
+		int control = 1;
+		int index = 0;
+		for ( ; it != mapProps.end(); ++it)
+		{
+			midiSettingsTemplate.addTag("midi");
+			midiSettingsTemplate.setAttribute("midi", "port", 		0, index);
+			midiSettingsTemplate.setAttribute("midi", "control", 	control, index);
+			midiSettingsTemplate.setAttribute("midi", "property", 	it->second->m_name, index);
+			
+			control++;
+			index++;
+		}
+		
+
+		midiSettingsTemplate.save( getMidiSettingsPath("_template") );
+	}
+}
 
 //--------------------------------------------------------------
 void midiInterface::handleMidiMessages()
@@ -147,7 +173,10 @@ void midiInterface::handleMidiMessages()
 		ofxMidiMessage& midiMessage = m_midiMessagesToHandle[i];
 		classProperty* pProp = getPropertyForPortAndControl(midiMessage.portNum, midiMessage.control);
 		if (pProp)
+		{
 			pProp->setValueFromMidiMessage( midiMessage );
+			onPropertyMidiModified(pProp);
+		}
 	}
 	m_midiMessagesToHandle.clear();
 	m_midiMutex.unlock();
@@ -205,16 +234,40 @@ int midiInterface::getPortForProperty(string propertyName)
 //--------------------------------------------------------------
 void midiInterface::setPortForProperty(int port, string propertyName)
 {
-	int currentPort = getPortForProperty(propertyName);
-	if (currentPort>-1 && currentPort != port && isPortValid(port))
+	OFAPPLOG->begin("midiInterface::setPortForProperty("+ ofToString(port) +","+ propertyName +")");
+
+
+	int currentPort 	= getPortForProperty(propertyName);
+	int currentControl 	= getControlForProperty(propertyName);
+	
+	OFAPPLOG->println( "currentPort="+ofToString(currentPort)+", currentControl="+ofToString(currentControl) );
+	
+	if (currentPort>-1 && currentPort != port /*&& isPortValid(port)*/)
 	{
-		midiPort* pMidiPort = getMidiPort(currentPort);
-		if (pMidiPort)
+		midiPort* pMidiPortCurrent = getMidiPort(currentPort);
+		if (pMidiPortCurrent)
 		{
+			classProperty* pClassProp = pMidiPortCurrent->deleteProperty(propertyName);
+			if (pClassProp)
+			{
+				midiPort* pMidiPort = getMidiPort(port);
+				if (pMidiPort == 0)
+				{
+					OFAPPLOG->println(" creating midi port["+ofToString(port)+"] ");
+					pMidiPort = new midiPort(port);
+					m_midiPorts.push_back( pMidiPort );
+				}
+					
+				if (pMidiPort)
+				{
+					OFAPPLOG->println(" adding control " + ofToString(currentControl) + " to port " + ofToString(port) );
+					pMidiPort->addPropertyForControl(currentControl, pClassProp); // getMidi OK because we checked isPortValid
+				}
+			}
 		}
 	}
 	
-	return currentPort;
+	OFAPPLOG->end();
 }
 
 
@@ -238,40 +291,28 @@ int midiInterface::getControlForProperty(string propertyName)
 //--------------------------------------------------------------
 void midiInterface::setControlForProperty(int control, string propertyName)
 {
-	int currentControl = getControlForProperty(propertyName);
-	if (currentControl != control)
+	OFAPPLOG->begin("midiInterface::setControlForProperty("+ofToString(control)+","+propertyName+")");
+	int controlCurrent = getControlForProperty(propertyName);
+	OFAPPLOG->println(" - controlCurrent="+ofToString(controlCurrent));
+	if (control != controlCurrent)
 	{
-		bool erased = false;
-		vector<midiPort*>::iterator it = m_midiPorts.begin();
-		for ( ; it != m_midiPorts.end(); ++it)
+		midiPort* pMidiPortCurrent = getMidiPort(getPortForProperty(propertyName));
+		if (pMidiPortCurrent)
 		{
-			map<int,classProperty*>::iterator it2 = (*it)->m_mapMidiControlToProp.begin();
-			classProperty* pProperty = 0;
-			for ( ; it2 != (*it)->m_mapMidiControlToProp.end(); ++it2)
-			{
-				pProperty = it2->second;
-				if (pProperty->m_name == propertyName)
-				{
-					(*it)->m_mapMidiControlToProp.erase(it2);
-					erased = true;
-					// (*it)->m_mapMidiControlToProp.ins
-					break;
-				}
-			}
-			if (erased && pProperty)
-			{
-				(*it)->addPropertyForControl(control, pProperty);
-			}
-			
+			classProperty* pClassProp = pMidiPortCurrent->deletePropertyForControl(controlCurrent);
+			if (pClassProp)
+				pMidiPortCurrent->addPropertyForControl(control, pClassProp);
 		}
-		
 	}
+	OFAPPLOG->end();
 }
 
 
 //--------------------------------------------------------------
 midiPort* midiInterface::getMidiPort(int which)
 {
+	if (which<0) return 0;
+
 	vector<midiPort*>::iterator it = m_midiPorts.begin();
 	for ( ; it != m_midiPorts.end(); ++it){
 		if ((*it)->m_port == which)

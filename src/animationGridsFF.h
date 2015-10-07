@@ -9,6 +9,8 @@
 #pragma once
 #include "animations.h"
 #include "blur.h"
+#include "floatRelax.h"
+
 
 class AnimationShaderWave;
 class AnimationGridsFF : public Animation
@@ -44,7 +46,9 @@ class AnimationGridsFF : public Animation
 		bool					m_bReloadShader;
  
 		ofFbo					m_fbo;
-		ofImage					m_img;
+		float					m_torsion,m_torsionFactor,m_torsionRadius;
+		float					m_torsionRelaxation;
+		ofImage					m_imgTorsion;
 		blur					m_blur;
  
 		bool					m_bDebug;
@@ -57,4 +61,12 @@ class AnimationGridsFF : public Animation
 		int						m_blurNbPasses;
 
 		AnimationShaderWave*	mp_animShaderWave;
+ 
+		float					m_devicePos[20];
+		float					m_deviceTorsion[20];
+		map<string, floatRelax*>m_deviceTorsionValues;
+ 
+	    floatRelax*				getDeviceTorsion(string deviceId);
+ 
+ 
 };
