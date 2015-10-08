@@ -21,6 +21,23 @@ AnimationComposition::AnimationComposition(string name) : Animation(name)
 	mp_radioCompositions=0;
 
 	m_isLoadingConfiguration = false;
+	
+	ofFile fBlendFunctions("Shaders/blendFunctions.glsl");
+	m_strFragBlendFunctions = fBlendFunctions.readToBuffer().getText();
+	
+	m_blendings.push_back("Add");
+	m_blendings.push_back("Average");
+	m_blendings.push_back("ColorDodge");
+	m_blendings.push_back("Difference");
+	m_blendings.push_back("Exclusion");
+	m_blendings.push_back("Glow");
+	m_blendings.push_back("HardLight");
+	m_blendings.push_back("Luminosity");
+	m_blendings.push_back("Multiply");
+	m_blendings.push_back("Negation");
+	m_blendings.push_back("Overlay");
+	m_blendings.push_back("Screen");
+	m_blendings.push_back("SoftLight");
 }
 
 //--------------------------------------------------------------
@@ -41,14 +58,17 @@ void AnimationComposition::createUICustom()
 		
 		mp_UIcanvas->addWidgetDown(new ofxUILabel("Blending", OFX_UI_FONT_MEDIUM));
     	mp_UIcanvas->addWidgetDown(new ofxUISpacer(330, 2));
-		
-		vector<string> blendingNames;
-		blendingNames.push_back("multiply");
-		blendingNames.push_back("difference");
-		blendingNames.push_back("add");
-		mp_radioBlending = new ofxUIRadio("radioBlending",  blendingNames, OFX_UI_ORIENTATION_HORIZONTAL, 16, 16);
+/*
+		mp_radioBlending = new ofxUIRadio("radioBlending",  m_blendings, OFX_UI_ORIENTATION_VERTICAL, 16, 16);
 
 		mp_UIcanvas->addWidgetDown(mp_radioBlending);
+*/
+
+		ofxUIDropDownList* pDropBlending = new ofxUIDropDownList("Blending", m_blendings, 330,0,0,OFX_UI_FONT_SMALL);
+		pDropBlending->setAutoClose(true);
+		pDropBlending->setAllowMultiple(false);
+		mp_UIcanvas->addWidgetDown( pDropBlending );
+		pDropBlending->setShowCurrentSelected(true);
 
 		ofxUILabelButton* pBtnReload = new ofxUILabelButton("reloadShader", false, 330, 16, 0,0, OFX_UI_FONT_SMALL);
 		mp_UIcanvas->addWidgetDown( pBtnReload );
@@ -142,24 +162,10 @@ void AnimationComposition::addAnimation(string name)
 void AnimationComposition::setBlending(string name)
 {
 	m_nameBlending = name;
-	if (name == "multiply")
-	{
-		m_shader.load("Shaders/animCompo.vert", "Shaders/animCompoMultiply.frag");
-	}
-	else
-	if (name == "difference")
-	{
-		m_shader.load("Shaders/animCompo.vert", "Shaders/animCompoDifference.frag");
-	}
-	else
-	if (name == "add")
-	{
-		m_shader.load("Shaders/animCompo.vert", "Shaders/animCompoAdd.frag");
-	}
-	else
-	{
-		//setRenderNormal(true);
-	}
+	m_shader.setupShaderFromFile(GL_VERTEX_SHADER, "Shaders/animCompo.vert");
+	m_shader.setupShaderFromSource(GL_FRAGMENT_SHADER, getShaderSourceWithBlendFunctions("Shaders/animCompo"+name+".frag"));
+	m_shader.bindDefaults();
+	m_shader.linkProgram();
 }
 
 //--------------------------------------------------------------
@@ -381,6 +387,7 @@ void AnimationComposition::onSurfaceRenderOffscreen(Surface* pSurface, Animation
 	   pThis->m_fboAnimation2.end();
 
 	   fboFinal.begin();
+	   ofBackground(0);
 
 	   pThis->m_shader.begin();
 	   pThis->m_shader.setUniformTexture("tex1", pThis->m_fboAnimation1.getTextureReference(), 1);
@@ -442,7 +449,6 @@ void AnimationComposition::guiEvent(ofxUIEventArgs &e)
 			setRenderNormal(e.getToggle()->getValue());
 		else
 			m_bRenderNormalWanted = e.getToggle()->getValue();
-		//ofLog() << "m_bRenderNormalWanted=" << m_bRenderNormalWanted;
 	}
 	else
 	if (name == "reloadShader")
@@ -454,12 +460,34 @@ void AnimationComposition::guiEvent(ofxUIEventArgs &e)
 	}
 	else
 	{
-		if (e.getKind() == OFX_UI_WIDGET_TOGGLE)
+		// Not called on loading, only OFX_UI_WIDGET_LABELTOGGLE called
+		if (e.getKind() == OFX_UI_WIDGET_DROPDOWNLIST)
 		{
-			if (name == "multiply" || name == "difference" || name == "add" ){
-				setBlending(name);
+ 	      	ofxUIDropDownList *ddlist = (ofxUIDropDownList *) e.widget;
+    	    vector<ofxUIWidget *> &selected = ddlist->getSelected();
+			vector<int>& selectedIndices = ddlist->getSelectedIndeces();
+        	if (selectedIndices.size()==1)
+			{
+				setBlending( selected[0]->getName() );
 			}
-			else if (isNameComposition(name))
+		}
+		else if (e.getKind() == OFX_UI_WIDGET_LABELTOGGLE)
+		{
+			OFAPPLOG->println("- OFX_UI_WIDGET_LABELTOGGLE for "+name);
+
+			if (isNameBlending(name))
+			{
+				if (e.getToggle()->getValue()>0)
+				{
+					setBlending(name);
+					OFAPPLOG->println("- setting blending "+name);
+				}
+			}
+		
+		}
+		else if (e.getKind() == OFX_UI_WIDGET_TOGGLE)
+		{
+			if (isNameComposition(name))
 			{
 				if (e.getToggle()->getValue()>0)
 				{
@@ -483,6 +511,27 @@ bool AnimationComposition::isNameComposition(string name)
 	}
 	return false;
 }
+
+//--------------------------------------------------------------
+string AnimationComposition::getShaderSourceWithBlendFunctions(string filename)
+{
+	ofFile fileFrag(filename);
+	return "#version 150\n\n"+m_strFragBlendFunctions+"\n\n"+fileFrag.readToBuffer().getText();
+}
+
+//--------------------------------------------------------------
+bool AnimationComposition::isNameBlending(string name)
+{
+	vector<string>::iterator it = m_blendings.begin();
+	for ( ; it!=m_blendings.end(); ++it)
+	{
+		if ( (*it) == name)
+			return true;
+	}
+	return false;
+}
+
+
 
 
 

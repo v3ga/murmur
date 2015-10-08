@@ -85,4 +85,10 @@ class AnimationComposition : public Animation
  
 		bool									isNameComposition(string name);
 		bool									m_isLoadingConfiguration;
+ 
+		string									m_strFragBlendFunctions;
+		string									getShaderSourceWithBlendFunctions(string filename);
+ 
+		vector<string>							m_blendings;
+		bool									isNameBlending(string name);
 };

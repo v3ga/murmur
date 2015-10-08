@@ -1,0 +1,18 @@
+<device id="chambreEcho_001">
+    <soundInput>
+        <volMax>0.030290322</volMax>
+        <volHistoryNb>126.000000000</volHistoryNb>
+        <volHistoryTh>0.020089285</volHistoryTh>
+    </soundInput>
+    <soundOutput></soundOutput>
+    <enableStandby>1</enableStandby>
+    <timeStandby>5.000000000</timeStandby>
+    <sampleVolStandby>0.349999994</sampleVolStandby>
+    <enableStandby>1</enableStandby>
+    <enableStandup>1</enableStandup>
+    <volStandup>0.500000000</volStandup>
+    <surface id="main">
+        <xNorm>0.511927068</xNorm>
+        <yNorm>0.500000000</yNorm>
+    </surface>
+</device>

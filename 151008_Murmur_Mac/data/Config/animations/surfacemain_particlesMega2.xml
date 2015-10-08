@@ -1,0 +1,140 @@
+<Widget>
+    <Kind>4</Kind>
+    <Name>volValuesMeanTh</Name>
+    <Value>0.124242425</Value>
+</Widget>
+<Widget>
+    <Kind>12</Kind>
+    <Name>teConfigName</Name>
+    <Value>particles1.xml</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>resetOnEnter</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>volume</Name>
+    <Value>0.296774179</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>b1.wav</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>b2.wav</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>b3.wav</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>b4.wav</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>k1.wav</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>k2.wav</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>k3.wav</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>k4.wav</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>k5.wav</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>k6.wav</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>k7.wav</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>k8.wav</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>l2.wav</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>l3.wav</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>l4.wav</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>l5.wav</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>l6.wav</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>l7.wav</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>colorFromDevice</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>amp. attraction</Name>
+    <Value>45.105770111</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>amp. repulsion</Name>
+    <Value>43.201923370</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>radius repulsion</Name>
+    <Value>40.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>particles size</Name>
+    <Value>4.782051086</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>radius color factor</Name>
+    <Value>4.259615421</Value>
+</Widget>

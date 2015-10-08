@@ -1,0 +1,45 @@
+<Widget>
+    <Kind>4</Kind>
+    <Name>volValuesMeanTh</Name>
+    <Value>0.500000000</Value>
+</Widget>
+<Widget>
+    <Kind>12</Kind>
+    <Name>teConfigName</Name>
+    <Value>test2.xml</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>resetOnEnter</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>volume</Name>
+    <Value>1.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>renderNormal</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>multiply</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>videoGrids</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>particlesGrids</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>radarWaves</Name>
+    <Value>0</Value>
+</Widget>
