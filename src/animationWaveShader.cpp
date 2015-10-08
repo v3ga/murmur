@@ -54,6 +54,19 @@ void ShaderWave::setSize(int w)
 	}
 }
 
+//--------------------------------------------------------------
+void ShaderWave::clearSoundInput()
+{
+//	m_imgSoundInput.clear();
+	ofFloatPixels& data = m_imgSoundInput.getPixelsRef();
+	int nb = data.size();
+	for (int i=0;i<nb;i++)
+	{
+		data[i] = 0.0f;
+	}
+}
+
+
 
 //--------------------------------------------------------------
 AnimationShaderWave::AnimationShaderWave(string name) : Animation(name)
@@ -83,7 +96,12 @@ void AnimationShaderWave::VM_enter()
 {
     M_loadShader("wave");
 	setDrawBackground();
-    //printf(">>>> %d\n", m_imgSoundInput.getPixelsRef().size());
+	if (m_bResetOnEnter)
+	{
+		map<string,ShaderWave*>::iterator it = m_mapShaderWaves.begin();
+		for ( ; it != m_mapShaderWaves.end() ; ++it)
+			it->second->clearSoundInput();
+	}
 }
 
 //--------------------------------------------------------------

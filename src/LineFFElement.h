@@ -12,6 +12,7 @@
 class AnimationLinesFF;
 class LineFFElement
 {
+
 	public:
 		LineFFElement					(AnimationLinesFF* pParent, ofVec3f pos, ofVec3f dir);
 	

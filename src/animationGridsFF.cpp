@@ -92,6 +92,18 @@ void AnimationGridsFF::createUICustom()
 void AnimationGridsFF::VM_enter()
 {
 	setDrawBackground();
+	if (m_bResetOnEnter)
+	{
+		if (mp_animShaderWave)
+		{
+			mp_animShaderWave->m_bResetOnEnter = m_bResetOnEnter; // force flag here
+			mp_animShaderWave->VM_enter();
+		}
+
+		m_fbo.begin();
+		ofBackground(0);
+		m_fbo.end();
+	}
 }
 
 

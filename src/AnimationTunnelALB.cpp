@@ -197,6 +197,10 @@ void AnimationTunnelALB::VM_enter()
 	setDrawBackground();
 	if (mp_meshes[0] == 0)
 		createMeshes();
+	if (m_bResetOnEnter)
+	{
+		deleteElements();
+	}
 }
 
 //--------------------------------------------------------------

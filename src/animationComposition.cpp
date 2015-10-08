@@ -473,7 +473,7 @@ void AnimationComposition::guiEvent(ofxUIEventArgs &e)
 		}
 		else if (e.getKind() == OFX_UI_WIDGET_LABELTOGGLE)
 		{
-			OFAPPLOG->println("- OFX_UI_WIDGET_LABELTOGGLE for "+name);
+			//OFAPPLOG->println("- OFX_UI_WIDGET_LABELTOGGLE for "+name);
 
 			if (isNameBlending(name))
 			{

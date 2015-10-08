@@ -29,6 +29,9 @@ class AnimationRadarFF : public Animation
  		float					m_ageMax;
 
 	private:
+				void			deleteElements			();
+	
+	
 		vector<RadarFFElement*> m_elements;
  
 		float					m_w,m_h;

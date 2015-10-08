@@ -39,11 +39,7 @@ AnimationRadarFF::AnimationRadarFF(string name) : Animation(name)
 //--------------------------------------------------------------
 AnimationRadarFF::~AnimationRadarFF()
 {
-	vector<RadarFFElement*>::iterator it = m_elements.begin();
-	for ( ; it != m_elements.end() ; ++it){
-		delete *it;
-	}
-	m_elements.clear();
+	deleteElements();
 }
 
 //--------------------------------------------------------------
@@ -84,6 +80,10 @@ void AnimationRadarFF::createUICustom()
 void AnimationRadarFF::VM_enter()
 {
 	setDrawBackground();
+	if (m_bResetOnEnter)
+	{
+		deleteElements();
+	}
 }
 
 
@@ -190,4 +190,15 @@ void AnimationRadarFF::onNewPacket(DevicePacket* pDevicePacket, string deviceId,
 	}
 
 }
+
+//--------------------------------------------------------------
+void AnimationRadarFF::deleteElements()
+{
+	vector<RadarFFElement*>::iterator it = m_elements.begin();
+	for ( ; it != m_elements.end() ; ++it){
+		delete *it;
+	}
+	m_elements.clear();
+}
+
 

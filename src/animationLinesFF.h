@@ -13,18 +13,25 @@
 class LineFFElement;
 class AnimationLinesFF : public Animation
 {
+	friend class LineFFElement;
+
+
 	public:
 		AnimationLinesFF			(string name);
 		~AnimationLinesFF			();
  
  
 		virtual	void			createUICustom			();
+		virtual	void			VM_enter				();
         virtual void			VM_update				(float dt);
         virtual void			VM_draw					(float w, float h);
 		virtual void            onNewPacket             (DevicePacket*, string deviceId, float x, float y);
 		virtual	void			onVolumAccumEvent		(string deviceId);
 
  
+ 	private:
+				void			deleteElements			();
+	
 		vector<LineFFElement*>	m_lines;
  
 		ofCamera				m_cam;

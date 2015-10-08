@@ -6,7 +6,7 @@
 <Widget>
     <Kind>12</Kind>
     <Name>teConfigName</Name>
-    <Value>test3.xml</Value>
+    <Value>test.xml</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -36,22 +36,22 @@
 <Widget>
     <Kind>42</Kind>
     <Name>columns</Name>
-    <Value>10</Value>
+    <Value>136</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>
     <Name>rows</Name>
-    <Value>26</Value>
+    <Value>76</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
     <Name>square cells</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>scale</Name>
-    <Value>0.461538464</Value>
+    <Value>0.862499952</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>
@@ -71,7 +71,7 @@
 <Widget>
     <Kind>4</Kind>
     <Name>blurAmount</Name>
-    <Value>1.000000000</Value>
+    <Value>9.365384102</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>

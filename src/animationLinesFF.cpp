@@ -30,10 +30,7 @@ AnimationLinesFF::AnimationLinesFF(string name) : Animation(name)
 //--------------------------------------------------------------
 AnimationLinesFF::~AnimationLinesFF()
 {
-	vector<LineFFElement*>::iterator it = m_lines.begin();
-	for (; it != m_lines.end(); ++it)
-		delete *it;
-	m_lines.clear();
+	deleteElements();
 }
 
 //--------------------------------------------------------------
@@ -50,6 +47,14 @@ void AnimationLinesFF::createUICustom()
 		addUISlider( m_properties.getFloat("rot") );
 		addUISlider( m_properties.getFloat("rotSpeed") );
     }
+}
+
+//--------------------------------------------------------------
+void AnimationLinesFF::VM_enter()
+{
+	setDrawBackground();
+	if (m_bResetOnEnter)
+		deleteElements();
 }
 
 
@@ -123,6 +128,15 @@ void AnimationLinesFF::onVolumAccumEvent(string deviceId)
 			m_lines.push_back(pLine);
 		}
 	}
+}
+
+//--------------------------------------------------------------
+void AnimationLinesFF::deleteElements()
+{
+	vector<LineFFElement*>::iterator it = m_lines.begin();
+	for (; it != m_lines.end(); ++it)
+		delete *it;
+	m_lines.clear();
 }
 
 

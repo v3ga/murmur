@@ -16,8 +16,9 @@ class ShaderWave
 	
 		ShaderWave				();
 
-		void					update	(float dt);
-		void					setSize	(int w);
+		void					update				(float dt);
+		void					setSize				(int w);
+		void					clearSoundInput		();
 
        	ofFloatImage            m_imgSoundInput;
 		ofVec2f                	m_anchor,m_anchorNorm;
