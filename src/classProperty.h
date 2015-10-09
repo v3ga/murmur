@@ -87,6 +87,7 @@ class classProperty_bool : public classProperty
 		classProperty_bool(string name, bool* pValue, int mode);
 
 		void			setValueFromMidiMessage	(ofxMidiMessage&);
+		void			setMode(int mode){this->m_mode = mode;}
 
 		bool*			mp_variable;
 		int				m_mode;

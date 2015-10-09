@@ -108,7 +108,7 @@ void toolMidi::createControlsCustom()
 
 				if (!hasProperties)
 				{
-					pMidiCanvas->addWidgetDown( new ofxUILabel("No midi properties defined.\n\nCreate '"+pMidiInterface->m_name+".xml' file manually in data/Config/midi",OFX_UI_FONT_SMALL) );
+					pMidiCanvas->addWidgetDown( new ofxUILabel("No midi properties defined.\n\nCreate .xml file manually in data/Config/midi",OFX_UI_FONT_SMALL) );
 				}
 
 				//pMidiCanvas->autoSizeToFitWidgets();
@@ -143,7 +143,9 @@ void toolMidi::createControlsCustom()
     	mp_canvasTimecode->addWidgetDown( new ofxUISpacer(widthDefault-8, 2) );
 		mp_canvasTimecode->addWidgetDown( new ofxUILabel(100, "Port",OFX_UI_FONT_SMALL) );
 		ofxUITextInput* pTePortTimecode = new ofxUITextInput("tePortTimecode", ofToString( 0 ), 24, dim, 100+5);
+		pTePortTimecode->setAutoClear(false);
 		mp_canvasTimecode->addWidgetRight( pTePortTimecode );
+		
 		mp_canvasTimecode->addWidgetDown( new ofxUILabel(100, "Value",OFX_UI_FONT_SMALL) );
 		mp_lblTimecodeValue = new ofxUILabel(100, "1234",OFX_UI_FONT_SMALL);
 	    mp_canvasTimecode->addWidgetRight( mp_lblTimecodeValue );
@@ -385,6 +387,7 @@ void toolMidi::handleEventsMidiInterface(ofxUIEventArgs& e)
 //--------------------------------------------------------------
 void toolMidi::handleEventsTimecode(ofxUIEventArgs& e)
 {
+   OFAPPLOG->begin("toolMidi::handleEventsTimecode()");
   if (e.getKind() == OFX_UI_WIDGET_TEXTINPUT)
   {
 	  ofxUITextInput* pTe = (ofxUITextInput*) e.widget;
@@ -392,9 +395,11 @@ void toolMidi::handleEventsTimecode(ofxUIEventArgs& e)
 	  {
 		m_portTimecode = getPortTimecode( pTe->getTextString() );
 		pTe->setTextString( ofToString(m_portTimecode) );
-	  	onPortTimecodeChanged();
+	  	OFAPPLOG->println("- m_portTimecode="+ofToString(m_portTimecode) + ", textedit="+pTe->getTextString());
+		onPortTimecodeChanged();
 	  }
    }
+   OFAPPLOG->end();
 }
 
 

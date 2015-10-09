@@ -79,6 +79,10 @@ AnimationTunnelALB::AnimationTunnelALB(string name) : Animation(name)
 	m_properties.add( new classProperty_float("angle", 		0.0f, 20.0f, &m_dirAngle) );
 	m_properties.add( new classProperty_bool("left", 		&m_emitLeft) );
 	m_properties.add( new classProperty_bool("right", 		&m_emitRight) );
+	
+	
+	m_properties.getBool("left")->setMode( classProperty_bool::MODE_TOGGLE );
+	m_properties.getBool("right")->setMode( classProperty_bool::MODE_TOGGLE );
 
 	updateRotations();
 
@@ -299,7 +303,7 @@ void AnimationTunnelALB::onPropertyMidiModified(classProperty* pProperty)
 	if (pProperty)
 	{
 		handlePropertyModified(pProperty->m_name);
-		ofLog() << "handlePropertyModified("+pProperty->m_name+")";
+		//ofLog() << "handlePropertyModified("+pProperty->m_name+")";
 	}
 }
 

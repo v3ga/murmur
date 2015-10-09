@@ -35,6 +35,51 @@
 </Widget>
 <Widget>
     <Kind>4</Kind>
+    <Name>particles speed max</Name>
+    <Value>6.772435665</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>particles size</Name>
+    <Value>2.121794939</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
     <Name>blending factor</Name>
     <Value>0.009615385</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>Center</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>Cross</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>Line width</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>Line height</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>Grid</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>Rect</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>Screen</Name>
+    <Value>0</Value>
 </Widget>

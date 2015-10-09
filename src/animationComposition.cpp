@@ -17,10 +17,11 @@ AnimationComposition::AnimationComposition(string name) : Animation(name)
 	m_bRenderNormal = false;
 	m_bRenderNormalWanted = false;
 	
-	mp_radioBlending = 0;
 	mp_radioCompositions=0;
+	mp_lblCompositionInfo = 0;
 
 	m_isLoadingConfiguration = false;
+	mp_compositionCurrent = 0;
 	
 	ofFile fBlendFunctions("Shaders/blendFunctions.glsl");
 	m_strFragBlendFunctions = fBlendFunctions.readToBuffer().getText();
@@ -58,11 +59,7 @@ void AnimationComposition::createUICustom()
 		
 		mp_UIcanvas->addWidgetDown(new ofxUILabel("Blending", OFX_UI_FONT_MEDIUM));
     	mp_UIcanvas->addWidgetDown(new ofxUISpacer(330, 2));
-/*
-		mp_radioBlending = new ofxUIRadio("radioBlending",  m_blendings, OFX_UI_ORIENTATION_VERTICAL, 16, 16);
 
-		mp_UIcanvas->addWidgetDown(mp_radioBlending);
-*/
 
 		ofxUIDropDownList* pDropBlending = new ofxUIDropDownList("Blending", m_blendings, 330,0,0,OFX_UI_FONT_SMALL);
 		pDropBlending->setAutoClose(true);
@@ -77,6 +74,9 @@ void AnimationComposition::createUICustom()
 
 		mp_UIcanvas->addWidgetDown(new ofxUILabel("Compositions", OFX_UI_FONT_MEDIUM));
     	mp_UIcanvas->addWidgetDown(new ofxUISpacer(330, 2));
+		mp_lblCompositionInfo = new ofxUILabel("lblCompositionInfo", OFX_UI_FONT_SMALL);
+    	mp_UIcanvas->addWidgetDown(mp_lblCompositionInfo);
+	
 
 		vector<string> compositionNames;
 		for (int i=0; i< m_compositions.size(); i++)
@@ -88,6 +88,18 @@ void AnimationComposition::createUICustom()
 		mp_UIcanvas->addWidgetDown(mp_radioCompositions);
 
 
+	}
+}
+
+//--------------------------------------------------------------
+void AnimationComposition::updateUI()
+{
+	if (mp_lblCompositionInfo)
+	{
+		if (mp_compositionCurrent)
+		{
+			mp_lblCompositionInfo->setLabel(mp_compositionCurrent->m_animationName1+" ('"+mp_compositionCurrent->m_animationConfig1+"')"+" + "+mp_compositionCurrent->m_animationName2+" ('"+mp_compositionCurrent->m_animationConfig2+"')");
+		}
 	}
 }
 
@@ -184,6 +196,7 @@ void AnimationComposition::setComposition( string name )
 	
 	if (pComposition)
 	{
+	
 		if (m_animations.size()>0)
 		{
 			if (m_animations[0]){
@@ -222,6 +235,10 @@ void AnimationComposition::setComposition( string name )
 
 		}
 	}
+	mp_compositionCurrent = pComposition;
+	
+	updateUI();
+	
 	OFAPPLOG->end();
 	
 }
@@ -277,7 +294,6 @@ void AnimationComposition::VM_enter()
 	 	(*it)->VM_enter();
 
 	
-	//if (m_compositionCurrent!="") setComposition(m_compositionCurrent);
 }
 
 //--------------------------------------------------------------
@@ -339,8 +355,6 @@ void AnimationComposition::VM_drawBefore(float w, float h)
 //--------------------------------------------------------------
 void AnimationComposition::VM_draw(float w, float h)
 {
-	//setComposition(m_compositionWanted);
-
 	if (m_bRenderNormal)
 	{
 		drawBackground(0);

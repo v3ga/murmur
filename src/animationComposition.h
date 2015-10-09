@@ -49,6 +49,7 @@ class AnimationComposition : public Animation
 		virtual	void			loadMidiSettings		();
 		virtual	void			loadConfiguration		(string filename);
 		virtual	void			createUICustom			();
+		virtual	void			updateUI				();
 		virtual void			VM_enter				();
 		virtual void			VM_update				(float dt);
  		virtual void			VM_drawBefore			(float w, float h);
@@ -68,7 +69,7 @@ class AnimationComposition : public Animation
 	protected:
 		vector<Animation*>						m_animations;
 		vector<AnimationCompoConfiguration*>	m_compositions;
-		string									m_compositionCurrent, m_compositionWanted;
+		AnimationCompoConfiguration*			mp_compositionCurrent;
 
 		ofFbo									m_fboAnimation1, m_fboAnimation2;
  
@@ -79,8 +80,8 @@ class AnimationComposition : public Animation
 		void									allocateRenderBuffers();
 		bool									m_bAllocateRenderBuffers;
  
+ 		ofxUILabel*								mp_lblCompositionInfo;
 		ofxUIRadio*								mp_radioCompositions;
-		ofxUIRadio*								mp_radioBlending;
 		string									m_nameBlending;
  
 		bool									isNameComposition(string name);

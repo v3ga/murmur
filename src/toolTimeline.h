@@ -40,7 +40,6 @@ class toolTimeline : public tool, public midiInterface
 
 	 	classProperties			m_properties;
 		ofxTimeline				m_timeline;
- 
 
 
 		ofxUIToggle*			mp_tgLoopTimeline;
@@ -56,6 +55,9 @@ class toolTimeline : public tool, public midiInterface
 		ofxUIButton*			mp_btnNewTimeline;
 		ofxUIDropDownList*		mp_ddConfigTimeline;
 		ofxUIButton*			mp_btnLoadTimeline;
+ 
+		ofxUILabel*				mp_lblScriptConsole;
+		string					m_errorScript;
 
 		string					m_timelineCurrentFolder;
 		bool					m_bAutoplay;
@@ -66,6 +68,7 @@ class toolTimeline : public tool, public midiInterface
 		void					createNewTimeline			();
 		vector<string>			getTimelineConfigNamesList	();
 		string					getConfigPath				(string configName){return sm_timelineDir+configName+"/";}
+		void					loadScript					(string name);
  
 		string					m_timelineConfigName;
 		static string			sm_timelineDir;

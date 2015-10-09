@@ -222,7 +222,7 @@ int midiInterface::getPortForProperty(string propertyName)
 		map<int,classProperty*>::iterator it2 = (*it)->m_mapMidiControlToProp.begin();
 		for ( ; it2 != (*it)->m_mapMidiControlToProp.end(); ++it2)
 		{
-			if (it2->second->m_name == propertyName)
+			if (it2->second && it2->second->m_name == propertyName)
 				return (*it)->m_port;
 		}
 	}
@@ -281,7 +281,7 @@ int midiInterface::getControlForProperty(string propertyName)
 		map<int,classProperty*>::iterator it2 = (*it)->m_mapMidiControlToProp.begin();
 		for ( ; it2 != (*it)->m_mapMidiControlToProp.end(); ++it2)
 		{
-			if (it2->second->m_name == propertyName)
+			if (it2->second && it2->second->m_name == propertyName)
 				return it2->first;
 		}
 	}

@@ -6,7 +6,7 @@
 <Widget>
     <Kind>12</Kind>
     <Name>teConfigName</Name>
-    <Value>test2.xml</Value>
+    <Value>videolines.xml</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -21,7 +21,7 @@
 <Widget>
     <Kind>2</Kind>
     <Name>renderNormal</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>22</Kind>
@@ -36,7 +36,7 @@
 <Widget>
     <Kind>17</Kind>
     <Name>Average</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>17</Kind>
@@ -51,7 +51,7 @@
 <Widget>
     <Kind>17</Kind>
     <Name>Exclusion</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>17</Kind>
@@ -101,7 +101,7 @@
 <Widget>
     <Kind>2</Kind>
     <Name>videoLines</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -116,7 +116,7 @@
 <Widget>
     <Kind>2</Kind>
     <Name>particlesGrids</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>

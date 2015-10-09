@@ -1217,6 +1217,7 @@
 		F9E2065C1BC3CED600E4E4A3 /* gridsFF.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = gridsFF.vert; sourceTree = "<group>"; };
 		F9E206621BC5525100E4E4A3 /* floatRelax.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = floatRelax.cpp; sourceTree = "<group>"; };
 		F9E206631BC5525100E4E4A3 /* floatRelax.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = floatRelax.h; sourceTree = "<group>"; };
+		F9E206FD1BC7AD1100E4E4A3 /* timeline.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = timeline.js; sourceTree = "<group>"; };
 		F9F47B931899260300DDE2E3 /* murmur.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = murmur.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -2252,6 +2253,7 @@
 		F987123716C058150069F12A /* Scripts */ = {
 			isa = PBXGroup;
 			children = (
+				F9E206FD1BC7AD1100E4E4A3 /* timeline.js */,
 				F964768118A2575F0061C848 /* murmur */,
 				F9BC6AD21743BA7E00633C5C /* libraries */,
 			);

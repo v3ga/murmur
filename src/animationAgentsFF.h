@@ -25,6 +25,7 @@ class AnimationAgentsFF : public Animation
 		virtual void			VM_update				(float dt);
         virtual void			VM_drawBefore			(float w, float h);
         virtual void			VM_draw					(float w, float h);
+        virtual void            guiEvent                (ofxUIEventArgs &e);
  
 	protected:
 		float					m_w, m_h;
@@ -43,6 +44,19 @@ class AnimationAgentsFF : public Animation
 		bool					m_bParticlesInit;
 		int						m_kParticles;
 		float					m_particlesSpeedFactor;
+		float					m_particleSpeedMax;
+		float					m_particlesSize;
  
+		bool					m_bResetParticles;
+ 
+ 		ofxUILabelButton*		mp_btnReset;
+ 		vector<string> 			m_resetModes;
+		string					m_resetMode;
+ 
+		bool					isToggleResetMode		(string name);
+
+ 
+ 
+				void			resetParticles			(string name);
 				void			createParticles			();
 };

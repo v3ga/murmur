@@ -71,15 +71,36 @@ void toolSurfaces::createControlsCustom()
 	    mp_canvas->addWidgetDown	( new ofxUILabel("Surfaces", OFX_UI_FONT_LARGE) );
     	mp_canvas->addWidgetDown	( new ofxUISpacer(widthDefault, 2));
 
+
+		ofxUITextInput* pTeWSurface = new ofxUITextInput("wSurface", "4" , 40, dim,0,0,fontType);
+		pTeWSurface->setAutoClear(false);
+		pTeWSurface->setTriggerType(OFX_UI_TEXTINPUT_ON_ENTER);
+
+		ofxUITextInput* pTeHSurface = new ofxUITextInput("hSurface", "3" , 40, dim,0,0,fontType);
+		pTeHSurface->setAutoClear(false);
+		pTeHSurface->setTriggerType(OFX_UI_TEXTINPUT_ON_ENTER);
+
+
     	mp_canvas->addWidgetDown	( new ofxUILabel("Dimensions", fontType) );
-    	mp_canvas->addWidgetRight 	( new ofxUITextInput("wSurface", "4" , 40, dim,0,0,fontType));
+    	mp_canvas->addWidgetRight 	( pTeWSurface );
     	mp_canvas->addWidgetRight	( new ofxUILabel("x", fontType) );
-    	mp_canvas->addWidgetRight	( new ofxUITextInput("hSurface", "3" , 40, dim,0,0,fontType));
+    	mp_canvas->addWidgetRight	( pTeHSurface );
+		
+		
+
+		ofxUITextInput* pTeWFbo = new ofxUITextInput("wFboSurface", "1000" , 40, dim,0,0,fontType);
+		pTeWFbo->setAutoClear(false);
+		pTeWFbo->setTriggerType(OFX_UI_TEXTINPUT_ON_ENTER);
+
+		ofxUITextInput* pTeHFbo = new ofxUITextInput("hFboSurface", "1000" , 40, dim,0,0,fontType);
+		pTeHFbo->setAutoClear(false);
+		pTeHFbo->setTriggerType(OFX_UI_TEXTINPUT_ON_ENTER);
+
 
     	mp_canvas->addWidgetDown	( new ofxUILabel("FBO", fontType) );
-    	mp_canvas->addWidgetRight 	( new ofxUITextInput("wFboSurface", "1000" , 40, dim,0,0,fontType));
+    	mp_canvas->addWidgetRight 	( pTeWFbo );
     	mp_canvas->addWidgetRight	( new ofxUILabel("x", fontType) );
-		mp_canvas->addWidgetRight	( new ofxUITextInput("hFboSurface", "1000" , 40, dim,0,0,fontType));
+		mp_canvas->addWidgetRight	( pTeHFbo );
 		mp_canvas->addWidgetDown	( new ofxUIIntSlider("quality", 0 , ofFbo::maxSamples(), 0, widthDefault, dim));
 
     	mp_canvas->addWidgetDown	(new ofxUIToggle("target", false, dim, dim));
@@ -380,7 +401,7 @@ bool toolSurfaces::keyPressed(int key)
 		if (key == OF_KEY_DOWN)				{m_quadWarping.moveSelectedHandle( ofVec2f( 0.0f, 1.0f) );	return true;}
 	}
 	
-	return false;
+	return true;
 }
 
 //--------------------------------------------------------------

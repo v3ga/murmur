@@ -29,6 +29,7 @@ toolTimeline::toolTimeline(toolManager* pParent) : tool("Timeline", pParent)
 	mp_ddConfigTimeline		= 0;
 	mp_btnLoadTimeline		= 0;
 	mp_tgPlayWithTimecode	= 0;
+	mp_lblScriptConsole		= 0;
 
 	m_timelineCurrentFolder = getConfigPath("config01");
 	m_bAutoplay 			= false;
@@ -78,6 +79,7 @@ void toolTimeline::createControlsCustom()
 		mp_canvas->addWidgetDown( mp_btnSaveTimeline );
 
 
+
 	    mp_canvas->addWidgetDown(new ofxUILabel("Configuration", OFX_UI_FONT_MEDIUM) );
     	mp_canvas->addWidgetDown(new ofxUISpacer(widthDefault, 1) );
 
@@ -106,6 +108,18 @@ void toolTimeline::createControlsCustom()
 	    mp_canvas->addWidgetDown(new ofxUILabel("Transitions", OFX_UI_FONT_MEDIUM) );
     	mp_canvas->addWidgetDown(new ofxUISpacer(widthDefault, 1) );
 		mp_canvas->addWidgetDown(new ofxUISlider("transition duration (s)", 0.1f, 1.0f, 0.15f, widthDefault, dim ));
+
+	    mp_canvas->addWidgetDown(new ofxUILabel("Script", OFX_UI_FONT_MEDIUM) );
+    	mp_canvas->addWidgetDown(new ofxUISpacer(widthDefault, 1) );
+
+		ofxUILabelButton* pBtnReloadScript = new ofxUILabelButton("Reload script", false, 100,dim,0,0,OFX_UI_FONT_SMALL);
+		mp_canvas->addWidgetDown( pBtnReloadScript );
+		
+		mp_lblScriptConsole = new ofxUILabel("lblScriptConsole", OFX_UI_FONT_SMALL);
+    	mp_canvas->addWidgetDown(mp_lblScriptConsole);
+		mp_lblScriptConsole->setLabel("");
+
+
 
 
 
@@ -139,16 +153,7 @@ void toolTimeline::setup()
 		m_bAutoplay = false;
 	}
 	
-	
-	// Script
-	// Load globals
-	ofxJSScript* pScript = ofxJSLoadFromData("Scripts/timeline.js", "timeline"); // "exampleId" is used for error reporting
-	if (pScript){
-		bool evalOk = ofxJSEval(pScript);
-		if (evalOk){
-		}
-	}
-	
+	loadScript("timeline.js");
 	
 	OFAPPLOG->end();
 }
@@ -182,7 +187,7 @@ void toolTimeline::createTimeline()
 	m_timeline.setAutosave(false);
 
 
-	m_timeline.addFlags("setAnim");
+//	m_timeline.addFlags("setAnim");
 	m_timeline.addFlags("scripts");
 	m_timeline.loadTracksFromFolder(m_timelineCurrentFolder);
 
@@ -247,6 +252,8 @@ void toolTimeline::updateLayout()
 		mp_btnPlayPauseTimeline->getLabelWidget()->setLabel( m_timeline.getIsPlaying() && !m_bPlayWithTimecode ? "Pause" : "Play" );
 	if (mp_teDurationTimeline)
 		mp_teDurationTimeline->setTextString( ofToString( m_timeline.getDurationInSeconds() ) );
+	if (mp_lblScriptConsole)
+		mp_lblScriptConsole->setLabel(m_errorScript);
 }
 
 //--------------------------------------------------------------
@@ -345,6 +352,13 @@ void toolTimeline::handleEvents(ofxUIEventArgs& e)
 			if (mp_teNameNewTimeline) mp_teNameNewTimeline->setTextString( selected[0] );
 		}
 	}
+	else if (name == "Reload script")
+	{
+		ofxUIButton* pBtn = e.getButton();
+		if (pBtn->getValue()){
+			loadScript("timeline.js");
+		}
+	}
 }
 
 //--------------------------------------------------------------
@@ -437,6 +451,33 @@ vector<string> toolTimeline::getTimelineConfigNamesList()
 	OFAPPLOG->end();
 	
 	return names;
+}
+
+
+//--------------------------------------------------------------
+void toolTimeline::loadScript(string name)
+{
+	OFAPPLOG->begin("toolTimeline::loadScript("+name+")");
+	
+	// Script
+	// Load globals
+	ofxJSScript* pScript = ofxJSLoadFromData("Scripts/"+name, "timeline"); // "exampleId" is used for error reporting
+	if (pScript){
+		bool evalOk = ofxJSEval(pScript);
+		if (evalOk){
+			m_errorScript = "OK loaded "+name;
+		}
+		else
+			m_errorScript = "Error evaluating the script "+name;
+	}
+	else
+	{
+		m_errorScript = "Error loading the script "+name;
+	}
+	updateLayout();
+
+	OFAPPLOG->println(" - error="+m_errorScript);
+	OFAPPLOG->end();
 }
 
 
