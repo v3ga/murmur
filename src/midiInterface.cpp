@@ -139,11 +139,14 @@ void midiInterface::readMidiSettingsExtraEnd(int which, string propName)
 //--------------------------------------------------------------
 void midiInterface::exportMidiSettingsTemplate()
 {
+	OFAPPLOG->begin("midiInterface::exportMidiSettingsTemplate()");
 	if (mp_classProperties)
 	{
 		ofxXmlSettings midiSettingsTemplate;
 	 	map<string, classProperty*>& mapProps = mp_classProperties->m_list;
 	 	map<string, classProperty*>::iterator it = mapProps.begin();
+
+		OFAPPLOG->println(" - nb properties = "+ofToString(mp_classProperties->m_list.size()));
 		
 		int control = 1;
 		int index = 0;
@@ -158,9 +161,12 @@ void midiInterface::exportMidiSettingsTemplate()
 			index++;
 		}
 		
+		string filename = getMidiSettingsPath("_template");
+		bool ok = midiSettingsTemplate.save( filename );
 
-		midiSettingsTemplate.save( getMidiSettingsPath("_template") );
+		OFAPPLOG->println(" - saving to '"+filename+"' " + (ok ? "OK" : "ERROR") );
 	}
+	OFAPPLOG->end();
 }
 
 //--------------------------------------------------------------

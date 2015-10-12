@@ -26,8 +26,13 @@ class AnimationAgentsFF : public Animation
         virtual void			VM_drawBefore			(float w, float h);
         virtual void			VM_draw					(float w, float h);
         virtual void            guiEvent                (ofxUIEventArgs &e);
+		virtual	void			onNewPacket				(DevicePacket*, string deviceId, float x, float y);
+		virtual	void			onPropertyMidiModified	(classProperty* pProperty);
+ 
  
 	protected:
+		virtual	void			updateUI				();
+	
 		float					m_w, m_h;
 		ofFbo					m_fboParticles;
 		float					m_blending;
@@ -52,11 +57,20 @@ class AnimationAgentsFF : public Animation
  		ofxUILabelButton*		mp_btnReset;
  		vector<string> 			m_resetModes;
 		string					m_resetMode;
+		ofxUIRadio*				mp_radioReset;
  
 		bool					isToggleResetMode		(string name);
 
  
- 
 				void			resetParticles			(string name);
 				void			createParticles			();
+ 
+		map<string, ParticleForce*>	m_mapParticleForce;
+	    float                   m_repulsionRadius;
+    	float                   m_ampRepulsion;
+    	float                   m_ampAttraction;
+ 
+		bool					m_bResetModeDummy[7]; // only used to comply with classProperty
+		void					onResetModeValueChanged(const void* sender, bool& value);
+
 };

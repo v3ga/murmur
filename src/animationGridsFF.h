@@ -26,6 +26,9 @@ class AnimationGridsFF : public Animation
         virtual void			VM_draw					(float w, float h);
 		virtual void			onNewPacket				(DevicePacket* pDevicePacket, string deviceId, float x, float y);
 		virtual	void			guiEvent				(ofxUIEventArgs &e);
+		virtual	void			onPropertyMidiModified	(classProperty* pProperty);
+ 
+				void			handlePropertyModified	(string name);
  
  	protected:
  

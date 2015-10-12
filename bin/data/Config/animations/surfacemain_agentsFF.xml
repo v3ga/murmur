@@ -36,12 +36,12 @@
 <Widget>
     <Kind>4</Kind>
     <Name>particles speed max</Name>
-    <Value>6.772435665</Value>
+    <Value>0.500000000</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>particles size</Name>
-    <Value>2.121794939</Value>
+    <Value>1.000000000</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -76,10 +76,10 @@
 <Widget>
     <Kind>2</Kind>
     <Name>Rect</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
     <Name>Screen</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>

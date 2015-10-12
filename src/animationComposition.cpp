@@ -55,23 +55,6 @@ void AnimationComposition::createUICustom()
 {
 	if (mp_UIcanvas)
 	{
-		mp_UIcanvas->addToggle("renderNormal", &m_bRenderNormal);
-		
-		mp_UIcanvas->addWidgetDown(new ofxUILabel("Blending", OFX_UI_FONT_MEDIUM));
-    	mp_UIcanvas->addWidgetDown(new ofxUISpacer(330, 2));
-
-
-		ofxUIDropDownList* pDropBlending = new ofxUIDropDownList("Blending", m_blendings, 330,0,0,OFX_UI_FONT_SMALL);
-		pDropBlending->setAutoClose(true);
-		pDropBlending->setAllowMultiple(false);
-		mp_UIcanvas->addWidgetDown( pDropBlending );
-		pDropBlending->setShowCurrentSelected(true);
-
-		ofxUILabelButton* pBtnReload = new ofxUILabelButton("reloadShader", false, 330, 16, 0,0, OFX_UI_FONT_SMALL);
-		mp_UIcanvas->addWidgetDown( pBtnReload );
-		pBtnReload->getLabelWidget()->setLabel("Reload shader");
-
-
 		mp_UIcanvas->addWidgetDown(new ofxUILabel("Compositions", OFX_UI_FONT_MEDIUM));
     	mp_UIcanvas->addWidgetDown(new ofxUISpacer(330, 2));
 		mp_lblCompositionInfo = new ofxUILabel("lblCompositionInfo", OFX_UI_FONT_SMALL);
@@ -82,11 +65,33 @@ void AnimationComposition::createUICustom()
 		for (int i=0; i< m_compositions.size(); i++)
 			compositionNames.push_back(m_compositions[i]->m_name);
 
-		mp_radioCompositions = new ofxUIRadio("radioCompositions", compositionNames, OFX_UI_ORIENTATION_VERTICAL, 16, 16);
+/*		mp_radioCompositions = new ofxUIRadio("radioCompositions", compositionNames, OFX_UI_ORIENTATION_VERTICAL, 16, 16);
 		vector<ofxUIToggle *> toggles = mp_radioCompositions->getToggles();
 		for (int i=0;i<toggles.size();i++) toggles[i]->setValue(false);
 		mp_UIcanvas->addWidgetDown(mp_radioCompositions);
+*/
 
+		ofxUIDropDownList* pDropCompo = new ofxUIDropDownList("Compositions", compositionNames, 330,0,0,OFX_UI_FONT_SMALL);
+		pDropCompo->setAutoClose(true);
+		pDropCompo->setAllowMultiple(false);
+		mp_UIcanvas->addWidgetDown( pDropCompo );
+		pDropCompo->setShowCurrentSelected(true);
+	
+		
+		mp_UIcanvas->addWidgetDown(new ofxUILabel("Blending", OFX_UI_FONT_MEDIUM));
+    	mp_UIcanvas->addWidgetDown(new ofxUISpacer(330, 2));
+
+		mp_UIcanvas->addToggle("renderNormal", &m_bRenderNormal);
+
+		ofxUIDropDownList* pDropBlending = new ofxUIDropDownList("Blending", m_blendings, 330,0,0,OFX_UI_FONT_SMALL);
+		pDropBlending->setAutoClose(true);
+		pDropBlending->setAllowMultiple(false);
+		mp_UIcanvas->addWidgetDown( pDropBlending );
+		pDropBlending->setShowCurrentSelected(true);
+
+		ofxUILabelButton* pBtnReload = new ofxUILabelButton("reloadShader", false, 330, 16, 0,0, OFX_UI_FONT_SMALL);
+		mp_UIcanvas->addWidgetDown( pBtnReload );
+		pBtnReload->getLabelWidget()->setLabel("Reload shader");
 
 	}
 }
@@ -482,7 +487,11 @@ void AnimationComposition::guiEvent(ofxUIEventArgs &e)
 			vector<int>& selectedIndices = ddlist->getSelectedIndeces();
         	if (selectedIndices.size()==1)
 			{
-				setBlending( selected[0]->getName() );
+				if (name == "Blending")
+					setBlending( selected[0]->getName() );
+				else
+				if (name == "Compositions")
+					setComposition( selected[0]->getName() );
 			}
 		}
 		else if (e.getKind() == OFX_UI_WIDGET_LABELTOGGLE)
@@ -497,11 +506,7 @@ void AnimationComposition::guiEvent(ofxUIEventArgs &e)
 					OFAPPLOG->println("- setting blending "+name);
 				}
 			}
-		
-		}
-		else if (e.getKind() == OFX_UI_WIDGET_TOGGLE)
-		{
-			if (isNameComposition(name))
+			else if (isNameComposition(name))
 			{
 				if (e.getToggle()->getValue()>0)
 				{
@@ -509,6 +514,11 @@ void AnimationComposition::guiEvent(ofxUIEventArgs &e)
 					setComposition(name);
 				}
 			}
+
+		
+		}
+		else if (e.getKind() == OFX_UI_WIDGET_TOGGLE)
+		{
 		}
 	}
 }

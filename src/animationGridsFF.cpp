@@ -36,6 +36,7 @@ AnimationGridsFF::AnimationGridsFF(string name) : Animation(name)
  
 	m_properties.add( new classProperty_int("columns",2,150,&m_meshGridColumns ) );
 	m_properties.add( new classProperty_int("rows",2,50,&m_meshGridRows ) );
+	m_properties.add( new classProperty_float("scale",0.2f,2.0f,&m_meshGridRatio ) );
 	m_properties.add( new classProperty_int("speed",500,1500,&m_speed ) );
 	m_properties.add( new classProperty_float("amplitude",0,500,&m_amplitude ) );
 	m_properties.add( new classProperty_float("rotation",-180,180,&m_rotationX ) );
@@ -76,7 +77,7 @@ void AnimationGridsFF::createUICustom()
 		addUISlider(m_properties.getInt("columns"));
 		addUISlider(m_properties.getInt("rows"));
         mp_UIcanvas->addToggle("square cells", &m_bSquare);
-		mp_UIcanvas->addSlider("scale", 0.2,1.5f, &m_meshGridRatio);
+		addUISlider(m_properties.getFloat("scale"));
 		addUISlider(m_properties.getInt("speed"));
 		addUISlider(m_properties.getFloat("amplitude"));
 		addUISlider(m_properties.getFloat("rotation"));
@@ -317,8 +318,9 @@ void AnimationGridsFF::guiEvent(ofxUIEventArgs &e)
 	Animation::guiEvent(e);
 
 	string name = e.getName();
-	if (name == "square cells" || name == "scale" || name == "columns" || name == "rows"){
-		m_bCreateMeshGrid = true;
+	if (name == "square cells" || name == "scale" || name == "columns" || name == "rows")
+	{
+		handlePropertyModified(name);
 	}
 	else if (name == "reload shader")
 	{
@@ -339,6 +341,25 @@ void AnimationGridsFF::guiEvent(ofxUIEventArgs &e)
 		}
 	}
 }
+
+//--------------------------------------------------------------
+void AnimationGridsFF::onPropertyMidiModified(classProperty* pProperty)
+{
+	if (pProperty)
+	{
+		handlePropertyModified(pProperty->m_name);
+	}
+}
+
+//--------------------------------------------------------------
+void AnimationGridsFF::handlePropertyModified(string name)
+{
+	if (name == "square cells" || name == "scale" || name == "columns" || name == "rows")
+	{
+		m_bCreateMeshGrid = true;
+	}
+}
+
 
 //--------------------------------------------------------------
 floatRelax*	AnimationGridsFF::getDeviceTorsion(string deviceId)

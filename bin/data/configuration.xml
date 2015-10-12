@@ -13,7 +13,7 @@
         <devices>
             <device>
                 <id>deviceEchoSimulator01</id>
-                <nbLEDs>320</nbLEDs>
+                <nbLEDs>160</nbLEDs>
                 <length>4.0</length>
             </device>
 

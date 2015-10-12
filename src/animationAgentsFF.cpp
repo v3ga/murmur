@@ -7,6 +7,7 @@
 //
 
 #include "animationAgentsFF.h"
+#include "globals.h"
 
 //--------------------------------------------------------------
 AnimationAgentsFF::AnimationAgentsFF(string name) : Animation(name)
@@ -27,6 +28,11 @@ AnimationAgentsFF::AnimationAgentsFF(string name) : Animation(name)
 	m_particlesSize = 4;
 	m_kParticles = 20;
 	
+	
+	m_repulsionRadius = 200.0;
+    m_ampRepulsion = 90.0;
+    m_ampAttraction = 10.0;
+
 	m_properties.add( new classProperty_float("vector field speed", 0.001, 0.01, &m_vectorFieldAnim) );
 	m_properties.add( new classProperty_float("blending factor", 0, 1, &m_blending) );
 	//m_properties.add( new classProperty_int("particles number (k)", 5, 20, &m_kParticles) );
@@ -34,6 +40,28 @@ AnimationAgentsFF::AnimationAgentsFF(string name) : Animation(name)
 	m_properties.add( new classProperty_float("particles speed max", 0.5, 10, &m_particleSpeedMax) );
 	m_properties.add( new classProperty_float("particles size", 1, 8, &m_particlesSize) );
 	
+	for (int i=0; i<7; i++)	m_bResetModeDummy[i] = false;
+
+	m_properties.add( new classProperty_bool("resetMode01", m_bResetModeDummy) );
+	m_properties.add( new classProperty_bool("resetMode02", m_bResetModeDummy+1) );
+	m_properties.add( new classProperty_bool("resetMode03", m_bResetModeDummy+2) );
+	m_properties.add( new classProperty_bool("resetMode04", m_bResetModeDummy+3) );
+	m_properties.add( new classProperty_bool("resetMode05", m_bResetModeDummy+4) );
+	m_properties.add( new classProperty_bool("resetMode06", m_bResetModeDummy+5) );
+	m_properties.add( new classProperty_bool("resetMode07", m_bResetModeDummy+6) );
+	
+	for (int i=1;i<=7;i++)
+	{
+		classProperty_bool* pPropBool = m_properties.getBool("resetMode0"+ofToString(i));
+		if (pPropBool)
+		{
+			pPropBool->m_mode = classProperty_bool::MODE_BUTTON;
+			ofAddListener(pPropBool->onValueChanged, this, &AnimationAgentsFF::onResetModeValueChanged);
+		}
+	}
+	
+	
+
 
 	m_vectorFieldImage.loadImage("Images/tmpVectorFields.png");
 	
@@ -48,6 +76,9 @@ AnimationAgentsFF::AnimationAgentsFF(string name) : Animation(name)
 	m_resetModes.push_back("Screen");
 
 	m_resetMode = m_resetModes[0];
+	
+	mp_btnReset 	= 0;
+	mp_radioReset 	= 0;
 }
 
 //--------------------------------------------------------------
@@ -83,11 +114,19 @@ void AnimationAgentsFF::createUICustom()
 		mp_UIcanvas->addWidgetDown( mp_btnReset );
 
 
-		ofxUIRadio* pRadioResetMode = new ofxUIRadio("radioResetModes", m_resetModes, OFX_UI_ORIENTATION_VERTICAL, 16,16,0,0);
-		mp_UIcanvas->addWidgetDown( pRadioResetMode );
+		mp_radioReset = new ofxUIRadio("radioResetModes", m_resetModes, OFX_UI_ORIENTATION_VERTICAL, 16,16,0,0);
+		mp_UIcanvas->addWidgetDown( mp_radioReset );
 		
-		pRadioResetMode->activateToggle("Center");
+		mp_radioReset->activateToggle("Center");
 	}
+}
+
+
+//--------------------------------------------------------------
+void AnimationAgentsFF::updateUI()
+{
+	if (mp_radioReset)
+		mp_radioReset->activateToggle(m_resetMode);
 }
 
 //--------------------------------------------------------------
@@ -106,6 +145,14 @@ void AnimationAgentsFF::VM_exit()
 //--------------------------------------------------------------
 void AnimationAgentsFF::VM_update(float dt)
 {
+	map<string,ParticleForce*>::iterator it = m_mapParticleForce.begin();
+	ParticleForce* pParticleForce=0;
+	for ( ; it != m_mapParticleForce.end() ; ++it)
+	{
+		pParticleForce = it->second;
+		pParticleForce->update(dt);
+	}
+
     m_particleSystem.setTimeStep(dt);
 //	m_vectorFieldAnim2 += (m_vectorFieldAnim-m_vectorFieldAnim2)*dt*0.8; // not used for the moment
 }
@@ -127,6 +174,27 @@ void AnimationAgentsFF::VM_drawBefore(float w, float h)
     if (!m_bParticlesInit || !m_vectorField.isAllocated()) return;
 	
 	m_vectorField.animate(m_vectorFieldAnim);
+	
+	
+	m_particleSystem.setupForces();
+	
+	// single global forces
+	map<string,ParticleForce*>::iterator it = m_mapParticleForce.begin();
+	ParticleForce* pParticleForce=0;
+	for ( ; it != m_mapParticleForce.end() ; ++it)
+	{
+		pParticleForce = it->second;
+
+       float centerAttraction = .01;
+	   float m_colorRadiusFactor = 1.0f;
+
+ 	
+		//particleSystem.m_color = m_isColorFromDevice ? pParticleForce->m_color : ofColor(255);
+		//m_particleSystem.addAttractionForce(pParticleForce->m_anchor.x, pParticleForce->m_anchor.y, w, centerAttraction*m_ampAttraction);
+    	m_particleSystem.addRepulsionForce(pParticleForce->m_anchor.x, pParticleForce->m_anchor.y, pParticleForce->m_volume*m_repulsionRadius, pParticleForce->m_volume*m_ampRepulsion, false);
+//    	m_particleSystem.addRepulsionForce(pParticleForce->m_anchor.x, pParticleForce->m_anchor.y, pParticleForce->m_volume*m_repulsionRadius*m_colorRadiusFactor, 0, false);
+	}
+	
 	
 	for(int i = 0; i < m_particleSystem.size(); i++)
     {
@@ -156,13 +224,13 @@ void AnimationAgentsFF::VM_drawBefore(float w, float h)
 		p.yv = ofClamp(p.yv,-m_particleSpeedMax,m_particleSpeedMax);
 //		x += xv * timeStep;
 //		y += yv * timeStep;
-		p.mp_pos->x += p.xv * timeStep;
-		p.mp_pos->y += p.yv * timeStep;
+		//p.mp_pos->x += p.xv * timeStep;
+		//p.mp_pos->y += p.yv * timeStep;
 
 
 		
-//		p.addForce
-		(*pos) += ofRandom(1,5)*m_particlesSpeedFactor*m_vectorField.getVectorInterpolated(pos->x, pos->y,m_w,m_h);
+		//p.addForce
+		//(*pos) += ofRandom(1,5)*m_particlesSpeedFactor*m_vectorField.getVectorInterpolated(pos->x, pos->y,m_w,m_h);
 		
 	}
 
@@ -328,7 +396,7 @@ void AnimationAgentsFF::createParticles()
 		{
 			m_fboParticles.allocate(m_w,m_h,GL_RGBA32F_ARB);
 			m_fboParticles.begin();
-			ofBackground(0,0);
+			ofBackground(0,255);
 			m_fboParticles.end();
 
 			m_vectorField.deallocate();
@@ -366,8 +434,45 @@ void AnimationAgentsFF::createParticles()
 }
 
 //--------------------------------------------------------------
+void AnimationAgentsFF::onNewPacket(DevicePacket* pDevicePacket, string deviceId, float x, float y)
+{
+	if (pDevicePacket)
+		accumulateVolume(pDevicePacket->m_volume, deviceId);
+
+ 	Device* pDevice = GLOBALS->mp_deviceManager->getDeviceById(deviceId);
+ 	if (pDevice->isGenerative())
+	{
+		 map<string,ParticleForce*>::iterator it = m_mapParticleForce.find(deviceId);
+		 ParticleForce* pParticleForce=0;
+
+		 if ( it == m_mapParticleForce.end())
+		 {
+			 pParticleForce = new ParticleForce(x,y);
+		 	m_mapParticleForce[deviceId] = pParticleForce;
+	 	}
+	 	else
+	 	{
+			 pParticleForce = it->second;
+	 	}
+
+	 	if (pParticleForce && pDevicePacket)
+	 	{
+			 pParticleForce->m_anchor.set(x,y);
+		 	pParticleForce->m_volumeTarget = pDevicePacket->m_volume;
+		 
+
+//		 pParticleForce->m_color = pDevice->m_color;
+		 //printf("pDevicePacket->m_volume = %.5f\n", pDevicePacket->m_volume);
+	 	}
+	 }
+}
+
+
+//--------------------------------------------------------------
 void AnimationAgentsFF::guiEvent(ofxUIEventArgs &e)
 {
+	Animation::guiEvent(e);
+
 	string name = e.getName();
 	if (e.getKind() == OFX_UI_WIDGET_TOGGLE)
 	{
@@ -392,6 +497,27 @@ void AnimationAgentsFF::guiEvent(ofxUIEventArgs &e)
 
 }
 
+//--------------------------------------------------------------
+void AnimationAgentsFF::onPropertyMidiModified(classProperty* pProperty)
+{
+/*
+	OFAPPLOG->begin("AnimationAgentsFF::onPropertyMidiModified()");
+	if (pProperty)
+	{
+		OFAPPLOG->println(" - property = "+pProperty->m_name);
+		for (int i=0;i<7;i++)
+		{
+			if (pProperty->m_name == "resetMode0"+ofToString(i+1))
+			{
+				m_resetMode = m_resetModes[i];
+				break;
+			}
+		}
+	}
+	OFAPPLOG->end();
+	*/
+}
+
 
 //--------------------------------------------------------------
 bool AnimationAgentsFF::isToggleResetMode(string name)
@@ -401,5 +527,27 @@ bool AnimationAgentsFF::isToggleResetMode(string name)
 			return true;
 	return false;
 }
+
+//--------------------------------------------------------------
+void AnimationAgentsFF::onResetModeValueChanged(const void* sender, bool& e)
+{
+//	OFAPPLOG->println("AnimationAgentsFF::onResetModeValueChanged()");
+	classProperty_bool* pPropBool = (classProperty_bool*)sender;
+	if (pPropBool)
+	{
+		for (int i=1;i<=7;i++)
+		{
+			if (pPropBool == m_properties.getBool("resetMode0"+ofToString(i)))
+			{
+				// OFAPPLOG->println("resetMode0"+ofToString(i));
+				m_resetMode = m_resetModes[i-1];
+				resetParticles(m_resetMode);
+				updateUI();
+				break;
+			}
+		}
+	}
+}
+
 
 

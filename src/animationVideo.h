@@ -27,6 +27,7 @@ class AnimationVideo : public Animation
 		virtual	void			loadConfiguration		(string filename);
 
 		void					setVideo				(string name);
+		void					setDisplayMode			(string name);
  
 		ofxHapPlayer			m_player;
  		bool					m_bLoadVideo;
@@ -35,6 +36,9 @@ class AnimationVideo : public Animation
  
 		ofxUITextInput*			mp_teVideoPath;
 		string					m_videoPath;
+ 
+		vector<string>			m_displayMode;
+		string					m_displayModeCurrent;
  
 };
 

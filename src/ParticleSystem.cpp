@@ -208,7 +208,8 @@ void ParticleSystem::addForce(float targetX, float targetY, float radius, float 
                     effect = (1 - (length / radius)) * scale;
                     curParticle.xf += xd * effect;
                     curParticle.yf += yd * effect;
-					*curParticle.mp_color = m_color;
+					if (doColor)
+						*curParticle.mp_color = m_color;
 #endif
 				}
 			}

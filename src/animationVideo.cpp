@@ -14,6 +14,11 @@ AnimationVideo::AnimationVideo(string name) : Animation(name)
 	m_bLoadVideo 		= false;
 	m_bHasLoadedVideo	= false;
 	mp_teVideoPath		= 0;
+	
+	m_displayMode.push_back("center");
+	m_displayMode.push_back("scale");
+	
+	m_displayModeCurrent = "scale";
 }
 
 //--------------------------------------------------------------
@@ -35,6 +40,13 @@ void AnimationVideo::createUICustom()
 		ofxUILabelButton* pBtnLoad = new ofxUILabelButton("btnLoadVideo", 100, false, OFX_UI_FONT_SMALL);
 		mp_UIcanvas->addWidgetRight(pBtnLoad);
 		pBtnLoad->getLabelWidget()->setLabel("Load");
+		
+		ofxUIDropDownList* pDropDisplayMode = new ofxUIDropDownList("Display", m_displayMode, 330,0,0,OFX_UI_FONT_SMALL);
+		pDropDisplayMode->setAutoClose(true);
+		pDropDisplayMode->setAllowMultiple(false);
+		mp_UIcanvas->addWidgetDown( pDropDisplayMode );
+		pDropDisplayMode->setShowCurrentSelected(true);
+		pDropDisplayMode->activateToggle(m_displayModeCurrent);
 	}
 }
 
@@ -51,6 +63,13 @@ void AnimationVideo::setVideo(string name)
 	}
 	OFAPPLOG->end();
 }
+
+//--------------------------------------------------------------
+void AnimationVideo::setDisplayMode(string name)
+{
+	m_displayModeCurrent = name;
+}
+
 
 //--------------------------------------------------------------
 void AnimationVideo::VM_enter()
@@ -85,13 +104,16 @@ void AnimationVideo::VM_draw(float w, float h)
 	{
 		ofRectangle rectSurface(0,0,w,h);
 		ofRectangle rectVideo(0,0,m_player.getWidth(),m_player.getHeight());
-		rectVideo.scaleTo(rectSurface);
-
+		if (m_displayModeCurrent == "center")
+			rectVideo.scaleTo(rectSurface);
+		else if (m_displayModeCurrent == "scale")
+		{
+			rectVideo.setWidth(w);
+			rectVideo.setHeight(h);
+		}
 		ofSetColor(255,255);
 		ofBackground(0);
 		m_player.draw(rectVideo.x,rectVideo.y,rectVideo.width,rectVideo.height);
-//		OFAPPLOG->println("player width="+ofToString(m_player.getWidth())+" ,height="+ofToString(m_player.getHeight()));
-//		OFAPPLOG->println("player.isLoaded()="+ofToString(m_player.isLoaded()));
 	}
 	else
 	{
@@ -149,6 +171,27 @@ void AnimationVideo::guiEvent(ofxUIEventArgs &e)
 			}
 	   }
 	}
+	// Not called on loading, only OFX_UI_WIDGET_LABELTOGGLE called
+	if (e.getKind() == OFX_UI_WIDGET_DROPDOWNLIST)
+	{
+ 		ofxUIDropDownList *ddlist = (ofxUIDropDownList *) e.widget;
+    	vector<ofxUIWidget *> &selected = ddlist->getSelected();
+		vector<int>& selectedIndices = ddlist->getSelectedIndeces();
+    	if (selectedIndices.size()==1)
+		{
+			setDisplayMode( selected[0]->getName() );
+		}
+	}
+	else if (e.getKind() == OFX_UI_WIDGET_LABELTOGGLE)
+	{
+		if (e.getToggle()->getValue()>0)
+		{
+			setDisplayMode( name );
+			OFAPPLOG->println("- setting display mode "+name);
+		}
+	}
+
+
 	OFAPPLOG->end();
 }
 

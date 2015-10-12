@@ -1,0 +1,115 @@
+<Widget>
+    <Kind>4</Kind>
+    <Name>volValuesMeanTh</Name>
+    <Value>0.418181807</Value>
+</Widget>
+<Widget>
+    <Kind>12</Kind>
+    <Name>teConfigName</Name>
+    <Value>abc.xml</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>resetOnEnter</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>volume</Name>
+    <Value>0.596774220</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>g1.wav</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>g2.wav</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>g3.wav</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>g4.wav</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>g5.wav</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>g6.wav</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>g7.wav</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>g8.wav</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>g9.wav</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>v1.wav</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>v2.wav</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>v3.wav</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>v4.wav</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>v5.wav</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>42</Kind>
+    <Name>sizeTexture</Name>
+    <Value>960</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>intensity</Name>
+    <Value>1.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>debug enable blend</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>colorFromDevice</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>color</Name>
+    <Value>0</Value>
+</Widget>
