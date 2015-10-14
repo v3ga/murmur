@@ -461,6 +461,9 @@ void Surface::renderOffscreen(bool isRenderDevicePoints)
 	{
 		if (mpf_renderOffscreenCallback)
 			(*mpf_renderOffscreenCallback)(this, mp_renderOffscreenUserData); // responsible for filling the fbo
+	    m_fbo.begin();
+		m_animationManager.M_drawTransition(m_fbo.getWidth(),m_fbo.getHeight());
+    	m_fbo.end();
 	}
 
 	m_fbo.begin();

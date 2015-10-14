@@ -11,12 +11,12 @@
 <Widget>
     <Kind>12</Kind>
     <Name>Duration</Name>
-    <Value>1080</Value>
+    <Value>5000</Value>
 </Widget>
 <Widget>
     <Kind>12</Kind>
     <Name>NameConfig</Name>
-    <Value>config03</Value>
+    <Value>configFF</Value>
 </Widget>
 <Widget>
     <Kind>22</Kind>
@@ -31,12 +31,17 @@
 <Widget>
     <Kind>17</Kind>
     <Name>config03</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>17</Kind>
     <Name>config04</Name>
     <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>configFF</Name>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>17</Kind>
@@ -49,6 +54,11 @@
     <Value>0</Value>
 </Widget>
 <Widget>
+    <Kind>17</Kind>
+    <Name>test</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
     <Kind>2</Kind>
     <Name>Play with timecode</Name>
     <Value>1</Value>
@@ -56,5 +66,5 @@
 <Widget>
     <Kind>4</Kind>
     <Name>transition duration (s)</Name>
-    <Value>0.234999999</Value>
+    <Value>1.000000000</Value>
 </Widget>

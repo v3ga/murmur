@@ -5,9 +5,19 @@
         <value>0.502702713</value>
     </key>
     <key>
-        <flag>radarwaves</flag>
-        <time>00:00:26:892</time>
-        <value>0.518918931</value>
+        <flag>videoagents</flag>
+        <time>00:00:16:886</time>
+        <value>0.803827763</value>
+    </key>
+    <key>
+        <flag>videomurmur</flag>
+        <time>00:00:24:547</time>
+        <value>0.688995242</value>
+    </key>
+    <key>
+        <flag>videolines</flag>
+        <time>00:00:32:131</time>
+        <value>0.622009575</value>
     </key>
     <key>
         <flag>grid03</flag>

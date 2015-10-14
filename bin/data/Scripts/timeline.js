@@ -44,6 +44,18 @@ function timeline_videolines()
 }
 
 // --------------------------------------------------
+function timeline_videomurmur()
+{
+    setAnimation("video", "test2.xml"); // attention ici le nom de la configuration et pas de la composition :-)
+}
+
+// --------------------------------------------------
+function timeline_videoagents()
+{
+    setAnimation("composition", "videoagents.xml"); // attention ici le nom de la configuration et pas de la composition :-)
+}
+
+// --------------------------------------------------
 function timeline_radarwaves()
 {
     setAnimation("composition", "test4.xml"); // attention ici le nom de la configuration et pas de la composition :-)

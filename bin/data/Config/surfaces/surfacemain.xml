@@ -29,6 +29,11 @@
 				<animation name="linesFF" configuration="yep.xml"></animation>
 			</composition>
 
+			<composition name="videoLines2">
+				<animation name="video" configuration="test2.xml"></animation>
+				<animation name="linesFF" configuration="yep.xml"></animation>
+			</composition>
+
 
 			<composition name="videoGrids">
 				<animation name="video" configuration="test.xml"></animation>

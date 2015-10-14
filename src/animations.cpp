@@ -1328,13 +1328,12 @@ void AnimationManager::M_drawTransition(float w, float h)
 	if (m_state == STATE_TRANSITION_OUT || m_state == STATE_TRANSITION_IN)
 	{
 		// printf("tween=%.2f\n", m_transitionTween.getTarget(0));
-	
 	    ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 		ofPushStyle();
 			ofSetColor(0,0,0, 255*m_transitionTween.getTarget(0));
 			ofRect(0,0,w,h);
 		ofPopStyle();
-    ofDisableBlendMode();
+    	ofDisableBlendMode();
 	}
 }
 

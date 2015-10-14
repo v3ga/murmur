@@ -23,3 +23,18 @@
     <Name>teVideoPath</Name>
     <Value>video.mov</Value>
 </Widget>
+<Widget>
+    <Kind>22</Kind>
+    <Name>Display</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>center</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>scale</Name>
+    <Value>0</Value>
+</Widget>

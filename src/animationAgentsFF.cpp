@@ -191,7 +191,7 @@ void AnimationAgentsFF::VM_drawBefore(float w, float h)
  	
 		//particleSystem.m_color = m_isColorFromDevice ? pParticleForce->m_color : ofColor(255);
 		//m_particleSystem.addAttractionForce(pParticleForce->m_anchor.x, pParticleForce->m_anchor.y, w, centerAttraction*m_ampAttraction);
-    	m_particleSystem.addRepulsionForce(pParticleForce->m_anchor.x, pParticleForce->m_anchor.y, pParticleForce->m_volume*m_repulsionRadius, pParticleForce->m_volume*m_ampRepulsion, false);
+ //   	m_particleSystem.addRepulsionForce(pParticleForce->m_anchor.x, pParticleForce->m_anchor.y, pParticleForce->m_volume*m_repulsionRadius, pParticleForce->m_volume*m_ampRepulsion, false);
 //    	m_particleSystem.addRepulsionForce(pParticleForce->m_anchor.x, pParticleForce->m_anchor.y, pParticleForce->m_volume*m_repulsionRadius*m_colorRadiusFactor, 0, false);
 	}
 	
@@ -224,13 +224,13 @@ void AnimationAgentsFF::VM_drawBefore(float w, float h)
 		p.yv = ofClamp(p.yv,-m_particleSpeedMax,m_particleSpeedMax);
 //		x += xv * timeStep;
 //		y += yv * timeStep;
-		//p.mp_pos->x += p.xv * timeStep;
-		//p.mp_pos->y += p.yv * timeStep;
+		p.mp_pos->x += p.xv * timeStep;
+		p.mp_pos->y += p.yv * timeStep;
 
 
 		
 		//p.addForce
-		//(*pos) += ofRandom(1,5)*m_particlesSpeedFactor*m_vectorField.getVectorInterpolated(pos->x, pos->y,m_w,m_h);
+		(*pos) += ofRandom(1,5)*m_particlesSpeedFactor*m_vectorField.getVectorInterpolated(pos->x, pos->y,m_w,m_h);
 		
 	}
 

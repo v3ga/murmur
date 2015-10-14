@@ -71,6 +71,8 @@ void toolTimeline::createControlsCustom()
 
 		mp_teDurationTimeline = new ofxUITextInput("Duration", "60", 100, dim);
 		mp_teDurationTimeline->setAutoClear(false);
+		mp_teDurationTimeline->setTriggerType(OFX_UI_TEXTINPUT_ON_ENTER);
+
 		mp_canvas->addWidgetDown( mp_teDurationTimeline );
 
 		mp_canvas->addWidgetRight( new ofxUILabel("Duration",OFX_UI_FONT_SMALL) );
@@ -85,6 +87,8 @@ void toolTimeline::createControlsCustom()
 
 		mp_teNameNewTimeline	= new ofxUITextInput("NameConfig", "", 200, dim);
 		mp_teNameNewTimeline->setAutoClear(false);
+		mp_teNameNewTimeline->setTriggerType(OFX_UI_TEXTINPUT_ON_ENTER);
+
 		mp_btnNewTimeline		= new ofxUILabelButton("Create", false, 100,dim,0,0,OFX_UI_FONT_SMALL);
 
 		vector<string> timelineConfigs = getTimelineConfigNamesList();
@@ -176,6 +180,7 @@ void toolTimeline::loadData()
 //--------------------------------------------------------------
 void toolTimeline::createTimeline()
 {
+	OFAPPLOG->begin("toolTimeline::createTimeline");
 	// Reset
 	ofRemoveListener(m_timeline.events().bangFired, this, &toolTimeline::bangFired);
 	m_timeline.reset();
@@ -188,24 +193,31 @@ void toolTimeline::createTimeline()
 
 
 //	m_timeline.addFlags("setAnim");
+//	m_timeline.addPage("Animations");
 	m_timeline.addFlags("scripts");
 	m_timeline.loadTracksFromFolder(m_timelineCurrentFolder);
 
 	m_timeline.addPage("Devices");
 	
 	
+	m_timeline.setCurrentPage(0);
+	
 
 	// Load extra data
+	OFAPPLOG->println("- m_timelineCurrentFolder="+m_timelineCurrentFolder );
 	string extraDataFilename = m_timelineCurrentFolder+"infos.xml";
 	ofxXmlSettings extraXml;
 	if (extraXml.load(extraDataFilename))
 	{
+		OFAPPLOG->println("- OK loaded "+extraDataFilename );
 		m_timeline.setDurationInSeconds( extraXml.getValue("duration", 60.0) );
 		updateLayout();
 	}
 
+	OFAPPLOG->println("- m_timeline duration="+ofToString( m_timeline.getDurationInSeconds() ) );
 	ofAddListener(m_timeline.events().bangFired, this, &toolTimeline::bangFired);
 
+	OFAPPLOG->end();
 }
 
 //--------------------------------------------------------------
@@ -273,14 +285,21 @@ void toolTimeline::handleEvents(ofxUIEventArgs& e)
 	string name = e.getName();
 	if (name == "Save")
 	{
+		OFAPPLOG->begin("toolTimeline::handleEvents() - SAVE");
+	
+	
+	
 		m_timeline.saveTracksToFolder(m_timelineCurrentFolder);
 		m_timeline.save();
 
 		string extraDataFilename = m_timelineCurrentFolder+"infos.xml";
 		ofxXmlSettings extraXml;
 		extraXml.setValue("duration", m_timeline.getDurationInSeconds());
-		extraXml.save(extraDataFilename);
+		bool okExtra = extraXml.save(extraDataFilename);
+
+	   	OFAPPLOG->println(" - saving extra data to '"+extraDataFilename+"', OK ? "+ (okExtra ? "YES" : "NO"));
 	
+		OFAPPLOG->end();
 
 
 	}
@@ -313,20 +332,26 @@ void toolTimeline::handleEvents(ofxUIEventArgs& e)
 	}
 	else if (name == "Duration")
 	{
-		int triggerType  = mp_teDurationTimeline->getInputTriggerType();
-		if (triggerType == OFX_UI_TEXTINPUT_ON_ENTER)
+		if (mp_teDurationTimeline)
 		{
 			float duration = ofToFloat( mp_teDurationTimeline->getTextString() );
 			m_timeline.setDurationInSeconds(duration);
 		}
+/*		int triggerType  = mp_teDurationTimeline->getInputTriggerType();
+		if (triggerType == OFX_UI_TEXTINPUT_ON_ENTER)
+		{
+		}
+*/
 	}
 	else if (name == "NameConfig")
 	{
 		int triggerType  = mp_teNameNewTimeline->getInputTriggerType();
-		if (triggerType == OFX_UI_TEXTINPUT_ON_ENTER)
-		{
+		if (mp_teNameNewTimeline)
 			m_timelineConfigName = mp_teNameNewTimeline->getTextString();
+/*		if (triggerType == OFX_UI_TEXTINPUT_ON_ENTER)
+		{
 		}
+*/
 	}
 	else if (name == "Create")
 	{
@@ -343,13 +368,19 @@ void toolTimeline::handleEvents(ofxUIEventArgs& e)
 		vector<string> selected = mp_ddConfigTimeline->getSelectedNames();
 		if (selected.size()>0)
 		{
+			OFAPPLOG->begin("toolTimeline::handleEvents() - LOAD");
+			
 			m_timelineCurrentFolder = getConfigPath( selected[0] );
+			OFAPPLOG->println(" - m_timelineCurrentFolder = "+m_timelineCurrentFolder);
+			
 			createTimeline();
 			updateLayout();
 			
 			// update layout : Specific to this action
 			mp_ddConfigTimeline->setLabelText( selected[0] );
 			if (mp_teNameNewTimeline) mp_teNameNewTimeline->setTextString( selected[0] );
+
+			OFAPPLOG->end();
 		}
 	}
 	else if (name == "Reload script")

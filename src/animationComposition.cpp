@@ -347,7 +347,7 @@ void AnimationComposition::VM_drawBefore(float w, float h)
 			ofFbo::Settings settings;
 			settings.width = (int)w;
 			settings.height = (int)h;
-			settings.internalformat = GL_RGB;
+			settings.internalformat = GL_RGBA;
 			settings.useDepth = false;
 			settings.useStencil = false;
 		
