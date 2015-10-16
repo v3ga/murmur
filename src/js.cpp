@@ -41,13 +41,11 @@ bool setupJS()
 	ofxJSDefineFunctionGlobal("enableDeviceBPM",   				&enableDeviceBPM,   			2);
     ofxJSDefineFunctionGlobal("setDeviceBPM",   				&setDeviceBPM,   				2);
    	ofxJSDefineFunctionGlobal("setDeviceReversePacketsDir",   	&setDeviceReversePacketsDir,   	2);
-
+   	ofxJSDefineFunctionGlobal("setDeviceMute",   				&setDeviceMute,   				2);
 
 
     ofxJSDefineFunctionGlobal("setAnimation",   				&setAnimation,   				2);
     ofxJSDefineFunctionGlobal("setAnimationDirect",   			&setAnimationDirect,   			2);
- 
-
  
     
 	// Load globals
@@ -373,6 +371,26 @@ ofxJSDeclareFunctionCpp(setDeviceReversePacketsDir)
 				pDevice->reversePacketsDir( ofxJSValue_TO_bool(argv[1]) );
 				toolDevices* pToolDevices = (toolDevices*) toolManager::instance()->getTool("Devices");
 				if (pToolDevices) pToolDevices->updateDeviceUI(pDevice);
+				return JS_TRUE;
+			}
+		}
+	}
+	return JS_FALSE;
+}
+
+//--------------------------------------------------------------
+ofxJSDeclareFunctionCpp(setDeviceMute)
+{
+	if (argc==2)
+	{
+		DeviceManager* pDeviceManager = GLOBALS->mp_deviceManager;
+		if (pDeviceManager)
+		{
+			string deviceId = ofxJSValue_TO_string(argv[0]);
+			Device* pDevice = pDeviceManager->getDeviceById( deviceId );
+			if (pDevice)
+			{
+				pDevice->setSoundInputMute(ofxJSValue_TO_bool(argv[1]));
 				return JS_TRUE;
 			}
 		}

@@ -134,7 +134,7 @@ void toolTimeline::createControlsCustom()
 
 	}
 
-	// Timeline
+	// Timeline UI
 	createTimeline();
 }
 
@@ -166,7 +166,28 @@ void toolTimeline::setup()
 void toolTimeline::loadData()
 {
 	tool::loadData();
+
+	if (mp_teNameNewTimeline)
+		m_timelineCurrentFolder = getConfigPath(mp_teNameNewTimeline->getTextString());
 	
+	m_timeline.loadTracksFromFolder(m_timelineCurrentFolder);
+	// Load extra data
+	OFAPPLOG->println("- m_timelineCurrentFolder="+m_timelineCurrentFolder );
+	string extraDataFilename = m_timelineCurrentFolder+"infos.xml";
+	ofxXmlSettings extraXml;
+	if (extraXml.load(extraDataFilename))
+	{
+		OFAPPLOG->println("- OK loaded "+extraDataFilename );
+		m_timeline.setDurationInSeconds( extraXml.getValue("duration", 60.0) );
+		updateLayout();
+	}
+
+	OFAPPLOG->println("- m_timeline duration="+ofToString( m_timeline.getDurationInSeconds() ) );
+	ofAddListener(m_timeline.events().bangFired, this, &toolTimeline::bangFired);
+
+	OFAPPLOG->end();
+
+
 	// Because text input does not trigger event when loading
 /*	if (mp_teDurationTimeline)
 	{
@@ -195,7 +216,6 @@ void toolTimeline::createTimeline()
 //	m_timeline.addFlags("setAnim");
 //	m_timeline.addPage("Animations");
 	m_timeline.addFlags("scripts");
-	m_timeline.loadTracksFromFolder(m_timelineCurrentFolder);
 
 	m_timeline.addPage("Devices");
 	
@@ -203,21 +223,6 @@ void toolTimeline::createTimeline()
 	m_timeline.setCurrentPage(0);
 	
 
-	// Load extra data
-	OFAPPLOG->println("- m_timelineCurrentFolder="+m_timelineCurrentFolder );
-	string extraDataFilename = m_timelineCurrentFolder+"infos.xml";
-	ofxXmlSettings extraXml;
-	if (extraXml.load(extraDataFilename))
-	{
-		OFAPPLOG->println("- OK loaded "+extraDataFilename );
-		m_timeline.setDurationInSeconds( extraXml.getValue("duration", 60.0) );
-		updateLayout();
-	}
-
-	OFAPPLOG->println("- m_timeline duration="+ofToString( m_timeline.getDurationInSeconds() ) );
-	ofAddListener(m_timeline.events().bangFired, this, &toolTimeline::bangFired);
-
-	OFAPPLOG->end();
 }
 
 //--------------------------------------------------------------

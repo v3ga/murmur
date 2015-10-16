@@ -10,7 +10,7 @@
 
 
 //--------------------------------------------------------------
-SilhouetteNode::SilhouetteNode(ofImage* pImage, float height)
+SilhouetteNode::SilhouetteNode(ofImage* pImage, float height) : ofNode()
 {
     mp_image = pImage;
     m_height = height;
@@ -25,9 +25,7 @@ void SilhouetteNode::customDraw()
         ofTexture& tex = mp_image->getTextureReference();
         float ratio = mp_image->getWidth() / mp_image->getHeight();
         float w = ratio*m_height;
-        ofPushMatrix();
         ofSetColor(220,220,220,255);
         tex.draw(-w/2.0f,0,w,m_height);
-        ofPopMatrix();
     }
 }

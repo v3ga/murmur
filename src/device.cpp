@@ -1066,6 +1066,7 @@ void Device::updateBPM(float dt)
 //--------------------------------------------------------------
 void Device::update(float dt)
 {
+
     checkForActivity(dt);
 	updateBPM(dt);
  
@@ -1080,6 +1081,7 @@ void Device::update(float dt)
         // Send packets / values to network
         sendPacketsOSC();
     }
+
 }
 
 

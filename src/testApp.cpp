@@ -539,9 +539,12 @@ void testApp::draw()
 		 toolScene* pToolScene = (toolScene*) toolManager.getTool("Scene");
 
 
+
 		 // Draw Scene
 		 if (mp_sceneVisualisation && pToolScene->isDrawScene())
 			 mp_sceneVisualisation->draw();
+
+		toolManager.drawUI();
 
 		 if (m_isUpdateLayout)
 		 {
@@ -549,9 +552,10 @@ void testApp::draw()
 			 m_isUpdateLayout = false;
 		 }
 		 
-		 toolManager.drawUI();
 
 	 }
+	 
+	 // DEPRECATED
 	 else
 	 {
 		 toolSurfaces* pToolSurfaces = (toolSurfaces*) toolManager.getTool("Surfaces");
@@ -564,7 +568,7 @@ void testApp::draw()
 	}
 	else if (m_windowIndex == 1)
 	{
-		ofBackground(50);
+		//ofBackground(50);
 		 toolSurfaces* pToolSurfaces = (toolSurfaces*) toolManager.getTool("Surfaces");
 		 if (pToolSurfaces){
 			 pToolSurfaces->draw();

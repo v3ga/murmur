@@ -19,6 +19,10 @@ AnimationVideo::AnimationVideo(string name) : Animation(name)
 	m_displayMode.push_back("scale");
 	
 	m_displayModeCurrent = "scale";
+	
+	m_alpha				= 1.0f;
+	
+	m_properties.add( new classProperty_float("alpha", 0.0f,1.0f, &m_alpha) );
 }
 
 //--------------------------------------------------------------
@@ -34,6 +38,8 @@ void AnimationVideo::createUICustom()
 		mp_teVideoPath = new ofxUITextInput("teVideoPath", "", 200, 16);
 		mp_teVideoPath->setAutoUnfocus(true);
 		mp_teVideoPath->setAutoClear(false);
+	
+		addUISlider( m_properties.getFloat("alpha") );
 	
 		mp_UIcanvas->addWidgetDown(mp_teVideoPath);
 		
@@ -111,9 +117,11 @@ void AnimationVideo::VM_draw(float w, float h)
 			rectVideo.setWidth(w);
 			rectVideo.setHeight(h);
 		}
-		ofSetColor(255,255);
 		ofBackground(0);
+		ofPushStyle();
+		ofSetColor(m_alpha*255,m_alpha*255,m_alpha*255);
 		m_player.draw(rectVideo.x,rectVideo.y,rectVideo.width,rectVideo.height);
+		ofPopStyle();
 	}
 	else
 	{

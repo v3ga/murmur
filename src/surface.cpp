@@ -544,15 +544,17 @@ void Surface::onNewPacket(DevicePacket* pDevicePacket, string deviceId)
 {
 	computeVolumePacketsMean(pDevicePacket);
 
+
 	if (m_stateActivity == EStandby_active || m_stateActivity == EStandby_pre_standby)
 	{
     	if (m_animationManager.mp_animationCurrent)
     	{
 			Device* pDevice = Globals::instance()->mp_deviceManager->getDeviceById(deviceId);
         	if (pDevice)
-            	m_animationManager.mp_animationCurrent->onNewPacket(pDevicePacket, pDevice->m_id, pDevice->m_pointSurface.x*m_fbo.getWidth(), pDevice->m_pointSurface.y*m_fbo.getHeight());
+           	m_animationManager.mp_animationCurrent->onNewPacket(pDevicePacket, pDevice->m_id, pDevice->m_pointSurface.x*m_fbo.getWidth(), pDevice->m_pointSurface.y*m_fbo.getHeight());
 		}
 	}
+
 }
 
 //--------------------------------------------------------------

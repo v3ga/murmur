@@ -15,12 +15,7 @@
 </Widget>
 <Widget>
     <Kind>17</Kind>
-    <Name>agentsFF</Name>
-    <Value>1</Value>
-</Widget>
-<Widget>
-    <Kind>17</Kind>
-    <Name>gridsFF</Name>
+    <Name>particlesMega2</Name>
     <Value>0</Value>
 </Widget>
 <Widget>
@@ -30,7 +25,12 @@
 </Widget>
 <Widget>
     <Kind>17</Kind>
-    <Name>particlesMega2</Name>
+    <Name>agentsFF</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>gridsFF</Name>
     <Value>0</Value>
 </Widget>
 <Widget>
@@ -51,6 +51,11 @@
 <Widget>
     <Kind>17</Kind>
     <Name>video</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>empty</Name>
     <Value>0</Value>
 </Widget>
 <Widget>

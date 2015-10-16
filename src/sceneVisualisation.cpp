@@ -10,6 +10,15 @@
 
 
 //--------------------------------------------------------------
+SceneVisualisation::SceneVisualisation()
+{
+	m_bDrawSurfaces		= true;
+ 	m_bDrawDevices		= true;
+ 	m_bDrawSilhouettes	= true;
+ 	m_bDrawGrid			= true;
+}
+
+//--------------------------------------------------------------
 SceneVisualisation::~SceneVisualisation()
 {
     vector<SurfaceNode*>::iterator itSurface = m_listSurfaceNodes.begin();
@@ -173,6 +182,7 @@ void SceneVisualisation::draw()
 {
 	ofBackground(70,70,70,255);
 
+	// Cam orientation
 	m_cam.setPosition(m_camPosition);
 	m_cam.setFarClip(1000.0f);
     SurfaceNode* pSurfaceNodeMain = m_listSurfaceNodes[0];
@@ -182,40 +192,69 @@ void SceneVisualisation::draw()
     else{
         m_cam.lookAt(ofVec3f(0,0,0));
 	}
+
 	m_cam.begin();
 
 
-	glEnable(GL_DEPTH_TEST);
-	ofSetColor(255);
-    vector<SurfaceNode*>::iterator itSurface = m_listSurfaceNodes.begin();
-    for(; itSurface != m_listSurfaceNodes.end(); ++itSurface)
-        (*itSurface)->draw();
 
-	ofPushStyle();
-
-	ofEnableAlphaBlending();
-	ofPushMatrix();
-    ofSetColor(120,120,120);
-    ofRotateZ(90);
-    ofDrawGridPlane(10.0f, 20.0f);
-    ofPopMatrix();
-    ofDisableBlendMode();
-
-
-    vector<DeviceNode*>::iterator itDevice = m_listDeviceNodes.begin();
-    for(; itDevice != m_listDeviceNodes.end(); ++itDevice)
-        (*itDevice)->draw();
-
-	ofEnableAlphaBlending();
-    vector<SilhouetteNode*>::iterator itSilhouette = m_listSilhouetteNodes.begin();
-    for(; itSilhouette != m_listSilhouetteNodes.end(); ++itSilhouette)
-        (*itSilhouette)->draw();
-    ofDisableBlendMode();
-
-	ofPopStyle();
+	// Grid
+	if (m_bDrawGrid)
+	{
+		ofPushStyle();
+		ofEnableAlphaBlending();
+		ofPushMatrix();
+		ofFill();
+    	ofSetColor(120,120,120);
+    	ofRotateZ(90);
+    	ofDrawGridPlane(10.0f, 20.0f);
+    	ofPopMatrix();
+    	ofDisableAlphaBlending();
+		ofPopStyle();
+	}
+	
+	// Device nodes
 
 
-	glDisable(GL_DEPTH_TEST);
+	if (m_bDrawDevices)
+	{
+		ofPushStyle();
+	    vector<DeviceNode*>::iterator itDevice = m_listDeviceNodes.begin();
+    	for(; itDevice != m_listDeviceNodes.end(); ++itDevice)
+        	(*itDevice)->draw();
+		ofPopStyle();
+	}
+
+	
+
+	// Silhouettes nodes
+	if (m_bDrawSilhouettes)
+	{
+		ofPushStyle();
+		ofEnableAlphaBlending();
+    	vector<SilhouetteNode*>::iterator itSilhouette = m_listSilhouetteNodes.begin();
+    	for(; itSilhouette != m_listSilhouetteNodes.end(); ++itSilhouette)
+        	(*itSilhouette)->draw();
+    	ofDisableBlendMode();
+		ofPopStyle();
+	}
+	// Surface
+	//glEnable(GL_DEPTH_TEST);
+	ofEnableDepthTest();
+
+	if (m_bDrawSurfaces)
+	{
+		ofPushStyle();
+		ofSetColor(255);
+    	vector<SurfaceNode*>::iterator itSurface = m_listSurfaceNodes.begin();
+    	for(; itSurface != m_listSurfaceNodes.end(); ++itSurface)
+        	(*itSurface)->draw();
+		ofPopStyle();
+
+	}
+
+	ofDisableDepthTest();
+
+	//glDisable(GL_DEPTH_TEST);
     m_cam.end();
 
 }

@@ -21,6 +21,7 @@ class ShaderWave
 		void					clearSoundInput		();
 
        	ofFloatImage            m_imgSoundInput;
+ 		//ofImage					 m_imgSoundInput;
 		ofVec2f                	m_anchor,m_anchorNorm;
         float                  	m_volume;
 
@@ -28,6 +29,8 @@ class ShaderWave
 		ofFloatColor			m_colorDevice;
 		ofFloatColor			m_color, m_colorTarget;
 		float					m_fColor;
+ 
+		bool					m_bUpdateTexture;
 };
 
 class AnimationShaderWave : public Animation

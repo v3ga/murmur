@@ -18,6 +18,8 @@ ShaderWave::ShaderWave()
 	m_colorTarget = m_color = m_colorWhite;
 	m_fColor = 0.8f;
 	
+	m_bUpdateTexture = false;
+	
 }
 
 
@@ -29,7 +31,6 @@ void ShaderWave::update(float dt)
 	m_color.r += (m_colorTarget.r-m_color.r)*f;
 	m_color.g += (m_colorTarget.g-m_color.g)*f;
 	m_color.b += (m_colorTarget.b-m_color.b)*f;
-	
 }
 
 //--------------------------------------------------------------
@@ -39,17 +40,17 @@ void ShaderWave::setSize(int w)
 
 	if(m_imgSoundInput.width != w)
 	{
-		m_imgSoundInput.getPixelsRef().allocate(w,1,3);
+		m_imgSoundInput.getPixelsRef().allocate(w,1,1);
 		ofFloatPixels& data = m_imgSoundInput.getPixelsRef();
 
 		int nb = data.size();
 		int nbChannels = data.getNumChannels();
 		nb /= nbChannels;
-        for (int i=nb-1;i>=1;i--)
+        for (int i=nb-1;i>=0;i--)
 		{
         	data[i*nbChannels] 		= 0.0f;
-            data[i*nbChannels+1] 	= 0.0f;
-            data[i*nbChannels+2] 	= 0.0f;
+           // data[i*nbChannels+1] 	= 0.0f;
+           // data[i*nbChannels+2] 	= 0.0f;
 		}
 	}
 }
@@ -122,7 +123,7 @@ void AnimationShaderWave::VM_draw(float w, float h)
 //    m_anchor.set(m_anchorNorm.x*w, m_anchorNorm.y*h);
 //    printf("(%.3f,%.3f)-",m_anchor.x,m_anchor.y);
     
-	drawBackground(0,0,0,0);
+	drawBackground(0);
 
     ofSetColor(255);
 //	ofDisableAlphaBlending();
@@ -132,12 +133,22 @@ void AnimationShaderWave::VM_draw(float w, float h)
 		glBlendFunc(GL_ONE, GL_ONE);
 		glDisable(GL_DEPTH_TEST);
 	}
-	
+
 	map<string,ShaderWave*>::iterator it = m_mapShaderWaves.begin();
 	for ( ; it != m_mapShaderWaves.end() ; ++it)
 	{
 		ShaderWave* pShaderWave = it->second;
-	
+		if (pShaderWave->m_bUpdateTexture)
+		{
+			pShaderWave->m_imgSoundInput.update();
+			pShaderWave->m_bUpdateTexture = false;
+	//							glUseProgram(0);
+  //      ofPtr<ofGLProgrammableRenderer> renderer = ofGetGLProgrammableRenderer();
+//		renderer->currentShader = 0;
+//		renderer->beginDefaultShader();
+
+		}
+
 
 	    pShaderWave->m_imgSoundInput.bind();
     	m_shader.begin();
@@ -158,6 +169,7 @@ void AnimationShaderWave::VM_draw(float w, float h)
 	{
 //	   glDisable(GL_BLEND);
 	}
+
 }
 
 //--------------------------------------------------------------
@@ -260,15 +272,16 @@ void AnimationShaderWave::onNewPacket(DevicePacket* pDevicePacket, string device
         	for (int i=nb-1;i>=1;i--)
 			{
             	data[i*nbChannels] 		= data[(i-1)*nbChannels];
-            	data[i*nbChannels+1] 	= data[(i-1)*nbChannels+1];
-            	data[i*nbChannels+2] 	= data[(i-1)*nbChannels+2];
+            	//data[i*nbChannels+1] 	= data[(i-1)*nbChannels+1];
+            	//data[i*nbChannels+2] 	= data[(i-1)*nbChannels+2];
 			}
 			
         	data[0] = pShaderWave->m_color.r * pDevicePacket->m_volume;
-        	data[1] = pShaderWave->m_color.g * pDevicePacket->m_volume;
-        	data[2] = pShaderWave->m_color.b * pDevicePacket->m_volume;
+        	//data[1] = pShaderWave->m_color.g * pDevicePacket->m_volume;
+        	//data[2] = pShaderWave->m_color.b * pDevicePacket->m_volume;
 
-        	pShaderWave->m_imgSoundInput.update();
+        	//pShaderWave->m_imgSoundInput.update();
+        	pShaderWave->m_bUpdateTexture = true;
 		}
 	}
 }

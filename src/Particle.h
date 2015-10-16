@@ -42,8 +42,8 @@ public:
 		xv += xf;
 		yv += yf;
 		
-		xv = ofClamp(xv,-5,5);
-		yv = ofClamp(yv,-5,5);
+//		xv = ofClamp(xv,-5,5);
+//		yv = ofClamp(yv,-5,5);
 //		x += xv * timeStep;
 //		y += yv * timeStep;
 		mp_pos->x += xv * timeStep;

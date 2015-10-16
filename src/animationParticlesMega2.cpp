@@ -30,7 +30,7 @@ AnimationParticlesMega2::AnimationParticlesMega2(string name) : Animation(name)
 		m_properties.add( new classProperty_float("amp. attraction",1.0f, 100.0f, &m_ampAttraction) );
 		m_properties.add( new classProperty_float("amp. repulsion", 1.0f, 100.0f, &m_ampRepulsion) );
 		m_properties.add( new classProperty_float("radius repulsion", 40.0f, 300.0f, &m_repulsionRadius) );
-		m_properties.add( new classProperty_float("particles size", 1.0f, 5.0f, &m_particlesSize) );
+		m_properties.add( new classProperty_float("particles size", 1.0f, 10.0f, &m_particlesSize) );
 		m_properties.add( new classProperty_float("radius color factor", 1.0f, 10.0f, &m_colorRadiusFactor) );
 }
 
@@ -143,13 +143,14 @@ void AnimationParticlesMega2::guiEvent(ofxUIEventArgs &e)
     if (name == "particles size")
     {
 		m_particlesSize = ((ofxUISlider*) e.widget)->getScaledValue();
-		particleSystem.setParticleSize(m_particlesSize);
 	}
 }
 
 //--------------------------------------------------------------
 void AnimationParticlesMega2::VM_update(float dt)
 {
+		particleSystem.setParticleSize(m_particlesSize);
+
     m_volume += (m_volumeTarget-m_volume)*0.4f;
 	map<string,ParticleForce*>::iterator it = m_mapParticleForce.begin();
 	ParticleForce* pParticleForce=0;

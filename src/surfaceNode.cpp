@@ -38,14 +38,14 @@ void SurfaceNode::customDraw()
     ofPushStyle();
     ofNoFill();
     ofSetColor(255,255,255,255);
-    ofRectangle(0.0f,0.0f,m_width,m_height);
+//    ofRectangle(0.0f,0.0f,m_width,m_height);
     if (mp_surface)
     {
-        ofPushMatrix();
+        //ofPushMatrix();
         mp_surface->getOffscreen().draw(0,0,m_width,m_height);
 //        Data::instance()->m_fontHelvetica.drawString("Animation.js", -m_height, m_height);
-        ofPopMatrix();
-
+        //ofPopMatrix();
+//		ofRect(0,0,m_width,m_height);
     }
     ofPopStyle();
 }

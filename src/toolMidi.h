@@ -28,6 +28,7 @@ class toolMidi : public tool
 		void					saveData				();
 		void					update					();
 		void					updateLayout			();
+		void					updateLayoutTimecodePort();
 		void					createControlsCustom	();
 		void					handleEvents			(ofxUIEventArgs& e);
 		void					handleEventsMidiInterface(ofxUIEventArgs& e);
@@ -66,6 +67,7 @@ class toolMidi : public tool
  		map<midiInterface*, ofxUICanvas*>	m_mapMidiCanvas;
 		ofxUICanvas*			mp_canvasTimecode;
 		ofxUILabel*				mp_lblTimecodeValue;
+		ofxUITextInput*			mp_tePortTimecode;
  
 
 };

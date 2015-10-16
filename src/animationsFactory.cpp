@@ -19,6 +19,7 @@
 #include "animationComposition.h"
 #include "animationWaves.h"
 #include "animationVideo.h"
+#include "animationEmpty.h"
 #include "animationRadarFF.h"
 #include "animationLinesFF.h"
 #include "animationGridsFF.h"
@@ -59,6 +60,8 @@ Animation* AnimationsFactory::create(string name)
         pAnimation = new AnimationGridsFF(name);
     else if (name == "agentsFF")
         pAnimation = new AnimationAgentsFF(name);
+    else if (name == "empty")
+        pAnimation = new AnimationEmpty(name);
  
     return pAnimation;
 }

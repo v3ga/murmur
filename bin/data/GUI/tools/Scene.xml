@@ -13,3 +13,23 @@
     <Name>draw scene</Name>
     <Value>1</Value>
 </Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>draw grid</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>draw surface</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>draw devices</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>draw silhouettes</Name>
+    <Value>1</Value>
+</Widget>

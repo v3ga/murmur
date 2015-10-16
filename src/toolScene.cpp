@@ -36,7 +36,12 @@ void toolScene::createControlsCustom()
 
 		mp_canvas->addWidgetDown( mp_tgDeviceLightCurrent );
 		mp_canvas->addWidgetDown( new ofxUIToggle("draw lights for devices", 				&m_isDrawDeviceLight,dim, dim) );
-		mp_canvas->addWidgetDown( new ofxUIToggle("draw scene", &m_isDrawScene,dim, dim) );
+		mp_canvas->addWidgetDown( new ofxUIToggle("draw scene", 							&m_isDrawScene,dim, dim) );
+
+		mp_canvas->addWidgetDown( new ofxUIToggle("draw grid", 			&mp_sceneVisualisation->m_bDrawGrid,			dim, dim) );
+		mp_canvas->addWidgetDown( new ofxUIToggle("draw surface", 		&mp_sceneVisualisation->m_bDrawSurfaces, 		dim, dim) );
+		mp_canvas->addWidgetDown( new ofxUIToggle("draw devices", 		&mp_sceneVisualisation->m_bDrawDevices,			dim, dim) );
+		mp_canvas->addWidgetDown( new ofxUIToggle("draw silhouettes", 	&mp_sceneVisualisation->m_bDrawSilhouettes,		dim, dim) );
 
 		mp_canvas->autoSizeToFitWidgets();
 	}

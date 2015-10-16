@@ -20,6 +20,7 @@
 class SceneVisualisation : public Scene
 {
     public:
+		SceneVisualisation				();
         ~SceneVisualisation             ();
     
 		void		loadSettings		();
@@ -44,7 +45,11 @@ class SceneVisualisation : public Scene
         void        mouseDragged        (int x, int y);
         void        mouseReleased       (int x, int y);
 	
- 
+  		bool							m_bDrawSurfaces;
+ 		bool							m_bDrawDevices;
+ 		bool							m_bDrawSilhouettes;
+ 		bool							m_bDrawGrid;
+
     
     protected:
 		ofxXmlSettings					m_settings;
@@ -64,4 +69,7 @@ class SceneVisualisation : public Scene
         vector<SurfaceNode*>            m_listSurfaceNodes;
         vector<DeviceNode*>             m_listDeviceNodes;
         vector<SilhouetteNode*>         m_listSilhouetteNodes;
+ 
+ 
+ 
 };

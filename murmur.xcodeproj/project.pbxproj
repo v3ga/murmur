@@ -147,6 +147,7 @@
 		F9882D921BA1C10800B81023 /* animationVideo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9882D901BA1C10800B81023 /* animationVideo.cpp */; };
 		F9882DB61BA20B2100B81023 /* HapSupport.c in Sources */ = {isa = PBXBuildFile; fileRef = F9882DAD1BA20B2100B81023 /* HapSupport.c */; };
 		F9882DB81BA20B2100B81023 /* ofxHapPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9882DB21BA20B2100B81023 /* ofxHapPlayer.cpp */; };
+		F9917F891BCF8C5E00AEAE2A /* animationEmpty.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9917F871BCF8C5E00AEAE2A /* animationEmpty.cpp */; };
 		F99930B31719888600272085 /* ofxOscBundle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F99930991719888600272085 /* ofxOscBundle.cpp */; };
 		F99930B41719888600272085 /* ofxOscMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F999309B1719888600272085 /* ofxOscMessage.cpp */; };
 		F99930B51719888600272085 /* ofxOscReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F999309D1719888600272085 /* ofxOscReceiver.cpp */; };
@@ -791,6 +792,8 @@
 		F9882DAE1BA20B2100B81023 /* HapSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HapSupport.h; sourceTree = "<group>"; };
 		F9882DB21BA20B2100B81023 /* ofxHapPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxHapPlayer.cpp; sourceTree = "<group>"; };
 		F9882DB31BA20B2100B81023 /* ofxHapPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxHapPlayer.h; sourceTree = "<group>"; };
+		F9917F871BCF8C5E00AEAE2A /* animationEmpty.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animationEmpty.cpp; sourceTree = "<group>"; };
+		F9917F881BCF8C5E00AEAE2A /* animationEmpty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = animationEmpty.h; sourceTree = "<group>"; };
 		F99930971719888600272085 /* ofxOsc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOsc.h; sourceTree = "<group>"; };
 		F99930981719888600272085 /* ofxOscArg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOscArg.h; sourceTree = "<group>"; };
 		F99930991719888600272085 /* ofxOscBundle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxOscBundle.cpp; sourceTree = "<group>"; };
@@ -2233,6 +2236,8 @@
 				F9DC1BC41B55377B006BEA63 /* animationWaves.h */,
 				F9882D901BA1C10800B81023 /* animationVideo.cpp */,
 				F9882D911BA1C10800B81023 /* animationVideo.h */,
+				F9917F871BCF8C5E00AEAE2A /* animationEmpty.cpp */,
+				F9917F881BCF8C5E00AEAE2A /* animationEmpty.h */,
 			);
 			name = Animations;
 			sourceTree = "<group>";
@@ -3763,6 +3768,7 @@
 				F99930FF171989EB00272085 /* ofxEasingQuart.cpp in Sources */,
 				F9993100171989EB00272085 /* ofxEasingQuint.cpp in Sources */,
 				F9993101171989EB00272085 /* ofxEasingSine.cpp in Sources */,
+				F9917F891BCF8C5E00AEAE2A /* animationEmpty.cpp in Sources */,
 				8491EE3919A649F600469AE8 /* ofxJSNode.cpp in Sources */,
 				F999312717198ABD00272085 /* IpEndpointName.cpp in Sources */,
 				F9DE82E21B39FA7300F5A086 /* ofxTLColors.cpp in Sources */,

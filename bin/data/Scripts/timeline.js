@@ -1,11 +1,11 @@
 // --------------------------------------------------
 // Utils
 var group01 = [
-"chambreEcho_001",
-"chambreEcho_002",
-"chambreEcho_003",
-"chambreEcho_004",
-"chambreEcho_005"
+"deviceEchoSimulator01",
+"deviceEchoSimulator02",
+"deviceEchoSimulator03",
+"deviceEchoSimulator04",
+"deviceEchoSimulator05"
 ];
 
 // --------------------------------------------------
@@ -21,6 +21,17 @@ function setDeviceBPM_group(group, bpm)
     for (var i=0; i<group.length; i++)
          setDeviceBPM(group[i], bpm);       
 }
+
+// --------------------------------------------------
+function setDeviceMute_group(group, is)
+{
+    for (var i=0; i<group.length; i++)
+	{
+		println("setDeviceMute("+group[i]+","+is+")");
+    	setDeviceMute(group[i], is);
+	}
+}
+
 
 
 // --------------------------------------------------
@@ -41,6 +52,8 @@ function timeline_test()
 function timeline_videolines()
 {
     setAnimation("composition", "videolines.xml"); // attention ici le nom de la configuration et pas de la composition :-)
+	setDeviceMute("deviceEchoSimulator01", true);
+	setDeviceMute_group(group01, true);
 }
 
 // --------------------------------------------------
@@ -53,6 +66,7 @@ function timeline_videomurmur()
 function timeline_videoagents()
 {
     setAnimation("composition", "videoagents.xml"); // attention ici le nom de la configuration et pas de la composition :-)
+	setDeviceMute_group(group01, false);
 }
 
 // --------------------------------------------------

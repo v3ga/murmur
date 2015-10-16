@@ -35,6 +35,7 @@ ofxJSDeclareFunctionCpp(setDeviceColor);
 ofxJSDeclareFunctionCpp(enableDeviceBPM);
 ofxJSDeclareFunctionCpp(setDeviceBPM);
 ofxJSDeclareFunctionCpp(setDeviceReversePacketsDir);
+ofxJSDeclareFunctionCpp(setDeviceMute);
 
 
 ofxJSDeclareFunctionCpp(setAnimation);

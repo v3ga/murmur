@@ -39,6 +39,7 @@ class AnimationVideo : public Animation
  
 		vector<string>			m_displayMode;
 		string					m_displayModeCurrent;
- 
+
+		float					m_alpha;
 };
 

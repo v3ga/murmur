@@ -182,7 +182,7 @@ void oscReceiver::update()
 				if (pDevice)
 					pDevice->onReceivePacketBegin();
 			}
-            else
+           else
             if (m_oscMessage.getAddress() == OSC_ADDRESS_SEND_PACKETS_END)
             {
 				string deviceId = m_oscMessage.getArgAsString(indexArg++);
@@ -200,7 +200,7 @@ void oscReceiver::update()
 					}
 				}
 			}
-            else
+ /*            else
             if (m_oscMessage.getAddress() == OSC_ADDRESS_SEND_PACKETS)
             {
                 if (pDeviceManager)
@@ -229,6 +229,7 @@ void oscReceiver::update()
                     }
                 }
             }
+*/
 			else
 			if (m_oscMessage.getAddress() == OSC_ADDRESS_RESET_PING)
 			{

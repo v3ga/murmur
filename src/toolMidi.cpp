@@ -23,6 +23,7 @@ toolMidi::toolMidi(toolManager* parent) : tool("Midi", parent)
 	mp_midiInterfaceCurrent			= 0;
 	
 	mp_lblTimecodeValue				= 0;
+	mp_tePortTimecode				= 0;
 	
 	m_bDriveTimeline				= false;
 }
@@ -142,9 +143,9 @@ void toolMidi::createControlsCustom()
 	    mp_canvasTimecode->addWidgetDown( new ofxUILabel("Timecode",OFX_UI_FONT_LARGE) );
     	mp_canvasTimecode->addWidgetDown( new ofxUISpacer(widthDefault-8, 2) );
 		mp_canvasTimecode->addWidgetDown( new ofxUILabel(100, "Port",OFX_UI_FONT_SMALL) );
-		ofxUITextInput* pTePortTimecode = new ofxUITextInput("tePortTimecode", ofToString( 0 ), 24, dim, 100+5);
-		pTePortTimecode->setAutoClear(false);
-		mp_canvasTimecode->addWidgetRight( pTePortTimecode );
+		mp_tePortTimecode = new ofxUITextInput("tePortTimecode", ofToString( 0 ), 24, dim, 100+5);
+		mp_tePortTimecode->setAutoClear(false);
+		mp_canvasTimecode->addWidgetRight( mp_tePortTimecode );
 		
 		mp_canvasTimecode->addWidgetDown( new ofxUILabel(100, "Value",OFX_UI_FONT_SMALL) );
 		mp_lblTimecodeValue = new ofxUILabel(100, "1234",OFX_UI_FONT_SMALL);
@@ -153,8 +154,8 @@ void toolMidi::createControlsCustom()
 
 		
 
-		m_portTimecode = getPortTimecode( pTePortTimecode->getTextString() );
-	  	onPortTimecodeChanged();
+//		m_portTimecode = getPortTimecode( mp_tePortTimecode->getTextString() );
+//	  	onPortTimecodeChanged();
 
 
 		ofAddListener(mp_canvas->newGUIEvent, this, &toolMidi::handleEvents);
@@ -230,14 +231,24 @@ void toolMidi::drawUI()
 //--------------------------------------------------------------
 void toolMidi::loadData()
 {
+	OFAPPLOG->begin("toolMidi::loadData()");
 	tool::loadData();
 
 	ofxXmlSettings timecode;
 	if ( timecode.loadFile(getTimecodePathFile()) )
 	{
+		OFAPPLOG->println("- OK loaded "+getTimecodePathFile());
 		m_portTimecode = timecode.getValue("timecode:port", 0);
+		OFAPPLOG->println("- m_portTimecode="+ofToString(m_portTimecode));
+
+		updateLayoutTimecodePort();
+		onPortTimecodeChanged();
 	}
-	
+	else
+	{
+		OFAPPLOG->println("- ERROR loading "+getTimecodePathFile());
+	}
+	OFAPPLOG->end();
 }
 
 //--------------------------------------------------------------
@@ -282,6 +293,16 @@ void toolMidi::updateLayout()
 		mp_lblTimecodeValue->setLabel( m_MTCReceiver.timeAsString( sm_timecodeMillis ) );
 	}
 }
+
+//--------------------------------------------------------------
+void toolMidi::updateLayoutTimecodePort()
+{
+	if (mp_tePortTimecode)
+	{
+		mp_tePortTimecode->setTextString( ofToString(m_portTimecode) );
+	}
+}
+
 
 //--------------------------------------------------------------
 void toolMidi::handleEvents(ofxUIEventArgs& e)
