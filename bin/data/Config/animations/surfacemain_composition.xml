@@ -6,7 +6,7 @@
 <Widget>
     <Kind>12</Kind>
     <Name>teConfigName</Name>
-    <Value>videolines.xml</Value>
+    <Value>test.xml</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -31,7 +31,7 @@
 <Widget>
     <Kind>17</Kind>
     <Name>videoLines</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>17</Kind>
@@ -46,7 +46,7 @@
 <Widget>
     <Kind>17</Kind>
     <Name>videoAgents</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>17</Kind>
@@ -62,6 +62,16 @@
     <Kind>17</Kind>
     <Name>gridAgents</Name>
     <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>alpha anim 1</Name>
+    <Value>1.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>alpha anim 2</Name>
+    <Value>1.000000000</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -96,7 +106,7 @@
 <Widget>
     <Kind>17</Kind>
     <Name>Exclusion</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>17</Kind>
@@ -116,7 +126,7 @@
 <Widget>
     <Kind>17</Kind>
     <Name>Multiply</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>17</Kind>

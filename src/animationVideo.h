@@ -41,5 +41,9 @@ class AnimationVideo : public Animation
 		string					m_displayModeCurrent;
 
 		float					m_alpha;
+ 
+		int						m_nbFramesBeforeDrawVideo;
+		int						m_nbFrames;
+		bool					m_bCanDrawVideo;
 };
 

@@ -11,10 +11,12 @@
 #include "tool.h"
 #include "surface.h"
 #include "quadWarping.h"
+#include "midiInterface.h"
+#include "classProperty.h"
 
 class Device;
 class GLFWwindow;
-class toolSurfaces : public tool
+class toolSurfaces : public tool, public midiInterface
 {
 	public:
 
@@ -37,6 +39,9 @@ class toolSurfaces : public tool
 		void					windowResized				(int w, int h);
 		void					windowResized				(int wold, int hold, int w, int h);
 		void					setWindowCurrent			(GLFWwindow* p){mp_windowCurrent=p;}
+
+		virtual string			getMidiSettingsPath			(string suffix=""){return "Gui/tools/midi/Surfaces.xml";}
+		void					loadMidiSettings			(){midiInterface::setClassProperties(&m_properties) ; midiInterface::loadMidiSettings();}
 	
 	
 		bool					loadMask					(string pathMask);
@@ -44,10 +49,13 @@ class toolSurfaces : public tool
 	
 		void					dragEvent					(ofDragInfo dragInfo);
 
+	 	classProperties			m_properties;
+
 		ofxUILabel*				mp_lblSurfaceActivity;
 		Surface*				mp_surfaceMain;
 		ofImage*				mp_mask;
 		ofImage*				mp_maskUI;
+		float					m_alpha;
 
 		quadWarping				m_quadWarping;
 		ofRectangle			 	m_rectScreen, m_rectSurfaceOff;

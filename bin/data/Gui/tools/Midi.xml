@@ -15,6 +15,16 @@
 </Widget>
 <Widget>
     <Kind>17</Kind>
+    <Name>tool Surfaces</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>waves</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
     <Name>particlesMega2</Name>
     <Value>0</Value>
 </Widget>
@@ -61,5 +71,5 @@
 <Widget>
     <Kind>17</Kind>
     <Name>composition</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>

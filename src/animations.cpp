@@ -1327,7 +1327,7 @@ void AnimationManager::M_drawTransition(float w, float h)
 	// Draw transition
 	if (m_state == STATE_TRANSITION_OUT || m_state == STATE_TRANSITION_IN)
 	{
-		// printf("tween=%.2f\n", m_transitionTween.getTarget(0));
+		//printf("tween=%.2f\n", m_transitionTween.getTarget(0));
 	    ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 		ofPushStyle();
 			ofSetColor(0,0,0, 255*m_transitionTween.getTarget(0));

@@ -29,6 +29,8 @@ Surface::Surface(string id, int wPixels, int hPixels)
 	#if MURMUR_DEFINE_SYPHON
 		m_syphonServer.setName(m_id);
 	#endif
+	
+	m_alphaLayer = 0.0f;
 
 	OFAPPLOG->end();
 }
@@ -448,6 +450,22 @@ void Surface::drawMask()
 }
 
 //--------------------------------------------------------------
+void Surface::drawLayerAlpha()
+{
+	ofPushStyle();
+	if (m_alphaLayer>0.0f)
+	{
+		ofEnableAlphaBlending();
+		ofSetColor(0.0f,255.0f*m_alphaLayer);
+		ofRect(0,0,m_fbo.getWidth(),m_fbo.getHeight());
+		ofDisableAlphaBlending();
+	}
+//		ofSetColor(0.0f,200.0f);
+	ofPopStyle();
+}
+
+
+//--------------------------------------------------------------
 void Surface::renderOffscreen(bool isRenderDevicePoints)
 {
 	m_animationManager.M_drawCanvasBefore(m_fbo.getWidth(),m_fbo.getHeight());
@@ -469,6 +487,7 @@ void Surface::renderOffscreen(bool isRenderDevicePoints)
 	m_fbo.begin();
 	drawRenderTarget();
 	drawMask();
+	drawLayerAlpha();
 	m_fbo.end();
 
 }

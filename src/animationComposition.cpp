@@ -39,6 +39,13 @@ AnimationComposition::AnimationComposition(string name) : Animation(name)
 	m_blendings.push_back("Overlay");
 	m_blendings.push_back("Screen");
 	m_blendings.push_back("SoftLight");
+	
+	m_alphaAnimation1 = 1.0f;
+	m_alphaAnimation2 = 1.0f;
+	
+	m_properties.add( new classProperty_float("alpha anim 1", 0.0f, 1.0f, &m_alphaAnimation1) );
+	m_properties.add( new classProperty_float("alpha anim 2", 0.0f, 1.0f, &m_alphaAnimation2) );
+	
 }
 
 //--------------------------------------------------------------
@@ -77,6 +84,12 @@ void AnimationComposition::createUICustom()
 		mp_UIcanvas->addWidgetDown( pDropCompo );
 		pDropCompo->setShowCurrentSelected(true);
 	
+        //mp_UIcanvas->addSlider("alpha anim 1", 0.0f, 1.0f, &m_alphaAnimation1);
+        //mp_UIcanvas->addSlider("alpha anim 2", 0.0f, 1.0f, &m_alphaAnimation2);
+
+		addUISlider( m_properties.getFloat("alpha anim 1") );
+		addUISlider( m_properties.getFloat("alpha anim 2") );
+
 		
 		mp_UIcanvas->addWidgetDown(new ofxUILabel("Blending", OFX_UI_FONT_MEDIUM));
     	mp_UIcanvas->addWidgetDown(new ofxUISpacer(330, 2));
@@ -111,6 +124,7 @@ void AnimationComposition::updateUI()
 //--------------------------------------------------------------
 void AnimationComposition::loadMidiSettings()
 {
+	Animation::loadMidiSettings();
 	vector<Animation*>::iterator it = m_animations.begin();
 	for ( ; it != m_animations.end(); ++it)
 	 	(*it)->loadMidiSettings();
@@ -125,6 +139,9 @@ void AnimationComposition::loadConfiguration(string filename)
 	OFAPPLOG->end();
 	m_isLoadingConfiguration = false;
    setRenderNormal(m_bRenderNormalWanted);
+ 
+   m_alphaAnimation1 = 1.0f;
+   m_alphaAnimation2 = 1.0f;
 }
 
 
@@ -297,8 +314,9 @@ void AnimationComposition::VM_enter()
 	vector<Animation*>::iterator it = m_animations.begin();
 	for ( ; it != m_animations.end(); ++it)
 	 	(*it)->VM_enter();
-
-	
+ 
+	m_alphaAnimation1 = 1.0f;
+	m_alphaAnimation2 = 1.0f;
 }
 
 //--------------------------------------------------------------
@@ -395,15 +413,28 @@ void AnimationComposition::onSurfaceRenderOffscreen(Surface* pSurface, Animation
 
    if (pThis->m_animations.size()==2 && pThis->m_animations[0] && pThis->m_animations[1] && pThis->m_fboAnimation1.isAllocated() && pThis->m_fboAnimation2.isAllocated())
    {
+	   ofPushStyle();
 	   pThis->m_fboAnimation1.begin();
 	   ofBackground(0);
 	   pThis->m_animations[0]->VM_draw(pThis->m_fboAnimation1.getWidth(), pThis->m_fboAnimation1.getHeight());
+	   if (pThis->m_alphaAnimation1<1.0f){
+			ofSetColor(0,255*(1.0f-pThis->m_alphaAnimation1));
+			ofRect(0,0,pThis->m_fboAnimation1.getWidth(), pThis->m_fboAnimation1.getHeight());
+	   }
+	   ofPopStyle();
+
 	   pThis->m_fboAnimation1.end();
 
+	   ofPushStyle();
 	   pThis->m_fboAnimation2.begin();
 	   ofBackground(0);
 	   pThis->m_animations[1]->VM_draw(pThis->m_fboAnimation2.getWidth(), pThis->m_fboAnimation2.getHeight());
+	   if (pThis->m_alphaAnimation2<1.0f){
+			ofSetColor(0,255*(1.0f-pThis->m_alphaAnimation2));
+			ofRect(0,0,pThis->m_fboAnimation2.getWidth(), pThis->m_fboAnimation2.getHeight());
+	   }
 	   pThis->m_fboAnimation2.end();
+	   ofPopStyle();
 
 	   fboFinal.begin();
 	   ofBackground(0);
@@ -440,6 +471,7 @@ void AnimationComposition::allocateRenderBuffers()
 //--------------------------------------------------------------
 void AnimationComposition::handleMidiMessages()
 {
+	Animation::handleMidiMessages();
 	vector<Animation*>::iterator it = m_animations.begin();
 	for ( ; it != m_animations.end(); ++it){
 	 	(*it)->handleMidiMessages();
@@ -449,6 +481,7 @@ void AnimationComposition::handleMidiMessages()
 //--------------------------------------------------------------
 void AnimationComposition::newMidiMessage(ofxMidiMessage& eventArgs)
 {
+	Animation::newMidiMessage(eventArgs);
 	vector<Animation*>::iterator it = m_animations.begin();
 	for ( ; it != m_animations.end(); ++it){
 	 	(*it)->newMidiMessage(eventArgs);

@@ -41,6 +41,7 @@ void testApp::setup()
     isAnimationSequence = false;
     isViewSimulation = true;
     isSimulation =  simulator == 1 ? true : false;
+	m_bTurnoffDevices = false;
  
     // Globals
     Globals::instance()->mp_app = this;
@@ -62,8 +63,11 @@ void testApp::setup()
 	int ySurface = m_settings.getValue("murmur:windows:surface:y", 0);
 	int wSurface = m_settings.getValue("murmur:windows:surface:w", 800);
 	int hSurface = m_settings.getValue("murmur:windows:surface:h", 600);
+	
+	m_bTurnoffDevices = m_settings.getValue("murmur:turnoffDevices",0) > 0 ? true : false;
 
 	OFAPPLOG->println(" - window surface ("+ofToString(xSurface)+","+ofToString(ySurface)+","+ofToString(wSurface)+","+ofToString(hSurface)+")");
+	OFAPPLOG->println(" - turnoff devices =  "+ofToString(m_bTurnoffDevices));
 
 
     mp_glfw->setWindow(mp_windows->at(1));    // set window pointer
@@ -124,9 +128,12 @@ void testApp::setup()
 	if (pToolAnimations)		pToolAnimations->initMidiAnimations(mp_surfaceMain);
 	if (pToolTimeline)			pToolTimeline->loadMidiSettings();
 	if (pToolDevices)			pToolDevices->loadMidiSettings();
-	if (pToolMidi){
+	if (pToolSurfaces)			pToolSurfaces->loadMidiSettings();
+	if (pToolMidi)
+	{
 		pToolMidi->registerMidiInterface( pToolTimeline );
 		pToolMidi->registerMidiInterface( pToolDevices );
+		pToolMidi->registerMidiInterface( pToolSurfaces );
 		if (mp_surfaceMain)
 		{
 			for (int i=0; i< mp_surfaceMain->getAnimationManager().m_listAnimations.size(); i++)
@@ -193,7 +200,11 @@ void testApp::exit()
     if (mp_deviceManager)
 	{
         mp_deviceManager->saveDevicesXML("Config/devices/");
-		mp_deviceManager->turnoffDevices();
+		if (m_bTurnoffDevices)
+		{
+			OFAPPLOG->begin("- turning off devices");
+			mp_deviceManager->turnoffDevices();
+		}
 	}
 	
 	vector<ofxMidiIn*>::iterator itMidi = m_midiIns.begin();

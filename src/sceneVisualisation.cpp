@@ -194,6 +194,7 @@ void SceneVisualisation::draw()
 	}
 
 	m_cam.begin();
+	ofEnableDepthTest();
 
 
 
@@ -204,7 +205,7 @@ void SceneVisualisation::draw()
 		ofEnableAlphaBlending();
 		ofPushMatrix();
 		ofFill();
-    	ofSetColor(120,120,120);
+    	ofSetColor(120,120,120,255);
     	ofRotateZ(90);
     	ofDrawGridPlane(10.0f, 20.0f);
     	ofPopMatrix();
@@ -239,12 +240,11 @@ void SceneVisualisation::draw()
 	}
 	// Surface
 	//glEnable(GL_DEPTH_TEST);
-	ofEnableDepthTest();
 
 	if (m_bDrawSurfaces)
 	{
 		ofPushStyle();
-		ofSetColor(255);
+		ofSetColor(255,255,255);
     	vector<SurfaceNode*>::iterator itSurface = m_listSurfaceNodes.begin();
     	for(; itSurface != m_listSurfaceNodes.end(); ++itSurface)
         	(*itSurface)->draw();

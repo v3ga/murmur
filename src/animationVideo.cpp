@@ -23,6 +23,10 @@ AnimationVideo::AnimationVideo(string name) : Animation(name)
 	m_alpha				= 1.0f;
 	
 	m_properties.add( new classProperty_float("alpha", 0.0f,1.0f, &m_alpha) );
+
+	m_nbFramesBeforeDrawVideo = 2;
+	m_nbFrames = 0;
+	m_bCanDrawVideo = false;
 }
 
 //--------------------------------------------------------------
@@ -81,6 +85,9 @@ void AnimationVideo::setDisplayMode(string name)
 void AnimationVideo::VM_enter()
 {
 	m_player.play();
+
+	m_nbFrames = 0;
+	m_bCanDrawVideo = false;
 }
 
 //--------------------------------------------------------------
@@ -98,6 +105,11 @@ void AnimationVideo::VM_update(float dt)
 		setVideo(m_videoPath);
 	}
 */
+	m_nbFrames++;
+	if (m_nbFrames>m_nbFramesBeforeDrawVideo && !m_bCanDrawVideo)
+	{
+		m_bCanDrawVideo = true;
+	}
 
 	m_player.update();
 }
@@ -120,7 +132,10 @@ void AnimationVideo::VM_draw(float w, float h)
 		ofBackground(0);
 		ofPushStyle();
 		ofSetColor(m_alpha*255,m_alpha*255,m_alpha*255);
-		m_player.draw(rectVideo.x,rectVideo.y,rectVideo.width,rectVideo.height);
+
+
+		if (m_bCanDrawVideo)
+			m_player.draw(rectVideo.x,rectVideo.y,rectVideo.width,rectVideo.height);
 		ofPopStyle();
 	}
 	else

@@ -72,6 +72,7 @@ class AnimationComposition : public Animation
 		AnimationCompoConfiguration*			mp_compositionCurrent;
 
 		ofFbo									m_fboAnimation1, m_fboAnimation2;
+		float									m_alphaAnimation1,m_alphaAnimation2;
  
 		bool									m_bRenderNormal; // without blending shaders
 		bool									m_bRenderNormalWanted;

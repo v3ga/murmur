@@ -100,6 +100,7 @@ class testApp : public ofBaseApp, public ofxMidiListener
         void                selectDevice(string id);
 	
 		vector<DeviceEchoSimulator*>	m_listDeviceSimulator;
+		bool				m_bTurnoffDevices;
 
 		// Sound (simulation only)
 		ofSoundStream		m_soundStreamInput;

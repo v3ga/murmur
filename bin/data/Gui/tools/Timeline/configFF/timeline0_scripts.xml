@@ -5,7 +5,7 @@
         <value>0.502702713</value>
     </key>
     <key>
-        <flag>videoagents</flag>
+        <flag>clouds</flag>
         <time>00:00:16:886</time>
         <value>0.803827763</value>
     </key>
@@ -18,6 +18,11 @@
         <flag>videolines</flag>
         <time>00:00:32:131</time>
         <value>0.622009575</value>
+    </key>
+    <key>
+        <flag>waves</flag>
+        <time>00:00:38:470</time>
+        <value>0.765550256</value>
     </key>
     <key>
         <flag>grid03</flag>

@@ -72,6 +72,9 @@ class Surface
 		void			setDrawMask				(bool is=true){m_isDrawMask = is;}
 		void			setMask					(ofImage* image){mp_mask = image;}
 		void			drawMask				();
+
+		void			setLayerAlpha			(float alpha){m_alphaLayer=alpha;}
+		void			drawLayerAlpha			();
 	
 		float			getVolumePacketsHistoryMean	(){return m_volumePacketsHistoryMean;}
 		string			getStateActivity			();
@@ -121,6 +124,7 @@ class Surface
 		int					m_volumePacketsHistoryNb;
 	
 		ofImage*			mp_mask;
+		float				m_alphaLayer;
 
 	
 #if MURMUR_DEFINE_SYPHON

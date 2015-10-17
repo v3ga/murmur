@@ -113,7 +113,12 @@
     <launchDevices>
         <ip>192.168.0.39</ip>
     </launchDevices>
-
+	
+	<!-- 
+	0 : do not turn off when program exits
+	1 : turn off when program exits
+	-->
+	<turnoffDevices>1</turnoffDevices>
 
     <!-- Midi -->
 	<midi>

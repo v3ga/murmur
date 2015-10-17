@@ -49,6 +49,13 @@ function timeline_test()
 }
 
 // --------------------------------------------------
+function timeline_waves()
+{
+    setAnimation("waves", "test2.xml");
+}
+
+
+// --------------------------------------------------
 function timeline_videolines()
 {
     setAnimation("composition", "videolines.xml"); // attention ici le nom de la configuration et pas de la composition :-)
@@ -60,6 +67,12 @@ function timeline_videolines()
 function timeline_videomurmur()
 {
     setAnimation("video", "test2.xml"); // attention ici le nom de la configuration et pas de la composition :-)
+}
+
+// --------------------------------------------------
+function timeline_clouds()
+{
+    setAnimation("video", "clouds.xml"); // attention ici le nom de la configuration et pas de la composition :-)
 }
 
 // --------------------------------------------------

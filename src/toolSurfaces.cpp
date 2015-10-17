@@ -24,8 +24,13 @@ toolSurfaces::toolSurfaces(toolManager* parent, Surface* surface) : tool("Surfac
 	mp_maskUI 				= 0;
 	m_isDrawHandles			= false;
 	mp_windowCurrent		= 0;
+	m_alpha					= 0.0f;
 	
 	setView					(VIEW_NORMAL);
+	
+	m_properties.add( new classProperty_float("alpha", 0.0f,1.0f, &m_alpha) );
+
+    setMidiName("tool Surfaces");
 }
 
 //--------------------------------------------------------------
@@ -103,6 +108,8 @@ void toolSurfaces::createControlsCustom()
 		mp_canvas->addWidgetRight	( pTeHFbo );
 		mp_canvas->addWidgetDown	( new ofxUIIntSlider("quality", 0 , ofFbo::maxSamples(), 0, widthDefault, dim));
 
+    	mp_canvas->addWidgetDown	(new ofxUISlider("alpha", 0.0f, 1.0f, &m_alpha, widthDefault, dim ));
+
     	mp_canvas->addWidgetDown	(new ofxUIToggle("target", false, dim, dim));
     	mp_canvas->addWidgetRight	(new ofxUISlider("target line w", 1.0f, 8.0f, 2.0f, 100, dim ));
 
@@ -160,8 +167,11 @@ void toolSurfaces::onSurfaceModified(Surface* pSurface)
 //--------------------------------------------------------------
 void toolSurfaces::update()
 {
+	handleMidiMessages();
+
     if (mp_surfaceMain)
 	{
+		mp_surfaceMain->setLayerAlpha(m_alpha);
 		mp_surfaceMain->setMask(mp_mask); // TEMP here?
         mp_surfaceMain->renderOffscreen(GLOBALS->mp_app->isShowDevicePointSurfaces);
 		mp_surfaceMain->publishSyphon();

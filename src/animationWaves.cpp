@@ -323,6 +323,8 @@ void AnimationWaves::VM_draw(float w, float h)
 //--------------------------------------------------------------
 void AnimationWaves::guiEvent(ofxUIEventArgs &e)
 {
+	Animation::guiEvent(e);
+
 	string name = e.getName();
 	if (name == "nbWavePoints")
 	{

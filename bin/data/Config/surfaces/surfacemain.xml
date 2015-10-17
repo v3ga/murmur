@@ -1,12 +1,12 @@
 <surface id="main">
     <animations type="cpp">
 <!--
-        <animation>waves</animation>
   		<animation>gravitatory</animation>
         <animation>video</animation>
         <animation name="box2DCircles"></animation>
 
 -->
+        <animation name="waves"></animation>
         <animation name="particlesMega2"></animation>
         <animation name="shaderWave"></animation>
         <animation name="agentsFF"></animation>
