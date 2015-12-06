@@ -145,6 +145,8 @@ void AnimationAgentsFF::VM_exit()
 //--------------------------------------------------------------
 void AnimationAgentsFF::VM_update(float dt)
 {
+	updateUIVolume();
+
 	map<string,ParticleForce*>::iterator it = m_mapParticleForce.begin();
 	ParticleForce* pParticleForce=0;
 	for ( ; it != m_mapParticleForce.end() ; ++it)
@@ -161,18 +163,21 @@ void AnimationAgentsFF::VM_update(float dt)
 //--------------------------------------------------------------
 void AnimationAgentsFF::VM_drawBefore(float w, float h)
 {
+
 	m_w = w;
 	m_h = h;
 	
 	createParticles();
+
 	m_particlesVbo.updateVertexData(m_particlesPos, m_kParticles*1024);
+   if (!m_bParticlesInit || !m_vectorField.isAllocated()) return;
 
 	m_fboParticles.begin();
+	ofPushStyle();
 	ofSetColor(0,m_blending*255);
 	ofRect(0,0,w,h);
 	
-    if (!m_bParticlesInit || !m_vectorField.isAllocated()) return;
-	
+ 
 	m_vectorField.animate(m_vectorFieldAnim);
 	
 	
@@ -240,6 +245,8 @@ void AnimationAgentsFF::VM_drawBefore(float w, float h)
 	glPointSize(m_particlesSize);
 	m_particlesVbo.draw(GL_POINTS,0,m_kParticles*1024);
 
+	ofPopStyle();
+
    m_fboParticles.end();
 
 }
@@ -256,6 +263,7 @@ void AnimationAgentsFF::VM_draw(float w, float h)
 		m_vectorField.draw();
 		ofPopStyle();
 	}
+
 }
 
 //--------------------------------------------------------------
@@ -395,6 +403,7 @@ void AnimationAgentsFF::createParticles()
 		if (!m_fboParticles.isAllocated() || (m_w != m_fboParticles.getWidth() || m_h != m_fboParticles.getHeight()))
 		{
 			m_fboParticles.allocate(m_w,m_h,GL_RGBA32F_ARB);
+
 			m_fboParticles.begin();
 			ofBackground(0,255);
 			m_fboParticles.end();
@@ -402,6 +411,8 @@ void AnimationAgentsFF::createParticles()
 			m_vectorField.deallocate();
 			m_vectorField.setup((int)m_w,(int)m_h,10);
 			m_vectorField.setFromImage(m_vectorFieldImage);
+
+
 		}
 	}
 

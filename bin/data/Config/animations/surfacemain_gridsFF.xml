@@ -6,7 +6,7 @@
 <Widget>
     <Kind>12</Kind>
     <Name>teConfigName</Name>
-    <Value>test2.xml</Value>
+    <Value>test.xml</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -16,7 +16,7 @@
 <Widget>
     <Kind>4</Kind>
     <Name>volume</Name>
-    <Value>0.693548381</Value>
+    <Value>0.487096786</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -36,12 +36,12 @@
 <Widget>
     <Kind>42</Kind>
     <Name>columns</Name>
-    <Value>80</Value>
+    <Value>87</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>
     <Name>rows</Name>
-    <Value>12</Value>
+    <Value>13</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -51,7 +51,7 @@
 <Widget>
     <Kind>4</Kind>
     <Name>scale</Name>
-    <Value>0.461538464</Value>
+    <Value>0.862499952</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>
@@ -61,7 +61,7 @@
 <Widget>
     <Kind>4</Kind>
     <Name>amplitude</Name>
-    <Value>171.474349976</Value>
+    <Value>355.769226074</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -71,7 +71,7 @@
 <Widget>
     <Kind>4</Kind>
     <Name>blurAmount</Name>
-    <Value>17.358974457</Value>
+    <Value>9.365384102</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>

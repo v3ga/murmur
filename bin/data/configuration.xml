@@ -17,6 +17,7 @@
                 <length>4.0</length>
             </device>
 
+<!--
             <device>
                 <id>deviceEchoSimulator02</id>
                 <nbLEDs>160</nbLEDs>
@@ -70,7 +71,7 @@
                 <nbLEDs>160</nbLEDs>
                 <length>4.0</length>
             </device>
-
+-->
 
 <!--
             <device>
@@ -118,7 +119,7 @@
 	0 : do not turn off when program exits
 	1 : turn off when program exits
 	-->
-	<turnoffDevices>1</turnoffDevices>
+	<turnoffDevices>0</turnoffDevices>
 
     <!-- Midi -->
 	<midi>

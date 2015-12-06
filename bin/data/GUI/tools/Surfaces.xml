@@ -61,5 +61,5 @@
 <Widget>
     <Kind>2</Kind>
     <Name>draw quad warping</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>

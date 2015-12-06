@@ -1,4 +1,0 @@
-<midi port="1" control="5" property="rot"></midi>
-<midi port="1" control="9" property="radius"></midi>
-<midi port="1" control="28" property="dirSpeed"></midi>
-<midi port="1" control="43" property="rotSpeed"></midi>

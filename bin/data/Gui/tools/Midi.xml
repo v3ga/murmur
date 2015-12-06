@@ -16,6 +16,11 @@
 <Widget>
     <Kind>17</Kind>
     <Name>tool Surfaces</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>box2DCircles</Name>
     <Value>0</Value>
 </Widget>
 <Widget>
@@ -30,7 +35,7 @@
 </Widget>
 <Widget>
     <Kind>17</Kind>
-    <Name>shaderWave</Name>
+    <Name>gridsFF</Name>
     <Value>0</Value>
 </Widget>
 <Widget>
@@ -40,7 +45,7 @@
 </Widget>
 <Widget>
     <Kind>17</Kind>
-    <Name>gridsFF</Name>
+    <Name>shaderWave</Name>
     <Value>0</Value>
 </Widget>
 <Widget>
@@ -57,19 +62,4 @@
     <Kind>17</Kind>
     <Name>tunnelALB</Name>
     <Value>0</Value>
-</Widget>
-<Widget>
-    <Kind>17</Kind>
-    <Name>video</Name>
-    <Value>0</Value>
-</Widget>
-<Widget>
-    <Kind>17</Kind>
-    <Name>empty</Name>
-    <Value>0</Value>
-</Widget>
-<Widget>
-    <Kind>17</Kind>
-    <Name>composition</Name>
-    <Value>1</Value>
 </Widget>

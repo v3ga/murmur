@@ -63,17 +63,17 @@
 		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
-			<string>public.vcs.subversion</string>
+			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>e7f115c4-931f-11de-b51d-eb253e4b719b++505</string>
+			<string>087B3E30C5DAF41F45449A05D37C663C00261246</string>
 			<key>IDESourceControlWCCName</key>
 			<string>ofxJavascript</string>
 		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
-			<string>public.vcs.git</string>
+			<string>public.vcs.subversion</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>087B3E30C5DAF41F45449A05D37C663C00261246</string>
+			<string>e7f115c4-931f-11de-b51d-eb253e4b719b++505</string>
 			<key>IDESourceControlWCCName</key>
 			<string>ofxJavascript</string>
 		</dict>

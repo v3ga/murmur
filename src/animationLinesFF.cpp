@@ -98,16 +98,16 @@ void AnimationLinesFF::VM_draw(float w, float h)
 //--------------------------------------------------------------
 void AnimationLinesFF::onNewPacket(DevicePacket* pDevicePacket, string deviceId, float x, float y)
 {
-//	accumulateVolume(pDevicePacket->m_volume, deviceId);
+	accumulateVolume(pDevicePacket->m_volume, deviceId);
 	m_lastPacketColor = pDevicePacket->m_color;
 	if (pDevicePacket->m_volume >= m_volValuesMeanTh)
 	{
-		onVolumAccumEvent(deviceId);
+		emitLine(deviceId);
 	}
 }
 
 //--------------------------------------------------------------
-void AnimationLinesFF::onVolumAccumEvent(string deviceId)
+void AnimationLinesFF::emitLine(string deviceId)
 {
 	Device* pDevice = getDevice(deviceId);
 	if (pDevice)
@@ -126,6 +126,9 @@ void AnimationLinesFF::onVolumAccumEvent(string deviceId)
 			pLine->m_color		= m_isColorFromDevice ? m_lastPacketColor : ofColor(255);
 			
 			m_lines.push_back(pLine);
+			
+			playSound(deviceId);
+
 		}
 	}
 }

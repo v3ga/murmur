@@ -149,7 +149,8 @@ void AnimationParticlesMega2::guiEvent(ofxUIEventArgs &e)
 //--------------------------------------------------------------
 void AnimationParticlesMega2::VM_update(float dt)
 {
-		particleSystem.setParticleSize(m_particlesSize);
+	updateUIVolume();
+    particleSystem.setParticleSize(m_particlesSize);
 
     m_volume += (m_volumeTarget-m_volume)*0.4f;
 	map<string,ParticleForce*>::iterator it = m_mapParticleForce.begin();
@@ -257,7 +258,7 @@ void AnimationParticlesMega2::onNewPacket(DevicePacket* pDevicePacket, string de
 		 Device* pDevice = GLOBALS->mp_deviceManager->getDeviceById( deviceId );
 
 		 pParticleForce->m_color = pDevice->m_color;
-		 //printf("pDevicePacket->m_volume = %.5f\n", pDevicePacket->m_volume);
+		// printf("pDevicePacket->m_volume = %.5f\n", pDevicePacket->m_volume);
 	 }
 
 

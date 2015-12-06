@@ -131,6 +131,8 @@ void AnimationRadarFF::VM_draw(float w, float h)
 //--------------------------------------------------------------
 void AnimationRadarFF::onVolumAccumEvent(string deviceId)
 {
+	playSound(deviceId);
+
 	Device* pDevice = getDevice(deviceId);
 	if (pDevice)
 	{

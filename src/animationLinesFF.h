@@ -26,7 +26,7 @@ class AnimationLinesFF : public Animation
         virtual void			VM_update				(float dt);
         virtual void			VM_draw					(float w, float h);
 		virtual void            onNewPacket             (DevicePacket*, string deviceId, float x, float y);
-		virtual	void			onVolumAccumEvent		(string deviceId);
+		virtual	void			emitLine				(string deviceId);
 
  
  	private:

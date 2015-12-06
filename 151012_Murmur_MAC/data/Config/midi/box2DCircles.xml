@@ -1,6 +1,0 @@
-<midi port="0" control="9" property="obj. number"></midi>
-<midi port="0" control="15" property="gravity"></midi>
-<midi port="0" control="23" property="obj. scale"></midi>
-<midi port="0" control="40" property="top wall"></midi>
-<midi port="0" control="42" property="right wall"></midi>
-<midi port="0" control="44" property="left wall"></midi>

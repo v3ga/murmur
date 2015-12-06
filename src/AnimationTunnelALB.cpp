@@ -261,6 +261,8 @@ void AnimationTunnelALB::VM_draw(float w, float h)
 void AnimationTunnelALB::onNewPacket(DevicePacket* pDevicePacket, string deviceId, float x, float y)
 {
     if (pDevicePacket==0) return;
+	
+	accumulateVolume(pDevicePacket->m_volume, deviceId);
 
 
     m_posAnchor.set(x,y);

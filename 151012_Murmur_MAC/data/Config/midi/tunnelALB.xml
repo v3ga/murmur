@@ -1,7 +1,0 @@
-<midi port="1" control="9" property="h2"></midi>
-<midi port="1" control="15" property="left"></midi>
-<midi port="1" control="19" property="right"></midi>
-<midi port="1" control="24" property="w"></midi>
-<midi port="1" control="28" property="speed"></midi>
-<midi port="1" control="39" property="angle"></midi>
-<midi port="1" control="123" property="h1"></midi>

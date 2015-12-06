@@ -1,21 +1,25 @@
 <surface id="main">
     <animations type="cpp">
-<!--
+
   		<animation>gravitatory</animation>
         <animation>video</animation>
         <animation name="box2DCircles"></animation>
 
--->
+
         <animation name="waves"></animation>
         <animation name="particlesMega2"></animation>
-        <animation name="shaderWave"></animation>
+        <animation name="gridsFF"></animation>
         <animation name="agentsFF"></animation>
 
-        <animation name="gridsFF"></animation>
+
+        <animation name="shaderWave"></animation>
+
+
         <animation name="linesFF"></animation>
         <animation name="radarFF"></animation>
         <animation name="tunnelALB"></animation>
-        <animation name="video"></animation>
+<!--        <animation name="video"></animation>
+
         <animation name="empty"></animation>
 
         <animation name="composition">
@@ -65,6 +69,7 @@
 
 
 		</animation>
+-->
     </animations>
 
     <animations type="js" folder="murmur">

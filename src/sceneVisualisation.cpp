@@ -198,6 +198,34 @@ void SceneVisualisation::draw()
 
 
 
+
+
+	
+
+
+	// Surface
+	//glEnable(GL_DEPTH_TEST);
+	
+//	if(ofGetGLRenderer()) ofGetGLRenderer()->disableTextureTarget(GL_TEXTURE_2D);
+
+	// LAME Patch
+	// Silhouettes nodes
+		if (m_listSilhouetteNodes.size()>0)
+		{
+			ofPushStyle();
+			ofPushMatrix();
+			ofEnableAlphaBlending();
+			
+			ofTranslate(0,10000);
+			m_listSilhouetteNodes[0]->draw();
+
+
+	    	ofDisableBlendMode();
+			ofPopMatrix();
+			ofPopStyle();
+		}
+	
+
 	// Grid
 	if (m_bDrawGrid)
 	{
@@ -213,34 +241,6 @@ void SceneVisualisation::draw()
 		ofPopStyle();
 	}
 	
-	// Device nodes
-
-
-	if (m_bDrawDevices)
-	{
-		ofPushStyle();
-	    vector<DeviceNode*>::iterator itDevice = m_listDeviceNodes.begin();
-    	for(; itDevice != m_listDeviceNodes.end(); ++itDevice)
-        	(*itDevice)->draw();
-		ofPopStyle();
-	}
-
-	
-
-	// Silhouettes nodes
-	if (m_bDrawSilhouettes)
-	{
-		ofPushStyle();
-		ofEnableAlphaBlending();
-    	vector<SilhouetteNode*>::iterator itSilhouette = m_listSilhouetteNodes.begin();
-    	for(; itSilhouette != m_listSilhouetteNodes.end(); ++itSilhouette)
-        	(*itSilhouette)->draw();
-    	ofDisableBlendMode();
-		ofPopStyle();
-	}
-	// Surface
-	//glEnable(GL_DEPTH_TEST);
-
 	if (m_bDrawSurfaces)
 	{
 		ofPushStyle();
@@ -252,6 +252,31 @@ void SceneVisualisation::draw()
 
 	}
 
+	
+	// Silhouettes nodes
+	if (m_bDrawSilhouettes)
+	{
+		ofPushStyle();
+		ofEnableAlphaBlending();
+    	vector<SilhouetteNode*>::iterator itSilhouette = m_listSilhouetteNodes.begin();
+    	for(; itSilhouette != m_listSilhouetteNodes.end(); ++itSilhouette)
+        	(*itSilhouette)->draw();
+    	ofDisableBlendMode();
+		ofPopStyle();
+	}
+
+	
+	// Device nodes
+
+
+	if (m_bDrawDevices)
+	{
+		ofPushStyle();
+	    vector<DeviceNode*>::iterator itDevice = m_listDeviceNodes.begin();
+    	for(; itDevice != m_listDeviceNodes.end(); ++itDevice)
+        	(*itDevice)->draw();
+		ofPopStyle();
+	}
 	ofDisableDepthTest();
 
 	//glDisable(GL_DEPTH_TEST);
