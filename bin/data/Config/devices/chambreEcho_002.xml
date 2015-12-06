@@ -7,7 +7,10 @@
         <volHistoryNb>60.000000000</volHistoryNb>
         <volHistoryTh>0.234677419</volHistoryTh>
     </soundInput>
-    <soundOutput></soundOutput>
+    <soundOutput>
+        <speaker>0</speaker>
+        <speaker>1</speaker>
+    </soundOutput>
     <color>
         <enable>1</enable>
         <colorMode_manual_hsb>

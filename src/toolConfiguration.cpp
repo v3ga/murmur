@@ -91,7 +91,7 @@ void toolConfiguration::setup()
 void toolConfiguration::launchDevices()
 {
 //	printf("[testApp::launchDevices]\n");
-	OFAPPLOG->begin("toolConfiguration::::launchDevices");
+	OFAPPLOG->begin("toolConfiguration::launchDevices");
 
 	ofxXmlSettings& settings = GLOBALS->mp_app->m_settings;
 	
