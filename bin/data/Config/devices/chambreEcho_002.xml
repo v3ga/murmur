@@ -2,9 +2,9 @@
     <soundInput>
         <useRawVol>1</useRawVol>
         <mute>0</mute>
-        <volMax>0.062460002</volMax>
+        <volMax>0.057360001</volMax>
         <volMaxMax>0.090000004</volMaxMax>
-        <volHistoryNb>60.000000000</volHistoryNb>
+        <volHistoryNb>142.000000000</volHistoryNb>
         <volHistoryTh>0.234677419</volHistoryTh>
     </soundInput>
     <soundOutput>

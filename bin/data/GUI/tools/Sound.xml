@@ -6,12 +6,12 @@
 <Widget>
     <Kind>4</Kind>
     <Name>vol. main sound</Name>
-    <Value>0.483870953</Value>
+    <Value>0.629032254</Value>
 </Widget>
 <Widget>
     <Kind>22</Kind>
     <Name>Library</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>17</Kind>
@@ -41,7 +41,7 @@
 <Widget>
     <Kind>17</Kind>
     <Name>g2.wav</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>17</Kind>
@@ -56,7 +56,7 @@
 <Widget>
     <Kind>17</Kind>
     <Name>g5.wav</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>17</Kind>
@@ -191,6 +191,11 @@
 <Widget>
     <Kind>17</Kind>
     <Name>m5.wav</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>main.wav</Name>
     <Value>0</Value>
 </Widget>
 <Widget>

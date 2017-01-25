@@ -102,6 +102,8 @@ void AnimationGravitatory::createUICustom()
 //--------------------------------------------------------------
 void AnimationGravitatory::VM_update(float dt)
 {
+	updateUIVolume();
+
 	map< string, vector<ParticleGravitatory*> >::iterator it = m_particlesDevice.begin();
 	for ( ; it != m_particlesDevice.end(); ++it )
 	{
@@ -151,12 +153,14 @@ void AnimationGravitatory::VM_draw(float w, float h)
 //--------------------------------------------------------------
 void AnimationGravitatory::guiEvent(ofxUIEventArgs &e)
 {
-	
+	Animation::guiEvent(e);
 }
 
 //--------------------------------------------------------------
 void AnimationGravitatory::onNewPacket(DevicePacket* pDevicePacket, string deviceId, float x, float y)
 {
+	accumulateVolume(pDevicePacket->m_volume, deviceId);
+
 	if ( m_particlesDevice.find(deviceId) == m_particlesDevice.end())
 		m_particlesDevice[deviceId] = vector<ParticleGravitatory*>();
 

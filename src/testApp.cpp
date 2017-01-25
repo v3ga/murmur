@@ -189,16 +189,25 @@ void testApp::exit()
 	// printf("[testApp::exit()]\n");
 	OFAPPLOG->begin("testApp::exit()");
 	
-	
-	m_soundStreamInput.stop();
+	if (isSimulation)
+	{
+		OFAPPLOG->begin(" - stopping sound stream input");
+		m_soundStreamInput.stop();
+	}
 
     if (mp_surfaceMain)
+	{
+		OFAPPLOG->begin(" - surface main : saving animations properties");
         mp_surfaceMain->saveAnimationsProperties();
+	}
 
+	OFAPPLOG->begin(" - tool manager : saving data");
 	toolManager.saveData();
 
     if (mp_deviceManager)
 	{
+		OFAPPLOG->begin(" - device manager : saving devices xml in Config/devices/");
+
         mp_deviceManager->saveDevicesXML("Config/devices/");
 		if (m_bTurnoffDevices)
 		{

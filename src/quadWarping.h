@@ -57,6 +57,7 @@ class quadWarping
 		void					windowResized		(int wold, int hold,int w, int h);
 
 		float*					findTransformMatrix	(const ofRectangle& src);
+		ofMatrix4x4				getTransformMatrix	(const ofRectangle& src, bool bInverse=false);
 
 		quadWarpingHandle		m_handles[4];
 

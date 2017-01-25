@@ -1,0 +1,32 @@
+<keyframes>
+    <key>
+        <flag>shaderwave</flag>
+        <time>00:00:30:555</time>
+        <value>0.725000024</value>
+    </key>
+    <key>
+        <flag>boxfloat</flag>
+        <time>00:01:00:659</time>
+        <value>0.324999988</value>
+    </key>
+    <key>
+        <flag>albissy</flag>
+        <time>00:01:30:763</time>
+        <value>0.875000000</value>
+    </key>
+    <key>
+        <flag>particles</flag>
+        <time>00:02:33:057</time>
+        <value>0.149999976</value>
+    </key>
+    <key>
+        <flag>boxtombe</flag>
+        <time>00:03:03:757</time>
+        <value>0.324999988</value>
+    </key>
+    <key>
+        <flag>boxfloat</flag>
+        <time>00:04:05:157</time>
+        <value>0.274999976</value>
+    </key>
+</keyframes>

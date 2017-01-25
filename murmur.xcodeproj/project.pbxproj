@@ -658,7 +658,6 @@
 		F951EC051963576600056B2A /* ofxHomographyHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxHomographyHelper.h; sourceTree = "<group>"; };
 		F951EC07196359E600056B2A /* quadWarping.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = quadWarping.cpp; sourceTree = "<group>"; };
 		F951EC08196359E600056B2A /* quadWarping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = quadWarping.h; sourceTree = "<group>"; };
-		F964768218A2575F0061C848 /* waves2.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = waves2.js; sourceTree = "<group>"; };
 		F964768318A25BDE0061C848 /* SoundPlayer.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = SoundPlayer.js; sourceTree = "<group>"; };
 		F964768418A25BDE0061C848 /* VolumeAccum.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = VolumeAccum.js; sourceTree = "<group>"; };
 		F964768618A25C900061C848 /* surfacemain.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = surfacemain.xml; sourceTree = "<group>"; };
@@ -926,6 +925,19 @@
 		F9AB0C081941B0DE0020D78A /* toolVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = toolVideo.h; sourceTree = "<group>"; };
 		F9AB0C0F1947A0FE0020D78A /* Sample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sample.cpp; sourceTree = "<group>"; };
 		F9AB0C101947A0FE0020D78A /* Sample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sample.h; sourceTree = "<group>"; };
+		F9AE6F3B1DFAFA4F00D21085 /* chambreEcho_001.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = chambreEcho_001.xml; sourceTree = "<group>"; };
+		F9AE6F3C1DFAFA4F00D21085 /* chambreEcho_002.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = chambreEcho_002.xml; sourceTree = "<group>"; };
+		F9AE6F3D1DFAFA4F00D21085 /* chambreEcho_006.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = chambreEcho_006.xml; sourceTree = "<group>"; };
+		F9AE6F3E1DFAFA4F00D21085 /* deviceEchoSimulator01.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = deviceEchoSimulator01.xml; sourceTree = "<group>"; };
+		F9AE6F3F1DFAFA4F00D21085 /* deviceEchoSimulator02.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = deviceEchoSimulator02.xml; sourceTree = "<group>"; };
+		F9AE6F401DFAFA4F00D21085 /* deviceEchoSimulator03.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = deviceEchoSimulator03.xml; sourceTree = "<group>"; };
+		F9AE6F411DFAFA4F00D21085 /* deviceEchoSimulator04.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = deviceEchoSimulator04.xml; sourceTree = "<group>"; };
+		F9AE6F421DFAFA4F00D21085 /* deviceEchoSimulator05.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = deviceEchoSimulator05.xml; sourceTree = "<group>"; };
+		F9AE6F431DFAFA4F00D21085 /* deviceEchoSimulator06.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = deviceEchoSimulator06.xml; sourceTree = "<group>"; };
+		F9AE6F441DFAFA4F00D21085 /* deviceEchoSimulator07.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = deviceEchoSimulator07.xml; sourceTree = "<group>"; };
+		F9AE6F451DFAFA4F00D21085 /* deviceEchoSimulator08.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = deviceEchoSimulator08.xml; sourceTree = "<group>"; };
+		F9AE6F461DFAFA4F00D21085 /* deviceEchoSimulator09.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = deviceEchoSimulator09.xml; sourceTree = "<group>"; };
+		F9AE6F471DFAFA4F00D21085 /* deviceEchoSimulator10.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = deviceEchoSimulator10.xml; sourceTree = "<group>"; };
 		F9B803401B31926A00F12500 /* readme */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme; sourceTree = "<group>"; };
 		F9B803411B31926A00F12500 /* RtMidi.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RtMidi.cpp; sourceTree = "<group>"; };
 		F9B803421B31926A00F12500 /* RtMidi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RtMidi.h; sourceTree = "<group>"; };
@@ -1974,14 +1986,6 @@
 			path = ../../../addons/ofxHomographyHelper;
 			sourceTree = "<group>";
 		};
-		F964768118A2575F0061C848 /* murmur */ = {
-			isa = PBXGroup;
-			children = (
-				F964768218A2575F0061C848 /* waves2.js */,
-			);
-			path = murmur;
-			sourceTree = "<group>";
-		};
 		F964768518A25C900061C848 /* surfaces */ = {
 			isa = PBXGroup;
 			children = (
@@ -2259,7 +2263,6 @@
 			isa = PBXGroup;
 			children = (
 				F9E206FD1BC7AD1100E4E4A3 /* timeline.js */,
-				F964768118A2575F0061C848 /* murmur */,
 				F9BC6AD21743BA7E00633C5C /* libraries */,
 			);
 			name = Scripts;
@@ -2660,6 +2663,27 @@
 			name = Tools;
 			sourceTree = "<group>";
 		};
+		F9AE6F3A1DFAFA4F00D21085 /* devices */ = {
+			isa = PBXGroup;
+			children = (
+				F9AE6F3B1DFAFA4F00D21085 /* chambreEcho_001.xml */,
+				F9AE6F3C1DFAFA4F00D21085 /* chambreEcho_002.xml */,
+				F9AE6F3D1DFAFA4F00D21085 /* chambreEcho_006.xml */,
+				F9AE6F3E1DFAFA4F00D21085 /* deviceEchoSimulator01.xml */,
+				F9AE6F3F1DFAFA4F00D21085 /* deviceEchoSimulator02.xml */,
+				F9AE6F401DFAFA4F00D21085 /* deviceEchoSimulator03.xml */,
+				F9AE6F411DFAFA4F00D21085 /* deviceEchoSimulator04.xml */,
+				F9AE6F421DFAFA4F00D21085 /* deviceEchoSimulator05.xml */,
+				F9AE6F431DFAFA4F00D21085 /* deviceEchoSimulator06.xml */,
+				F9AE6F441DFAFA4F00D21085 /* deviceEchoSimulator07.xml */,
+				F9AE6F451DFAFA4F00D21085 /* deviceEchoSimulator08.xml */,
+				F9AE6F461DFAFA4F00D21085 /* deviceEchoSimulator09.xml */,
+				F9AE6F471DFAFA4F00D21085 /* deviceEchoSimulator10.xml */,
+			);
+			name = devices;
+			path = Config/devices;
+			sourceTree = "<group>";
+		};
 		F9B803071B31926A00F12500 /* ofxMidi */ = {
 			isa = PBXGroup;
 			children = (
@@ -2744,6 +2768,7 @@
 			isa = PBXGroup;
 			children = (
 				F96DE59A1A207229007AD329 /* scene.xml */,
+				F9AE6F3A1DFAFA4F00D21085 /* devices */,
 				F964768518A25C900061C848 /* surfaces */,
 			);
 			name = Config;

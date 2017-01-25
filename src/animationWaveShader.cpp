@@ -40,7 +40,7 @@ void ShaderWave::setSize(int w)
 
 	if(m_imgSoundInput.width != w)
 	{
-		m_imgSoundInput.getPixelsRef().allocate(w,1,1);
+		m_imgSoundInput.getPixelsRef().allocate(w,1,3);
 		ofFloatPixels& data = m_imgSoundInput.getPixelsRef();
 
 		int nb = data.size();
@@ -48,9 +48,9 @@ void ShaderWave::setSize(int w)
 		nb /= nbChannels;
         for (int i=nb-1;i>=0;i--)
 		{
-        	data[i*nbChannels] 		= 0.0f;
-           // data[i*nbChannels+1] 	= 0.0f;
-           // data[i*nbChannels+2] 	= 0.0f;
+		   data[i*nbChannels] 		= 0.0f;
+           data[i*nbChannels+1] 	= 0.0f;
+           data[i*nbChannels+2] 	= 0.0f;
 		}
 	}
 }
@@ -272,13 +272,13 @@ void AnimationShaderWave::onNewPacket(DevicePacket* pDevicePacket, string device
         	for (int i=nb-1;i>=1;i--)
 			{
             	data[i*nbChannels] 		= data[(i-1)*nbChannels];
-            	//data[i*nbChannels+1] 	= data[(i-1)*nbChannels+1];
-            	//data[i*nbChannels+2] 	= data[(i-1)*nbChannels+2];
+            	data[i*nbChannels+1] 	= data[(i-1)*nbChannels+1];
+            	data[i*nbChannels+2] 	= data[(i-1)*nbChannels+2];
 			}
 			
         	data[0] = pShaderWave->m_color.r * pDevicePacket->m_volume;
-        	//data[1] = pShaderWave->m_color.g * pDevicePacket->m_volume;
-        	//data[2] = pShaderWave->m_color.b * pDevicePacket->m_volume;
+        	data[1] = pShaderWave->m_color.g * pDevicePacket->m_volume;
+        	data[2] = pShaderWave->m_color.b * pDevicePacket->m_volume;
 
         	//pShaderWave->m_imgSoundInput.update();
         	pShaderWave->m_bUpdateTexture = true;

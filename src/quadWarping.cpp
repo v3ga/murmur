@@ -298,5 +298,34 @@ float* quadWarping::findTransformMatrix(const ofRectangle& rect)
 	return m_matrixTransform;
 }
 
+ofMatrix4x4 quadWarping::getTransformMatrix(const ofRectangle& rect, bool bInverse)
+{
+	float src[4][2];
+	src[0][0] = 0;
+	src[0][1] = 0;
+	src[1][0] = 0 + rect.width;
+	src[1][1] = 0;
+	src[2][0] = 0 + rect.width;
+	src[2][1] = 0 + rect.height;
+	src[3][0] = 0;
+	src[3][1] = 0 + rect.height;
+
+
+	float dst[4][2];
+	dst[0][0] = m_handles[0].x;
+	dst[0][1] = m_handles[0].y;
+	dst[1][0] = m_handles[1].x;
+	dst[1][1] = m_handles[1].y;
+	dst[2][0] = m_handles[2].x;
+	dst[2][1] = m_handles[2].y;
+	dst[3][0] = m_handles[3].x;
+	dst[3][1] = m_handles[3].y;
+	
+	if (bInverse)
+		return ofxHomographyHelper::findHomography(dst,src);
+	return ofxHomographyHelper::findHomography(src,dst);
+}
+
+
 
 

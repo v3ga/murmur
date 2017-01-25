@@ -74,5 +74,8 @@ class toolSurfaces : public tool, public midiInterface
 
 		string					getQuadWarpingPathFile		();
 		void					computeRectSurfaceOff		();
+ 
+ 
+		ofVec4f					m_vecTemp, m_vecTempRect;
 
 };

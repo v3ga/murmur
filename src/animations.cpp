@@ -48,7 +48,7 @@ void AnimationSoundPlayer::playRandom(vector<int>& listSpeakers)
 //--------------------------------------------------------------
 void AnimationSoundPlayer::playRandom(int* speakers, int nbSpeakers)
 {
-	// ofLog() << "playing random sounds with " << m_listSoundNames.size() << " sounds";
+	ofLog() << "playing random sounds with " << m_listSoundNames.size() << " sounds";
 
     if (m_listSoundNames.size()>=2)
     {
@@ -795,6 +795,7 @@ void Animation::updateUIVolume()
 				VolumeAccum* pVolumeAccum = m_mapDeviceVolumAccum[pDeviceCurrent->m_id];
 				if (pVolumeAccum && pVolumeAccum->m_valueHistory.size()>0)
 				{
+				
 					mp_UIVolumeTh->setBuffer( pVolumeAccum->m_valueHistory );
 					mp_UIVolumeTh->setValue( pVolumeAccum->m_valueMean );
 
@@ -906,7 +907,7 @@ void Animation::accumulateVolume(float volume, string deviceId)
 		pVolumeAccum->setTriggerInCb( sOnVolumAccumEvent, (void*) this);
 		m_mapDeviceVolumAccum[deviceId] = pVolumeAccum;
 		
-		 ofLog() << "creating volumeAccum instance for "<<deviceId;
+		 // ofLog() << "creating volumeAccum instance for "<<deviceId;
 	}
 	else{
 		pVolumeAccum = it->second;

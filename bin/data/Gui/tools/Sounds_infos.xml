@@ -1,5 +1,5 @@
 <sounds>
-    <sound file="b1.wav" tags="particlesMega2;waves;linesFF"></sound>
+    <sound file="b1.wav" tags="particlesMega2;waves;linesFF;tunnelALB"></sound>
     <sound file="b2.wav" tags="particlesMega2"></sound>
     <sound file="b3.wav" tags="particlesMega2"></sound>
     <sound file="b4.wav" tags="particlesMega2"></sound>
@@ -17,8 +17,8 @@
     <sound file="i3.wav" tags="orbit"></sound>
     <sound file="i4.wav" tags="orbit"></sound>
     <sound file="i5.wav" tags="orbit"></sound>
-    <sound file="k1.wav" tags="particlesMega2"></sound>
-    <sound file="k2.wav" tags="particlesMega2"></sound>
+    <sound file="k1.wav" tags="particlesMega2;gravitatory"></sound>
+    <sound file="k2.wav" tags="particlesMega2;gravitatory"></sound>
     <sound file="k3.wav" tags="particlesMega2"></sound>
     <sound file="k4.wav" tags="particlesMega2"></sound>
     <sound file="k5.wav" tags="particlesMega2"></sound>
@@ -35,14 +35,15 @@
     <sound file="m2.wav" tags="box2DCircles"></sound>
     <sound file="m4.wav" tags="box2DCircles"></sound>
     <sound file="m5.wav" tags="box2DCircles"></sound>
-    <sound file="o1.wav" tags=""></sound>
-    <sound file="o2.wav" tags=""></sound>
-    <sound file="o3.wav" tags=""></sound>
-    <sound file="o4.wav" tags=""></sound>
-    <sound file="o5.wav" tags=""></sound>
-    <sound file="o6.wav" tags=""></sound>
-    <sound file="o7.wav" tags=""></sound>
-    <sound file="o8.wav" tags=""></sound>
+    <sound file="main.wav" tags=""></sound>
+    <sound file="o1.wav" tags="tunnelALB"></sound>
+    <sound file="o2.wav" tags="tunnelALB"></sound>
+    <sound file="o3.wav" tags="tunnelALB"></sound>
+    <sound file="o4.wav" tags="tunnelALB"></sound>
+    <sound file="o5.wav" tags="tunnelALB"></sound>
+    <sound file="o6.wav" tags="tunnelALB"></sound>
+    <sound file="o7.wav" tags="tunnelALB"></sound>
+    <sound file="o8.wav" tags="tunnelALB"></sound>
     <sound file="p1.wav" tags="orbit"></sound>
     <sound file="p2.wav" tags="orbit"></sound>
     <sound file="p3.wav" tags="orbit"></sound>

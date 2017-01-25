@@ -127,7 +127,6 @@ void AnimationLinesFF::emitLine(string deviceId)
 			
 			m_lines.push_back(pLine);
 			
-			playSound(deviceId);
 
 		}
 	}

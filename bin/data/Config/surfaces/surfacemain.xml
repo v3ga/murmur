@@ -1,8 +1,7 @@
 <surface id="main">
     <animations type="cpp">
 
-  		<animation>gravitatory</animation>
-        <animation>video</animation>
+  		<animation name="gravitatory"></animation>
         <animation name="box2DCircles"></animation>
 
 
@@ -20,6 +19,7 @@
         <animation name="tunnelALB"></animation>
 <!--        <animation name="video"></animation>
 
+        <animation>video</animation>
         <animation name="empty"></animation>
 
         <animation name="composition">

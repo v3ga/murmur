@@ -116,22 +116,22 @@
 <Widget>
     <Kind>4</Kind>
     <Name>amp. attraction</Name>
-    <Value>45.105770111</Value>
+    <Value>33.048076630</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>amp. repulsion</Name>
-    <Value>43.201923370</Value>
+    <Value>60.019229889</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>radius repulsion</Name>
-    <Value>40.000000000</Value>
+    <Value>146.666671753</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>particles size</Name>
-    <Value>4.782051086</Value>
+    <Value>5.211538315</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>

@@ -44,7 +44,7 @@ Device* oscReceiver::discoverDevice(string id, int nbLeds)
 		   // Create a node in visualisation scene
 		   Globals::instance()->mp_app->createDeviceNodeInScene(pDeviceEcho);
 	   }
-	   OFAPPLOG->end();
+	   //OFAPPLOG->end();
    }
    return pDevice;
 }
@@ -59,6 +59,9 @@ void oscReceiver::update()
 		while(getNextMessage(&m_oscMessage))
 		{
             int indexArg = 0;
+
+			// OFAPPLOG->println(" - osc message address is "+m_oscMessage.getAddress() );
+
 			
 			LOG_MESSAGE_OSC(m_oscMessage,true);
 
@@ -178,9 +181,11 @@ void oscReceiver::update()
 				string deviceId = m_oscMessage.getArgAsString(indexArg++);
 				int deviceNbLeds = m_oscMessage.getArgAsInt32(indexArg++);
 
-                Device* pDevice = discoverDevice(deviceId, deviceNbLeds);
-				if (pDevice)
-					pDevice->onReceivePacketBegin();
+                Device* pDeviceDiscover = discoverDevice(deviceId, deviceNbLeds);
+				if (pDeviceDiscover)
+					pDeviceDiscover->onReceivePacketBegin();
+				
+
 			}
            else
             if (m_oscMessage.getAddress() == OSC_ADDRESS_SEND_PACKETS_END)

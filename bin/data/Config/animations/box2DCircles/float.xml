@@ -1,7 +1,7 @@
 <Widget>
     <Kind>4</Kind>
     <Name>volValuesMeanTh</Name>
-    <Value>0.536363661</Value>
+    <Value>0.127272725</Value>
 </Widget>
 <Widget>
     <Kind>12</Kind>
@@ -101,7 +101,7 @@
 <Widget>
     <Kind>2</Kind>
     <Name>colorFromDevice</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>

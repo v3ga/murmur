@@ -1,10 +1,10 @@
-<device id="chambreEcho_001">
+<device id="chambreEcho_006">
     <soundInput>
         <useRawVol>0</useRawVol>
         <mute>0</mute>
         <volMax>0.168800011</volMax>
         <volMaxMax>0.180000007</volMaxMax>
-        <volHistoryNb>79.000000000</volHistoryNb>
+        <volHistoryNb>57.000000000</volHistoryNb>
         <volHistoryTh>0.152419358</volHistoryTh>
     </soundInput>
     <soundOutput>
