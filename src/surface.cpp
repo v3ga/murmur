@@ -416,13 +416,13 @@ void Surface::drawRenderTarget()
 	     ofSetColor(255,255,255,255);
 		 
 		 int nbGrids = 30;
-		 float stepx = m_fbo.getWidth() / nbGrids;
+		 float stepx = m_fbo.getWidth() / (float)nbGrids;
 		 for (float x=0; x<=m_fbo.getWidth(); x+=stepx)
 		 {
 			ofLine(x,0,x,m_fbo.getHeight());
 		 }
 
-		 float stepy = m_fbo.getHeight() / nbGrids;
+		 float stepy = stepx; // m_fbo.getHeight() / nbGrids;
 		 for (float y=0; y<=m_fbo.getHeight(); y+=stepy)
 		 {
 			ofLine(0,y,m_fbo.getWidth(),y);
@@ -431,7 +431,7 @@ void Surface::drawRenderTarget()
 	     ofSetColor(0,255,0,255);
 		 ofNoFill();
 //		 ofSetLineWidth(10);
-		 ofCircle(0.5*m_fbo.getWidth(),0.5*m_fbo.getHeight(), 0.45*m_fbo.getWidth());
+		 ofCircle(0.5*m_fbo.getWidth(),0.5*m_fbo.getHeight(), 0.5*min(m_fbo.getWidth(),m_fbo.getHeight()));
 
 		ofPopStyle();
 

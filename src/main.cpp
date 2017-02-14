@@ -1,5 +1,5 @@
-#include "ofMain.h"
 #include "testApp.h"
+#include "globals.h"
 
 #if MURMUR_MULTI_WINDOWS
 	#include "ofxMultiGLFWWindow.h"

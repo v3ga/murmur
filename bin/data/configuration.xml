@@ -1,7 +1,7 @@
 <murmur>
 	<simulator>
         <!-- Activate or not simulation -->
-        <enable>0</enable>
+        <enable>1</enable>
 
         <!-- Sound input for simulators -->
         <soundInput>
@@ -86,6 +86,7 @@
 	   <!-- Windows -->
 	   <windows>
 		   <surface>
+			   <monitor>1</monitor>
 			   <x>1024</x>
 			   <y>0</y>
 			   <w>800</w>

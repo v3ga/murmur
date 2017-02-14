@@ -21,6 +21,7 @@
 class testApp;
 class DeviceManager;
 class DeviceInfoManager;
+class ofxMultiGLFWWindow;
 class Globals
 {
 	public:

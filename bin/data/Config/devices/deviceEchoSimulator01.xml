@@ -2,9 +2,9 @@
     <soundInput>
         <useRawVol>1</useRawVol>
         <mute>0</mute>
-        <volMax>0.023499999</volMax>
+        <volMax>0.026459999</volMax>
         <volMaxMax>0.189999998</volMaxMax>
-        <volHistoryNb>50.000000000</volHistoryNb>
+        <volHistoryNb>250.000000000</volHistoryNb>
         <volHistoryTh>0.016935484</volHistoryTh>
     </soundInput>
     <soundOutput>
@@ -34,7 +34,7 @@
     <sampleVolStandby>0.332258075</sampleVolStandby>
     <enableStandby>0</enableStandby>
     <surface id="main">
-        <xNorm>0.831666648</xNorm>
-        <yNorm>0.773333311</yNorm>
+        <xNorm>0.736666679</xNorm>
+        <yNorm>0.173333332</yNorm>
     </surface>
 </device>

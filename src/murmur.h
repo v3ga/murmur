@@ -11,6 +11,8 @@
 #include "ofMain.h"
 #if defined(TARGET_OSX)
 	#define MURMUR_DEFINE_SYPHON 1
+	#define MURMUR_MULTI_WINDOWS 1
 #else
 	#define MURMUR_DEFINE_SYPHON 0
 #endif
+

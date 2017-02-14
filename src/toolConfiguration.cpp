@@ -10,6 +10,9 @@
 #include "globals.h"
 #include "testApp.h"
 #include "utils.h"
+#if MURMUR_MULTI_WINDOWS
+#include "ofxMultiGLFWWindow.h"
+#endif
 
 //--------------------------------------------------------------
 toolConfiguration::toolConfiguration(toolManager* parent) : tool("Configuration", parent)
@@ -158,7 +161,18 @@ void toolConfiguration::launchMadMapper()
 void toolConfiguration::setFullscreen(bool is)
 {
 	m_isFullscreen = is;
+
+	#if MURMUR_MULTI_WINDOWS
+	ofxMultiGLFWWindow* glfw = (ofxMultiGLFWWindow*) ofGetWindowPtr();
+	if (glfw)
+	{
+		glfw->setWindow(glfw->windows.at(1));
+		glfw->setFullscreen(m_isFullscreen);
+	}
+	#else
 	ofSetFullscreen(m_isFullscreen);
+	#endif
+	
 	updateUI();
 }
 
@@ -221,7 +235,8 @@ void toolConfiguration::handleEvents(ofxUIEventArgs& e)
 	if (name == "Fullscreen")
 	{
 		m_isFullscreen = ((ofxUIToggle *) e.widget)->getValue();
-		ofSetFullscreen( m_isFullscreen );
+		//ofSetFullscreen( m_isFullscreen );
+		setFullscreen(m_isFullscreen);
 		OFAPPLOG->println("setting fullscreen="+ofToString(m_isFullscreen));
 	}
 	else

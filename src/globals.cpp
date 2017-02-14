@@ -12,7 +12,6 @@
 #include "device.h"
 #include "toolNetwork.h"
 
-
 //--------------------------------------------------------------
 Globals* Globals::smp_instance = 0;
 

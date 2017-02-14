@@ -6,37 +6,37 @@
 <Widget>
     <Kind>12</Kind>
     <Name>hSurface</Name>
-    <Value>6</Value>
+    <Value>3</Value>
 </Widget>
 <Widget>
     <Kind>12</Kind>
     <Name>wFboSurface</Name>
-    <Value>1000</Value>
+    <Value>1200</Value>
 </Widget>
 <Widget>
     <Kind>12</Kind>
     <Name>hFboSurface</Name>
-    <Value>1000</Value>
+    <Value>600</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>
     <Name>quality</Name>
-    <Value>0</Value>
+    <Value>3</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>alpha</Name>
-    <Value>0.000000000</Value>
+    <Value>0.581250012</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
     <Name>target</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>target line w</Name>
-    <Value>7.090000153</Value>
+    <Value>4.920000076</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -56,7 +56,7 @@
 <Widget>
     <Kind>2</Kind>
     <Name>quad warping</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>

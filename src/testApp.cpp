@@ -59,6 +59,7 @@ void testApp::setup()
     ofSetWindowShape(1024, 900);
     ofSetWindowTitle("Murmur");
 
+	int monitor =  m_settings.getValue("murmur:windows:surface:monitor", 0);
 	int xSurface = m_settings.getValue("murmur:windows:surface:x", 0);
 	int ySurface = m_settings.getValue("murmur:windows:surface:y", 0);
 	int wSurface = m_settings.getValue("murmur:windows:surface:w", 800);
@@ -72,7 +73,15 @@ void testApp::setup()
 
     mp_glfw->setWindow(mp_windows->at(1));    // set window pointer
     mp_glfw->initializeWindow();       // initialize events (mouse, keyboard, etc) on window (optional)
-    ofSetWindowPosition(xSurface, ySurface);    // business as usual...
+
+	int nbMonitors = mp_glfw->getMonitorCount();
+	ofRectangle monitorRect = mp_glfw->getMonitorRect(0);
+	if (monitor > 0 && monitor < nbMonitors)
+	{
+		monitorRect = mp_glfw->getMonitorRect(monitor);
+	}
+
+    ofSetWindowPosition(monitorRect.x+xSurface, monitorRect.y+ySurface);    // business as usual...
     ofSetWindowShape(wSurface, hSurface);
     ofSetWindowTitle("Surface");
 

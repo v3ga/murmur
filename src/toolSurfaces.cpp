@@ -229,20 +229,20 @@ void toolSurfaces::draw()
 	{
 		if (mp_surfaceMain)
 		{
+			ofClear(0);
 			ofPushMatrix();
-			ofMultMatrix( m_quadWarping.findTransformMatrix(m_rectSurfaceOff) );
-			mp_surfaceMain->getOffscreen().draw(0,0,m_rectSurfaceOff.getWidth(),m_rectSurfaceOff.getHeight());
-
-//			ofCircle(0.5f*m_rectSurfaceOff.getWidth(),0.5f*m_rectSurfaceOff.getHeight(),10);
-
+				ofMultMatrix( m_quadWarping.findTransformMatrix(m_rectSurfaceOff) );
+				mp_surfaceMain->getOffscreen().draw(0,0,m_rectSurfaceOff.getWidth(),m_rectSurfaceOff.getHeight());
 			ofPopMatrix();
 
-			ofMatrix4x4 mInv =  m_quadWarping.getTransformMatrix( m_rectSurfaceOff, true);
+
+/*			ofMatrix4x4 mInv =  m_quadWarping.getTransformMatrix( m_rectSurfaceOff, true);
 			
 			m_vecTemp.set( m_quadWarping.m_handles[3].x, m_quadWarping.m_handles[3].y,0,1 );
 			
 			m_vecTempRect = mInv*m_vecTemp;
 			ofCircle(m_vecTempRect.x /m_vecTempRect.w ,m_vecTempRect.y/m_vecTempRect.w, 15);
+*/
 
 
 			if (m_isDrawHandles)
