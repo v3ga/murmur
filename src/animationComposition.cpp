@@ -148,16 +148,7 @@ void AnimationComposition::loadConfiguration(string filename)
 //--------------------------------------------------------------
 void AnimationComposition::setRenderNormal(bool is)
 {
-	//if (is == m_bRenderNormal) return;
-	
 	m_bRenderNormal = is;
-
-/*
-	for (int i=0;i<m_animations.size(); i++){
-		m_animations[i]->setDrawBackground(!is);
-	}
-
-*/
 
 	Surface* pSurface = GLOBALS->getSurfaceMain();
 	if (pSurface)
@@ -408,8 +399,6 @@ void AnimationComposition::onNewPacket(DevicePacket* pDevice, string deviceId, f
 void AnimationComposition::onSurfaceRenderOffscreen(Surface* pSurface, AnimationComposition* pThis)
 {
    ofFbo& fboFinal = pSurface->getOffscreen();
-
-   //ofLog() << pThis->m_animations.size();
 
    if (pThis->m_animations.size()==2 && pThis->m_animations[0] && pThis->m_animations[1] && pThis->m_fboAnimation1.isAllocated() && pThis->m_fboAnimation2.isAllocated())
    {

@@ -25,6 +25,7 @@ toolDevices::toolDevices(toolManager* parent, DeviceManager* manager) : tool("De
 	mp_toggleDeviceUseRawVol = 0;
 	mp_toggleDeviceMute = 0;
 	mp_sliderDeviceVolMax = 0;
+	mp_teDeviceVolMaxMin = 0;
 	mp_teDeviceVolMaxMax = 0;
 	mp_sliderDeviceVolHistorySize = 0;
 	mp_toggleDeviceEnableStandby = 0;
@@ -147,7 +148,7 @@ void toolDevices::createControlsCustomFinalize()
 	 volMaxMax = uiConfig.getValue("volMax:max", 1.0f);
 	}
 
-	 float widthDefault = 320;
+	 float widthDefault = 400;
 	 float dim = 16;
 	 ofxUIWidgetFontType fontType = OFX_UI_FONT_SMALL;
 
@@ -177,8 +178,10 @@ void toolDevices::createControlsCustomFinalize()
 	}
  
 	mp_toggleDeviceUseRawVol = new ofxUIToggle("Use raw volume", false, dim,dim);
-    mp_sliderDeviceVolMax = new ofxUISlider("Vol. max", 0.005f, volMaxMax, 0.02f, widthDefault-70, dim );
-	mp_teDeviceVolMaxMax = new ofxUITextInput("Vol. max max", "0.04", 60 );
+    mp_sliderDeviceVolMax = new ofxUISlider("Vol. max", 0.005f, volMaxMax, 0.02f, widthDefault-90, dim );
+	mp_teDeviceVolMaxMin = new ofxUITextInput("Vol. max min", "0.00", 40 );
+	mp_teDeviceVolMaxMax = new ofxUITextInput("Vol. max max", "0.04", 40 );
+	mp_teDeviceVolMaxMin->setAutoClear(false);
 	mp_teDeviceVolMaxMax->setAutoClear(false);
     mp_sliderDeviceVolHistorySize = new ofxUISlider("Vol. history size", 50, 500, 400, widthDefault-10, dim );
     mp_toggleDeviceEnableStandby = new ofxUIToggle("Enable standby", true, dim, dim);
@@ -186,7 +189,8 @@ void toolDevices::createControlsCustomFinalize()
     mp_sliderDeviceTimeStandby = new ofxUISlider("Time standby", 5.0f, 60.0f, 10.0f, widthDefault-10, dim );
 	mp_sliderDeviceSampleVolStandby = new ofxUISlider( "Sample vol. standby", 0.0f, 1.0f, 0.35f, widthDefault-10, dim );
  
-	mp_canvasDevice->addWidgetDown(mp_sliderDeviceVolMax);
+	mp_canvasDevice->addWidgetDown(mp_teDeviceVolMaxMin);
+	mp_canvasDevice->addWidgetRight(mp_sliderDeviceVolMax);
 	mp_canvasDevice->addWidgetRight(mp_teDeviceVolMaxMax);
 //    mp_canvasDevice->addWidgetDown(new ofxUISpacer(widthDefault, 1));
 	mp_canvasDevice->addWidgetDown(mp_sliderDeviceVolHistorySize);
@@ -288,6 +292,7 @@ void toolDevices::createControlsCustomFinalize()
 			mp_canvasDevice->addWidgetRight(pSpeakerToggle);
 	}
 	
+	mp_sliderDeviceVolMax->setLabelPrecision(4);
 
 
 	mp_canvasDevice->autoSizeToFitWidgets();
@@ -400,6 +405,7 @@ void toolDevices::updateDeviceUI(Device* pDevice)
     {
 		if (mp_toggleDeviceUseRawVol) mp_toggleDeviceUseRawVol->setValue( pDevice->getSoundInputUseRawVolume() );
 		if (mp_toggleDeviceMute) mp_toggleDeviceMute->setValue( pDevice->getSoundInputMute() );
+		if (mp_teDeviceVolMaxMin) mp_teDeviceVolMaxMin->setTextString( ofToString( pDevice->getSoundInputVolumeMaxMin() ) );
 		if (mp_teDeviceVolMaxMax) mp_teDeviceVolMaxMax->setTextString( ofToString( pDevice->getSoundInputVolumeMaxMax() ) );
 		if (mp_sliderDeviceVolMax)
 		{
@@ -484,6 +490,18 @@ void toolDevices::handleEvents(ofxUIEventArgs& e)
 	{
         if (pDeviceCurrent)
             pDeviceCurrent->setSoundInputUseRawVolume ( e.getToggle()->getValue() );
+	}
+    else if (name == "Vol. max min")
+	{
+		int triggerType  = mp_teDeviceVolMaxMin->getInputTriggerType();
+		if (triggerType == OFX_UI_TEXTINPUT_ON_ENTER && mp_sliderDeviceVolMax)
+		{
+			float min = ofToFloat(mp_teDeviceVolMaxMin->getTextString());
+			mp_sliderDeviceVolMax->setMin( min);
+
+	        if (pDeviceCurrent)
+    	        pDeviceCurrent->setSoundInputVolumeMaxMin( min );
+		}
 	}
     else if (name == "Vol. max max")
 	{
@@ -599,12 +617,6 @@ void toolDevices::handleEvents(ofxUIEventArgs& e)
 			pDeviceCurrent->setBPMEnable( e.getToggle()->getValue() );
 		}
 	}
-
-
-	
-
-	
-	
 	else
 	{
 		if (pDeviceCurrent)
@@ -634,7 +646,7 @@ bool toolDevices::keyPressed(int key)
 {
  	int nbDevices = mp_deviceManager->getDevicesNb();
  
-	if (key == OF_KEY_LEFT)
+	if (key == OF_KEY_UP)
 	{
 		if (nbDevices>0)
 		{
@@ -642,7 +654,7 @@ bool toolDevices::keyPressed(int key)
 			return true;
   		}
 	}
-  	else if (key == OF_KEY_RIGHT)
+  	else if (key == OF_KEY_DOWN)
   	{
 		if (nbDevices>0)
 		{

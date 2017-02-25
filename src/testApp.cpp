@@ -42,6 +42,24 @@ void testApp::setup()
     isViewSimulation = true;
     isSimulation =  simulator == 1 ? true : false;
 	m_bTurnoffDevices = false;
+	m_bRebootDevices = false;
+	
+	// Turn off device
+	m_bTurnoff = m_settings.getAttribute("murmur:turnoff", "enable", 0) > 0 ? true : false;
+	
+	
+	string strTurnoff = m_settings.getValue("murmur:turnoff", "23:59:59");
+	vector <string> strTurnoffParts = ofSplitString(strTurnoff, ":");
+	if (strTurnoffParts.size() == 3)
+	{
+		m_hourTurnoff = ofToFloat( strTurnoffParts[0] );
+		m_mnTurnoff = ofToFloat( strTurnoffParts[1] );
+		m_secondTurnoff = ofToFloat( strTurnoffParts[2] );
+	}
+	else
+	{
+		m_bTurnoff = false;
+	}
  
     // Globals
     Globals::instance()->mp_app = this;
@@ -66,10 +84,11 @@ void testApp::setup()
 	int hSurface = m_settings.getValue("murmur:windows:surface:h", 600);
 	
 	m_bTurnoffDevices = m_settings.getValue("murmur:turnoffDevices",0) > 0 ? true : false;
+	m_bRebootDevices = ofToInt(m_settings.getAttribute("murmur:turnoffDevices", "reboot", "0")) > 0 ? true : false;
+
 
 	OFAPPLOG->println(" - window surface ("+ofToString(xSurface)+","+ofToString(ySurface)+","+ofToString(wSurface)+","+ofToString(hSurface)+")");
-	OFAPPLOG->println(" - turnoff devices =  "+ofToString(m_bTurnoffDevices));
-
+	OFAPPLOG->println(" - turnoff devices =  "+ofToString(m_bTurnoffDevices) + " (reboot = "+ofToString(m_bRebootDevices)+")");
 
     mp_glfw->setWindow(mp_windows->at(1));    // set window pointer
     mp_glfw->initializeWindow();       // initialize events (mouse, keyboard, etc) on window (optional)
@@ -175,8 +194,24 @@ void testApp::setup()
 	
 	
 	// GO
-	ofSetVerticalSync(true);
-	ofSetFrameRate(60);
+	bool bVsync = m_settings.getValue("murmur:windows:vsync", 1) > 0 ? true : false;
+	ofSetVerticalSync(bVsync);
+	OFAPPLOG->println("vsync = "+ofToString(bVsync));
+	
+	bool bFramerate = m_settings.getValue("murmur:windows:framerate", 1) > 0 ? true : false;
+	OFAPPLOG->println("framerate = "+ofToString(bFramerate));
+	if (bFramerate)
+	{
+		int valueFramerate = m_settings.getAttribute("murmur:windows:framerate", "value", 60);
+		ofSetFrameRate(valueFramerate);
+		OFAPPLOG->println("    - value = "+ofToString(valueFramerate));
+	}
+	
+	bool bHideToolWindow = m_settings.getValue("murmur:windows:tools:hide", 1) > 0 ? true : false;
+
+	
+	if (pToolConfiguration)
+		pToolConfiguration->showToolWindow(!bHideToolWindow);
 
 	m_windowSize.set(ofGetWidth(),ofGetHeight());
 
@@ -200,28 +235,28 @@ void testApp::exit()
 	
 	if (isSimulation)
 	{
-		OFAPPLOG->begin(" - stopping sound stream input");
+		OFAPPLOG->println(" - stopping sound stream input");
 		m_soundStreamInput.stop();
 	}
 
     if (mp_surfaceMain)
 	{
-		OFAPPLOG->begin(" - surface main : saving animations properties");
+		OFAPPLOG->println(" - surface main : saving animations properties");
         mp_surfaceMain->saveAnimationsProperties();
 	}
 
-	OFAPPLOG->begin(" - tool manager : saving data");
+	OFAPPLOG->println(" - tool manager : saving data");
 	toolManager.saveData();
 
     if (mp_deviceManager)
 	{
-		OFAPPLOG->begin(" - device manager : saving devices xml in Config/devices/");
+		OFAPPLOG->println(" - device manager : saving devices xml in Config/devices/");
 
         mp_deviceManager->saveDevicesXML("Config/devices/");
 		if (m_bTurnoffDevices)
 		{
-			OFAPPLOG->begin("- turning off devices");
-			mp_deviceManager->turnoffDevices();
+			OFAPPLOG->println("- turning off devices with reboot = "+ofToString(m_bRebootDevices));
+			mp_deviceManager->turnoffDevices( m_bRebootDevices );
 		}
 	}
 	
@@ -520,7 +555,11 @@ void testApp::newMidiMessage(ofxMidiMessage& midiMessage)
 //--------------------------------------------------------------
 void testApp::update()
 {
-	//m_timelineSimple.update();
+	// exit time ?
+	if ( m_bTurnoff && ofGetHours() >= m_hourTurnoff && ofGetMinutes() >= m_mnTurnoff && ofGetSeconds() >= m_secondTurnoff)
+	{
+		ofExit();
+	}
 
 	// dt
 	float dt = (float) ofGetLastFrameTime();
@@ -570,7 +609,7 @@ void testApp::draw()
 
 
 		 // Draw Scene
-		 if (mp_sceneVisualisation && pToolScene->isDrawScene())
+		 if (mp_sceneVisualisation && pToolScene && pToolScene->isDrawScene())
 			 mp_sceneVisualisation->draw();
 
 		toolManager.drawUI();
@@ -750,17 +789,22 @@ void testApp::keyPressed(int key)
 
 	#if MURMUR_MULTI_WINDOWS
 	}
-	else
+    else if (mp_glfw->getEventWindow() == mp_windows->at(1))
 	{
-		if (key == 'f' || key == 'F')
-			ofToggleFullscreen();
+		toolSurfaces* pToolSurfaces = (toolSurfaces*) toolManager.getTool("Surfaces");
+		if (pToolSurfaces && !pToolSurfaces->keyPressed(key))
+		{
+			if (key == 'f' || key == 'F')
+				ofToggleFullscreen();
+		}
 	}
 	#endif
 
 }
 
 //--------------------------------------------------------------
-void testApp::keyReleased(int key){
+void testApp::keyReleased(int key)
+{
 	#if MURMUR_MULTI_WINDOWS
     if (mp_glfw->getEventWindow() != mp_windows->at(0)) return;
 	#endif
@@ -768,9 +812,13 @@ void testApp::keyReleased(int key){
 }
 
 //--------------------------------------------------------------
-void testApp::mouseMoved(int x, int y){
+void testApp::mouseMoved(int x, int y)
+{
 	#if MURMUR_MULTI_WINDOWS
-    if (mp_glfw->getEventWindow() != mp_windows->at(0)) return;
+    if (mp_glfw->getEventWindow() == mp_windows->at(0))
+	{
+		toolManager.mouseMoved(x,y);
+	}
 	#endif
 
 }
@@ -796,36 +844,46 @@ void testApp::mouseDragged(int x, int y, int button)
 void testApp::mousePressed(int x, int y, int button)
 {
 	#if MURMUR_MULTI_WINDOWS
+	
+	// UI Window
     if (mp_glfw->getEventWindow() == mp_windows->at(0))
 	{
 
-	if (!init_mouseDragged)
-	{
-		init_mouseDragged = true;
-		return;
-	}
+		if (!init_mouseDragged)
+		{
+			init_mouseDragged = true;
+			return;
+		}
 
 	#endif
 
-	if (isViewSimulation)
-	{
-        m_isUserControls = toolManager.isHit(x,y);
-        if (m_isUserControls == false)
+		if (isViewSimulation)
 		{
-            mp_sceneVisualisation->mousePressed(x, y);
+			toolManager.mousePressed(x,y,button);
+
+		
+        	m_isUserControls = toolManager.isHit(x,y);
+        	if (m_isUserControls == false)
+			{
+            	mp_sceneVisualisation->mousePressed(x, y);
+			}
 		}
-	}
-	else
-	{
-		toolSurfaces* pToolSurfaces = (toolSurfaces*) toolManager.getTool("Surfaces");
-		if (pToolSurfaces)
+		else
 		{
+			toolSurfaces* pToolSurfaces = (toolSurfaces*) toolManager.getTool("Surfaces");
+			if (pToolSurfaces)
+			{
 			// BOF ...
-			pToolSurfaces->setWindowCurrent( mp_glfw->getEventWindow() );
-			pToolSurfaces->mousePressed(x, y, button);
-			pToolSurfaces->setWindowCurrent(0);
+				#if MURMUR_MULTI_WINDOWS
+				pToolSurfaces->setWindowCurrent( mp_glfw->getEventWindow() );
+				pToolSurfaces->mousePressed(x, y, button);
+				pToolSurfaces->setWindowCurrent(0);
+				#else
+				pToolSurfaces->mousePressed(x, y, button);
+				#endif
+			}
 		}
-	}
+
 	#if MURMUR_MULTI_WINDOWS
 	}
     else if (mp_glfw->getEventWindow() == mp_windows->at(1))
@@ -838,13 +896,6 @@ void testApp::mousePressed(int x, int y, int button)
 			pToolSurfaces->mousePressed(x, y, button);
 			pToolSurfaces->setWindowCurrent(0);
 		}
-
-
-/*		if (toolManager.mp_toolTab)
-			toolManager.mp_toolTab->DisableCallbacks();
-		if (toolManager.mp_toolCurrent)
-			toolManager.mp_toolCurrent->enableWindowCallbacks();
-*/
 	}
 	#endif
 }
@@ -852,6 +903,10 @@ void testApp::mousePressed(int x, int y, int button)
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button)
 {
+	#if MURMUR_MULTI_WINDOWS
+		toolManager.mouseReleased(x,y,button);
+	#endif
+
 	if (isViewSimulation)
     {
         if (!m_isUserControls)

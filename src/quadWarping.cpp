@@ -221,6 +221,14 @@ void quadWarping::load(string pathFile)
 }
 
 //--------------------------------------------------------------
+bool quadWarping::hasSelectedHandle()
+{
+	if (mp_handleSelected)
+		return true;
+	return false;
+}
+
+//--------------------------------------------------------------
 void quadWarping::moveSelectedHandle(ofVec2f delta)
 {
 	if (mp_handleSelected)
@@ -298,6 +306,7 @@ float* quadWarping::findTransformMatrix(const ofRectangle& rect)
 	return m_matrixTransform;
 }
 
+//--------------------------------------------------------------
 ofMatrix4x4 quadWarping::getTransformMatrix(const ofRectangle& rect, bool bInverse)
 {
 	float src[4][2];
@@ -325,6 +334,70 @@ ofMatrix4x4 quadWarping::getTransformMatrix(const ofRectangle& rect, bool bInver
 		return ofxHomographyHelper::findHomography(dst,src);
 	return ofxHomographyHelper::findHomography(src,dst);
 }
+
+//--------------------------------------------------------------
+// https://www.particleincell.com/2012/quad-interpolation/
+
+ofVec2f quadWarping::getPointInSquareNormalized(ofVec2f p)
+{
+	ofVec2f result;
+
+	ofMatrix4x4 A(
+	 1,	 0,  0,  0,
+	-1,	 1,  0,  0,
+	-1,  0,  0,  1,
+	 1, -1,  1, -1
+	);
+	
+
+	ofVec4f x(
+		m_handles[3].x,
+		m_handles[2].x,
+		m_handles[1].x,
+		m_handles[0].x
+		);
+	
+	
+	ofVec4f y(
+		m_handles[3].y,
+		m_handles[2].y,
+		m_handles[1].y,
+		m_handles[0].y
+		);
+		ofVec4f a = A * x;
+		ofVec4f b = A * y;
+	
+		float aa = a[3]*b[2] - a[2]*b[3];
+		float bb = a[3]*b[0] - a[0]*b[3] + a[1]*b[2] - a[2]*b[1] + p.x*b[3] - p.y*a[3];
+		float cc = a[1]*b[0] - a[0]*b[1] + p.x*b[1] - p.y*a[1];
+
+		float det = sqrt( bb*bb - 4*aa*cc );
+		float mm = (-bb-det)/(2.0*aa);
+		float ll = (p.x-a[0]-a[2]*mm)/(a[1] + a[3]*mm);
+		
+
+		result.set(ll,mm);
+
+
+/*		m_ptClick.set(
+			a[0] + a[1]*ll + a[2]*mm + a[3]*ll*mm,
+			b[0] + b[1]*ll + b[2]*mm + b[3]*ll*mm
+		);
+
+		ofLog() << " -- ";
+		ofLog() << "l=" << ll << "; m="<< mm ;
+*/
+
+/*		ofLog() << "m_quadWarping.m_handles[0]=(" << m_quadWarping.m_handles[0].x << ","<< m_quadWarping.m_handles[0].y << ")";
+		ofLog() << "m_ptClickWarp=" << m_ptClickWarp;
+		ofLog() << "m_ptClick=" << m_ptClick;
+//		ofLog() << m_quadWarping.m_handles[0];
+*/
+
+
+		return result;
+}
+
 
 
 

@@ -71,6 +71,7 @@ Device::Device(string id, int nbLEDs, float distLEDs)
 	mp_sampleStandBy = 0;
 	m_sampleVolStandby = 0.35f;
 	m_sampleNameStandby = "Sounds/StandBy/theme1-4.wav";
+	m_soundInputVolEmpiricalMaxMin = 0.0;
 	m_soundInputVolEmpiricalMaxMax = 0.04;
 
 
@@ -309,6 +310,23 @@ void Device::setSoundInputVolumeMaxOSC(float v)
 }
 
 //--------------------------------------------------------------
+void Device::setSoundInputVolumeMaxMin(float v)
+{
+	m_soundInputVolEmpiricalMaxMin = v;
+
+	if (m_isSendMessagesOSC == false) return;
+
+	ofxOscMessage m;
+	m.setAddress( OSC_ADDRESS_SET_DEVICE_PROP );
+    m.addStringArg(m_id);
+    m.addStringArg("volMaxMin");
+    m.addFloatArg(v);
+    m_oscSender.sendMessage(m);
+
+	LOG_MESSAGE_OSC(m,false);
+}
+
+//--------------------------------------------------------------
 void Device::setSoundInputVolumeMaxMax(float v)
 {
 	m_soundInputVolEmpiricalMaxMax = v;
@@ -323,6 +341,12 @@ void Device::setSoundInputVolumeMaxMax(float v)
     m_oscSender.sendMessage(m);
 
 	LOG_MESSAGE_OSC(m,false);
+}
+
+//--------------------------------------------------------------
+void Device::setSoundInputVolumeMaxMinOSC(float v)
+{
+	m_soundInputVolEmpiricalMaxMin = v;
 }
 
 //--------------------------------------------------------------
@@ -379,11 +403,12 @@ void Device::setGenerativeOSC(bool is)
 
 
 //--------------------------------------------------------------
-void Device::turnoff()
+void Device::turnoff(bool bReboot)
 {
     ofxOscMessage m;
     m.setAddress( OSC_ADDRESS_TURN_OFF );
     m.addStringArg(m_id);
+	m.addIntArg( bReboot ? 1 : 0);
     m_oscSender.sendMessage(m);
 }
 
@@ -416,6 +441,12 @@ float Device::getSoundInputVolumeMax()
 //    if (mp_soundInput)
 //        return mp_soundInput->getVolEmpiricalMax();
     return m_soundInputVolEmpiricalMax;
+}
+
+//--------------------------------------------------------------
+float Device::getSoundInputVolumeMaxMin()
+{
+    return m_soundInputVolEmpiricalMaxMin;
 }
 
 //--------------------------------------------------------------
@@ -1103,6 +1134,7 @@ void Device::loadXMLSoundInput(ofxXmlSettings& settings)
   int	 	useRawVol 			= settings.getValue("device:soundInput:useRawVol",0.05f);
   int		mute				= settings.getValue("device:soundInput:mute",0);
   float 	volMax 				= settings.getValue("device:soundInput:volMax",0.05f);
+  float 	volMaxMin 			= settings.getValue("device:soundInput:volMaxMin",0.0f);
   float 	volMaxMax 			= settings.getValue("device:soundInput:volMaxMax",0.05f);
   int 		volHistoryNb 		= settings.getValue("device:soundInput:volHistoryNb", 400);
   float 	volHistoryTh		= settings.getValue("device:soundInput:volHistoryTh",0.1f);
@@ -1116,6 +1148,7 @@ void Device::loadXMLSoundInput(ofxXmlSettings& settings)
    setSoundInputUseRawVolume(useRawVol==1 ? true : false );
    setSoundInputMute(mute==1 ? true : false );
    setSoundInputVolumeMax( volMax );
+   setSoundInputVolumeMaxMin( volMaxMin );
    setSoundInputVolumeMaxMax( volMaxMax );
    setSoundInputVolHistorySize( volHistoryNb );
    setSoundInputVolHistoryTh( volHistoryTh );
@@ -1129,6 +1162,7 @@ void Device::loadXMLSoundInput(ofxXmlSettings& settings)
    OFAPPLOG->println(" - useRawVol="+ofToString(useRawVol));
    OFAPPLOG->println(" - mute="+ofToString(mute));
    OFAPPLOG->println(" - volMax="+ofToString(volMax));
+   OFAPPLOG->println(" - volMaxMin="+ofToString(volMaxMax));
    OFAPPLOG->println(" - volMaxMax="+ofToString(volMaxMax));
    OFAPPLOG->println(" - volHistoryNb="+ofToString(volHistoryNb));
    OFAPPLOG->println(" - volHistoryTh="+ofToString(volHistoryTh));
@@ -1252,6 +1286,7 @@ void Device::saveXML(string dir)
             settings.addValue("useRawVol", 			getSoundInputUseRawVolume());
             settings.addValue("mute", 				getSoundInputMute());
             settings.addValue("volMax", 			getSoundInputVolumeMax());
+            settings.addValue("volMaxMin", 			getSoundInputVolumeMaxMin());
             settings.addValue("volMaxMax", 			getSoundInputVolumeMaxMax());
             settings.addValue("volHistoryNb", 		getSoundInputVolHistorySize());
             settings.addValue("volHistoryTh", 		getSoundInputVolHistoryTh());
@@ -1409,10 +1444,10 @@ void DeviceManager::saveDevicesXML(string dir)
 }
 
 //--------------------------------------------------------------
-void DeviceManager::turnoffDevices()
+void DeviceManager::turnoffDevices(bool bReboot)
 {
 	for (itDevices = m_listDevices.begin(); itDevices != m_listDevices.end(); ++itDevices)
-        (*itDevices)->turnoff();
+        (*itDevices)->turnoff(bReboot);
 }
 
 //--------------------------------------------------------------

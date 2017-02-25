@@ -6,7 +6,7 @@
 <Widget>
     <Kind>12</Kind>
     <Name>teConfigName</Name>
-    <Value>shaderWave.xml</Value>
+    <Value>abc.xml</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -16,7 +16,7 @@
 <Widget>
     <Kind>4</Kind>
     <Name>volume</Name>
-    <Value>1.000000000</Value>
+    <Value>0.596774220</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -91,7 +91,7 @@
 <Widget>
     <Kind>42</Kind>
     <Name>sizeTexture</Name>
-    <Value>466</Value>
+    <Value>960</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>

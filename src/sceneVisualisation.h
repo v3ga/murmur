@@ -25,11 +25,12 @@ class SceneVisualisation : public Scene
     
 		void		loadSettings		();
 
-        void        createDeviceNode    ( Device* pDevice, SurfaceNode* );
-        void        addDeviceNode       ( DeviceNode*, SurfaceNode* pSurfaceNode);
-        void        addSurfaceNode      ( SurfaceNode* );
- 		DeviceNode*	getDeviceNodeFor	( Device* pDevice );
- 
+        void        createDeviceNode    		( Device* pDevice, SurfaceNode* );
+        void        addDeviceNode       		( DeviceNode*, SurfaceNode* pSurfaceNode);
+        void        addSurfaceNode      		( SurfaceNode* );
+ 		DeviceNode*	getDeviceNodeFor			( Device* pDevice );
+		void 		updatePositionNodeSurface	( Device* pDevice, Surface* pSurface);
+
  
 		ofVec3f		getPositionForSilhouette(string deviceId);
 

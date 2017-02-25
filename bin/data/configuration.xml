@@ -1,12 +1,14 @@
 <murmur>
+	<turnoff enable="0">13:17:30</turnoff>
+
 	<simulator>
         <!-- Activate or not simulation -->
-        <enable>1</enable>
+        <enable>0</enable>
 
         <!-- Sound input for simulators -->
         <soundInput>
-            <device>0</device>
-            <nbChannels>1</nbChannels>
+            <device>1</device>
+            <nbChannels>2</nbChannels>
         </soundInput>
         
         <!-- Devices -->
@@ -16,78 +18,20 @@
                 <nbLEDs>160</nbLEDs>
                 <length>4.0</length>
             </device>
-
-            <device>
-                <id>deviceEchoSimulator02</id>
-                <nbLEDs>160</nbLEDs>
-                <length>4.0</length>
-            </device>
-<!--
-
-            <device>
-                <id>deviceEchoSimulator03</id>
-                <nbLEDs>160</nbLEDs>
-                <length>4.0</length>
-            </device>
-
-            <device>
-                <id>deviceEchoSimulator04</id>
-                <nbLEDs>160</nbLEDs>
-                <length>4.0</length>
-            </device>
-
-            <device>
-                <id>deviceEchoSimulator05</id>
-                <nbLEDs>160</nbLEDs>
-                <length>4.0</length>
-            </device>
-
-            <device>
-                <id>deviceEchoSimulator06</id>
-                <nbLEDs>160</nbLEDs>
-                <length>4.0</length>
-            </device>
-
-            <device>
-                <id>deviceEchoSimulator07</id>
-                <nbLEDs>160</nbLEDs>
-                <length>4.0</length>
-            </device>
-
-            <device>
-                <id>deviceEchoSimulator08</id>
-                <nbLEDs>160</nbLEDs>
-                <length>4.0</length>
-            </device>
-
-            <device>
-                <id>deviceEchoSimulator09</id>
-                <nbLEDs>160</nbLEDs>
-                <length>4.0</length>
-            </device>
-
-            <device>
-                <id>deviceEchoSimulator10</id>
-                <nbLEDs>160</nbLEDs>
-                <length>4.0</length>
-            </device>
--->
-
-<!--
-            <device>
-                <id>deviceEchoSimulator03</id>
-                <nbLEDs>160</nbLEDs>
-                <length>4.0</length>
-            </device>
--->
         </devices>
     </simulator>
 
 	   <!-- Windows -->
 	   <windows>
+			<vsync>1</vsync>
+			<framerate value="60">1</framerate>
+			<tools>
+				<hide>1</hide>
+			</tools>
+			
 		   <surface>
 			   <monitor>1</monitor>
-			   <x>1024</x>
+			   <x>10</x>
 			   <y>0</y>
 			   <w>800</w>
 			   <h>600</h>
@@ -120,7 +64,7 @@
 	0 : do not turn off when program exits
 	1 : turn off when program exits
 	-->
-	<turnoffDevices>1</turnoffDevices>
+	<turnoffDevices reboot="1">1</turnoffDevices>
 
     <!-- Midi -->
 	<midi>

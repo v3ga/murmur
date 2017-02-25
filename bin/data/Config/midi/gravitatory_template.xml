@@ -1,0 +1,8 @@
+<midi port="0" control="1" property="alphaFactor"></midi>
+<midi port="0" control="2" property="angleSpeedFactor"></midi>
+<midi port="0" control="3" property="obj. age max"></midi>
+<midi port="0" control="4" property="obj. number"></midi>
+<midi port="0" control="5" property="obj. size max"></midi>
+<midi port="0" control="6" property="obj. size min"></midi>
+<midi port="0" control="7" property="sizeFactor"></midi>
+<midi port="0" control="8" property="volumeTh"></midi>

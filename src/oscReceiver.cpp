@@ -91,6 +91,11 @@ void oscReceiver::update()
                         pDevice->setSoundInputVolumeMaxOSC( m_oscMessage.getArgAsFloat(indexArg) );
                     }
 					else
+					if (propName == "volMaxMin")
+                    {
+                        pDevice->setSoundInputVolumeMaxMinOSC( m_oscMessage.getArgAsFloat(indexArg) );
+                    }
+					else
 					if (propName == "volMaxMax")
                     {
                         pDevice->setSoundInputVolumeMaxMaxOSC( m_oscMessage.getArgAsFloat(indexArg) );

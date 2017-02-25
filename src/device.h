@@ -55,13 +55,17 @@ class Device
         // Properties
         void                setSoundInputVolumeMax    		(float v);
         void                setSoundInputVolumeMaxOSC 		(float v);
+
+		void				setSoundInputVolumeMaxMin 		(float v);
 		void				setSoundInputVolumeMaxMax 		(float v);
+		void				setSoundInputVolumeMaxMinOSC	(float v);
 		void				setSoundInputVolumeMaxMaxOSC 	(float v);
  
         void                setSoundInputVolHistorySize(int nb);
         void                setSoundInputVolHistorySizeOSC(int nb);
 
         float               getSoundInputVolumeMax();
+        float               getSoundInputVolumeMaxMin();
         float               getSoundInputVolumeMaxMax();
         float               getSoundInputVolHistorySize();
 
@@ -97,7 +101,7 @@ class Device
         string              m_stateStandbyStr;
         float               m_timeStandby;
  
-		void				turnoff();
+		void				turnoff(bool bReboot=false);
     
         void                enableStandbyMode(bool is=true);
         void                checkForActivity(float dt);
@@ -247,7 +251,7 @@ class Device
         // > only used on server side
         float               m_soundInputVolHistorySize;
         float               m_soundInputVolEmpiricalMax;
-        float               m_soundInputVolEmpiricalMaxMax;
+        float               m_soundInputVolEmpiricalMaxMin, m_soundInputVolEmpiricalMaxMax;
 		bool				m_soundInputUseRawVol;
 		bool				m_soundInputMute;
  
@@ -284,7 +288,7 @@ class DeviceManager
         Device*             setDeviceCurrent    (string deviceId);
         Device*             getDeviceCurrent    (){return mp_deviceCurrent;}
         void                saveDevicesXML      (string dir);
-		void				turnoffDevices		();
+		void				turnoffDevices		(bool bReboot = false);
 		int					indexOf				(Device*);
  		int					indexOfCurrent		(){return indexOf(mp_deviceCurrent);}
 	

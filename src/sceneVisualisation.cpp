@@ -156,6 +156,16 @@ DeviceNode* SceneVisualisation::getDeviceNode(Device* pDevice)
     return 0;
 }
 
+//--------------------------------------------------------------
+void SceneVisualisation::updatePositionNodeSurface( Device* pDevice, Surface* pSurface )
+{
+   // Update simulation
+   DeviceNode* pDeviceNode = getDeviceNode(pDevice);
+   SurfaceNode* pSurfaceNode = getSurfaceNode(pSurface);
+   if (pDeviceNode && pSurfaceNode)
+		pDeviceNode->setPositionNodeSurface( pSurfaceNode->getGlobalPositionDevicePointSurface(pDevice) );
+}
+
 
 //--------------------------------------------------------------
 void SceneVisualisation::setup()

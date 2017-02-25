@@ -3,9 +3,10 @@
         <useRawVol>1</useRawVol>
         <mute>1</mute>
         <volMax>0.018425196</volMax>
+        <volMaxMin>0.000000000</volMaxMin>
         <volMaxMax>0.059999999</volMaxMax>
         <volHistoryNb>73.000000000</volHistoryNb>
-        <volHistoryTh>0.278225809</volHistoryTh>
+        <volHistoryTh>0.101612911</volHistoryTh>
     </soundInput>
     <soundOutput>
         <speaker>1</speaker>
@@ -26,14 +27,14 @@
     <enableGenerative>1</enableGenerative>
     <bpm>
         <enable>0</enable>
-        <value>100</value>
+        <value>99</value>
     </bpm>
-    <enableStandby>0</enableStandby>
-    <timeStandby>5.000000000</timeStandby>
-    <sampleVolStandby>0.349999994</sampleVolStandby>
+    <enableStandby>1</enableStandby>
+    <timeStandby>29.661289215</timeStandby>
+    <sampleVolStandby>0.377419353</sampleVolStandby>
     <enableStandby>0</enableStandby>
     <surface id="main">
-        <xNorm>0.147499993</xNorm>
-        <yNorm>0.754642844</yNorm>
+        <xNorm>0.503055990</xNorm>
+        <yNorm>0.471539855</yNorm>
     </surface>
 </device>

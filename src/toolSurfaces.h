@@ -44,6 +44,7 @@ class toolSurfaces : public tool, public midiInterface
 		void					loadMidiSettings			(){midiInterface::setClassProperties(&m_properties) ; midiInterface::loadMidiSettings();}
 	
 	
+	
 		bool					loadMask					(string pathMask);
 		void					updateMaskUI				(string pathMask);
 	
@@ -56,6 +57,8 @@ class toolSurfaces : public tool, public midiInterface
 		ofImage*				mp_mask;
 		ofImage*				mp_maskUI;
 		float					m_alpha;
+		float					m_quadWarpingHandleShifting;
+		float					m_devicePointShifting;
 
 		quadWarping				m_quadWarping;
 		ofRectangle			 	m_rectScreen, m_rectSurfaceOff;
@@ -76,6 +79,6 @@ class toolSurfaces : public tool, public midiInterface
 		void					computeRectSurfaceOff		();
  
  
-		ofVec4f					m_vecTemp, m_vecTempRect;
+		ofVec2f					m_ptClickWarp, m_ptClick;
 
 };

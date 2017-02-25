@@ -25,6 +25,8 @@ toolSurfaces::toolSurfaces(toolManager* parent, Surface* surface) : tool("Surfac
 	m_isDrawHandles			= false;
 	mp_windowCurrent		= 0;
 	m_alpha					= 0.0f;
+	m_quadWarpingHandleShifting = 1.0f;
+	m_devicePointShifting	= 1.0f;
 	
 	setView					(VIEW_NORMAL);
 	
@@ -114,15 +116,21 @@ void toolSurfaces::createControlsCustom()
     	mp_canvas->addWidgetRight	(new ofxUISlider("target line w", 1.0f, 8.0f, 2.0f, 100, dim ));
 
 	    mp_canvas->addWidgetDown	( new ofxUIToggle("enable mask", false, dim, dim) );
-		mp_canvas->addImage			( "mask", 0, widthDefault, 300);
+		mp_canvas->addImage			( "mask", 0, widthDefault, 50);
 		ofxUITextInput* lblPathMask = new ofxUITextInput("pathMask", "", widthDefault);
     	mp_canvas->addWidgetDown	( lblPathMask );
 		lblPathMask->setVisible(false);
+
+	    mp_canvas->addWidgetDown	( new ofxUILabel("Mapping", OFX_UI_FONT_MEDIUM) );
+    	mp_canvas->addWidgetDown	( new ofxUISpacer(widthDefault, 2));
 
 	    mp_canvas->addWidgetDown	(new ofxUIToggle("syphon", false, dim, dim));
 	    mp_canvas->addWidgetDown	(new ofxUIToggle("quad warping", false, dim, dim));
 	    mp_canvas->addWidgetDown	(new ofxUIToggle("draw quad warping", false, dim, dim));
 	    mp_canvas->addWidgetDown	(new ofxUIButton("reset quad warping", false, dim*4, dim));
+
+	    mp_canvas->addWidgetDown	(new ofxUISlider("quad warping handle shifting", 1.0f, 10.0f, &m_quadWarpingHandleShifting, widthDefault, dim ));
+	    mp_canvas->addWidgetDown	(new ofxUISlider("device point shifting", 1.0f, 10.0f, &m_devicePointShifting, widthDefault, dim ));
 	
 		mp_canvas->autoSizeToFitWidgets();
 	
@@ -156,11 +164,14 @@ void toolSurfaces::onSurfaceModified(Surface* pSurface)
    		vector<Device*>::iterator it = listDevices.begin();
    		for ( ; it != listDevices.end() ; ++it)
    		{
-			DeviceNode* pDeviceNode = pToolScene->getScene()->getDeviceNode(*it);
+			pToolScene->getScene()->updatePositionNodeSurface(*it, pSurface);
+		
+/*			DeviceNode* pDeviceNode = pToolScene->getScene()->getDeviceNode(*it);
             SurfaceNode* pSurfaceNode = pToolScene->getScene()->getSurfaceNode(pSurface);
 			if (pDeviceNode && pSurfaceNode)
             	pDeviceNode->setPositionNodeSurface( pSurfaceNode->getGlobalPositionDevicePointSurface(pDeviceNode->getDevice()) );
-   		}
+*/
+	   }
 	}
 }
 
@@ -217,12 +228,10 @@ void toolSurfaces::draw()
 			ofClear(70,70,70);
             ofSetColor(255,255,255,255);
             mp_surfaceMain->getOffscreen().draw(m_rectSurfaceOff.getX(),m_rectSurfaceOff.getY(),m_rectSurfaceOff.getWidth(),m_rectSurfaceOff.getHeight());
-//            mp_surfaceMain->drawCacheLEDs(m_diamCacheLEDs);
             if (GLOBALS->mp_app->isShowDevicePointSurfaces)
 			{
                 mp_surfaceMain->drawDevicePointSurface(m_rectSurfaceOff);
             }
-			
         }
 	}
 	else if (m_view == VIEW_QUADWARPING)
@@ -230,21 +239,18 @@ void toolSurfaces::draw()
 		if (mp_surfaceMain)
 		{
 			ofClear(0);
+            ofSetColor(255,255,255,255);
 			ofPushMatrix();
 				ofMultMatrix( m_quadWarping.findTransformMatrix(m_rectSurfaceOff) );
 				mp_surfaceMain->getOffscreen().draw(0,0,m_rectSurfaceOff.getWidth(),m_rectSurfaceOff.getHeight());
 			ofPopMatrix();
-
-
-/*			ofMatrix4x4 mInv =  m_quadWarping.getTransformMatrix( m_rectSurfaceOff, true);
-			
-			m_vecTemp.set( m_quadWarping.m_handles[3].x, m_quadWarping.m_handles[3].y,0,1 );
-			
-			m_vecTempRect = mInv*m_vecTemp;
-			ofCircle(m_vecTempRect.x /m_vecTempRect.w ,m_vecTempRect.y/m_vecTempRect.w, 15);
-*/
-
-
+		
+           if (GLOBALS->mp_app->isShowDevicePointSurfaces)
+		   {
+				ofMatrix4x4 m = m_quadWarping.getTransformMatrix(m_rectSurfaceOff);
+				mp_surfaceMain->drawDevicePointSurface(m_rectSurfaceOff, &m);
+			}
+		
 			if (m_isDrawHandles)
 		   		m_quadWarping.draw();
 		}
@@ -360,17 +366,21 @@ void toolSurfaces::handleEvents(ofxUIEventArgs& e)
 //--------------------------------------------------------------
 void toolSurfaces::mousePressed(int x, int y, int button)
 {
+	toolDevices*	pToolDevices 	= (toolDevices*) mp_toolManager->getTool("Devices");
+	toolScene* 		pToolScene 		= (toolScene*)mp_toolManager->getTool("Scene");
+	
+	if (pToolDevices == 0 || pToolDevices->mp_deviceManager == 0 || pToolScene == 0) return;
+
+	Device*  pDeviceCurrent 	= pToolDevices->mp_deviceManager->getDeviceCurrent();
+	Surface* pSurfaceCurrent  	= this->getSurfaceForDevice(pDeviceCurrent);
+
+
+	bool bUpdateScene = false;
+
 	if (m_view == VIEW_NORMAL)
 	{
 		if (GLOBALS->mp_app->isShowDevicePointSurfaces)
 		{
-		   toolDevices*	pToolDevices 	= (toolDevices*) mp_toolManager->getTool("Devices");
-		   toolScene* 	pToolScene 		= (toolScene*)mp_toolManager->getTool("Scene");
-
-		   if (pToolDevices == 0 || pToolDevices->mp_deviceManager == 0 || pToolScene == 0) return;
-
-		   Device*  pDeviceCurrent 		= pToolDevices->mp_deviceManager->getDeviceCurrent();
-		   Surface* pSurfaceCurrent  	= this->getSurfaceForDevice(pDeviceCurrent);
 
 		   if (pDeviceCurrent && pSurfaceCurrent)
 		   {
@@ -383,15 +393,8 @@ void toolSurfaces::mousePressed(int x, int y, int button)
 		   		float yNorm = ofClamp(dy / m_rectSurfaceOff.getHeight(),0.0f,1.0f);
 	   
 		   		pDeviceCurrent->setPointSurface(xNorm, yNorm);
-		
-			   // Update simulation
-			   if(pToolScene->getScene())
-			   {
-				   DeviceNode* pDeviceNode = pToolScene->getScene()->getDeviceNode(pDeviceCurrent);
-				   SurfaceNode* pSurfaceNode = pToolScene->getScene()->getSurfaceNode(pSurfaceCurrent);
-				   if (pDeviceNode && pSurfaceNode)
-				   	pDeviceNode->setPositionNodeSurface( pSurfaceNode->getGlobalPositionDevicePointSurface(pDeviceNode->getDevice()) );
-			   }
+			
+				bUpdateScene = true;
 		   }
 	   }
 	}
@@ -408,9 +411,15 @@ void toolSurfaces::mousePressed(int x, int y, int button)
 		if (isOverHandle == false)
 		{
 			m_quadWarping.unselectHandle();
-
-			m_vecTemp.set(x,y,0,1);
+			
+//			m_ptClickWarp.set(x,y);
+//			m_ptClick = m_quadWarping.getPointInSquareNormalized( m_ptClickWarp );
 		}
+	}
+
+	if (bUpdateScene && pToolScene->getScene())
+	{
+		pToolScene->getScene()->updatePositionNodeSurface( pDeviceCurrent, pSurfaceCurrent );
 	}
 }
 
@@ -419,13 +428,44 @@ bool toolSurfaces::keyPressed(int key)
 {
 	if (m_view == VIEW_QUADWARPING)
 	{
-		if (key == OF_KEY_LEFT) 			{m_quadWarping.moveSelectedHandle( ofVec2f(-1.0f, 0.0f) );	return true;}
-		if (key == OF_KEY_RIGHT)			{m_quadWarping.moveSelectedHandle( ofVec2f( 1.0f, 0.0f) );	return true;}
-		if (key == OF_KEY_UP)				{m_quadWarping.moveSelectedHandle( ofVec2f( 0.0f, -1.0f) );	return true;}
-		if (key == OF_KEY_DOWN)				{m_quadWarping.moveSelectedHandle( ofVec2f( 0.0f, 1.0f) );	return true;}
+		if (m_quadWarping.hasSelectedHandle())
+		{
+			if (key == OF_KEY_LEFT) 			{m_quadWarping.moveSelectedHandle( ofVec2f(-m_quadWarpingHandleShifting, 0.0f) );	return true;}
+			if (key == OF_KEY_RIGHT)			{m_quadWarping.moveSelectedHandle( ofVec2f( m_quadWarpingHandleShifting, 0.0f) );	return true;}
+			if (key == OF_KEY_UP)				{m_quadWarping.moveSelectedHandle( ofVec2f( 0.0f, -m_quadWarpingHandleShifting) );	return true;}
+			if (key == OF_KEY_DOWN)				{m_quadWarping.moveSelectedHandle( ofVec2f( 0.0f, m_quadWarpingHandleShifting) );	return true;}
+		}
+		else
+		{
+			toolDevices*	pToolDevices 	= (toolDevices*) 	mp_toolManager->getTool("Devices");
+			toolScene* 		pToolScene 		= (toolScene*)		mp_toolManager->getTool("Scene");
+
+			if (pToolDevices && pToolDevices->mp_deviceManager && pToolScene)
+			{
+				Device*  pDeviceCurrent 	= pToolDevices->mp_deviceManager->getDeviceCurrent();
+				Surface* pSurfaceCurrent  	= this->getSurfaceForDevice(pDeviceCurrent);
+
+				if (pDeviceCurrent && pSurfaceCurrent)
+				{
+					ofVec2f delta;
+					if (key == OF_KEY_LEFT) 			{ delta.set(-m_devicePointShifting, 0.0f); }
+					if (key == OF_KEY_RIGHT)			{ delta.set( m_devicePointShifting, 0.0f); }
+					if (key == OF_KEY_UP)				{ delta.set( 0.0f, -m_devicePointShifting); }
+					if (key == OF_KEY_DOWN)				{ delta.set( 0.0f, m_devicePointShifting); }
+
+					pDeviceCurrent->m_pointSurface += ofVec2f( delta.x / pSurfaceCurrent->getOffscreen().getWidth(), delta.y / pSurfaceCurrent->getOffscreen().getHeight() );
+					
+
+					pToolScene->getScene()->updatePositionNodeSurface( pDeviceCurrent, pSurfaceCurrent );
+					return true;
+				}
+			
+			}
+		
+		}
 	}
 	
-	return true;
+	return false;
 }
 
 //--------------------------------------------------------------

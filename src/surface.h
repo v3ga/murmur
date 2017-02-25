@@ -46,7 +46,7 @@ class Surface
         void            addDevice       		(Device*);
         vector<Device*>&getListDevices 			(){return m_listDevices;}
         void            onNewPacket     		(DevicePacket*, string deviceId);
-        void            drawDevicePointSurface	(ofRectangle&);
+        void            drawDevicePointSurface	(ofRectangle&, ofMatrix4x4* mWarping=0);
         void            drawCacheLEDs   		(float d);
         float           getWidthPixels  		(){return m_fbo.getWidth();}
         float           getHeightPixels 		(){return m_fbo.getHeight();}

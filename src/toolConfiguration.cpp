@@ -24,6 +24,8 @@ toolConfiguration::toolConfiguration(toolManager* parent) : tool("Configuration"
 
 	mp_tgViewSimu				= 0;
 	mp_tgFullscreen				= 0;
+	mp_tgHideToolWindow			= 0;
+
 	m_isFullscreen				= false;
 }
 
@@ -58,6 +60,10 @@ void toolConfiguration::createControlsCustom()
 
 		mp_tgFullscreen = new ofxUIToggle("Fullscreen", false, dim, dim);
     	mp_canvas->addWidgetDown( mp_tgFullscreen );
+
+		mp_tgHideToolWindow = new ofxUIToggle("Hide tool window", false, dim, dim);
+    	mp_canvas->addWidgetDown( mp_tgHideToolWindow );
+
 
     	mp_canvas->addWidgetDown(new ofxUISpacer(widthDefault, 2));
 		mp_canvas->addWidgetDown(new ofxUILabelButton("Edit configuration.xml", 100, false, OFX_UI_FONT_SMALL));
@@ -177,6 +183,21 @@ void toolConfiguration::setFullscreen(bool is)
 }
 
 //--------------------------------------------------------------
+void toolConfiguration::showToolWindow(bool is)
+{
+	#if MURMUR_MULTI_WINDOWS
+	ofxMultiGLFWWindow* glfw = (ofxMultiGLFWWindow*) ofGetWindowPtr();
+	if (glfw)
+	{
+		if (is)
+			glfw->showWindow(glfw->windows.at(0));
+		else
+			glfw->hideWindow(glfw->windows.at(0));
+	}
+	#endif
+}
+
+//--------------------------------------------------------------
 void toolConfiguration::toggleFullscreen()
 {
 	setFullscreen(!m_isFullscreen);
@@ -239,6 +260,12 @@ void toolConfiguration::handleEvents(ofxUIEventArgs& e)
 		setFullscreen(m_isFullscreen);
 		OFAPPLOG->println("setting fullscreen="+ofToString(m_isFullscreen));
 	}
+/*	else
+	if (name == "Hide tool window")
+	{
+		showToolWindow( ((ofxUIToggle *) e.widget)->getValue() );
+	}
+*/
 	else
 	if (name == "Edit configuration.xml")
 	{

@@ -505,7 +505,7 @@ void Surface::publishSyphon()
 }
 
 //--------------------------------------------------------------
-void Surface::drawDevicePointSurface(ofRectangle& rect)
+void Surface::drawDevicePointSurface(ofRectangle& rect, ofMatrix4x4* mWarping)
 {
     ofPushStyle();
     ofSetColor(255,255,255,255);
@@ -514,11 +514,18 @@ void Surface::drawDevicePointSurface(ofRectangle& rect)
     vector<Device*>::iterator itDevices = m_listDevices.begin();
     ofVec2f posSurface;
     Device* pDevice=0;
-    for (;itDevices!=m_listDevices.end();++itDevices)
+	for (;itDevices!=m_listDevices.end();++itDevices)
     {
-	
         pDevice = *itDevices;
-        posSurface.set(rect.getX()+pDevice->m_pointSurface.x*rect.getWidth(), rect.getY()+pDevice->m_pointSurface.y*rect.getHeight());
+		if (mWarping == 0)
+		{
+			posSurface.set(rect.getX()+pDevice->m_pointSurface.x*rect.getWidth(), rect.getY()+pDevice->m_pointSurface.y*rect.getHeight());
+		}
+		else
+		{
+			ofVec3f tmp = *mWarping * ofVec3f( pDevice->m_pointSurface.x*rect.getWidth(), pDevice->m_pointSurface.y*rect.getHeight(), 0.0f );
+			posSurface.set(tmp.x,tmp.y);
+		}
 
 		if (GLOBALS->mp_deviceManager->getDeviceCurrent() == pDevice)
 		{
@@ -530,7 +537,6 @@ void Surface::drawDevicePointSurface(ofRectangle& rect)
 			ofLine(posSurface.x,posSurface.y-40, posSurface.x, posSurface.y+40);
         	ofLine(posSurface.x-40,posSurface.y, posSurface.x+40,posSurface.y);
 			ofDrawBitmapString(pDevice->m_id, posSurface.x+4, posSurface.y-4);
-
 	}
 
     ofPopStyle();

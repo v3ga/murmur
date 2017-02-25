@@ -49,6 +49,7 @@ class quadWarping
 		void					draw				();
 		void					save				(string pathFile);
 		void					load				(string pathFile);
+		bool					hasSelectedHandle	();
 		void					moveSelectedHandle	(ofVec2f delta);
 		void					unselectHandle		();
 		void					resetHandles		();
@@ -56,8 +57,9 @@ class quadWarping
 		void					windowResized		(int w, int h);
 		void					windowResized		(int wold, int hold,int w, int h);
 
-		float*					findTransformMatrix	(const ofRectangle& src);
-		ofMatrix4x4				getTransformMatrix	(const ofRectangle& src, bool bInverse=false);
+		float*					findTransformMatrix			(const ofRectangle& src);
+		ofMatrix4x4				getTransformMatrix			(const ofRectangle& src, bool bInverse=false);
+		ofVec2f					getPointInSquareNormalized	(ofVec2f p);
 
 		quadWarpingHandle		m_handles[4];
 

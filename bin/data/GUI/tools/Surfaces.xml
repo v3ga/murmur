@@ -21,12 +21,12 @@
 <Widget>
     <Kind>42</Kind>
     <Name>quality</Name>
-    <Value>3</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>alpha</Name>
-    <Value>0.581250012</Value>
+    <Value>0.000000000</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -56,10 +56,20 @@
 <Widget>
     <Kind>2</Kind>
     <Name>quad warping</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
     <Name>draw quad warping</Name>
     <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>quad warping handle shifting</Name>
+    <Value>8.228125572</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>device point shifting</Name>
+    <Value>6.765625000</Value>
 </Widget>

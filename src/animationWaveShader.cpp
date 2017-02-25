@@ -126,7 +126,6 @@ void AnimationShaderWave::VM_draw(float w, float h)
 	drawBackground(0);
 
     ofSetColor(255);
-//	ofDisableAlphaBlending();
 	if (m_isBlend)
 	{
 		glEnable(GL_BLEND);
@@ -137,16 +136,12 @@ void AnimationShaderWave::VM_draw(float w, float h)
 	map<string,ShaderWave*>::iterator it = m_mapShaderWaves.begin();
 	for ( ; it != m_mapShaderWaves.end() ; ++it)
 	{
+
 		ShaderWave* pShaderWave = it->second;
 		if (pShaderWave->m_bUpdateTexture)
 		{
 			pShaderWave->m_imgSoundInput.update();
 			pShaderWave->m_bUpdateTexture = false;
-	//							glUseProgram(0);
-  //      ofPtr<ofGLProgrammableRenderer> renderer = ofGetGLProgrammableRenderer();
-//		renderer->currentShader = 0;
-//		renderer->beginDefaultShader();
-
 		}
 
 

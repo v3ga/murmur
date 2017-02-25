@@ -85,6 +85,9 @@ class testApp : public ofBaseApp, public ofxMidiListener
         bool                m_isViewAnimProperties;
 		ofVec2f				m_windowSize;
 
+		bool				m_bTurnoff;
+		float				m_hourTurnoff,m_mnTurnoff,m_secondTurnoff;
+
 		void				setViewSimulation(bool is=true);
  
         // Devices
@@ -98,6 +101,7 @@ class testApp : public ofBaseApp, public ofxMidiListener
 	
 		vector<DeviceEchoSimulator*>	m_listDeviceSimulator;
 		bool				m_bTurnoffDevices;
+		bool				m_bRebootDevices;
 
 		// Sound (simulation only)
 		ofSoundStream		m_soundStreamInput;

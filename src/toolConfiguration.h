@@ -24,6 +24,7 @@ class toolConfiguration : public tool
 		void					launchMadMapper		();
 		void					launchDevices		();
 		void					setFullscreen		(bool is=true);
+		void					showToolWindow		(bool is);
 		void					toggleFullscreen	();
 		void					setViewSimulation	(bool is=true);
 		void					toggleViewSimulation();
@@ -40,6 +41,7 @@ class toolConfiguration : public tool
 
         ofxUIToggle*        	mp_tgViewSimu;
         ofxUIToggle*        	mp_tgFullscreen;
+        ofxUIToggle*        	mp_tgHideToolWindow;
 	
 		bool					m_isFullscreen;
 

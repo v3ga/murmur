@@ -62,6 +62,7 @@ class toolDevices : public tool, public midiInterface
 		ofxUIToggle*			mp_toggleDeviceUseRawVol;
 		ofxUIToggle*			mp_toggleDeviceMute;
 	    ofxUISlider*			mp_sliderDeviceVolMax;
+	    ofxUITextInput*			mp_teDeviceVolMaxMin;
 	    ofxUITextInput*			mp_teDeviceVolMaxMax;
     	ofxUISlider* 			mp_sliderDeviceVolHistorySize;
     	ofxUIToggle* 			mp_toggleDeviceEnableStandby;
