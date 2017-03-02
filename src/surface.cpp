@@ -499,7 +499,9 @@ void Surface::publishSyphon()
 	#if MURMUR_DEFINE_SYPHON
 		if (m_isPublishSyphon)
 		{
-			m_syphonServer.publishTexture(&m_fbo.getTextureReference());
+			m_syphonServer.publishFBO(&m_fbo);
+//			m_syphonServer.publishScreen();
+//			m_syphonServer.publishTexture(&m_fbo.getTextureReference());
 		}
 	#endif
 }

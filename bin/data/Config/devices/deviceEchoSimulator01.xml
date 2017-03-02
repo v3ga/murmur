@@ -35,7 +35,7 @@
     <sampleVolStandby>0.325806439</sampleVolStandby>
     <enableStandby>0</enableStandby>
     <surface id="main">
-        <xNorm>0.578031957</xNorm>
-        <yNorm>0.699145913</yNorm>
+        <xNorm>0.465820312</xNorm>
+        <yNorm>0.439127594</yNorm>
     </surface>
 </device>

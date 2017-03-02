@@ -1,9 +1,15 @@
 <murmur>
 	<turnoff enable="0">13:17:30</turnoff>
+	<!-- 
+	0 : do not turn off when program exits
+	1 : turn off when program exits
+	-->
+	<turnoffDevices reboot="0">1</turnoffDevices>
+
 
 	<simulator>
         <!-- Activate or not simulation -->
-        <enable>0</enable>
+        <enable>1</enable>
 
         <!-- Sound input for simulators -->
         <soundInput>
@@ -60,11 +66,6 @@
         <ip>192.168.1.25</ip>
    </launchDevices>
 	
-	<!-- 
-	0 : do not turn off when program exits
-	1 : turn off when program exits
-	-->
-	<turnoffDevices reboot="1">1</turnoffDevices>
 
     <!-- Midi -->
 	<midi>

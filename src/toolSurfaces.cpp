@@ -179,6 +179,7 @@ void toolSurfaces::onSurfaceModified(Surface* pSurface)
 void toolSurfaces::update()
 {
 	handleMidiMessages();
+	m_quadWarping.update();
 
     if (mp_surfaceMain)
 	{
@@ -187,9 +188,6 @@ void toolSurfaces::update()
         mp_surfaceMain->renderOffscreen(GLOBALS->mp_app->isShowDevicePointSurfaces);
 		mp_surfaceMain->publishSyphon();
     }
-	
-	m_quadWarping.update();
-	
 }
 
 

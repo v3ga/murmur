@@ -97,6 +97,9 @@ class Surface
 
         string          m_id;
 		int				m_fboNbSamples;
+#if MURMUR_DEFINE_SYPHON
+		ofxSyphonServer 	m_syphonServer;
+#endif
 
     private:
         int                 m_stateActivity;
@@ -127,7 +130,4 @@ class Surface
 		float				m_alphaLayer;
 
 	
-#if MURMUR_DEFINE_SYPHON
-		ofxSyphonServer 	m_syphonServer;
-#endif
 };

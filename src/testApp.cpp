@@ -82,13 +82,22 @@ void testApp::setup()
 	int ySurface = m_settings.getValue("murmur:windows:surface:y", 0);
 	int wSurface = m_settings.getValue("murmur:windows:surface:w", 800);
 	int hSurface = m_settings.getValue("murmur:windows:surface:h", 600);
-	
+	bool bVsync = m_settings.getValue("murmur:windows:vsync", 0) > 0 ? true : false;
+	bool bFramerate = m_settings.getValue("murmur:windows:framerate", 1) > 0 ? true : false;
+	int valueFramerate = m_settings.getAttribute("murmur:windows:framerate", "value", 60);
+	bool bHideToolWindow = m_settings.getValue("murmur:windows:tools:hide", 1) > 0 ? true : false;
+
 	m_bTurnoffDevices = m_settings.getValue("murmur:turnoffDevices",0) > 0 ? true : false;
 	m_bRebootDevices = ofToInt(m_settings.getAttribute("murmur:turnoffDevices", "reboot", "0")) > 0 ? true : false;
 
 
 	OFAPPLOG->println(" - window surface ("+ofToString(xSurface)+","+ofToString(ySurface)+","+ofToString(wSurface)+","+ofToString(hSurface)+")");
 	OFAPPLOG->println(" - turnoff devices =  "+ofToString(m_bTurnoffDevices) + " (reboot = "+ofToString(m_bRebootDevices)+")");
+	OFAPPLOG->println(" - vsync = "+ofToString(bVsync));
+	OFAPPLOG->println(" - framerate = "+ofToString(bFramerate));
+	OFAPPLOG->println("    + value = "+ofToString(valueFramerate));
+	OFAPPLOG->println(" - bHideToolWindow = "+ofToString(bHideToolWindow));
+
 
     mp_glfw->setWindow(mp_windows->at(1));    // set window pointer
     mp_glfw->initializeWindow();       // initialize events (mouse, keyboard, etc) on window (optional)
@@ -194,21 +203,11 @@ void testApp::setup()
 	
 	
 	// GO
-	bool bVsync = m_settings.getValue("murmur:windows:vsync", 1) > 0 ? true : false;
 	ofSetVerticalSync(bVsync);
-	OFAPPLOG->println("vsync = "+ofToString(bVsync));
-	
-	bool bFramerate = m_settings.getValue("murmur:windows:framerate", 1) > 0 ? true : false;
-	OFAPPLOG->println("framerate = "+ofToString(bFramerate));
 	if (bFramerate)
 	{
-		int valueFramerate = m_settings.getAttribute("murmur:windows:framerate", "value", 60);
 		ofSetFrameRate(valueFramerate);
-		OFAPPLOG->println("    - value = "+ofToString(valueFramerate));
 	}
-	
-	bool bHideToolWindow = m_settings.getValue("murmur:windows:tools:hide", 1) > 0 ? true : false;
-
 	
 	if (pToolConfiguration)
 		pToolConfiguration->showToolWindow(!bHideToolWindow);
@@ -619,7 +618,6 @@ void testApp::draw()
 			 guiUpdateListDevices();
 			 m_isUpdateLayout = false;
 		 }
-		 
 
 	 }
 	 

@@ -18,7 +18,7 @@ ShaderWave::ShaderWave()
 	m_colorTarget = m_color = m_colorWhite;
 	m_fColor = 0.8f;
 	
-	m_bUpdateTexture = false;
+	m_bUpdateTexture = true;
 	
 }
 
@@ -81,6 +81,9 @@ AnimationShaderWave::AnimationShaderWave(string name) : Animation(name)
 	
 	loadColors();
 	m_properties.add( new classProperty_float("intensity", 0.0f, 1.0f, &m_waveIntensity) );
+	
+	
+	
 }
 
 //--------------------------------------------------------------
@@ -125,7 +128,6 @@ void AnimationShaderWave::VM_draw(float w, float h)
     
 	drawBackground(0);
 
-    ofSetColor(255);
 	if (m_isBlend)
 	{
 		glEnable(GL_BLEND);
@@ -154,6 +156,7 @@ void AnimationShaderWave::VM_draw(float w, float h)
     	m_shader.setUniform1f("intensityWave", m_waveIntensity);
     	m_shader.setUniformTexture("texWave", pShaderWave->m_imgSoundInput.getTextureReference(), 0);
 
+    	ofSetColor(255,255);
  		ofRect(0,0,w,h);
     
     	m_shader.end();
@@ -277,6 +280,10 @@ void AnimationShaderWave::onNewPacket(DevicePacket* pDevicePacket, string device
 
         	//pShaderWave->m_imgSoundInput.update();
         	pShaderWave->m_bUpdateTexture = true;
+
+
+
+
 		}
 	}
 }
