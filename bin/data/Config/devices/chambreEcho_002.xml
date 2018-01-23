@@ -7,6 +7,8 @@
         <volMaxMax>0.090000004</volMaxMax>
         <volHistoryNb>50.000000000</volHistoryNb>
         <volHistoryTh>0.234677419</volHistoryTh>
+        <pitchMin>30.000000000</pitchMin>
+        <pitchMax>612.307678223</pitchMax>
     </soundInput>
     <soundOutput>
         <speaker>0</speaker>

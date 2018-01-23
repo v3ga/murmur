@@ -104,17 +104,22 @@ class Animation : public midiInterface
 
 		ofxUIMovingGraphThreshold* mp_UIVolumeTh;
 		ofxUILabel*				 mp_lblVolValues;
+		ofxUIToggle*			mp_togglePitchBound;
+
+		ofxUIMovingGraphThreshold* mp_UIPitch;
+
  
 		ofxUITextInput*			mp_teConfigName;
+ 
 
         virtual void            setUICanvas             (ofxUICanvas* p){mp_UIcanvas=p;}
-		void					addUISlider				(classProperty_float*);
-		void					addUISlider				(classProperty_int*);
-		void					addUItoggle				(classProperty_bool*);
+		ofxUISlider*			addUISlider				(classProperty_float*);
+		ofxUIIntSlider*			addUISlider				(classProperty_int*);
+		ofxUIToggle*			addUItoggle				(classProperty_bool*);
         virtual void            createUI                ();
 		virtual	void			createUIConfiguration	();
         virtual void            createUIMidi         	();
-		virtual	void			createUIVolume			();
+		virtual	void			createUIVolumePitch		();
 		virtual	void			createUISound			();
         virtual void            createUICustom          (){};
 				ofxUICanvas*	getUI					();
@@ -123,6 +128,7 @@ class Animation : public midiInterface
         virtual void            guiEvent                (ofxUIEventArgs &e);
 		virtual	bool			guiEventTogglesSound	(string name);
 				void			updateUIVolume			();
+		virtual void			updateUI				(){}
 
 		// Settings
 		// When instanced from surface xml, animation can read settings from <animation node>
@@ -178,11 +184,24 @@ class Animation : public midiInterface
  
 		// Volume accumulutators
 		void						accumulateVolume		(float volume, string deviceId);
+		void						accumulateVolumeAndPitch(float volume, float pitch, string deviceId);
+		VolumeAccum*				getVolumAccumForDevice	(string deviceId);
+		VolumeAccum*				createVolumAccumForDevice(string deviceId);
 		map<string, VolumeAccum*>	m_mapDeviceVolumAccum;
 		static void					sOnVolumAccumEvent		(void*,VolumeAccum*);
 		virtual void				onVolumAccumEvent		(string deviceId);
  
 		float						m_volValuesMeanTh;
+	
+		// Pitch
+		bool						m_bHandlePitch;
+		bool						m_bPitchBound;
+		float						m_pitchLast;
+		bool						hasPitch			(){return m_bHandlePitch && m_bPitchBound;}
+	
+		bool						m_bPitchManual;		// if true will override packet pitch value
+		float						m_pitchManualValue;
+	
 	
 		// Sound player
 		AnimationSoundPlayer		m_soundPlayer;

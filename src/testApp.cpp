@@ -329,7 +329,7 @@ void testApp::initSimulators()
 	    if (deviceSoundInputId>=0)
 		{
     	    m_soundStreamInput.setDeviceID(deviceSoundInputId);
-			m_soundStreamInput.setup(ofGetAppPtr(), 0, nbChannels, 44100, 256, 4);
+			m_soundStreamInput.setup(ofGetAppPtr(), 0, nbChannels, 44100, 256, 4); // ofBaseApp * app, int outChannels, int inChannels, int sampleRate, int bufferSize, int nBuffers
 			m_soundStreamInput.start();
 		}
 
@@ -339,7 +339,6 @@ void testApp::initSimulators()
 			DeviceEchoSimulator* pDeviceSim = *it;
 			if (pDeviceSim)
 			{
-//		        pDeviceSim->startSoundInput(deviceSoundInputId,nbChannels);
 		        pDeviceSim->startSoundInput(nbChannels); // will not create an input stream
         		pDeviceSim->loadXML("Config/devices/");
 				

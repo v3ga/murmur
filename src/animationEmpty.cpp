@@ -8,11 +8,13 @@
 
 #include "animationEmpty.h"
 
+//--------------------------------------------------------------
 AnimationEmpty::AnimationEmpty(string name) : Animation(name)
 {
 }
 
 
+//--------------------------------------------------------------
 void AnimationEmpty::VM_draw(float w, float h)
 {
 	ofBackground(0);

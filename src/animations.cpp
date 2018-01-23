@@ -141,6 +141,14 @@ void Animation::M_zeroAll()
 	m_volValuesMeanTh = 0.5f;
 	mp_lblVolValues = 0;
 	mp_teConfigName = 0;
+	mp_togglePitchBound = 0;
+	mp_UIPitch			= 0;
+
+	m_bHandlePitch	= false;
+	m_bPitchBound	= false;
+	m_pitchLast		= 0.0f;
+	m_bPitchManual  = false;
+	m_pitchManualValue = 0.0f;
 	
 	m_isColor				= false;
 	m_isColorFromDevice		= false;
@@ -214,7 +222,7 @@ void Animation::createUI()
         ofxJSCallFunctionNameObject_NoArgs_IfExists(mp_obj,"createUI",retVal);
     }
  
-	createUIVolume();
+	createUIVolumePitch();
 	createUIConfiguration();
 	createUIMidi();
 	createUISound();
@@ -224,24 +232,27 @@ void Animation::createUI()
 }
 
 //--------------------------------------------------------------
-void Animation::addUISlider(classProperty_float* pProp)
+ofxUISlider* Animation::addUISlider(classProperty_float* pProp)
 {
     if (mp_UIcanvas)
-        mp_UIcanvas->addSlider(pProp->m_name, pProp->m_min, pProp->m_max, pProp->mp_variable);
+        return mp_UIcanvas->addSlider(pProp->m_name, pProp->m_min, pProp->m_max, pProp->mp_variable);
+	return 0;
 }
 
 //--------------------------------------------------------------
-void Animation::addUISlider(classProperty_int* pProp)
+ofxUIIntSlider* Animation::addUISlider(classProperty_int* pProp)
 {
     if (mp_UIcanvas)
-        mp_UIcanvas->addIntSlider(pProp->m_name, pProp->m_min, pProp->m_max, pProp->mp_variable);
+        return mp_UIcanvas->addIntSlider(pProp->m_name, pProp->m_min, pProp->m_max, pProp->mp_variable);
+	return 0;
 }
 
 //--------------------------------------------------------------
-void Animation::addUItoggle(classProperty_bool* pProp)
+ofxUIToggle* Animation::addUItoggle(classProperty_bool* pProp)
 {
     if (mp_UIcanvas)
-        mp_UIcanvas->addToggle(pProp->m_name, pProp->mp_variable);
+        return mp_UIcanvas->addToggle(pProp->m_name, pProp->mp_variable);
+	return 0;
 }
 
 //--------------------------------------------------------------
@@ -262,7 +273,7 @@ void Animation::playSound(string deviceId)
 
 
 //--------------------------------------------------------------
-void Animation::createUIVolume()
+void Animation::createUIVolumePitch()
 {
 	if (mp_UIcanvas)
 	{
@@ -274,6 +285,21 @@ void Animation::createUIVolume()
 		mp_UIcanvas->addWidgetDown( mp_lblVolValues );
 		mp_UIcanvas->addWidgetDown( mp_UIVolumeTh );
 		mp_UIcanvas->addWidgetDown( new ofxUISlider("volValuesMeanTh", 0.0f,1.0f, &m_volValuesMeanTh, ANIM_UI_WIDTH_DEFAULT, 16) );
+
+		if (m_bHandlePitch)
+		{
+			mp_UIPitch = new ofxUIMovingGraphThreshold(ANIM_UI_WIDTH_DEFAULT, 100, zeros, 300, 0.0f, 1.0f, "pitchValues");
+			mp_UIcanvas->addWidgetDown( mp_UIPitch );
+		
+			mp_togglePitchBound = new ofxUIToggle("pitch bound", &m_bPitchBound, 16,16);
+			mp_UIcanvas->addWidgetDown( mp_togglePitchBound );
+
+			if (m_bPitchManual)
+			{
+				mp_UIcanvas->addWidgetDown( new ofxUISlider("pitchManualValue", 0.0f,1.0f, &m_pitchManualValue, ANIM_UI_WIDTH_DEFAULT, 16) );
+			}
+		}
+
 	}
 }
 //--------------------------------------------------------------
@@ -786,7 +812,6 @@ void Animation::updateUIVolume()
 		Device* pDeviceCurrent = getDeviceCurrent();
 		if (pDeviceCurrent)
 		{
-
 			if (mp_lblVolValues)
 				mp_lblVolValues->setLabel("values for "+pDeviceCurrent->m_id);
 
@@ -795,10 +820,14 @@ void Animation::updateUIVolume()
 				VolumeAccum* pVolumeAccum = m_mapDeviceVolumAccum[pDeviceCurrent->m_id];
 				if (pVolumeAccum && pVolumeAccum->m_valueHistory.size()>0)
 				{
-				
 					mp_UIVolumeTh->setBuffer( pVolumeAccum->m_valueHistory );
 					mp_UIVolumeTh->setValue( pVolumeAccum->m_valueMean );
 
+					if (mp_UIPitch)
+					{
+						 mp_UIPitch->setBuffer( pVolumeAccum->m_pitchHistory );
+						 mp_UIPitch->setValue( pVolumeAccum->m_valuePitchMean );
+					}
 				}
 			}
 		}
@@ -894,10 +923,20 @@ void Animation::onVolumAccumEvent(string deviceId)
 	playSound(deviceId);
 }
 
+
 //--------------------------------------------------------------
-void Animation::accumulateVolume(float volume, string deviceId)
+VolumeAccum* Animation::getVolumAccumForDevice(string deviceId)
 {
-	// Volume Accumulators
+	map<string,VolumeAccum*>::iterator it = m_mapDeviceVolumAccum.find(deviceId);
+	VolumeAccum* pVolumeAccum = 0;
+	if ( it != m_mapDeviceVolumAccum.end())
+		pVolumeAccum = it->second;
+	return pVolumeAccum;
+}
+
+//--------------------------------------------------------------
+VolumeAccum* Animation::createVolumAccumForDevice(string deviceId)
+{
 	map<string,VolumeAccum*>::iterator it = m_mapDeviceVolumAccum.find(deviceId);
 	VolumeAccum* pVolumeAccum = 0;
 	if ( it == m_mapDeviceVolumAccum.end())
@@ -906,13 +945,28 @@ void Animation::accumulateVolume(float volume, string deviceId)
 		pVolumeAccum->m_deviceId = deviceId;
 		pVolumeAccum->setTriggerInCb( sOnVolumAccumEvent, (void*) this);
 		m_mapDeviceVolumAccum[deviceId] = pVolumeAccum;
-		
-		 // ofLog() << "creating volumeAccum instance for "<<deviceId;
 	}
 	else{
 		pVolumeAccum = it->second;
 	}
-	
+
+	return pVolumeAccum;
+}
+
+//--------------------------------------------------------------
+void Animation::accumulateVolumeAndPitch(float volume, float pitch, string deviceId)
+{
+	VolumeAccum* pVolumeAccum = createVolumAccumForDevice(deviceId);
+	if (pVolumeAccum)
+	{
+		pVolumeAccum->add( volume, pitch);
+	}
+}
+
+//--------------------------------------------------------------
+void Animation::accumulateVolume(float volume, string deviceId)
+{
+	VolumeAccum* pVolumeAccum = createVolumAccumForDevice(deviceId);
 	if (pVolumeAccum)
 		pVolumeAccum->add( volume );
 }

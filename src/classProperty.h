@@ -46,10 +46,16 @@ class classProperty_float : public classProperty
 
 		void	setValueFromMidiMessage	(ofxMidiMessage& );
 		void	enableEvents			(bool is=true){m_isEnableEvents=is;}
+		void	enableTarget			(bool is=true){m_bHasTarget = true;}
+		void	setTarget				(float t){m_variableTarget = t;}
+		void	update					(float dt);
 
 		float*			mp_variable;
 		float			m_min;
 		float			m_max;
+ 
+		bool			m_bHasTarget;
+ 		float			m_variableTarget;
  
 		bool			m_ownsVariable;
 		bool			m_isEnableEvents;

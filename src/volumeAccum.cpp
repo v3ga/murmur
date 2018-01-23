@@ -31,24 +31,30 @@ void VolumeAccum::setTriggerInCb(cbTriggerIn pFunc, void* pUserData)
 }
 
 //--------------------------------------------------------------
-void VolumeAccum::add(float volume)
+void VolumeAccum::add(float volume, float pitch)
 {
 	// Add value
-	if( m_valueHistory.size() >= m_valueHistoryMax ){
+	if( m_valueHistory.size() >= m_valueHistoryMax )
+	{
 		m_valueHistory.erase(m_valueHistory.end()-1, m_valueHistory.end());
+		m_pitchHistory.erase(m_pitchHistory.end()-1, m_pitchHistory.end());
 	}
 	m_valueHistory.insert( m_valueHistory.begin(), volume );
+	m_pitchHistory.insert(m_pitchHistory.begin(), pitch);
 
 	// Compute mean value
 	int nb = m_valueHistory.size();
 	if (nb>0)
 	{
 		m_valueMean = 0.0f;
+		m_valuePitchMean = 0.0f;
 		for (int i=0;i<nb;i++)
 		{
 			m_valueMean += m_valueHistory[i];
+			m_valuePitchMean += m_pitchHistory[i];
 		}
 		m_valueMean /= (float)nb;
+		m_valuePitchMean /= (float)nb;
 	}
 
 	// State

@@ -116,6 +116,21 @@ void oscReceiver::update()
                         pDevice->setVolHistoryPingThOSC( m_oscMessage.getArgAsFloat(indexArg) );
                     }
                     else
+                    if (propName == "enablePitch")
+					{
+                        pDevice->setEnablePitchOSC( m_oscMessage.getArgAsInt32(indexArg)==1 ? true : false );
+					}
+                    else
+                    if (propName == "pitchMin")
+                    {
+                        pDevice->setSoundInputPitchMinOSC( m_oscMessage.getArgAsFloat(indexArg) );
+                    }
+                    else
+                    if (propName == "pitchMax")
+                    {
+                        pDevice->setSoundInputPitchMaxOSC( m_oscMessage.getArgAsFloat(indexArg) );
+                    }
+                    else
                     if (propName == "enableStandbyMode")
                     {
                         pDevice->setEnableStandbyModeOSC( m_oscMessage.getArgAsInt32(indexArg)==1 ? true : false );
@@ -147,6 +162,15 @@ void oscReceiver::update()
 						float hue = m_oscMessage.getArgAsFloat(indexArg++);
 						float sat = m_oscMessage.getArgAsFloat(indexArg);
                         pDevice->setColorHueSaturationOSC(hue,sat);
+
+						// ofLog() << "(hue,sat)=" << hue << ',' << sat;
+					}
+                    else
+                    if (propName == "color2")
+					{
+						float hue = m_oscMessage.getArgAsFloat(indexArg++);
+						float sat = m_oscMessage.getArgAsFloat(indexArg);
+                        pDevice->setColor2HueSaturationOSC(hue,sat);
 
 						// ofLog() << "(hue,sat)=" << hue << ',' << sat;
 					}
@@ -224,18 +248,14 @@ void oscReceiver::update()
                     // Decode new message
                     if (pDevice)
                     {
-                        int nbPackets = (m_oscMessage.getNumArgs() - 1)/4; // TODO : Be careful with this
+//                        int nbPackets = (m_oscMessage.getNumArgs() - 1)/4; // TODO : Be careful with this
+                        int nbPackets = (m_oscMessage.getNumArgs() - 1)/5; // TODO : Be careful with this
                         for (int i=0;i<nbPackets;i++)
                         {
-                            m_packetTemp.m_volume = m_oscMessage.getArgAsFloat(indexArg++);
-							//m_packetTemp.m_color.setHue			( m_oscMessage.getArgAsFloat(indexArg++) );
-							//m_packetTemp.m_color.setSaturation	( m_oscMessage.getArgAsFloat(indexArg++) );
-							//m_packetTemp.m_color.setBrightness	( m_oscMessage.getArgAsFloat(indexArg++) );
-
+                            m_packetTemp.m_volume 	= m_oscMessage.getArgAsFloat(indexArg++);
+                            m_packetTemp.m_pitch 	= m_oscMessage.getArgAsFloat(indexArg++);
 							m_packetTemp.m_color.set(m_oscMessage.getArgAsFloat(indexArg++),m_oscMessage.getArgAsFloat(indexArg++),m_oscMessage.getArgAsFloat(indexArg++));
-						 
-						 	// ofLog() << m_packetTemp.m_color;
-						 
+						 						 
                             // Send to device
                             pDevice->onReceivePacket(&m_packetTemp);
                         }

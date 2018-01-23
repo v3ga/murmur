@@ -19,6 +19,7 @@ class TunnelElementALB
 		void					update		(float dt);
 		void					draw		();
 
+		ofColor					m_color;
         ofVec3f                 m_pos;
         ofVec3f                 m_dir;
 		float					m_dirSpeed;
@@ -85,5 +86,8 @@ class AnimationTunnelALB : public Animation
  
  
 		ofCamera				m_cam;
+ 
+		ofxUISlider*			mp_sliderW;
+		ofxUISlider*			mp_sliderH2;
  
 };

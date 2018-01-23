@@ -31,6 +31,10 @@ toolDevices::toolDevices(toolManager* parent, DeviceManager* manager) : tool("De
 	mp_toggleDeviceEnableStandby = 0;
 	mp_sliderDeviceVolHistoryTh = 0;
 	
+	mp_toggleDevicePitchEnable = 0;
+	mp_sliderDevicePitchMin = 0;
+	mp_sliderDevicePitchMax = 0;
+	
 	mp_toggleDeviceBPMEnable = 0;
 	mp_sliderDeviceBPM = 0;
 	
@@ -74,6 +78,7 @@ void toolDevices::update()
 {
 //	OFAPPLOG->begin("toolDevices::update");
 	handleMidiMessages();
+//	updateDeviceColorUI();
 //	OFAPPLOG->end();
 }
 
@@ -186,8 +191,12 @@ void toolDevices::createControlsCustomFinalize()
     mp_sliderDeviceVolHistorySize = new ofxUISlider("Vol. history size", 50, 500, 400, widthDefault-10, dim );
     mp_toggleDeviceEnableStandby = new ofxUIToggle("Enable standby", true, dim, dim);
     mp_sliderDeviceVolHistoryTh = new ofxUISlider( "Vol. history standby", 0.0f, 0.75f, 0.5f, widthDefault-10, dim );
-    mp_sliderDeviceTimeStandby = new ofxUISlider("Time standby", 5.0f, 60.0f, 10.0f, widthDefault-10, dim );
+	mp_sliderDeviceTimeStandby = new ofxUISlider("Time standby", 5.0f, 60.0f, 10.0f, widthDefault-10, dim );
 	mp_sliderDeviceSampleVolStandby = new ofxUISlider( "Sample vol. standby", 0.0f, 1.0f, 0.35f, widthDefault-10, dim );
+	mp_toggleDevicePitchEnable = new ofxUIToggle("Enable pitch", true, dim, dim);
+
+	mp_sliderDevicePitchMin = new ofxUISlider( "Pitch min", 0.0f, 1200.0f, 30.0f, widthDefault-10, dim );
+	mp_sliderDevicePitchMax = new ofxUISlider( "Pitch max", 0.0f, 1200.0f, 60.0f, widthDefault-10, dim );
  
 	mp_canvasDevice->addWidgetDown(mp_teDeviceVolMaxMin);
 	mp_canvasDevice->addWidgetRight(mp_sliderDeviceVolMax);
@@ -195,6 +204,13 @@ void toolDevices::createControlsCustomFinalize()
 //    mp_canvasDevice->addWidgetDown(new ofxUISpacer(widthDefault, 1));
 	mp_canvasDevice->addWidgetDown(mp_sliderDeviceVolHistorySize);
 	mp_canvasDevice->addWidgetDown(mp_toggleDeviceUseRawVol);
+
+    mp_canvasDevice->addWidgetDown(new ofxUILabel("Pitch", OFX_UI_FONT_MEDIUM));
+    mp_canvasDevice->addWidgetDown(new ofxUISpacer(widthDefault, 1));
+	mp_canvasDevice->addWidgetDown(mp_toggleDevicePitchEnable);
+	mp_canvasDevice->addWidgetDown( mp_sliderDevicePitchMin );
+	mp_canvasDevice->addWidgetDown( mp_sliderDevicePitchMax );
+	
 	
     mp_canvasDevice->addWidgetDown(new ofxUILabel("BPM", OFX_UI_FONT_MEDIUM));
     mp_canvasDevice->addWidgetDown(new ofxUISpacer(widthDefault, 1));
@@ -314,7 +330,15 @@ void toolDevices::drawUI()
 	if (pDeviceCurrent)
 	{
 		pDeviceCurrent->drawSoundInputVolume( 0.5f*(ofGetWidth()) ,ofGetHeight()-pDeviceCurrent->getHeightSoundInputVolume());
+		pDeviceCurrent->drawSoundInputPitch( 0.5f*(ofGetWidth()) ,ofGetHeight()-2*pDeviceCurrent->getHeightSoundInputVolume());
+
+
+		ofSetColor(ofColor::white);
+		ofDrawBitmapString("color    = "+ofToString(pDeviceCurrent->m_color), 5, ofGetHeight()-2*15);
+		ofDrawBitmapString("colorHsv = "+ofToString(pDeviceCurrent->m_colorHsv[0])+", "+ofToString(pDeviceCurrent->m_colorHsv[1])+", "+ofToString(pDeviceCurrent->m_colorHsv[2]), 5, ofGetHeight()-1*15);
     }
+
+
 	ofPopStyle();
 }
 
@@ -414,7 +438,10 @@ void toolDevices::updateDeviceUI(Device* pDevice)
 		}
 		if (mp_sliderDeviceVolHistorySize) mp_sliderDeviceVolHistorySize->setValue( float(pDevice->getSoundInputVolHistorySize()) );
         if (mp_sliderDeviceVolHistoryTh) mp_sliderDeviceVolHistoryTh->setValue( float(pDevice->getSoundInputVolHistoryTh()) );
-        if (mp_toggleDeviceEnableStandby) mp_toggleDeviceEnableStandby->setValue( pDevice->getEnableStandbyMode() );
+	 	if (mp_sliderDevicePitchMin) mp_sliderDevicePitchMin->setValue( float(pDevice->getSoundInputPitchMin()) );
+	 	if (mp_sliderDevicePitchMax) mp_sliderDevicePitchMax->setValue( float(pDevice->getSoundInputPitchMax()) );
+		
+		if (mp_toggleDeviceEnableStandby) mp_toggleDeviceEnableStandby->setValue( pDevice->getEnableStandbyMode() );
         if (mp_sliderDeviceTimeStandby) mp_sliderDeviceTimeStandby->setValue( pDevice->getTimeStandby() );
         if (mp_sliderDeviceSampleVolStandby) mp_sliderDeviceSampleVolStandby->setValue( pDevice->getSampleVolStandby() );
 		if (mp_sliderStandupVol) mp_sliderStandupVol->setValue( pDevice->getStandupVol() );
@@ -535,6 +562,21 @@ void toolDevices::handleEvents(ofxUIEventArgs& e)
         if (pDeviceCurrent)
             pDeviceCurrent->setSoundInputVolHistoryTh( ((ofxUISlider *) e.widget)->getScaledValue() );
     }
+    else if (name == "Enable pitch")
+    {
+        if (pDeviceCurrent)
+            pDeviceCurrent->setEnablePitch( ((ofxUIToggle *) e.widget)->getValue() );
+    }
+    else if (name == "Pitch min")
+    {
+        if (pDeviceCurrent)
+            pDeviceCurrent->setSoundInputPitchMin( ((ofxUISlider *) e.widget)->getScaledValue() );
+    }
+    else if (name == "Pitch max")
+    {
+        if (pDeviceCurrent)
+            pDeviceCurrent->setSoundInputPitchMax( ((ofxUISlider *) e.widget)->getScaledValue() );
+    }
     else if (name == "Time standby")
     {
         if (pDeviceCurrent){
@@ -566,14 +608,16 @@ void toolDevices::handleEvents(ofxUIEventArgs& e)
 	}
     else if (name == "hue")
     {
-        if (pDeviceCurrent){
+        if (pDeviceCurrent)
+		{
 			pDeviceCurrent->setColorHue( ((ofxUISlider *) e.widget)->getScaledValue() );
 			updateDeviceColorUI();
         }
     }
     else if (name == "saturation")
     {
-        if (pDeviceCurrent){
+        if (pDeviceCurrent)
+		{
 			pDeviceCurrent->setColorSaturation( ((ofxUISlider *) e.widget)->getScaledValue() );
 			updateDeviceColorUI();
         }

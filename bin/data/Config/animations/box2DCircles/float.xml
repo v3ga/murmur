@@ -4,6 +4,11 @@
     <Value>0.127272725</Value>
 </Widget>
 <Widget>
+    <Kind>2</Kind>
+    <Name>pitch bound</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
     <Kind>12</Kind>
     <Name>teConfigName</Name>
     <Value>float.xml</Value>
@@ -106,7 +111,7 @@
 <Widget>
     <Kind>4</Kind>
     <Name>gravity</Name>
-    <Value>0.000000000</Value>
+    <Value>10.000000000</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -121,7 +126,7 @@
 <Widget>
     <Kind>4</Kind>
     <Name>obj. size max</Name>
-    <Value>49.743591309</Value>
+    <Value>26.410257339</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>

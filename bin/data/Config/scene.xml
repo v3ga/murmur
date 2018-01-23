@@ -6,9 +6,11 @@
 		</silhouette>
 
 <!--
+
 		<silhouette device="deviceEchoSimulator02">
 			<position x="-1.0" y="0.0" z="6.5"/>
 		</silhouette>
+
 
 		<silhouette device="deviceEchoSimulator03">
 			<position x="-1.0" y="0.0" z="6.5"/>

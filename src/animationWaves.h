@@ -58,16 +58,21 @@ class WaveManager
 
 		static void				sM_volumeTriggerIn	(void*, VolumeAccum*);
 		void					computeMesh			();
+		void					updateNbPoints		();
 		void					setNbPoints			(int nb);
  
  		AnimationWaves*			mp_parent;
 		VolumeAccum				m_volumeAccum;
+ 		float					m_pitchLast;
  
  		vector<Wave*>			m_waves;
 		ofVboMesh				m_mesh;
+		int						m_nbPoints;
  
 		ofVec2f					m_lastPacketPos;
 		ofColor					m_lastPacketColor;
+
+	
 };
 
 class AnimationWaves : public Animation
@@ -81,11 +86,12 @@ class AnimationWaves : public Animation
 		void			VM_update				(float dt);
 		void			VM_draw					(float w, float h);
         void            guiEvent                (ofxUIEventArgs &e);
-
 		void            onNewPacket				(DevicePacket*, string deviceId, float xNorm, float yNorm);
+		void			updateNbPointsForWaves	();
 
 		map<string, WaveManager* > 				m_wavesDevice;
 		map<string, WaveManager* >::iterator	m_wavesDeviceIt;
+ 
  
  
 		float			m_waveDirAmp;
@@ -97,4 +103,7 @@ class AnimationWaves : public Animation
 		float			m_timeResetAccum;
 		float			m_nbWavePoints;
 		float			m_lineWidthWave;
+
+		ofxUISlider*	mp_sliderNbWavePoints;
+
 };

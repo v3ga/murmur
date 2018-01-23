@@ -16,6 +16,7 @@ TunnelElementALB::TunnelElementALB(ofMesh* pMesh, ofVec3f pos, ofVec3f dir, floa
 	m_dir = dir;
 	m_dirSpeed = dirSpeed;
 	m_leftOrRight = leftOrRight;
+	m_color = ofColor::white;
 }
 
 
@@ -42,8 +43,7 @@ void TunnelElementALB::draw()
 		ofMultMatrix( ofMatrix4x4::getTransposedOf(m_rot) );
 		if (m_leftOrRight)
 			ofRotateZ(180.0f);
-		ofSetColor(255,255);
-//		mp_mesh->drawVertices();
+		ofSetColor(m_color);
 		mp_mesh->draw();
 		ofPopMatrix();
 		ofPopStyle();
@@ -68,11 +68,14 @@ AnimationTunnelALB::AnimationTunnelALB(string name) : Animation(name)
 	m_emitLeft		= true;
 	m_emitRight		= true;
 	
+	m_isColorFromDevice = false;
+
+	m_bHandlePitch		= true;
 	//m_volAccum.setTriggerInCb(sM_volTriggerIn, this);
 	
 	m_properties.add( new classProperty_float("vol. th", 	0.0f, 1.0f, &m_volAccum.m_valueTriggerIn) );
 	m_properties.add( new classProperty_float("h1", 		10.0f, 50.0f, &m_h1Mesh) );
-	m_properties.add( new classProperty_float("h2", 		10.0f, 50.0f, &m_h2Mesh) );
+	m_properties.add( new classProperty_float("h2", 		0.0f, 50.0f, &m_h2Mesh) );
 	m_properties.add( new classProperty_float("w", 			1.0f, 30.0f, &m_wMesh) );
 	m_properties.add( new classProperty_float("speed", 		100.0f, 1500.0f, &m_dirSpeed) );
 	m_properties.add( new classProperty_float("zmax", 		100.0f, 2000.0f, &m_zMax) );
@@ -86,10 +89,8 @@ AnimationTunnelALB::AnimationTunnelALB(string name) : Animation(name)
 
 	updateRotations();
 
-
-	
-	
-	
+	mp_sliderW	= 0;
+	mp_sliderH2 = 0;
 }
 
 //--------------------------------------------------------------
@@ -211,9 +212,11 @@ void AnimationTunnelALB::VM_enter()
 void AnimationTunnelALB::VM_update(float dt)
 {
 	updateUIVolume();
-
-	//m_dirLeft.set	( ofVec3f( cos(ofDegToRad(90+m_dirAngle)), 0, sin(ofDegToRad(90+m_dirAngle)) ) );
-  	//m_dirRight.set	( ofVec3f( cos(ofDegToRad(90-m_dirAngle)), 0, sin(ofDegToRad(90-m_dirAngle)) ) );
+	if (hasPitch())
+	{
+//		mp_sliderW->setValue(m_wMesh);
+		mp_sliderH2->setValue(m_h2Mesh);
+	}
 	
 	vector<TunnelElementALB*>::iterator it = m_elements.begin();
 	for ( ; it!=m_elements.end();)
@@ -262,7 +265,7 @@ void AnimationTunnelALB::onNewPacket(DevicePacket* pDevicePacket, string deviceI
 {
     if (pDevicePacket==0) return;
 	
-	accumulateVolume(pDevicePacket->m_volume, deviceId);
+	accumulateVolumeAndPitch(pDevicePacket->m_volume, pDevicePacket->m_pitch, deviceId);
 
 
     m_posAnchor.set(x,y);
@@ -270,16 +273,27 @@ void AnimationTunnelALB::onNewPacket(DevicePacket* pDevicePacket, string deviceI
 	
 	if (pDevicePacket->m_volume>=m_volAccum.m_valueTriggerIn)
 	{
+		// Pitch
+		m_pitchLast = pDevicePacket->m_pitch;
+
+		if (hasPitch())
+		{
+			m_h2Mesh 	= ofMap(m_pitchLast,0.0f,1.0f,m_properties.getFloat("h2")->m_max, m_properties.getFloat("h2")->m_min);
+			m_wMesh 	= ofMap(m_pitchLast,0.0f,1.0f,m_properties.getFloat("w")->m_max, m_properties.getFloat("w")->m_min);
+
+			onPropertyMidiModified( m_properties.getFloat("h2") );
+			onPropertyMidiModified( m_properties.getFloat("w") );
+		}
+	
+		// Create tunnel element
 		TunnelElementALB* pTunnelElement=0;
 		
 		ofVec3f posAnchorWorld = m_cam.screenToWorld(ofVec3f(m_posAnchor.x,m_posAnchor.y,0),ofRectangle(0,0,m_w,m_h));
 		ofVec3f dir = (posAnchorWorld - m_cam.getPosition()).normalize();
 		m_posFar = m_cam.getPosition()+m_zMax*dir;
 
-
 		m_dirLeft = (m_cam.screenToWorld(ofVec3f(m_w/2,m_h/2,0))-m_posFar).normalized();
 		m_dirRight =(m_cam.screenToWorld(ofVec3f(m_w/2,m_h/2,0))-m_posFar).normalized();
-
 
 		m_dirLeft = m_mRotationLeft*m_dirLeft;
 		m_dirRight = m_mRotationRight*m_dirRight;
@@ -287,15 +301,20 @@ void AnimationTunnelALB::onNewPacket(DevicePacket* pDevicePacket, string deviceI
 		if (m_emitRight)
 		{
 			pTunnelElement = new TunnelElementALB(mp_meshes[0], m_posFar, m_dirRight.normalize(), m_dirSpeed,1);
-			//pTunnelElement->setRotation(m);
 			m_elements.push_back( pTunnelElement );
+			if (m_isColorFromDevice)
+				pTunnelElement->m_color = pDevicePacket->m_color;
 		}
 		if (m_emitLeft)
 		{
 			pTunnelElement = new TunnelElementALB(mp_meshes[0], m_posFar, m_dirLeft.normalize(), m_dirSpeed,0);
-			//pTunnelElement->setRotation(m);
 			m_elements.push_back( pTunnelElement );
+			if (m_isColorFromDevice)
+				pTunnelElement->m_color = pDevicePacket->m_color;
 		}
+		
+		m_volAccum.reset();
+	
 	}
 }
 
@@ -319,10 +338,12 @@ void AnimationTunnelALB::createUICustom()
 {
     if (mp_UIcanvas)
     {
+        mp_UIcanvas->addToggle("colorFromDevice", 					&m_isColorFromDevice);
+
 		addUISlider( m_properties.getFloat("vol. th") );
 		addUISlider( m_properties.getFloat("h1") );
-		addUISlider( m_properties.getFloat("h2") );
-		addUISlider( m_properties.getFloat("w") );
+		mp_sliderH2 = addUISlider( m_properties.getFloat("h2") );
+		mp_sliderW = addUISlider( m_properties.getFloat("w") );
 		addUISlider( m_properties.getFloat("speed") );
 		addUISlider( m_properties.getFloat("zmax") );
 		addUISlider( m_properties.getFloat("angle") );

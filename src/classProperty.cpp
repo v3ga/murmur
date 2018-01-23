@@ -29,6 +29,7 @@ classProperty_float::classProperty_float(string name, float min, float max) : cl
 	m_type	= FLOAT;
 	m_ownsVariable = true;
 	m_isEnableEvents = false;
+	m_bHasTarget = false;
 }
 
 //--------------------------------------------------------------
@@ -39,6 +40,16 @@ classProperty_float::~classProperty_float()
 	}
 }
 
+
+//--------------------------------------------------------------
+void classProperty_float::update(float dt)
+{
+	if (mp_variable && m_bHasTarget)
+	{
+		*mp_variable += (m_variableTarget - *mp_variable) * 0.9 * dt;
+//		*mp_variable = ofClamp(*mp_variable,m_min,m_max);
+	}
+}
 
 //--------------------------------------------------------------
 void classProperty_float::setValueFromMidiMessage(ofxMidiMessage& m)

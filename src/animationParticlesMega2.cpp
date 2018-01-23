@@ -26,12 +26,21 @@ AnimationParticlesMega2::AnimationParticlesMega2(string name) : Animation(name)
 	m_particlesColor = 0;
 
 	m_colorRadiusFactor = 1.0f;
+	
+	mp_volumeAccum = 0;
 
-		m_properties.add( new classProperty_float("amp. attraction",1.0f, 100.0f, &m_ampAttraction) );
-		m_properties.add( new classProperty_float("amp. repulsion", 1.0f, 100.0f, &m_ampRepulsion) );
-		m_properties.add( new classProperty_float("radius repulsion", 40.0f, 300.0f, &m_repulsionRadius) );
-		m_properties.add( new classProperty_float("particles size", 1.0f, 10.0f, &m_particlesSize) );
-		m_properties.add( new classProperty_float("radius color factor", 1.0f, 10.0f, &m_colorRadiusFactor) );
+	m_properties.add( new classProperty_float("amp. attraction",1.0f, 100.0f, &m_ampAttraction) );
+	m_properties.add( new classProperty_float("amp. repulsion", 1.0f, 100.0f, &m_ampRepulsion) );
+	m_properties.add( new classProperty_float("radius repulsion", 40.0f, 300.0f, &m_repulsionRadius) );
+	m_properties.add( new classProperty_float("particles size", 2.0f, 10.0f, &m_particlesSize) );
+	m_properties.add( new classProperty_float("radius color factor", 1.0f, 10.0f, &m_colorRadiusFactor) );
+
+	mp_sliderAmpAttraction 		= 0;
+	mp_sliderAmpRepulsion 		= 0;
+	mp_sliderRadiusRepulsion 	= 0;
+	mp_sliderParticleSize 		= 0;
+
+	m_bHandlePitch = true;
 }
 
 
@@ -125,15 +134,27 @@ void AnimationParticlesMega2::createUICustom()
     {
 		mp_UIcanvas->addToggle("colorFromDevice", 	&m_isColorFromDevice);
 
-	
 
-		addUISlider( m_properties.getFloat("amp. attraction") );
-		addUISlider( m_properties.getFloat("amp. repulsion") );
-		addUISlider( m_properties.getFloat("radius repulsion") );
-		addUISlider( m_properties.getFloat("particles size") );
+		mp_sliderAmpAttraction 		= addUISlider( m_properties.getFloat("amp. attraction") );
+		mp_sliderAmpRepulsion 		= addUISlider( m_properties.getFloat("amp. repulsion") );
+		mp_sliderRadiusRepulsion 	= addUISlider( m_properties.getFloat("radius repulsion") );
+		mp_sliderParticleSize 		= addUISlider( m_properties.getFloat("particles size") );
 		addUISlider( m_properties.getFloat("radius color factor") );
     }
 }
+
+//--------------------------------------------------------------
+void AnimationParticlesMega2::updateUI()
+{
+	if (hasPitch())
+	{
+		if (mp_sliderParticleSize) 		mp_sliderParticleSize->setValue(m_particlesSize);
+		if (mp_sliderAmpAttraction) 	mp_sliderAmpAttraction->setValue(m_ampAttraction);
+		if (mp_sliderAmpRepulsion) 		mp_sliderAmpRepulsion->setValue(m_ampRepulsion);
+		if (mp_sliderRadiusRepulsion) 	mp_sliderRadiusRepulsion->setValue(m_repulsionRadius);
+	}
+}
+
 
 //--------------------------------------------------------------
 void AnimationParticlesMega2::guiEvent(ofxUIEventArgs &e)
@@ -149,10 +170,27 @@ void AnimationParticlesMega2::guiEvent(ofxUIEventArgs &e)
 //--------------------------------------------------------------
 void AnimationParticlesMega2::VM_update(float dt)
 {
+	if (hasPitch())
+	{
+//		if (m_bPitchManual)
+//			m_pitchLast = m_pitchManualValue;
+	
+		// Temp for now
+//	 	VolumeAccum* pFirstVolumeAccum =
+
+		if (mp_volumeAccum)
+			m_particlesSize = ofMap(mp_volumeAccum->m_valueMean,0.0f,1.0f,m_properties.getFloat("particles size")->m_min, m_properties.getFloat("particles size")->m_max);
+		m_ampAttraction = ofMap(m_pitchLast, 0.0f,1.0f, 5, 50);
+		m_ampRepulsion = ofMap(m_pitchLast, 0.0f,1.0f, 40, 100);
+		m_repulsionRadius = ofMap(m_pitchLast, 0.0f,1.0f, 140, 300);
+	}
+
 	updateUIVolume();
+	updateUI();
+
     particleSystem.setParticleSize(m_particlesSize);
 
-    m_volume += (m_volumeTarget-m_volume)*0.4f;
+//    m_volume += (m_volumeTarget-m_volume)*0.4f;
 	map<string,ParticleForce*>::iterator it = m_mapParticleForce.begin();
 	ParticleForce* pParticleForce=0;
 	for ( ; it != m_mapParticleForce.end() ; ++it)
@@ -235,8 +273,12 @@ void AnimationParticlesMega2::onVolumAccumEvent(string deviceId)
 void AnimationParticlesMega2::onNewPacket(DevicePacket* pDevicePacket, string deviceId, float x, float y)
 {
 	if (pDevicePacket)
-		accumulateVolume(pDevicePacket->m_volume, deviceId);
+		accumulateVolumeAndPitch(pDevicePacket->m_volume, pDevicePacket->m_pitch, deviceId);
 
+	// TEMP
+	mp_volumeAccum = getVolumAccumForDevice(deviceId);
+
+	// Create force
 	 map<string,ParticleForce*>::iterator it = m_mapParticleForce.find(deviceId);
 	 ParticleForce* pParticleForce=0;
 
@@ -250,6 +292,8 @@ void AnimationParticlesMega2::onNewPacket(DevicePacket* pDevicePacket, string de
 		 pParticleForce = it->second;
 	 }
 
+
+
 	 if (pParticleForce && pDevicePacket)
 	 {
 		 pParticleForce->m_anchor.set(x,y);
@@ -257,18 +301,15 @@ void AnimationParticlesMega2::onNewPacket(DevicePacket* pDevicePacket, string de
 		 
 		 Device* pDevice = GLOBALS->mp_deviceManager->getDeviceById( deviceId );
 
-		 pParticleForce->m_color = pDevice->m_color;
+//		 pParticleForce->m_color = pDevice->m_color;
+		 pParticleForce->m_color = pDevicePacket->m_color;
 		// printf("pDevicePacket->m_volume = %.5f\n", pDevicePacket->m_volume);
+
+		if (hasPitch())
+		{
+			m_pitchLast = pDevicePacket->m_pitch;
+		}
 	 }
-
-
-/*
-    m_anchor.set(x, y);
-    if (pDevicePacket)
-    {
-        m_volumeTarget = pDevicePacket->m_volume;
-    }
-*/
 }
 
 

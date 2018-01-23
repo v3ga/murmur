@@ -16,12 +16,14 @@
 DevicePacket::DevicePacket()
 {
     m_volume = 0.0f;
+	m_pitch = 0.0f;
 }
 
 //--------------------------------------------------------------
 void DevicePacket::copy(DevicePacket* pPacket)
 {
     m_volume = pPacket->m_volume;
+    m_pitch = pPacket->m_pitch;
 	m_color = pPacket->m_color;
 }
 
@@ -42,6 +44,7 @@ void DevicePacket::computeColor(const ofColor& deviceColor, bool isColor, bool i
 	}
 }
 
+
 //--------------------------------------------------------------
 void DevicePacket::computeColor(const float* deviceColor,bool isColor, bool isInvert)
 {
@@ -52,6 +55,20 @@ void DevicePacket::computeColor(const float* deviceColor,bool isColor, bool isIn
 	else
 		m_color.set(volume*255.0f,volume*255.0f,volume*255.0f);
 //	m_color.setHsb(deviceColor[0],deviceColor[1],m_volume*255.0f);
+}
+
+//--------------------------------------------------------------
+void DevicePacket::computeColor2(const float* deviceColor, const float* deviceColor2, float t, bool isColor, bool isInvert)
+{
+	float volume = isInvert ? 1.0f-m_volume : m_volume;
+
+	if (isColor)
+	{
+//		m_color = ofColor::fromHsb(ofLerp(deviceColor[0],deviceColor2[0],t),ofLerp(deviceColor[1],deviceColor2[1],t),volume*255.0f);
+		m_color = ofColor::fromHsb(deviceColor[0],deviceColor[1], volume*255).lerp(  ofColor::fromHsb(deviceColor2[0],deviceColor2[1], volume*255) ,t);
+	}
+	else
+		m_color.set(volume*255.0f,volume*255.0f,volume*255.0f);
 }
 
 
@@ -73,6 +90,9 @@ Device::Device(string id, int nbLEDs, float distLEDs)
 	m_sampleNameStandby = "Sounds/StandBy/theme1-4.wav";
 	m_soundInputVolEmpiricalMaxMin = 0.0;
 	m_soundInputVolEmpiricalMaxMax = 0.04;
+	m_soundInputPitchMin = 30.0f;
+	m_soundInputPitchMax = 128.0f;
+	m_bEnablePitch		 = true;
 
 
 	m_bpmEnable			= false;
@@ -88,6 +108,12 @@ Device::Device(string id, int nbLEDs, float distLEDs)
 	m_color.setHsb(200, 255, 255); // Brightness not used as set by packets
 	m_colorMode = colorMode_manual_hsb;
 	m_colorSpeedOscillation = 10.0f;
+
+	m_color2.setHsb(200, 255, 255);
+	for (int i=0;i<3;i++){
+		m_colorHsv[i]=0.0f;
+		m_colorHsv2[i]=0.0f;
+	}
 	
 	m_isUpdatingPacket = false;
 	m_isSendMessagesOSC = true;
@@ -158,13 +184,13 @@ void Device::setColorHueSaturation(float h, float s)
 
 void Device::setColorHue(float h)
 {
-	//OFAPPLOG->begin("Device::setColorHue("+ofToString(h)+")");
+	OFAPPLOG->begin("Device::setColorHue("+ofToString(h)+")");
 
 	m_color.setHue(h);
 	m_colorHsv[0]=h;
 
-	// OFAPPLOG->println("m_color.getHue()="+ofToString(m_color.getHue()));
-	// OFAPPLOG->println("m_color.getSaturation()="+ofToString(m_color.getSaturation()));
+	 OFAPPLOG->println("m_color.getHue()="+ofToString(m_color.getHue()));
+	 OFAPPLOG->println("m_color.getSaturation()="+ofToString(m_color.getSaturation()));
 
 	if (m_isSendMessagesOSC == false) return;
 
@@ -176,19 +202,19 @@ void Device::setColorHue(float h)
 	m.addFloatArg(m_colorHsv[1]);
     m_oscSender.sendMessage(m);
 
-	//OFAPPLOG->end();
+	OFAPPLOG->end();
 }
 
 void Device::setColorSaturation(float s)
 {
-	//OFAPPLOG->begin("Device::setColorSaturation("+ofToString(s)+")");
+	OFAPPLOG->begin("Device::setColorSaturation("+ofToString(s)+")");
 
 
 	m_color.setSaturation(s);
 	m_colorHsv[1]=s;
 
-	//OFAPPLOG->println("m_color.getHue()="+ofToString(m_color.getHue()));
-	//OFAPPLOG->println("m_color.getSaturation()="+ofToString(m_color.getSaturation()));
+	OFAPPLOG->println("m_color.getHue()="+ofToString(m_color.getHue()));
+	OFAPPLOG->println("m_color.getSaturation()="+ofToString(m_color.getSaturation()));
 
 	if (m_isSendMessagesOSC == false) return;
 
@@ -200,14 +226,13 @@ void Device::setColorSaturation(float s)
 	m.addFloatArg(m_colorHsv[1]);
     m_oscSender.sendMessage(m);
 	
-	//OFAPPLOG->end();
+	OFAPPLOG->end();
 }
 
 //--------------------------------------------------------------
 void Device::enableColor(bool is)
 {
 	m_isEnableColor = is;
-
 
 	if (m_isSendMessagesOSC == false) return;
 
@@ -234,7 +259,41 @@ void Device::setColorHueSaturationOSC(float h, float s)
 	m_color.setHue(h);
 	m_color.setSaturation(h);
 	
+	
+	// OFAPPLOG->println(ofToString(m_color));
 }
+
+
+//--------------------------------------------------------------
+void Device::setColor2HueSaturation(float h, float s)
+{
+	m_colorHsv2[0]=h;
+	m_colorHsv2[1]=s;
+
+	m_color2.setHue(h);
+	m_color2.setSaturation(s);
+
+	if (m_isSendMessagesOSC == false) return;
+
+    ofxOscMessage m;
+	m.setAddress( OSC_ADDRESS_SET_DEVICE_PROP );
+    m.addStringArg(m_id);
+    m.addStringArg("color2");
+	m.addFloatArg(m_colorHsv2[0]);
+	m.addFloatArg(m_colorHsv2[1]);
+    m_oscSender.sendMessage(m);
+}
+
+//--------------------------------------------------------------
+void Device::setColor2HueSaturationOSC(float h, float s)
+{
+	m_colorHsv2[0]=h;
+	m_colorHsv2[1]=s;
+
+	m_color2.setHue(h);
+	m_color2.setSaturation(h);
+}
+
 
 //--------------------------------------------------------------
 float Device::getWidthSoundInputVolume()
@@ -371,13 +430,81 @@ void Device::setSoundInputVolHistoryTh(float th)
     m_oscSender.sendMessage(m);
 
 	LOG_MESSAGE_OSC(m,false);
- 
 }
 
 //--------------------------------------------------------------
 void Device::setSoundInputVolHistoryThOSC(float th)
 {
     m_volHistoryTh = th;
+}
+
+
+//--------------------------------------------------------------
+void Device::setEnablePitch(bool is)
+{
+	m_bEnablePitch = is;
+	
+	if (m_isSendMessagesOSC == false) return;
+
+    ofxOscMessage m;
+    m.setAddress( OSC_ADDRESS_SET_DEVICE_PROP );
+    m.addStringArg(m_id);
+    m.addStringArg("enablePitch");
+    m.addIntArg( m_bEnablePitch ? 1 : 0 );
+    m_oscSender.sendMessage(m);
+}
+
+//--------------------------------------------------------------
+void Device::setEnablePitchOSC(bool is)
+{
+	m_bEnablePitch = is;
+}
+
+
+//--------------------------------------------------------------
+void Device::setSoundInputPitchMin(float min)
+{
+	m_soundInputPitchMin = min;
+
+	if (m_isSendMessagesOSC == false) return;
+
+    ofxOscMessage m;
+    m.setAddress( OSC_ADDRESS_SET_DEVICE_PROP );
+    m.addStringArg(m_id);
+    m.addStringArg("pitchMin");
+    m.addFloatArg(min);
+    m_oscSender.sendMessage(m);
+	
+}
+
+//--------------------------------------------------------------
+void Device::setSoundInputPitchMinOSC(float min)
+{
+	if (mp_soundInput)
+		mp_soundInput->setPitchMin(min);
+}
+
+//--------------------------------------------------------------
+void Device::setSoundInputPitchMax(float max)
+{
+	m_soundInputPitchMax = max;
+
+	if (m_isSendMessagesOSC == false) return;
+
+    ofxOscMessage m;
+    m.setAddress( OSC_ADDRESS_SET_DEVICE_PROP );
+    m.addStringArg(m_id);
+    m.addStringArg("pitchMax");
+    m.addFloatArg(max);
+    m_oscSender.sendMessage(m);
+	
+}
+
+//--------------------------------------------------------------
+void Device::setSoundInputPitchMaxOSC(float max)
+{
+	if (mp_soundInput)
+		mp_soundInput->setPitchMax(max);
 }
 
 //--------------------------------------------------------------
@@ -685,6 +812,15 @@ void Device::drawSoundInputVolume(float x, float y)
     }
 }
 
+
+//--------------------------------------------------------------
+void Device::drawSoundInputPitch(float x, float y)
+{
+	if (mp_soundInput)
+	{
+		mp_soundInput->drawPitch(x,y);
+	}
+}
 //--------------------------------------------------------------
 void Device::startSoundInput(int deviceId, int nbChannels)
 {
@@ -745,7 +881,6 @@ void Device::setSoundInputMute(bool is)
 
 }
 
-
 //--------------------------------------------------------------
 void Device::setSoundInputMuteOSC(bool is)
 {
@@ -792,6 +927,7 @@ void Device::sampleSoundInput()
     float stepSample = float( mp_soundInput->getVolHistory().size() )/ float(nbPackets-1) ;
     
     float indexSample = 0.0f;
+	float pitch = 0.0f;
 	int indexPacket = 0;
     for (int i=0;i<nbPackets;i++)
     {
@@ -799,9 +935,16 @@ void Device::sampleSoundInput()
             indexSample = nbVolHistorySize-1;
 
 		indexPacket = m_isReverseDirPackets ? nbPackets-1-i : i;
+		pitch = mp_soundInput->getPitchHistory()[(int)indexSample];
 	 
 		m_listPackets[indexPacket]->m_volume = mp_soundInput->getVolHistory()[(int)indexSample]; // Nearest sampling
-		m_listPackets[indexPacket]->computeColor(m_colorHsv, m_isEnableColor, m_isInvertPacketsVolume);
+		m_listPackets[indexPacket]->m_pitch = pitch;
+
+		if (m_bEnablePitch)
+			m_listPackets[indexPacket]->computeColor2(m_colorHsv, m_colorHsv2, pitch, m_isEnableColor, m_isInvertPacketsVolume);
+		else
+			m_listPackets[indexPacket]->computeColor(m_colorHsv, m_isEnableColor, m_isInvertPacketsVolume);
+
 
         indexSample += stepSample;
     }
@@ -897,7 +1040,7 @@ void Device::sendPacketsOSC()
 {
 	if (m_isSendMessagesOSC == false) return;
 
-	int nbLEDsUpdate = 160;
+	int nbLEDsUpdate = 80;
 	int nbOSCMessages = m_nbLEDs / nbLEDsUpdate;
 	int nbLEDsRest = m_nbLEDs % nbLEDsUpdate;
 	if (nbLEDsRest > 0){
@@ -929,6 +1072,7 @@ void Device::sendPacketsOSC()
 			offset = offsetPackets+i;
 	
 			m.addFloatArg(m_listPackets[offset]->m_volume);
+			m.addFloatArg(m_listPackets[offset]->m_pitch);
 
 			m.addFloatArg(m_listPackets[offset]->m_color[0]);
 			m.addFloatArg(m_listPackets[offset]->m_color[1]);
@@ -1138,11 +1282,13 @@ void Device::loadXMLSoundInput(ofxXmlSettings& settings)
   float 	volMaxMax 			= settings.getValue("device:soundInput:volMaxMax",0.05f);
   int 		volHistoryNb 		= settings.getValue("device:soundInput:volHistoryNb", 400);
   float 	volHistoryTh		= settings.getValue("device:soundInput:volHistoryTh",0.1f);
+  float 	pitchMin			= settings.getValue("device:soundInput:pitchMin",30.0f);
+  float 	pitchMax			= settings.getValue("device:soundInput:pitchMax",100.0f);
   int		enableStandby		= settings.getValue("device:enableStandby",1);
   float 	timeStandby			= settings.getValue("device:timeStandby",10.0f);
   float 	sampleVolStandby	= settings.getValue("device:sampleVolStandby",0.35f);
   int		enableStandup		= settings.getValue("device:enableStandup",1);
-  float 	volStandup			= settings.getValue("device:volStandup",0.5f);
+ 
 
 
    setSoundInputUseRawVolume(useRawVol==1 ? true : false );
@@ -1152,11 +1298,13 @@ void Device::loadXMLSoundInput(ofxXmlSettings& settings)
    setSoundInputVolumeMaxMax( volMaxMax );
    setSoundInputVolHistorySize( volHistoryNb );
    setSoundInputVolHistoryTh( volHistoryTh );
+   setSoundInputPitchMin(pitchMin);
+   setSoundInputPitchMax(pitchMax);
    setEnableStandbyMode( enableStandby == 1 ? true : false );
    setTimeStandby( timeStandby );
    setSampleVolumeStandby( sampleVolStandby );
    // setEnableStandup( enableStandup );
-   setStandupVol( volStandup );
+   // setStandupVol( volStandup );
 
 
    OFAPPLOG->println(" - useRawVol="+ofToString(useRawVol));
@@ -1166,11 +1314,13 @@ void Device::loadXMLSoundInput(ofxXmlSettings& settings)
    OFAPPLOG->println(" - volMaxMax="+ofToString(volMaxMax));
    OFAPPLOG->println(" - volHistoryNb="+ofToString(volHistoryNb));
    OFAPPLOG->println(" - volHistoryTh="+ofToString(volHistoryTh));
+   OFAPPLOG->println(" - pitchMin="+ofToString(pitchMin));
+   OFAPPLOG->println(" - pitchMax="+ofToString(pitchMax));
    OFAPPLOG->println(" - enableStandby="+ofToString(timeStandby));
    OFAPPLOG->println(" - timeStandby="+ofToString(enableStandby));
    OFAPPLOG->println(" - sampleVolStandby="+ofToString(sampleVolStandby));
    OFAPPLOG->println(" - enableStandup="+ofToString(enableStandup));
-   OFAPPLOG->println(" - volStandup="+ofToString(volStandup));
+//   OFAPPLOG->println(" - volStandup="+ofToString(volStandup));
 }
 
 
@@ -1290,6 +1440,10 @@ void Device::saveXML(string dir)
             settings.addValue("volMaxMax", 			getSoundInputVolumeMaxMax());
             settings.addValue("volHistoryNb", 		getSoundInputVolHistorySize());
             settings.addValue("volHistoryTh", 		getSoundInputVolHistoryTh());
+            settings.addValue("pitchMin", 			getSoundInputPitchMin());
+            settings.addValue("pitchMax", 			getSoundInputPitchMax());
+
+
 		settings.popTag();
 
         settings.addTag("soundOutput");

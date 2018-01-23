@@ -57,7 +57,6 @@ void Wave::updatePoints()
 		);
 		
 		angle += angleStep;
-	
 	}
 }
 
@@ -76,6 +75,7 @@ WaveManager::WaveManager(AnimationWaves* pParent)
 {
    mp_parent = pParent;
    m_volumeAccum.setTriggerInCb(sM_volumeTriggerIn, (void*) this);
+   m_pitchLast = 0.0f;
 }
 
 //--------------------------------------------------------------
@@ -102,6 +102,12 @@ void WaveManager::update(float dt)
 		)
 	{
 		m_volumeAccum.reset();
+	}
+
+
+	if (mp_parent->hasPitch())
+	{
+//		updateNbPoints();
 	}
 
 
@@ -147,11 +153,11 @@ void WaveManager::onNewPacket(DevicePacket* pDevicePacket, ofColor deviceColor, 
 {
 	m_lastPacketPos.set(x,y);
 	m_lastPacketColor = deviceColor;
-	m_volumeAccum.add( pDevicePacket->m_volume );
+	m_volumeAccum.add( pDevicePacket->m_volume, pDevicePacket->m_pitch );
 }
 
 //--------------------------------------------------------------
-void WaveManager::sM_volumeTriggerIn(void* pData, VolumeAccum*)
+void WaveManager::sM_volumeTriggerIn(void* pData, VolumeAccum* pVolumAccum)
 {
 	WaveManager* pThis = (WaveManager*) pData;
 	
@@ -165,7 +171,16 @@ void WaveManager::sM_volumeTriggerIn(void* pData, VolumeAccum*)
 	
 	pNewWave->setColor( pThis->mp_parent->m_isColorFromDevice ?  ofColor(pThis->m_lastPacketColor,255) : ofColor(255,255));
 	pNewWave->setAgeMax(pThis->mp_parent->m_ageMax);
-	pNewWave->setNbPoints( pThis->mp_parent->m_nbWavePoints );
+
+	if (pThis->mp_parent->hasPitch())
+	{
+		pThis->m_pitchLast = pThis->m_volumeAccum.m_valuePitchMean;
+		pThis->updateNbPoints();
+	}
+	
+	pNewWave->setNbPoints( pThis->m_nbPoints );
+	
+	// ofLog() << pThis->m_nbPoints;
 	
 	// Save this wave
 	pThis->m_waves.push_back(pNewWave);
@@ -230,14 +245,23 @@ void WaveManager::computeMesh()
 }
 
 //--------------------------------------------------------------
+void WaveManager::updateNbPoints()
+{
+	setNbPoints( ofMap(m_pitchLast,0.0f,1.0f,15,3) );
+}
+
+//--------------------------------------------------------------
 void WaveManager::setNbPoints(int nb)
 {
-	int nbWaves = m_waves.size(); // ofLog() << nbWaves;
-	for (int i=0; i<nbWaves;i++)
+	if (m_nbPoints != nb)
 	{
-		m_waves[i]->setNbPoints(nb);
+		m_nbPoints = nb;
+
+		int nbWaves = m_waves.size();
+		for (int i=0; i<nbWaves;i++)
+			m_waves[i]->setNbPoints(nb);
+		computeMesh();
 	}
-	computeMesh();
 }
 
 //--------------------------------------------------------------
@@ -249,6 +273,7 @@ AnimationWaves::AnimationWaves(string name) : Animation(name)
 	m_nbWavePoints = 10;
 	m_enableTimeResetAccum = false;
 	m_timeResetAccum = 0.5f;
+	mp_sliderNbWavePoints = 0;
 
 	m_properties.add( new classProperty_float("nbWavePoints", 		3.0f, 20.0f, 	&m_nbWavePoints) );
 	m_properties.add( new classProperty_float("speed", 				20.0f, 100.0f, 	&m_speed) );
@@ -259,8 +284,10 @@ AnimationWaves::AnimationWaves(string name) : Animation(name)
 	m_properties.add( new classProperty_float("lineWidthWave", 		0.0f, 20.0f, 	&m_lineWidthWave) );
 	m_properties.add( new classProperty_bool("enableResetAccum", 					&m_enableTimeResetAccum) );
 	m_properties.add( new classProperty_float("timeResetAccum", 	0.1f, 1.0f,		&m_timeResetAccum) );
-	
-	}
+
+	m_bHandlePitch = true;
+
+}
 
 //--------------------------------------------------------------
 AnimationWaves::~AnimationWaves()
@@ -282,7 +309,7 @@ void AnimationWaves::createUICustom()
 	}
 
 
-	addUISlider( m_properties.getFloat("nbWavePoints") );
+	mp_sliderNbWavePoints = addUISlider( m_properties.getFloat("nbWavePoints") );
 	addUISlider( m_properties.getFloat("speed") );
 	addUISlider( m_properties.getFloat("ageMax") );
 	addUISlider( m_properties.getFloat("waveDirAmp") );
@@ -297,12 +324,20 @@ void AnimationWaves::createUICustom()
 void AnimationWaves::VM_update(float dt)
 {
 	updateUIVolume();
+	if (hasPitch())
+	{
+//		m_nbWavePoints = (int)ofMap(m_pitchLast,0.0f,1.0f,15,3);
+//		updateNbPointsForWaves();
+
+		if (mp_sliderNbWavePoints) mp_sliderNbWavePoints->setValue( m_nbWavePoints );
+	}
 
 	m_wavesDeviceIt = m_wavesDevice.begin();
 	for ( ; m_wavesDeviceIt != m_wavesDevice.end(); ++m_wavesDeviceIt)
 	{
 		WaveManager* pWaveManager = m_wavesDeviceIt->second;
 		pWaveManager->update(dt);
+
 	}
 }
 
@@ -320,6 +355,15 @@ void AnimationWaves::VM_draw(float w, float h)
 //	ofDisableAlphaBlending();
 }
 
+
+//--------------------------------------------------------------
+void AnimationWaves::updateNbPointsForWaves()
+{
+	m_wavesDeviceIt = m_wavesDevice.begin();
+	for ( ; m_wavesDeviceIt != m_wavesDevice.end(); ++m_wavesDeviceIt)
+		m_wavesDeviceIt->second->setNbPoints( m_nbWavePoints );
+}
+
 //--------------------------------------------------------------
 void AnimationWaves::guiEvent(ofxUIEventArgs &e)
 {
@@ -328,17 +372,16 @@ void AnimationWaves::guiEvent(ofxUIEventArgs &e)
 	string name = e.getName();
 	if (name == "nbWavePoints")
 	{
-		m_wavesDeviceIt = m_wavesDevice.begin();
-		for ( ; m_wavesDeviceIt != m_wavesDevice.end(); ++m_wavesDeviceIt)
-			m_wavesDeviceIt->second->setNbPoints( (int) e.getSlider()->getScaledValue() );
+		m_nbWavePoints = (int) e.getSlider()->getScaledValue();
+		updateNbPointsForWaves();
 	}
 }
 
 //--------------------------------------------------------------
 void AnimationWaves::onNewPacket(DevicePacket* pDevicePacket, string deviceId, float x, float y)
 {
-	accumulateVolume(pDevicePacket->m_volume, deviceId);
-
+	accumulateVolumeAndPitch(pDevicePacket->m_volume, pDevicePacket->m_pitch, deviceId);
+	m_pitchLast = getVolumAccumForDevice(deviceId)->m_valuePitchMean;
 
 	if (m_wavesDevice.find(deviceId) == m_wavesDevice.end())
 	{
@@ -349,6 +392,6 @@ void AnimationWaves::onNewPacket(DevicePacket* pDevicePacket, string deviceId, f
 	if (GLOBALS->mp_deviceManager)
 	{
 		Device* pDevice = GLOBALS->mp_deviceManager->getDeviceById( deviceId );
-		m_wavesDevice[deviceId]->onNewPacket(pDevicePacket, pDevice->m_color, x, y);
+		m_wavesDevice[deviceId]->onNewPacket(pDevicePacket, /*pDevice->m_color*/ pDevicePacket->m_color, x, y);
 	}
 }

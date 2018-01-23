@@ -24,6 +24,7 @@
 #include "animationLinesFF.h"
 #include "animationGridsFF.h"
 #include "animationAgentsFF.h"
+#include "animationDebug.h"
 
 Animation* AnimationsFactory::create(string name)
 {
@@ -60,6 +61,8 @@ Animation* AnimationsFactory::create(string name)
         pAnimation = new AnimationGridsFF(name);
     else if (name == "agentsFF")
         pAnimation = new AnimationAgentsFF(name);
+    else if (name == "debug")
+        pAnimation = new AnimationDebug(name);
     else if (name == "empty")
         pAnimation = new AnimationEmpty(name);
  

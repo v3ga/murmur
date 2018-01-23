@@ -10,6 +10,8 @@
 #define SOUNDINPUT_USE_FFT 0
 
 #include "ofMain.h"
+#include "ofxAubio.h"
+#include "pitchAnalysis.h"
 
 #if SOUNDINPUT_USE_FFT
 #include "ofxFFTLive.h"
@@ -48,6 +50,10 @@ class SoundInput
         float               getVolHistoryMeanFiltered();
 		int					getNbChannels(){return m_nbChannels;}
 		int					getBufferSize(){return m_bufferSize;}
+ 
+		vector <float>&     getPitchHistory   (){return m_pitchAnalysis.m_historyNorm;}
+		void				drawPitch		  (float x, float y);
+
 	
 		void				stopInput		(bool is=true){m_isStopInput=is;}
 		void				setSample		(Sample*);
@@ -57,6 +63,12 @@ class SoundInput
 		bool				getUseRawVol	(){return m_useRawVol;}
  
 		void				setInputVolumeModulate(float f){m_inputVolumeModulate=f;}
+ 
+		void				setPitchMin		(float v){m_pitchAnalysis.setMin(v);}
+		void				setPitchMax		(float v){m_pitchAnalysis.setMax(v);}
+ 
+		float				getPitchMin		(){return m_pitchAnalysis.m_pitchMin;}
+		float				getPitchMax		(){return m_pitchAnalysis.m_pitchMax;}
  
     private:
         //ofSoundStream*       mp_soundStreamInput;
@@ -69,13 +81,16 @@ class SoundInput
 		bool				m_isStopInput;
 		float				m_inputVolumeModulate; // multiply the value retrived in audio in by this value
 
+
+		// Volume
         vector <float>      m_mono;
         vector <float>      m_left;
         vector <float>      m_right;
         vector <float>      m_volHistory;
         int                 m_volHistoryNb;
         float               m_volHistoryMean, m_volHistoryMeanFiltered;
-    
+		int 				m_sampleRate;
+	
 
 		bool				m_useRawVol;
         float               m_smoothedVol;
@@ -84,14 +99,22 @@ class SoundInput
     
         int                 m_nbChannels;
         int                 m_bufferSize;
-    
+
+		// Pitch
+        ofxAubioPitch 		m_pitch;
+		pitchAnalysis		m_pitchAnalysis;
+
+		// View
         float               m_heightDraw;
 	
+		// Sample playback
 		Sample*				mp_sample;
 		float*				m_sampleData;
 		float				m_sampleVolume;
 	
     
         void                initAudioBuffers	();
+		void				initPitch			();
+        void                setPitchHistorySize(int nb=400);
 		void				processAudio		(float * input, int bufferSize, int nChannels);
 };

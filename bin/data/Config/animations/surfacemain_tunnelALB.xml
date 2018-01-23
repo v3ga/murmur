@@ -4,6 +4,11 @@
     <Value>0.593939424</Value>
 </Widget>
 <Widget>
+    <Kind>2</Kind>
+    <Name>pitch bound</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
     <Kind>12</Kind>
     <Name>teConfigName</Name>
     <Value>bissy.xml</Value>
@@ -64,6 +69,11 @@
     <Value>1</Value>
 </Widget>
 <Widget>
+    <Kind>2</Kind>
+    <Name>colorFromDevice</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
     <Kind>4</Kind>
     <Name>vol. th</Name>
     <Value>0.208333328</Value>
@@ -76,7 +86,7 @@
 <Widget>
     <Kind>4</Kind>
     <Name>h2</Name>
-    <Value>29.212598801</Value>
+    <Value>29.212600708</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>

@@ -17,14 +17,33 @@ AnimationLinesFF::AnimationLinesFF(string name) : Animation(name)
 	m_rotSpeed = 0.0f;
 	
 	
-	m_properties.add( new classProperty_float("dirSpeed", 100.0f,1000.0f, &m_dirSpeed) );
+	mp_propDirSpeed	  = new classProperty_float("dirSpeed", 100.0f,1000.0f, &m_dirSpeed);
+	mp_propRotSpeed	  = new classProperty_float("rotSpeed", 0.0f,360.0f, &m_rotSpeed);
+	
+	
+	
+	m_properties.add( mp_propDirSpeed );
 	m_properties.add( new classProperty_float("zMax", 100.0f,2000.0f, &m_zMax) );
 	m_properties.add( new classProperty_float("radius", 0.0f,200.0f, &m_radius) );
 	m_properties.add( new classProperty_bool("radiusDirect", &m_bRadiusDirect) );
 	m_properties.add( new classProperty_float("rot", 0.0f,360.0f, &m_rot) );
-	m_properties.add( new classProperty_float("rotSpeed", 0.0f,360.0f, &m_rotSpeed) );
+	m_properties.add( mp_propRotSpeed );
 
 	m_meshPlane = ofMesh::box(2.0f, 400.0f, 1.0f);
+
+	mp_sliderDirSpeed = 0;
+	mp_sliderRotSpeed = 0;
+	
+	m_bHandlePitch = true;
+
+	if (m_bHandlePitch)
+	{
+		mp_propDirSpeed->enableTarget();
+		mp_propRotSpeed->enableTarget();
+
+		mp_propDirSpeed->m_variableTarget = m_dirSpeed;
+		mp_propRotSpeed->m_variableTarget = m_rotSpeed;
+	}
 }
 
 //--------------------------------------------------------------
@@ -40,12 +59,13 @@ void AnimationLinesFF::createUICustom()
     {
         mp_UIcanvas->addToggle("colorFromDevice", &m_isColorFromDevice);
 
-		addUISlider( m_properties.getFloat("dirSpeed") );
+
+		mp_sliderDirSpeed = addUISlider( m_properties.getFloat("dirSpeed") );
 		addUISlider( m_properties.getFloat("zMax") );
 		addUISlider( m_properties.getFloat("radius") );
 		addUItoggle( m_properties.getBool("radiusDirect") );
 		addUISlider( m_properties.getFloat("rot") );
-		addUISlider( m_properties.getFloat("rotSpeed") );
+		mp_sliderRotSpeed = addUISlider( m_properties.getFloat("rotSpeed") );
     }
 }
 
@@ -62,6 +82,15 @@ void AnimationLinesFF::VM_enter()
 void AnimationLinesFF::VM_update(float dt)
 {
 	updateUIVolume();
+	if (hasPitch())
+	{
+		mp_sliderDirSpeed->setValue( m_dirSpeed );
+		mp_sliderRotSpeed->setValue( m_rotSpeed );
+	}
+
+	if (mp_propDirSpeed) mp_propDirSpeed->update(dt);
+	if (mp_propRotSpeed) mp_propRotSpeed->update(dt);
+
 
 	vector<LineFFElement*>::iterator it = m_lines.begin();
 	for (; it != m_lines.end();)
@@ -98,10 +127,20 @@ void AnimationLinesFF::VM_draw(float w, float h)
 //--------------------------------------------------------------
 void AnimationLinesFF::onNewPacket(DevicePacket* pDevicePacket, string deviceId, float x, float y)
 {
-	accumulateVolume(pDevicePacket->m_volume, deviceId);
+	accumulateVolumeAndPitch(pDevicePacket->m_volume, pDevicePacket->m_pitch, deviceId);
 	m_lastPacketColor = pDevicePacket->m_color;
 	if (pDevicePacket->m_volume >= m_volValuesMeanTh)
 	{
+		if (hasPitch())
+		{
+		
+		
+			if (mp_propDirSpeed) mp_propDirSpeed->setTarget( ofMap( pDevicePacket->m_pitch, 0.0f,1.0f, 350.0f, 1000.0f, true) );
+			if (mp_propRotSpeed) mp_propRotSpeed->setTarget( ofMap( pDevicePacket->m_pitch, 0.0f,1.0f, 360.0f, 40.0f,true) );
+		
+			// ofLog() << "pDevicePacket->m_pitch="<< pDevicePacket->m_pitch<< ";mp_propDirSpeed->m_variableTarget = " << mp_propDirSpeed->m_variableTarget;
+		}
+
 		emitLine(deviceId);
 	}
 }
@@ -126,8 +165,6 @@ void AnimationLinesFF::emitLine(string deviceId)
 			pLine->m_color		= m_isColorFromDevice ? m_lastPacketColor : ofColor(255);
 			
 			m_lines.push_back(pLine);
-			
-
 		}
 	}
 }

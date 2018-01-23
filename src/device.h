@@ -23,8 +23,10 @@ class DevicePacket
         void                  copy(DevicePacket* pPacket);
 		void				  computeColor(const ofColor& deviceColor, bool isColor, bool isInvert);
 		void				  computeColor(const float* deviceColor, bool isColor, bool isInvert);
+		void				  computeColor2(const float* deviceColor, const float* deviceColor2, float t, bool isColor, bool isInvert);
 	
         float                 m_volume;
+		float				  m_pitch;
 		ofColor		  	      m_color;
 };
 
@@ -106,17 +108,27 @@ class Device
         void                enableStandbyMode(bool is=true);
         void                checkForActivity(float dt);
 		bool				isStandUp(){return m_stateStandby == EStandby_standup;}
-
  
         void                setSoundInputVolHistoryTh(float th);
         void                setSoundInputVolHistoryThOSC(float th);
-    
+ 
+		void				setEnablePitch(bool is=true);
+		void				setEnablePitchOSC(bool is);
+
+		void				setSoundInputPitchMin(float min);
+		void				setSoundInputPitchMinOSC(float min);
+		void				setSoundInputPitchMax(float max);
+		void				setSoundInputPitchMaxOSC(float max);
+ 
+		
+
+	
         void                setEnableStandbyMode(bool is);
         void                setEnableStandbyModeOSC(bool is);
     
         float               getSoundInputVolHistoryTh(){return m_volHistoryTh;}
         bool                getEnableStandbyMode(){return m_isEnableStandbyMode;}
-    
+ 
 		void				resetStandBy();
 		void               	setTimeStandby(float v);
         void               	setTimeStandbyOSC(float v);
@@ -135,6 +147,9 @@ class Device
 		void				setStandupVolOSC			(float v);
  
 		virtual	void		mute(bool is=true){if(mp_soundInput) mp_soundInput->mute(is);}
+
+		// Pitch
+		
 
 		// BPM
 		int					m_bpm;
@@ -191,12 +206,18 @@ class Device
 		void				setColorHueSaturationOSC	(float h, float s);
 		void				setColorSpeedOscillation	(float speed);
 
+		void				setColor2HueSaturation		(float h, float s);
+		void				setColor2HueSaturationOSC	(float h, float s);
+
 		bool				m_isEnableColor;
 		ofColor				m_color;
 		float				m_colorHsv[3];
 		int					m_colorMode;
 		float				m_colorSpeedOscillation; // phase for cos oscillation , unit is degrees/s
 		ofColor				m_colorOscillation1,m_colorOscillation2;
+
+		ofColor				m_color2;
+		float				m_colorHsv2[3];
 
 		enum
 		{
@@ -236,12 +257,15 @@ class Device
         virtual float       getWidthSoundInputVolume	();
         virtual float       getHeightSoundInputVolume	();
         virtual void        drawSoundInputVolume		(float x, float y);
+        virtual void        drawSoundInputPitch			(float x, float y);
 				void		setSoundInputUseRawVolume	(bool is);
 				bool		getSoundInputUseRawVolume	(){return m_soundInputUseRawVol;}
 				void		setSoundInputUseRawVolumeOSC(bool is);
 				void		setSoundInputMute			(bool is);
 				void		setSoundInputMuteOSC		(bool is);
 				bool		getSoundInputMute			(){return m_soundInputMute;}
+				float		getSoundInputPitchMin		(){return m_soundInputPitchMin;}
+				float		getSoundInputPitchMax		(){return m_soundInputPitchMax;}
 
 		// Sound playing
 		vector<int>			m_listSpeakerIds;
@@ -254,6 +278,8 @@ class Device
         float               m_soundInputVolEmpiricalMaxMin, m_soundInputVolEmpiricalMaxMax;
 		bool				m_soundInputUseRawVol;
 		bool				m_soundInputMute;
+		float				m_soundInputPitchMin, m_soundInputPitchMax;
+		bool				m_bEnablePitch;
  
 		// Mute graphics
 		// > only used in software

@@ -6,6 +6,10 @@
 //
 //
 
+// Pitch / voix humaine : http://www.zpag.net/Electroniques/Freg_Sonore.htm
+
+
+
 #include "soundInput.h"
 #include "Sample.h"
 
@@ -27,7 +31,7 @@ void SoundInput::setup(int deviceId, int nChannels)
     m_volHistoryNb = 400;
     m_heightDraw = 70.0f;
     m_volEmpiricalMax = 0.10f;
-	
+	m_sampleRate = 44100;
  
 	//mp_soundStreamInput = new ofSoundStream();
 	m_soundStreamInput.listDevices();
@@ -40,7 +44,7 @@ void SoundInput::setup(int deviceId, int nChannels)
     m_bufferSize = 256; // 256 to be compliant with FFT
     m_nbChannels = nChannels;
 
-	m_soundStreamInput.setup(ofGetAppPtr(), 0, m_nbChannels, 44100, m_bufferSize, 4);
+	m_soundStreamInput.setup(ofGetAppPtr(), 0, m_nbChannels, m_sampleRate, m_bufferSize, 4);
 #if SOUNDINPUT_USE_FFT
     if (nChannels==1 /*&& m_bufferSize == m_fft.getNoOfBands()*/){
 //        m_fft.setNoOfBands(20);
@@ -57,6 +61,7 @@ void SoundInput::setup(int deviceId, int nChannels)
     m_soundStreamInput.start();
 	mute(false);
 	setInputVolumeModulate(1.0f);
+	initPitch();
 	
 	mp_sample = 0;
 	m_sampleData = 0;
@@ -72,6 +77,7 @@ void SoundInput::setup(int nChannels)
     m_volHistoryNb = 400;
     m_heightDraw = 70.0f;
     m_volEmpiricalMax = 0.10f;
+	m_sampleRate = 44100;
  
     m_bufferSize = 256; // 256 to be compliant with FFT
     m_nbChannels = nChannels;
@@ -89,10 +95,32 @@ void SoundInput::setup(int nChannels)
 #endif
     
     initAudioBuffers();
+	initPitch();
+
     setVolHistorySize(400);
 	mute(false);
 	setInputVolumeModulate(1.0f);
+
+	// setPitchHistorySize(400);
 }
+
+//--------------------------------------------------------------
+void SoundInput::initPitch()
+{
+    m_pitch.setup("default",2048,m_bufferSize,m_sampleRate);
+}
+
+//--------------------------------------------------------------
+void SoundInput::setPitchHistorySize(int nb)
+{
+	m_pitchAnalysis.setHistorySize(nb);
+
+/*	m_pitchHistoryNb = nb;
+	m_pitchHistory.clear();
+    m_pitchHistory.assign(m_pitchHistoryNb, 0.0f);
+*/
+}
+
 
 //--------------------------------------------------------------
 float SoundInput::getVolHistoryLast()
@@ -118,6 +146,8 @@ void SoundInput::setVolHistorySize(int nb)
 	m_volHistory.clear();
     m_volHistory.assign(m_volHistoryNb, 0.0f);
     m_volHistoryMeanFiltered = 0.0f;
+
+	setPitchHistorySize(nb);
 }
 
 //--------------------------------------------------------------
@@ -163,20 +193,18 @@ void SoundInput::update()
 	{
 		m_scaledVol = 0.0f;
 	}
-
-   // printf("SoundInput::update vol=%.2f-", m_scaledVol);
 	
-	//if we are bigger the the size we want to record - lets drop the oldest value
+	// History
 	if( m_volHistory.size() >= m_volHistoryNb ){
 		m_volHistory.erase(m_volHistory.end()-1, m_volHistory.end());
 	}
-
-	//lets record the volume into an array
 	m_volHistory.insert( m_volHistory.begin(), m_scaledVol );
-
-    // Compute mean
     updateVolHistoryMean();
-    
+
+	// Pitch
+//	float dt = (float)ofGetLastFrameTime();
+	m_pitchAnalysis.update(m_pitch.latestPitch, m_pitch.pitchConfidence, 0.0f);
+ 
     // FFT
 #if SOUNDINPUT_USE_FFT
     m_fft.update();
@@ -198,8 +226,7 @@ void SoundInput::drawVolume(float x, float y)
     ofRect(-width, 0, width, m_heightDraw);
     
     //printf("drawVolume %.3f-", m_heightDraw);
-
-    
+ 
     ofSetColor(255,255);
     ofBeginShape();
     for (int i = 0; i < m_volHistory.size(); i++){
@@ -233,6 +260,47 @@ void SoundInput::drawVolume(float x, float y)
     
 
 }
+
+
+//--------------------------------------------------------------
+void SoundInput::drawPitch(float x, float y)
+{
+    ofPushStyle();
+    ofPushMatrix();
+    ofTranslate(x,y,0);
+
+    ofSetColor(255,70);
+
+    float width = (float)m_pitchAnalysis.m_history.size();
+    
+    ofNoFill();
+    ofRect(-width, 0, width, m_heightDraw);
+
+    ofSetColor(ofColor::white);
+    ofBeginShape();
+
+	float pitchScaled = 0.0f;
+
+    for (int i = 0; i < m_pitchAnalysis.m_history.size(); i++)
+	{
+	 	pitchScaled = m_pitchAnalysis.getPitchNorm( m_pitchAnalysis.m_history[i] );
+	
+        if( i == 0 ) ofVertex(-width+i, m_heightDraw);
+        
+        ofVertex(-width+i, m_heightDraw - pitchScaled * m_heightDraw);
+        
+        if( i == m_pitchAnalysis.m_history.size() -1 ) ofVertex(-width+i, m_heightDraw);
+    }
+    ofEndShape(false);
+	
+	ofDrawBitmapString(ofToString((int)m_pitchAnalysis.m_pitchMax)+" Hz",-width-50,6);
+	ofDrawBitmapString(ofToString((int)m_pitchAnalysis.m_pitchMin)+" Hz",-width-50,m_heightDraw+3);
+	
+
+    ofPopMatrix();
+	ofPopStyle();
+}
+
 
 
 //--------------------------------------------------------------
@@ -276,6 +344,9 @@ void SoundInput::audioIn(float * input, int bufferSize, int nChannels)
 	if (m_isStopInput == false)
 	{
 		processAudio(input,bufferSize,nChannels);
+		
+
+
 	}
 	else
 	{
@@ -311,6 +382,7 @@ void SoundInput::audioIn(float * input, int bufferSize, int nChannels)
 //--------------------------------------------------------------
 void SoundInput::processAudio(float * input, int bufferSize, int nChannels)
 {
+	// Volume
 	float curVol = 0.0;
     int numCounted = 0;
 
@@ -374,6 +446,9 @@ void SoundInput::processAudio(float * input, int bufferSize, int nChannels)
      
         //bufferCounter++;
     }
+
+	// Pitch
+    m_pitch.audioIn(input, bufferSize, nChannels);
 }
 
 

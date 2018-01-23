@@ -28,6 +28,10 @@ class VolumeAccum
 		int						m_valueHistoryMax;	// number of history values
 		float					m_valueMean;		// mean value for history values
 
+ 		vector<float>			m_pitchHistory;		// history of pitch
+		float					m_valuePitchMean;
+
+
         int                     m_state;
 		float					m_stateTime;
 
@@ -35,7 +39,7 @@ class VolumeAccum
         void*                   mp_userData;
     
         void setTriggerInCb     (cbTriggerIn, void*);
-        void add                (float volume);
+        void add                (float volume, float pitch=0.0f);
 		void update				(float dt);
 
 		void reset				();

@@ -16,6 +16,7 @@ AnimationBox2D::AnimationBox2D(string name) : Animation(name)
 {
     m_volumeAccum = 0.0f;
     m_volumeAccumTarget = 0.0f;
+	m_pitchLast = 0.0f;
     m_isBox2DCreated = false;
 	
 	m_isLeftWall 	= true;
@@ -23,6 +24,7 @@ AnimationBox2D::AnimationBox2D(string name) : Animation(name)
 	m_isTopWall		= true;
 	m_isBottomWall	= true;
 
+	m_bHandlePitch = true;
 }
 
 //--------------------------------------------------------------
@@ -111,11 +113,12 @@ AnimationBox2D_circles::AnimationBox2D_circles(string name ) : AnimationBox2D(na
 	m_sizeScale = 1.0f;
     m_nbObjects = 400;
 
+	mp_sliderGravity = 0;
 	
 	loadColors();
 
 	m_properties.add( new classProperty_float("gravity", 		-10,	10, 	&m_gravity) );
-	m_properties.add( new classProperty_float("obj. number", 	100, 	500, 	&m_nbObjects) );
+	m_properties.add( new classProperty_float("obj. number", 	50, 	500, 	&m_nbObjects) );
 
 	m_properties.add( new classProperty_float("obj. size min", 	10,20,&m_sizeMin) );
 	m_properties.add( new classProperty_float("obj. size max", 	10,50,&m_sizeMax) );
@@ -143,15 +146,27 @@ void AnimationBox2D_circles::VM_update(float dt)
 {
 	updateUIVolume();
 
-		Surface* pSurfaceMain = GLOBALS->getSurfaceMain();
-		if (pSurfaceMain)
+	Surface* pSurfaceMain = GLOBALS->getSurfaceMain();
+	if (pSurfaceMain)
+	{
+		createBox2D(0,0*10,30,true,ofRectangle(0, 0, pSurfaceMain->getWidthPixels(), pSurfaceMain->getHeightPixels()));
+		createBounds( ofRectangle(0.0f,0.0f,pSurfaceMain->getWidthPixels(),pSurfaceMain->getHeightPixels()) ); // TEMP, should be relative to surface
+	}
+
+
+    if (m_isBox2DCreated)
+	{
+		if (hasPitch())
 		{
-			createBox2D(0,0*10,30,true,ofRectangle(0, 0, pSurfaceMain->getWidthPixels(), pSurfaceMain->getHeightPixels()));
-			createBounds( ofRectangle(0.0f,0.0f,pSurfaceMain->getWidthPixels(),pSurfaceMain->getHeightPixels()) ); // TEMP, should be relative to surface
+			if (m_bPitchManual)
+				m_pitchLast = m_pitchManualValue;
+		
+			m_gravity = ofMap(m_pitchLast, 0.0,1.0, m_properties.getFloat("gravity")->m_max, m_properties.getFloat("gravity")->m_min);
+			
+			if (mp_sliderGravity)
+				mp_sliderGravity->setValue(m_gravity);
 		}
-
-
-    if (m_isBox2DCreated){
+	
         m_box2d.setGravity(0.0f, m_gravity);
         m_box2d.update();
     }
@@ -194,7 +209,7 @@ void AnimationBox2D_circles::onNewPacket(DevicePacket* pDevicePacket, string dev
 {
     if (pDevicePacket==0) return;
  
-	accumulateVolume(pDevicePacket->m_volume, deviceId);
+	accumulateVolumeAndPitch(pDevicePacket->m_volume, pDevicePacket->m_pitch, deviceId);
 	
     m_posAnchor.set(x,y);
     
@@ -203,8 +218,19 @@ void AnimationBox2D_circles::onNewPacket(DevicePacket* pDevicePacket, string dev
 		// playSound(deviceId);
 
 		m_volumeAccumTarget += pDevicePacket->m_volume;
+		m_pitchLast = pDevicePacket->m_pitch;
+		if (m_bPitchManual)
+			m_pitchLast = m_pitchManualValue;
 
-        m_circleSize = ofRandom(m_sizeMin,m_sizeMax);
+		if (hasPitch())
+		{
+			m_circleSize = ofMap(pDevicePacket->m_volume,0.0,1.0,m_sizeMin,m_sizeMax);
+		}
+		else
+		{
+	        m_circleSize = ofRandom(m_sizeMin,m_sizeMax);
+		}
+		
 
         if (true)
         {
@@ -217,7 +243,6 @@ void AnimationBox2D_circles::onNewPacket(DevicePacket* pDevicePacket, string dev
 			if (m_isColorFromDevice)
 			{
 				m_listCirclesColor.push_back( pDevicePacket->m_color );
-				//ofLog() << pDevicePacket->m_color;
 			}
 			else
 			if (m_isColor)
@@ -258,7 +283,7 @@ void AnimationBox2D_circles::createUICustom()
         mp_UIcanvas->addToggle("color", 							&m_isColor);
         mp_UIcanvas->addToggle("colorFromDevice", 					&m_isColorFromDevice);
 
-		addUISlider( m_properties.getFloat("gravity") );
+		mp_sliderGravity = addUISlider( m_properties.getFloat("gravity") );
         mp_UIcanvas->addSlider("vol. trigger", 		0.0f, 1.0f, 	&m_volTrigger);
 
 		addUISlider( m_properties.getFloat("obj. size min") );

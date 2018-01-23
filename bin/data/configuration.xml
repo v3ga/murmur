@@ -13,7 +13,7 @@
 
         <!-- Sound input for simulators -->
         <soundInput>
-            <device>1</device>
+            <device>0</device>
             <nbChannels>2</nbChannels>
         </soundInput>
         
@@ -24,6 +24,16 @@
                 <nbLEDs>160</nbLEDs>
                 <length>4.0</length>
             </device>
+		
+			<!--
+            <device>
+                <id>deviceEchoSimulator02</id>
+                <nbLEDs>160</nbLEDs>
+                <length>4.0</length>
+            </device>
+			-->
+
+
         </devices>
     </simulator>
 
@@ -32,7 +42,7 @@
 			<vsync>1</vsync>
 			<framerate value="60">1</framerate>
 			<tools>
-				<hide>1</hide>
+				<hide>0</hide>
 			</tools>
 			
 		   <surface>
@@ -63,7 +73,9 @@
 
     <!-- Raspberry -->
     <launchDevices pathScriptRun="/home/pi/openFrameworks/apps/myApps/murmurRaspberry/bin/run_murmur.sh">
+    	<!--
         <ip>192.168.1.25</ip>
+		-->
    </launchDevices>
 	
 

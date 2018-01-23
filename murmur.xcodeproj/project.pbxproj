@@ -100,6 +100,8 @@
 		F94A60E11A813EC900A850FA /* AnimationTunnelALB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F94A60DF1A813EC900A850FA /* AnimationTunnelALB.cpp */; };
 		F94AF63E19D419B70026A5A3 /* animationOrbit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F94AF63C19D419B70026A5A3 /* animationOrbit.cpp */; };
 		F94AF64119D498790026A5A3 /* Boid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F94AF63F19D498790026A5A3 /* Boid.cpp */; };
+		F95124422010A2140074268C /* animationDebug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F95124402010A2140074268C /* animationDebug.cpp */; };
+		F9512449201109D50074268C /* pitchAnalysis.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9512447201109D50074268C /* pitchAnalysis.cpp */; };
 		F951EB78195AC0D800056B2A /* ofxQuadWarp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F951EB72195AC0D800056B2A /* ofxQuadWarp.cpp */; };
 		F951EBF8195AC12300056B2A /* opencv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F951EBE4195AC12300056B2A /* opencv.a */; };
 		F951EBF9195AC12300056B2A /* ofxCvColorImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F951EBE7195AC12300056B2A /* ofxCvColorImage.cpp */; };
@@ -266,6 +268,12 @@
 		F9DC7C2C19CA170900682D1A /* ofxJSOscReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9DC7C2719CA170900682D1A /* ofxJSOscReceiver.cpp */; };
 		F9DC7C2D19CA170900682D1A /* ofxJSOscSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9DC7C2919CA170900682D1A /* ofxJSOscSender.cpp */; };
 		F9DC7C4A19CA174300682D1A /* ofxSoundPlayerMultiOutput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9DC7C4519CA174300682D1A /* ofxSoundPlayerMultiOutput.cpp */; };
+		F9DD5ECB200F9D3B005FAA6A /* ofxAubioBeat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9DD5EBC200F9D3B005FAA6A /* ofxAubioBeat.cpp */; };
+		F9DD5ECC200F9D3B005FAA6A /* ofxAubioBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9DD5EBE200F9D3B005FAA6A /* ofxAubioBlock.cpp */; };
+		F9DD5ECD200F9D3B005FAA6A /* ofxAubioMelBands.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9DD5EC0200F9D3B005FAA6A /* ofxAubioMelBands.cpp */; };
+		F9DD5ECE200F9D3B005FAA6A /* ofxAubioOnset.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9DD5EC2200F9D3B005FAA6A /* ofxAubioOnset.cpp */; };
+		F9DD5ECF200F9D3B005FAA6A /* ofxAubioPitch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9DD5EC4200F9D3B005FAA6A /* ofxAubioPitch.cpp */; };
+		F9DD5ED1200F9E4D005FAA6A /* aubio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9DD5ED0200F9E4D005FAA6A /* aubio.framework */; };
 		F9DE80A11B398FDC00F5A086 /* animationGravitatory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9DE809F1B398FDC00F5A086 /* animationGravitatory.cpp */; };
 		F9DE80C61B39FA3400F5A086 /* ofxMSATimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9DE80C01B39FA3400F5A086 /* ofxMSATimer.cpp */; };
 		F9DE80DE1B39FA5600F5A086 /* ofxTimecode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9DE80D91B39FA5600F5A086 /* ofxTimecode.cpp */; };
@@ -548,6 +556,10 @@
 		F94AF63D19D419B70026A5A3 /* animationOrbit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = animationOrbit.h; sourceTree = "<group>"; };
 		F94AF63F19D498790026A5A3 /* Boid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Boid.cpp; sourceTree = "<group>"; };
 		F94AF64019D498790026A5A3 /* Boid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Boid.h; sourceTree = "<group>"; };
+		F95124402010A2140074268C /* animationDebug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animationDebug.cpp; sourceTree = "<group>"; };
+		F95124412010A2140074268C /* animationDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = animationDebug.h; sourceTree = "<group>"; };
+		F9512447201109D50074268C /* pitchAnalysis.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pitchAnalysis.cpp; sourceTree = "<group>"; };
+		F9512448201109D50074268C /* pitchAnalysis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pitchAnalysis.h; sourceTree = "<group>"; };
 		F951EB70195AC0D800056B2A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		F951EB72195AC0D800056B2A /* ofxQuadWarp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxQuadWarp.cpp; sourceTree = "<group>"; };
 		F951EB73195AC0D800056B2A /* ofxQuadWarp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxQuadWarp.h; sourceTree = "<group>"; };
@@ -1107,6 +1119,18 @@
 		F9DC7C2A19CA170900682D1A /* ofxJSOscSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxJSOscSender.h; sourceTree = "<group>"; };
 		F9DC7C4519CA174300682D1A /* ofxSoundPlayerMultiOutput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxSoundPlayerMultiOutput.cpp; sourceTree = "<group>"; };
 		F9DC7C4619CA174300682D1A /* ofxSoundPlayerMultiOutput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSoundPlayerMultiOutput.h; sourceTree = "<group>"; };
+		F9DD5EBB200F9D3B005FAA6A /* ofxAubio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxAubio.h; sourceTree = "<group>"; };
+		F9DD5EBC200F9D3B005FAA6A /* ofxAubioBeat.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxAubioBeat.cpp; sourceTree = "<group>"; };
+		F9DD5EBD200F9D3B005FAA6A /* ofxAubioBeat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxAubioBeat.h; sourceTree = "<group>"; };
+		F9DD5EBE200F9D3B005FAA6A /* ofxAubioBlock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxAubioBlock.cpp; sourceTree = "<group>"; };
+		F9DD5EBF200F9D3B005FAA6A /* ofxAubioBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxAubioBlock.h; sourceTree = "<group>"; };
+		F9DD5EC0200F9D3B005FAA6A /* ofxAubioMelBands.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxAubioMelBands.cpp; sourceTree = "<group>"; };
+		F9DD5EC1200F9D3B005FAA6A /* ofxAubioMelBands.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxAubioMelBands.h; sourceTree = "<group>"; };
+		F9DD5EC2200F9D3B005FAA6A /* ofxAubioOnset.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxAubioOnset.cpp; sourceTree = "<group>"; };
+		F9DD5EC3200F9D3B005FAA6A /* ofxAubioOnset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxAubioOnset.h; sourceTree = "<group>"; };
+		F9DD5EC4200F9D3B005FAA6A /* ofxAubioPitch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxAubioPitch.cpp; sourceTree = "<group>"; };
+		F9DD5EC5200F9D3B005FAA6A /* ofxAubioPitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxAubioPitch.h; sourceTree = "<group>"; };
+		F9DD5ED0200F9E4D005FAA6A /* aubio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = aubio.framework; sourceTree = "<group>"; };
 		F9DE809F1B398FDC00F5A086 /* animationGravitatory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animationGravitatory.cpp; sourceTree = "<group>"; };
 		F9DE80A01B398FDC00F5A086 /* animationGravitatory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = animationGravitatory.h; sourceTree = "<group>"; };
 		F9DE80C01B39FA3400F5A086 /* ofxMSATimer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxMSATimer.cpp; sourceTree = "<group>"; };
@@ -1262,6 +1286,7 @@
 				E45BE9830E8CC7DD009D7055 /* OpenGL.framework in Frameworks */,
 				F9DE82D21B39FA7300F5A086 /* OpenAL32.lib in Frameworks */,
 				E45BE9840E8CC7DD009D7055 /* QuickTime.framework in Frameworks */,
+				F9DD5ED1200F9E4D005FAA6A /* aubio.framework in Frameworks */,
 				F951EBF8195AC12300056B2A /* opencv.a in Frameworks */,
 				F9DE82CE1B39FA7200F5A086 /* EFX-Util.lib in Frameworks */,
 				E4C2424710CC5A17004149E2 /* AppKit.framework in Frameworks */,
@@ -1295,6 +1320,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				F9DD5EA8200F9D3B005FAA6A /* ofxAubio */,
 				F941395D1A77CB830047A441 /* ofxMultiGLFWWindow */,
 				F9AB0BEB1940FA760020D78A /* ofxToolManager */,
 				F9E206351BBECED200E4E4A3 /* ofxVectorField */,
@@ -1361,6 +1387,7 @@
 		BBAB23CA13894EDB00AA2426 /* 3rd party frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F9DD5ED0200F9E4D005FAA6A /* aubio.framework */,
 				BBAB23BE13894E4700AA2426 /* GLUT.framework */,
 			);
 			name = "3rd party frameworks";
@@ -1434,6 +1461,8 @@
 				F9BC6B0917456DDC00633C5C /* soundManager.cpp */,
 				F999339B171C870200272085 /* soundInput.h */,
 				F999339A171C870200272085 /* soundInput.cpp */,
+				F9512447201109D50074268C /* pitchAnalysis.cpp */,
+				F9512448201109D50074268C /* pitchAnalysis.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -2242,6 +2271,8 @@
 				F9882D911BA1C10800B81023 /* animationVideo.h */,
 				F9917F871BCF8C5E00AEAE2A /* animationEmpty.cpp */,
 				F9917F881BCF8C5E00AEAE2A /* animationEmpty.h */,
+				F95124402010A2140074268C /* animationDebug.cpp */,
+				F95124412010A2140074268C /* animationDebug.h */,
 			);
 			name = Animations;
 			sourceTree = "<group>";
@@ -3120,6 +3151,33 @@
 			path = src;
 			sourceTree = "<group>";
 		};
+		F9DD5EA8200F9D3B005FAA6A /* ofxAubio */ = {
+			isa = PBXGroup;
+			children = (
+				F9DD5EBA200F9D3B005FAA6A /* src */,
+			);
+			name = ofxAubio;
+			path = ../../../addons/ofxAubio;
+			sourceTree = "<group>";
+		};
+		F9DD5EBA200F9D3B005FAA6A /* src */ = {
+			isa = PBXGroup;
+			children = (
+				F9DD5EBB200F9D3B005FAA6A /* ofxAubio.h */,
+				F9DD5EBC200F9D3B005FAA6A /* ofxAubioBeat.cpp */,
+				F9DD5EBD200F9D3B005FAA6A /* ofxAubioBeat.h */,
+				F9DD5EBE200F9D3B005FAA6A /* ofxAubioBlock.cpp */,
+				F9DD5EBF200F9D3B005FAA6A /* ofxAubioBlock.h */,
+				F9DD5EC0200F9D3B005FAA6A /* ofxAubioMelBands.cpp */,
+				F9DD5EC1200F9D3B005FAA6A /* ofxAubioMelBands.h */,
+				F9DD5EC2200F9D3B005FAA6A /* ofxAubioOnset.cpp */,
+				F9DD5EC3200F9D3B005FAA6A /* ofxAubioOnset.h */,
+				F9DD5EC4200F9D3B005FAA6A /* ofxAubioPitch.cpp */,
+				F9DD5EC5200F9D3B005FAA6A /* ofxAubioPitch.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		F9DE80A91B39FA3400F5A086 /* ofxMSATimer */ = {
 			isa = PBXGroup;
 			children = (
@@ -3729,6 +3787,7 @@
 				F9882DB61BA20B2100B81023 /* HapSupport.c in Sources */,
 				F941397D1A77CB830047A441 /* ofxMultiGLFWWindow.cpp in Sources */,
 				F93043D81BB2F7E60081AD88 /* RadarFFElement_dotted.cpp in Sources */,
+				F95124422010A2140074268C /* animationDebug.cpp in Sources */,
 				F951EBFD195AC12300056B2A /* ofxCvHaarFinder.cpp in Sources */,
 				F98711CE16C053F50069F12A /* animations.cpp in Sources */,
 				F92BC4C3189F094600CA158A /* ofxUISpacer.cpp in Sources */,
@@ -3796,6 +3855,7 @@
 				F9917F891BCF8C5E00AEAE2A /* animationEmpty.cpp in Sources */,
 				8491EE3919A649F600469AE8 /* ofxJSNode.cpp in Sources */,
 				F999312717198ABD00272085 /* IpEndpointName.cpp in Sources */,
+				F9512449201109D50074268C /* pitchAnalysis.cpp in Sources */,
 				F9DE82E21B39FA7300F5A086 /* ofxTLColors.cpp in Sources */,
 				F9E206641BC5525100E4E4A3 /* floatRelax.cpp in Sources */,
 				F92BC4C1189F094600CA158A /* ofxUISlider.cpp in Sources */,
@@ -3816,8 +3876,10 @@
 				F999312E17198ABD00272085 /* OscReceivedElements.cpp in Sources */,
 				F999312F17198ABD00272085 /* OscTypes.cpp in Sources */,
 				8463806619A4CE4F0071BFB4 /* ofxJSLight.cpp in Sources */,
+				F9DD5ECE200F9D3B005FAA6A /* ofxAubioOnset.cpp in Sources */,
 				F94A60E11A813EC900A850FA /* AnimationTunnelALB.cpp in Sources */,
 				F9B803921B32120800F12500 /* toolTimeline.cpp in Sources */,
+				F9DD5ECD200F9D3B005FAA6A /* ofxAubioMelBands.cpp in Sources */,
 				F999338C171B432900272085 /* deviceInfo.cpp in Sources */,
 				F999338F171B5E5600272085 /* oscReceiver.cpp in Sources */,
 				F9DE82E81B39FA7300F5A086 /* ofxTLImageSequence.cpp in Sources */,
@@ -3935,7 +3997,9 @@
 				F93043C41BB145EA0081AD88 /* animationGridsFF.cpp in Sources */,
 				F92BC4C0189F094600CA158A /* ofxUIScrollableCanvas.cpp in Sources */,
 				F92BC4B5189F094600CA158A /* ofxUILabelButton.cpp in Sources */,
+				F9DD5ECB200F9D3B005FAA6A /* ofxAubioBeat.cpp in Sources */,
 				F9BC6C77174A621700633C5C /* b2GearJoint.cpp in Sources */,
+				F9DD5ECC200F9D3B005FAA6A /* ofxAubioBlock.cpp in Sources */,
 				F951EBFB195AC12300056B2A /* ofxCvFloatImage.cpp in Sources */,
 				F9BC6C78174A621700633C5C /* b2Joint.cpp in Sources */,
 				F9BC6C79174A621700633C5C /* b2LineJoint.cpp in Sources */,
@@ -3974,6 +4038,7 @@
 				F92BC4AC189F094600CA158A /* ofxUIEventArgs.cpp in Sources */,
 				F9E11C5417C3A2F000AD3DFD /* ofxSyphonClient.mm in Sources */,
 				F951EBFE195AC12300056B2A /* ofxCvImage.cpp in Sources */,
+				F9DD5ECF200F9D3B005FAA6A /* ofxAubioPitch.cpp in Sources */,
 				F9DE82DA1B39FA7300F5A086 /* ofxHotKeys_impl_linux.cpp in Sources */,
 				F9E11C5517C3A2F000AD3DFD /* ofxSyphonServer.mm in Sources */,
 			);
@@ -4070,6 +4135,7 @@
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 					/Users/julien/Dev/C/of_v0.8.0_osx_release/addons/ofxSyphon/libs/Syphon/lib/osx,
+					"$(PROJECT_DIR)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../libs/glut/lib/osx\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../../../addons/ofxSyphon/libs/Syphon/lib/osx\"";
@@ -4105,6 +4171,8 @@
 					../../../addons/ofxOpenCv/libs/opencv/lib/osx,
 					../../../addons/ofxOpenCv/src,
 					../../../addons/ofxJSON/libs/jsoncpp/include,
+					../../../addons/ofxAubio/libs,
+					../../../addons/ofxAubio/src,
 				);
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
@@ -4190,12 +4258,12 @@
 					/Users/julien/Dev/C/of_v0.8.0_osx_release/addons/ofxTimeline/libs/sndfile/lib/win_cb,
 					/Users/julien/Dev/C/of_v0.8.0_osx_release/addons/ofxTimeline/ofxTimelineLib/bin,
 				);
-				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../addons/ofxFenster/libs/ghost/lib/osx32\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../../../addons/ofxJavascript/libs/javascript/lib/osx\"";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PREBINDING = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)Debug";
-				SDKROOT = macosx;
+				SDKROOT = macosx10.8;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -4209,6 +4277,7 @@
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 					/Users/julien/Dev/C/of_v0.8.0_osx_release/addons/ofxSyphon/libs/Syphon/lib/osx,
+					"$(PROJECT_DIR)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../libs/glut/lib/osx\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../../../addons/ofxSyphon/libs/Syphon/lib/osx\"";
@@ -4243,6 +4312,8 @@
 					../../../addons/ofxOpenCv/libs/opencv/lib/osx,
 					../../../addons/ofxOpenCv/src,
 					../../../addons/ofxJSON/libs/jsoncpp/include,
+					../../../addons/ofxAubio/libs,
+					../../../addons/ofxAubio/src,
 				);
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
@@ -4328,12 +4399,12 @@
 					/Users/julien/Dev/C/of_v0.8.0_osx_release/addons/ofxTimeline/libs/sndfile/lib/win_cb,
 					/Users/julien/Dev/C/of_v0.8.0_osx_release/addons/ofxTimeline/ofxTimelineLib/bin,
 				);
-				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../addons/ofxFenster/libs/ghost/lib/osx32\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../../../addons/ofxJavascript/libs/javascript/lib/osx\"";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PREBINDING = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
+				SDKROOT = macosx10.8;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

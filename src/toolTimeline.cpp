@@ -239,19 +239,37 @@ void toolTimeline::update()
 			string ofxTLTrackName = pDeviceManager->m_listDevices[i]->m_id+".color";
 			ofxTLTrack* pDeviceColorTrack = m_timeline.getTrack( ofxTLTrackName );
 
+			string ofxTLTrackName2 = pDeviceManager->m_listDevices[i]->m_id+".color2";
+			ofxTLTrack* pDeviceColorTrack2 = m_timeline.getTrack( ofxTLTrackName2 );
+
+			bool bLoadTracks = false;
 			if (pDeviceColorTrack == 0)
 			{
 				m_timeline.setCurrentPage("Devices");
 				pDeviceColorTrack = m_timeline.addColors(ofxTLTrackName);
-				m_timeline.loadTracksFromFolder(m_timelineCurrentFolder);
+				bLoadTracks = true;
+			}
+			if (pDeviceColorTrack2 == 0)
+			{
+				pDeviceColorTrack2 = m_timeline.addColors(ofxTLTrackName2);
+				bLoadTracks = true;
+			}
 
-			 }
+			if (bLoadTracks)
+			{
+				m_timeline.loadTracksFromFolder(m_timelineCurrentFolder);
+			}
 			
 			if (pDeviceColorTrack)
 			{
 				ofColor colorDevice = ((ofxTLColorTrack*)pDeviceColorTrack)->getColor();
 				pDeviceManager->m_listDevices[i]->setColorHueSaturation( colorDevice.getHue(), colorDevice.getSaturation());
-			//pDeviceColorTrack->setDrawRect(ofRectangle(0,0, 200, 50));
+			}
+
+			if (pDeviceColorTrack2)
+			{
+				ofColor color2Device = ((ofxTLColorTrack*)pDeviceColorTrack2)->getColor();
+				pDeviceManager->m_listDevices[i]->setColor2HueSaturation( color2Device.getHue(), color2Device.getSaturation());
 			}
 		}
 	}

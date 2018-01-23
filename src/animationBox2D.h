@@ -62,6 +62,10 @@ class AnimationBox2D_circles : public AnimationBox2D
         float                   m_sizeMax;
         float                   m_nbObjects;
 		float					m_sizeScale;
+
+
+	private:
+		ofxUISlider*			mp_sliderGravity;
 };
 
 /*

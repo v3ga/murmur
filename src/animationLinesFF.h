@@ -35,17 +35,16 @@ class AnimationLinesFF : public Animation
 		vector<LineFFElement*>	m_lines;
  
 		ofCamera				m_cam;
-		
 		float                   m_zMax;
 		float					m_dirSpeed;
 		float					m_rot,m_rotSpeed;
 		float					m_radius;
- 
-		bool					m_bRadiusDirect;
- 
-		float					m_w,m_h;
- 
-		ofMesh					m_meshPlane;
- 
-		ofColor					m_lastPacketColor;
+ 		bool					m_bRadiusDirect;
+ 		float					m_w,m_h;
+ 		ofMesh					m_meshPlane;
+ 		ofColor					m_lastPacketColor;
+
+		classProperty_float		*mp_propDirSpeed,*mp_propRotSpeed;
+
+		ofxUISlider				*mp_sliderDirSpeed, *mp_sliderRotSpeed;
 };

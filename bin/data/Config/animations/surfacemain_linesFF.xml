@@ -4,6 +4,11 @@
     <Value>0.266666681</Value>
 </Widget>
 <Widget>
+    <Kind>2</Kind>
+    <Name>pitch bound</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
     <Kind>12</Kind>
     <Name>teConfigName</Name>
     <Value>yep.xml</Value>
@@ -21,17 +26,17 @@
 <Widget>
     <Kind>2</Kind>
     <Name>b1.wav</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
     <Name>colorFromDevice</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>dirSpeed</Name>
-    <Value>800.000000000</Value>
+    <Value>506.306060791</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -56,5 +61,5 @@
 <Widget>
     <Kind>4</Kind>
     <Name>rotSpeed</Name>
-    <Value>55.384616852</Value>
+    <Value>283.049285889</Value>
 </Widget>

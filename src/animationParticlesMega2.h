@@ -32,6 +32,7 @@ public:
 
 
     virtual void            createUICustom          ();
+	virtual void			updateUI				();
     virtual void            guiEvent                (ofxUIEventArgs &e);
 
     
@@ -39,6 +40,11 @@ public:
     
     
 private:
+	ofxUISlider*			mp_sliderAmpAttraction;
+	ofxUISlider*			mp_sliderAmpRepulsion;
+	ofxUISlider*			mp_sliderRadiusRepulsion;
+	ofxUISlider*			mp_sliderParticleSize;
+
     ofVec2f                 m_anchor;
     ofVec2f                 m_resolution;
     bool                    m_isParticlesInit;
@@ -63,6 +69,8 @@ private:
 	ofVbo					m_particlesVbo;
 	ofVec3f*				m_particlesPos;
 	ofFloatColor*			m_particlesColor;
+	
+	VolumeAccum*			mp_volumeAccum;
 	
 	float					m_colorRadiusFactor;
 	

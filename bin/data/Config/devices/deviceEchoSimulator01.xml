@@ -2,11 +2,13 @@
     <soundInput>
         <useRawVol>1</useRawVol>
         <mute>0</mute>
-        <volMax>0.143451616</volMax>
+        <volMax>0.031258062</volMax>
         <volMaxMin>0.100000001</volMaxMin>
-        <volMaxMax>0.189999998</volMaxMax>
-        <volHistoryNb>128.000000000</volHistoryNb>
+        <volMaxMax>0.059999999</volMaxMax>
+        <volHistoryNb>71.000000000</volHistoryNb>
         <volHistoryTh>0.244354829</volHistoryTh>
+        <pitchMin>166.153854370</pitchMin>
+        <pitchMax>996.615356445</pitchMax>
     </soundInput>
     <soundOutput>
         <speaker>0</speaker>
@@ -15,8 +17,8 @@
     <color>
         <enable>1</enable>
         <colorMode_manual_hsb>
-            <hue>0.000000000</hue>
-            <saturation>0.000000000</saturation>
+            <hue>42.500000000</hue>
+            <saturation>196.309524536</saturation>
         </colorMode_manual_hsb>
     </color>
     <packets>
@@ -28,14 +30,14 @@
     <enableGenerative>1</enableGenerative>
     <bpm>
         <enable>0</enable>
-        <value>113</value>
+        <value>134</value>
     </bpm>
-    <enableStandby>1</enableStandby>
+    <enableStandby>0</enableStandby>
     <timeStandby>19.370967865</timeStandby>
     <sampleVolStandby>0.325806439</sampleVolStandby>
     <enableStandby>0</enableStandby>
     <surface id="main">
-        <xNorm>0.465820312</xNorm>
-        <yNorm>0.439127594</yNorm>
+        <xNorm>0.452499986</xNorm>
+        <yNorm>0.506874979</yNorm>
     </surface>
 </device>
