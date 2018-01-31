@@ -636,11 +636,32 @@ void Animation::loadConfiguration(string filename)
 		{
 			filename = m_configurations[0];
     	}
-		//ofLog() << filename;
-		
 		mp_UIcanvas->loadSettings( ofToDataPath("Config/animations/"+m_name+"/"+filename) );
 	}
 	OFAPPLOG->end();
+}
+
+//--------------------------------------------------------------
+void Animation::loadPropertiesDefinition()
+{
+	OFAPPLOG->begin("Animation::loadPropertiesDefinition()");
+	string path = ofToDataPath("Config/animations/"+m_name+"/propertiesDef.xml");
+	if (m_propertiesDef.load( path ))
+	{
+		OFAPPLOG->println("  - OK loaded "+path);
+	}
+	else
+	{
+		OFAPPLOG->println("  - error loading "+path);
+	}
+	OFAPPLOG->end();
+}
+
+
+//--------------------------------------------------------------
+float Animation::getPropDef(string which, float defaultVal)
+{
+	return m_propertiesDef.getValue("propertiesDef:"+which, defaultVal);
 }
 
 //--------------------------------------------------------------

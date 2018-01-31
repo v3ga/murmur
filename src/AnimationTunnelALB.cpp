@@ -71,18 +71,19 @@ AnimationTunnelALB::AnimationTunnelALB(string name) : Animation(name)
 	m_isColorFromDevice = false;
 
 	m_bHandlePitch		= true;
-	//m_volAccum.setTriggerInCb(sM_volTriggerIn, this);
 	
-	m_properties.add( new classProperty_float("vol. th", 	0.0f, 1.0f, &m_volAccum.m_valueTriggerIn) );
-	m_properties.add( new classProperty_float("h1", 		10.0f, 50.0f, &m_h1Mesh) );
-	m_properties.add( new classProperty_float("h2", 		0.0f, 50.0f, &m_h2Mesh) );
-	m_properties.add( new classProperty_float("w", 			1.0f, 30.0f, &m_wMesh) );
-	m_properties.add( new classProperty_float("speed", 		100.0f, 1500.0f, &m_dirSpeed) );
-	m_properties.add( new classProperty_float("zmax", 		100.0f, 2000.0f, &m_zMax) );
-	m_properties.add( new classProperty_float("angle", 		0.0f, 20.0f, &m_dirAngle) );
+	loadPropertiesDefinition();
+	
+	m_properties.add( new classProperty_float("vol. th", 	0.0f, 		1.0f, 		&m_volAccum.m_valueTriggerIn) );
+	m_properties.add( new classProperty_float("h1", 		getPropDef("h1:min", 10.0f), 	getPropDef("h1:max", 50.0f), 		&m_h1Mesh) );
+	m_properties.add( new classProperty_float("h2", 		getPropDef("h2:min", 0.0f), 	getPropDef("h2:max", 50.0f), 		&m_h2Mesh) );
+	m_properties.add( new classProperty_float("w", 			getPropDef("w:min", 1.0f), 		getPropDef("w:max", 30.0f), 		&m_wMesh) );
+	m_properties.add( new classProperty_float("speed", 		100.0f, 	1500.0f, 	&m_dirSpeed) );
+	m_properties.add( new classProperty_float("zmax", 		100.0f, 	2000.0f, 	&m_zMax) );
+	m_properties.add( new classProperty_float("angle", 		0.0f, 		20.0f, 		&m_dirAngle) );
 	m_properties.add( new classProperty_bool("left", 		&m_emitLeft) );
 	m_properties.add( new classProperty_bool("right", 		&m_emitRight) );
-	
+ 
 	
 	m_properties.getBool("left")->setMode( classProperty_bool::MODE_TOGGLE );
 	m_properties.getBool("right")->setMode( classProperty_bool::MODE_TOGGLE );
@@ -91,6 +92,8 @@ AnimationTunnelALB::AnimationTunnelALB(string name) : Animation(name)
 
 	mp_sliderW	= 0;
 	mp_sliderH2 = 0;
+
+	m_h2 = m_h2Mesh;
 }
 
 //--------------------------------------------------------------
@@ -171,7 +174,8 @@ void AnimationTunnelALB::modifyMeshes()
 		createMeshes();
 
 	float h1 = m_h1Mesh;
-	float h2 = m_h2Mesh;
+//	float h2 = m_h2Mesh;
+	float h2 = m_h2;
 	float d	 = m_wMesh;
 
 	mp_meshes[0]->setVertex(0,ofVec3f(0,h1,0));
@@ -217,6 +221,9 @@ void AnimationTunnelALB::VM_update(float dt)
 //		mp_sliderW->setValue(m_wMesh);
 		mp_sliderH2->setValue(m_h2Mesh);
 	}
+
+	m_h2 += (m_h2Mesh - m_h2) * 0.4 * dt;
+	modifyMeshes();
 	
 	vector<TunnelElementALB*>::iterator it = m_elements.begin();
 	for ( ; it!=m_elements.end();)

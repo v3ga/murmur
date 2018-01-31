@@ -1,0 +1,14 @@
+<propertiesDef>
+    <w>
+        <min>5.0</min>
+        <max>20.0</max>
+    </w>
+    <h1>
+        <min>10.0</min>
+        <max>50.0</max>
+    </h1>
+    <h2>
+        <min>0.0</min>
+        <max>50.0</max>
+    </h2>        
+</propertiesDef>

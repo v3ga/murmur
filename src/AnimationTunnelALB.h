@@ -77,6 +77,7 @@ class AnimationTunnelALB : public Animation
         float                   m_volAccumTrigger;
  
 		float					m_h1Mesh,m_h2Mesh,m_wMesh;
+		float					m_h2;
  
  		bool					m_emitLeft,m_emitRight;
  

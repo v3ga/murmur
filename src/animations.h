@@ -59,6 +59,7 @@ class AnimationSoundPlayer
 };
 
 
+
 class Animation : public midiInterface
 {
 	public:
@@ -150,8 +151,12 @@ class Animation : public midiInterface
 		virtual void			loadConfigurationPrev	();
 		virtual	void			loadConfigurationNext	();
 				int				getConfigurationIndex	(string filename);
+		virtual	void			loadPropertiesDefinition();
+		float					getPropDef				(string which, float defaultVal);
  
 		bool					m_bResetOnEnter;
+ 
+		ofxXmlSettings			m_propertiesDef;
  
 
 		// Class properties

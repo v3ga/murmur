@@ -148,7 +148,7 @@ void AnimationParticlesMega2::updateUI()
 {
 	if (hasPitch())
 	{
-		if (mp_sliderParticleSize) 		mp_sliderParticleSize->setValue(m_particlesSize);
+//		if (mp_sliderParticleSize) 		mp_sliderParticleSize->setValue(m_particlesSize);
 		if (mp_sliderAmpAttraction) 	mp_sliderAmpAttraction->setValue(m_ampAttraction);
 		if (mp_sliderAmpRepulsion) 		mp_sliderAmpRepulsion->setValue(m_ampRepulsion);
 		if (mp_sliderRadiusRepulsion) 	mp_sliderRadiusRepulsion->setValue(m_repulsionRadius);
@@ -164,6 +164,8 @@ void AnimationParticlesMega2::guiEvent(ofxUIEventArgs &e)
     if (name == "particles size")
     {
 		m_particlesSize = ((ofxUISlider*) e.widget)->getScaledValue();
+    particleSystem.setParticleSize(m_particlesSize);
+
 	}
 }
 
@@ -172,14 +174,8 @@ void AnimationParticlesMega2::VM_update(float dt)
 {
 	if (hasPitch())
 	{
-//		if (m_bPitchManual)
-//			m_pitchLast = m_pitchManualValue;
-	
-		// Temp for now
-//	 	VolumeAccum* pFirstVolumeAccum =
-
-		if (mp_volumeAccum)
-			m_particlesSize = ofMap(mp_volumeAccum->m_valueMean,0.0f,1.0f,m_properties.getFloat("particles size")->m_min, m_properties.getFloat("particles size")->m_max);
+//		if (mp_volumeAccum)
+//			m_particlesSize = ofMap(mp_volumeAccum->m_valueMean,0.0f,1.0f,m_properties.getFloat("particles size")->m_min, m_properties.getFloat("particles size")->m_max);
 		m_ampAttraction = ofMap(m_pitchLast, 0.0f,1.0f, 5, 50);
 		m_ampRepulsion = ofMap(m_pitchLast, 0.0f,1.0f, 40, 100);
 		m_repulsionRadius = ofMap(m_pitchLast, 0.0f,1.0f, 140, 300);
@@ -188,9 +184,7 @@ void AnimationParticlesMega2::VM_update(float dt)
 	updateUIVolume();
 	updateUI();
 
-    particleSystem.setParticleSize(m_particlesSize);
 
-//    m_volume += (m_volumeTarget-m_volume)*0.4f;
 	map<string,ParticleForce*>::iterator it = m_mapParticleForce.begin();
 	ParticleForce* pParticleForce=0;
 	for ( ; it != m_mapParticleForce.end() ; ++it)
