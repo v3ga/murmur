@@ -11,4 +11,17 @@
         <min>0.0</min>
         <max>50.0</max>
     </h2>        
+    <speed>
+        <min>100.0</min>
+        <max>1500.0</max>
+    </speed>        
+    <zmax>
+        <min>100.0</min>
+        <max>2000.0</max>
+    </zmax>        
+    <angle>
+        <min>0.0</min>
+        <max>200.0</max>
+    </angle>        
+
 </propertiesDef>

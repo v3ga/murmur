@@ -77,13 +77,21 @@ AnimationShaderWave::AnimationShaderWave(string name) : Animation(name)
 	m_isBlend = true;
 	m_isColor = false;
 	m_waveVolumeTexture = 1200;
-
+	m_bHandlePitch		= true;
 	
 	loadColors();
+	loadPropertiesDefinition();
+
 	m_properties.add( new classProperty_float("intensity", 0.0f, 1.0f, &m_waveIntensity) );
+	m_properties.add( new classProperty_float("ampSine", getPropDef("ampsine:min", 0.0f), getPropDef("ampsine:max", 100.0f), &m_waveAmpSine) );
+	m_properties.add( new classProperty_float("freqSine", getPropDef("freqsine:min", 1.0f), getPropDef("freqsine:max", 30.0f), &m_waveFreqSine) );
+	m_properties.add( new classProperty_float("freqCosine", getPropDef("freqcosine:min", 1.0f), getPropDef("freqcosine:max", 3.0f), &m_waveFreqCosine) );
+
+	m_time = 0.0f;
+	m_pitchCurrent = 0.0f;
+	m_pitchRelax = 0.5f;
 	
-	
-	
+	mp_sliderAmpSine = 0;
 }
 
 //--------------------------------------------------------------
@@ -105,13 +113,26 @@ void AnimationShaderWave::VM_enter()
 		map<string,ShaderWave*>::iterator it = m_mapShaderWaves.begin();
 		for ( ; it != m_mapShaderWaves.end() ; ++it)
 			it->second->clearSoundInput();
+		m_time = 0.0f;
 	}
 }
 
 //--------------------------------------------------------------
 void AnimationShaderWave::VM_update(float dt)
 {
+	m_time += dt;
+
 	updateUIVolume();
+	if (hasPitch())
+	{
+		m_pitchCurrent += (m_pitchLast - m_pitchCurrent)*m_pitchRelax*dt;
+//		if (mp_sliderAmpSine) mp_sliderAmpSine->setValue( m_pitchCurrent*m_waveAmpSine );
+	}
+	else
+	{
+		m_pitchCurrent = 1.0f;
+	}
+
 
 	map<string, ShaderWave*>::iterator it = m_mapShaderWaves.begin();
 	for ( ; it!=m_mapShaderWaves.end(); ++it )
@@ -146,14 +167,17 @@ void AnimationShaderWave::VM_draw(float w, float h)
 			pShaderWave->m_bUpdateTexture = false;
 		}
 
-
 	    pShaderWave->m_imgSoundInput.bind();
     	m_shader.begin();
     	m_shader.setUniform2f("resolution", 1.2f*w, 1.2f*h);
     	m_shader.setUniform2f("anchor", pShaderWave->m_anchor.x, pShaderWave->m_anchor.y);
     	m_shader.setUniform1f("texSize", pShaderWave->m_imgSoundInput.getWidth());
-    	m_shader.setUniform1f("nbWaves", (float)m_mapShaderWaves.size());
+//    	m_shader.setUniform1f("nbWaves", (float)m_mapShaderWaves.size());
+    	m_shader.setUniform1f("ampSine", m_pitchCurrent*m_waveAmpSine);
+    	m_shader.setUniform1f("freqSine", (int)m_waveFreqSine);
+    	m_shader.setUniform1f("freqCosine", m_waveFreqCosine);
     	m_shader.setUniform1f("intensityWave", m_waveIntensity);
+    	m_shader.setUniform1f("time", m_time);
     	m_shader.setUniformTexture("texWave", pShaderWave->m_imgSoundInput.getTextureReference(), 0);
 
     	ofSetColor(255,255);
@@ -189,8 +213,14 @@ void AnimationShaderWave::onNewPacket(DevicePacket* pDevicePacket, string device
 
     if (pDevicePacket)
 	{
-		accumulateVolume(pDevicePacket->m_volume, deviceId);
+//		accumulateVolume(pDevicePacket->m_volume, deviceId);
+		accumulateVolumeAndPitch(pDevicePacket->m_volume, pDevicePacket->m_pitch, deviceId);
 
+		m_pitchLast = pDevicePacket->m_pitch;
+		if (m_pitchLast < 0.5f)
+			m_pitchRelax = 0.05;
+		else
+			m_pitchRelax = 0.99;
 
 		map<string,ShaderWave*>::iterator it = m_mapShaderWaves.find(deviceId);
 		ShaderWave* pShaderWave=0;
@@ -296,7 +326,10 @@ void AnimationShaderWave::createUICustom()
     {
 		mp_UIcanvas->addIntSlider("sizeTexture", 400,1500, &m_waveVolumeTexture);
 		addUISlider( m_properties.getFloat("intensity") );
-//        mp_UIcanvas->addSlider("intensity", 0.0f, 1.0f, &m_waveIntensity);
+		mp_sliderAmpSine =  addUISlider( m_properties.getFloat("ampSine") );
+		addUISlider( m_properties.getFloat("freqSine") );
+		addUISlider( m_properties.getFloat("freqCosine") );
+
         mp_UIcanvas->addToggle("debug enable blend", &m_isBlend);
         mp_UIcanvas->addToggle("colorFromDevice", &m_isColorFromDevice);
         mp_UIcanvas->addToggle("color", &m_isColor);

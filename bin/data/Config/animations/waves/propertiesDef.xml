@@ -1,0 +1,22 @@
+<propertiesDef>
+    <nbwavepoints>
+        <min>3.0</min>
+        <max>30.0</max>
+    </nbwavepoints>
+    <speed>
+        <min>20.0</min>
+        <max>100.0</max>
+    </speed>
+    <agemax>
+        <min>1.0</min>
+        <max>20.0</max>
+    </agemax>
+    <wavediramp>
+        <min>0.0</min>
+        <max>3.0</max>
+    </wavediramp>
+    <linewidthwave>
+        <min>0.0</min>
+        <max>20.0</max>
+    </linewidthwave>
+</propertiesDef>

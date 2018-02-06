@@ -665,6 +665,12 @@ float Animation::getPropDef(string which, float defaultVal)
 }
 
 //--------------------------------------------------------------
+int Animation::getPropDef(string which, int defaultVal)
+{
+	return m_propertiesDef.getValue("propertiesDef:"+which, defaultVal);
+}
+
+//--------------------------------------------------------------
 void Animation::loadConfigurationPrev()
 {
 	if (m_configurations.size()>1 && m_configurationCurrent!="")

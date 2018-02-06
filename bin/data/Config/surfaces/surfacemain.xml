@@ -1,6 +1,7 @@
 <surface id="main">
     <animations type="cpp">
 
+        <animation name="shaderWave"></animation>
         <animation name="box2DCircles"></animation>
         <animation name="particlesMega2"></animation>
         <animation name="linesFF"></animation>
@@ -12,7 +13,6 @@
         <animation name="radarFF"></animation>
         <animation name="gridsFF"></animation>
 
-        <animation name="shaderWave"></animation>
 
   		<animation name="debug"></animation>
   		<animation name="gravitatory"></animation>

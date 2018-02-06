@@ -29,11 +29,14 @@ AnimationParticlesMega2::AnimationParticlesMega2(string name) : Animation(name)
 	
 	mp_volumeAccum = 0;
 
-	m_properties.add( new classProperty_float("amp. attraction",1.0f, 100.0f, &m_ampAttraction) );
-	m_properties.add( new classProperty_float("amp. repulsion", 1.0f, 100.0f, &m_ampRepulsion) );
-	m_properties.add( new classProperty_float("radius repulsion", 40.0f, 300.0f, &m_repulsionRadius) );
-	m_properties.add( new classProperty_float("particles size", 2.0f, 10.0f, &m_particlesSize) );
-	m_properties.add( new classProperty_float("radius color factor", 1.0f, 10.0f, &m_colorRadiusFactor) );
+	loadPropertiesDefinition();
+
+
+	m_properties.add( new classProperty_float("amp. attraction",		getPropDef("ampattraction:min", 1.0f), 		getPropDef("ampattraction:max", 100.0f), 		&m_ampAttraction) );
+	m_properties.add( new classProperty_float("amp. repulsion", 		getPropDef("amprepulsion:min", 1.0f), 		getPropDef("amprepulsion:max", 100.0f), 		&m_ampRepulsion) );
+	m_properties.add( new classProperty_float("radius repulsion", 		getPropDef("radiusrepulsion:min", 40.0f), 	getPropDef("radiusrepulsion:max", 300.0f), 		&m_repulsionRadius) );
+	m_properties.add( new classProperty_float("particles size", 		getPropDef("particlessize:min", 2.0f), 		getPropDef("particlessize:max", 10.0f), 		&m_particlesSize) );
+	m_properties.add( new classProperty_float("radius color factor", 	getPropDef("radiuscolorfactor:min", 1.0f), 	getPropDef("radiuscolorfactor:max", 10.0f), 	&m_colorRadiusFactor) );
 
 	mp_sliderAmpAttraction 		= 0;
 	mp_sliderAmpRepulsion 		= 0;

@@ -16,17 +16,17 @@ AnimationLinesFF::AnimationLinesFF(string name) : Animation(name)
 	m_dirSpeed = 800;
 	m_rotSpeed = 0.0f;
 	
+
+	loadPropertiesDefinition();
 	
-	mp_propDirSpeed	  = new classProperty_float("dirSpeed", 100.0f,1000.0f, &m_dirSpeed);
-	mp_propRotSpeed	  = new classProperty_float("rotSpeed", 0.0f,360.0f, &m_rotSpeed);
-	
-	
+	mp_propDirSpeed	  = new classProperty_float("dirSpeed", 	getPropDef("dirspeed:min", 100.0f), 		getPropDef("dirspeed:max", 1000.0f), 		&m_dirSpeed);
+	mp_propRotSpeed	  = new classProperty_float("rotSpeed", 	getPropDef("rotspeed:min", 0.0f), 			getPropDef("rotspeed:max", 360.0f), 		&m_rotSpeed);
 	
 	m_properties.add( mp_propDirSpeed );
-	m_properties.add( new classProperty_float("zMax", 100.0f,2000.0f, &m_zMax) );
-	m_properties.add( new classProperty_float("radius", 0.0f,200.0f, &m_radius) );
-	m_properties.add( new classProperty_bool("radiusDirect", &m_bRadiusDirect) );
-	m_properties.add( new classProperty_float("rot", 0.0f,360.0f, &m_rot) );
+	m_properties.add( new classProperty_float("zMax", 			getPropDef("zmax:min", 100.0f), 			getPropDef("zmax:max", 2000.0f), 			&m_zMax) );
+	m_properties.add( new classProperty_float("radius", 		getPropDef("radius:min", 0.0f), 			getPropDef("radius:max", 200.0f), 			&m_radius) );
+	m_properties.add( new classProperty_bool("radiusDirect", 	&m_bRadiusDirect) );
+	m_properties.add( new classProperty_float("rot", 			getPropDef("rot:min", 0.0f), 				getPropDef("rot:max", 360.0f), 				&m_rot) );
 	m_properties.add( mp_propRotSpeed );
 
 	m_meshPlane = ofMesh::box(2.0f, 400.0f, 1.0f);
@@ -133,10 +133,8 @@ void AnimationLinesFF::onNewPacket(DevicePacket* pDevicePacket, string deviceId,
 	{
 		if (hasPitch())
 		{
-		
-		
-			if (mp_propDirSpeed) mp_propDirSpeed->setTarget( ofMap( pDevicePacket->m_pitch, 0.0f,1.0f, 350.0f, 1000.0f, true) );
-			if (mp_propRotSpeed) mp_propRotSpeed->setTarget( ofMap( pDevicePacket->m_pitch, 0.0f,1.0f, 360.0f, 40.0f,true) );
+			if (mp_propDirSpeed) mp_propDirSpeed->setTarget( ofMap( pDevicePacket->m_pitch, 0.0f,1.0f, m_properties.getFloat("dirSpeed")->m_min, m_properties.getFloat("dirSpeed")->m_max, true) );
+			if (mp_propRotSpeed) mp_propRotSpeed->setTarget( ofMap( pDevicePacket->m_pitch, 0.0f,1.0f, m_properties.getFloat("rotSpeed")->m_max, m_properties.getFloat("rotSpeed")->m_min,true) );
 		
 			// ofLog() << "pDevicePacket->m_pitch="<< pDevicePacket->m_pitch<< ";mp_propDirSpeed->m_variableTarget = " << mp_propDirSpeed->m_variableTarget;
 		}

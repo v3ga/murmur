@@ -74,13 +74,13 @@ AnimationTunnelALB::AnimationTunnelALB(string name) : Animation(name)
 	
 	loadPropertiesDefinition();
 	
-	m_properties.add( new classProperty_float("vol. th", 	0.0f, 		1.0f, 		&m_volAccum.m_valueTriggerIn) );
-	m_properties.add( new classProperty_float("h1", 		getPropDef("h1:min", 10.0f), 	getPropDef("h1:max", 50.0f), 		&m_h1Mesh) );
-	m_properties.add( new classProperty_float("h2", 		getPropDef("h2:min", 0.0f), 	getPropDef("h2:max", 50.0f), 		&m_h2Mesh) );
-	m_properties.add( new classProperty_float("w", 			getPropDef("w:min", 1.0f), 		getPropDef("w:max", 30.0f), 		&m_wMesh) );
-	m_properties.add( new classProperty_float("speed", 		100.0f, 	1500.0f, 	&m_dirSpeed) );
-	m_properties.add( new classProperty_float("zmax", 		100.0f, 	2000.0f, 	&m_zMax) );
-	m_properties.add( new classProperty_float("angle", 		0.0f, 		20.0f, 		&m_dirAngle) );
+	m_properties.add( new classProperty_float("vol. th", 	0.0f, 								1.0f, 								&m_volAccum.m_valueTriggerIn) );
+	m_properties.add( new classProperty_float("h1", 		getPropDef("h1:min", 10.0f), 		getPropDef("h1:max", 50.0f), 		&m_h1Mesh) );
+	m_properties.add( new classProperty_float("h2", 		getPropDef("h2:min", 0.0f), 		getPropDef("h2:max", 50.0f), 		&m_h2Mesh) );
+	m_properties.add( new classProperty_float("w", 			getPropDef("w:min", 1.0f), 			getPropDef("w:max", 30.0f), 		&m_wMesh) );
+	m_properties.add( new classProperty_float("speed", 		getPropDef("speed:min", 100.0f), 	getPropDef("speed:max", 1500.0f), 	&m_dirSpeed) );
+	m_properties.add( new classProperty_float("zmax", 		getPropDef("zmax:min", 100.0f), 	getPropDef("zmax:max", 2000.0f), 	&m_zMax) );
+	m_properties.add( new classProperty_float("angle", 		getPropDef("angle:min", 0.0f), 		getPropDef("angle:max", 20.0f), 	&m_dirAngle) );
 	m_properties.add( new classProperty_bool("left", 		&m_emitLeft) );
 	m_properties.add( new classProperty_bool("right", 		&m_emitRight) );
  

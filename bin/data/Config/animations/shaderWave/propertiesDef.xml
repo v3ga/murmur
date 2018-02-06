@@ -1,0 +1,14 @@
+<propertiesDef>
+	<ampsine>
+		<min>0.0</min>
+		<max>150.0</max>
+	</ampsine>
+	<freqsine>
+		<min>1.0</min>
+		<max>50.0</max>
+	</freqsine>
+	<freqcosine>
+		<min>1.0</min>
+		<max>3.0</max>
+	</freqcosine>
+</propertiesDef>

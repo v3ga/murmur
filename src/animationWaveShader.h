@@ -54,12 +54,17 @@ class AnimationShaderWave : public Animation
         ofVec2f                 m_anchor,m_anchorNorm;
         float                   m_volume;
 		float					m_waveIntensity;
+		float					m_waveAmpSine, m_waveFreqSine,m_waveFreqCosine;
 		bool					m_isBlend;
 		int						m_waveVolumeTexture;
+		float					m_time;
+		float					m_pitchCurrent, m_pitchRelax;
 	
 	private:
 		map<string, ShaderWave*>	m_mapShaderWaves;
 		map<string, bool>			m_mapVolMeanAbove;
+ 
+		ofxUISlider*				mp_sliderAmpSine;
 
 
 };

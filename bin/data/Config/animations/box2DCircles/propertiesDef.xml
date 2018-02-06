@@ -1,0 +1,24 @@
+<propertiesDef>
+    <gravity>
+        <min>-10</min>
+        <max>10</max>
+    </gravity>
+    <obj>
+        <number>
+            <min>50</min>
+            <max>500</max>
+        </number>
+        <sizemin>
+            <min>10</min>
+            <max>20</max>
+        </sizemin>
+        <sizemax>
+            <min>10</min>
+            <max>20</max>
+        </sizemax>
+        <scale>
+            <min>0.0</min>
+            <max>1.2</max>
+        </scale>
+    </obj>
+</propertiesDef>

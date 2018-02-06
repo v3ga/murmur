@@ -1,0 +1,22 @@
+<propertiesDef>
+    <ampattraction>
+        <min>1.0</min>
+        <max>100</max>
+    </ampattraction>
+    <amprepulsion>
+        <min>1.0</min>
+        <max>100</max>
+    </amprepulsion>
+    <radiusrepulsion>
+        <min>40.0</min>
+        <max>300</max>
+    </radiusrepulsion>
+    <particlessize>
+        <min>2.0</min>
+        <max>10.0</max>
+    </particlessize>
+    <radiuscolorfactor>
+        <min>1.0</min>
+        <max>10.0</max>
+    </radiuscolorfactor>
+</propertiesDef>

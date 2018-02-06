@@ -153,6 +153,7 @@ class Animation : public midiInterface
 				int				getConfigurationIndex	(string filename);
 		virtual	void			loadPropertiesDefinition();
 		float					getPropDef				(string which, float defaultVal);
+		int						getPropDef				(string which, int defaultVal);
  
 		bool					m_bResetOnEnter;
  

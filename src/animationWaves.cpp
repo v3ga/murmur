@@ -247,7 +247,7 @@ void WaveManager::computeMesh()
 //--------------------------------------------------------------
 void WaveManager::updateNbPoints()
 {
-	setNbPoints( ofMap(m_pitchLast,0.0f,1.0f,15,3) );
+	setNbPoints( ofMap(m_pitchLast,0.0f,1.0f, mp_parent->m_properties.getFloat("nbWavePoints")->m_max, mp_parent->m_properties.getFloat("nbWavePoints")->m_min) );
 }
 
 //--------------------------------------------------------------
@@ -267,21 +267,24 @@ void WaveManager::setNbPoints(int nb)
 //--------------------------------------------------------------
 AnimationWaves::AnimationWaves(string name) : Animation(name)
 {
-	m_waveDirAmp = 0.5f;
-	m_valueTriggerIn = 0.3f;
-	m_valueTriggerOut = 0.1f;
-	m_nbWavePoints = 10;
-	m_enableTimeResetAccum = false;
-	m_timeResetAccum = 0.5f;
-	mp_sliderNbWavePoints = 0;
+	m_waveDirAmp 			= 0.5f;
+	m_valueTriggerIn 		= 0.3f;
+	m_valueTriggerOut 		= 0.1f;
+	m_nbWavePoints 			= 10;
+	m_enableTimeResetAccum 	= false;
+	m_timeResetAccum 		= 0.5f;
+	mp_sliderNbWavePoints 	= 0;
 
-	m_properties.add( new classProperty_float("nbWavePoints", 		3.0f, 20.0f, 	&m_nbWavePoints) );
-	m_properties.add( new classProperty_float("speed", 				20.0f, 100.0f, 	&m_speed) );
-	m_properties.add( new classProperty_float("ageMax", 			1.0f, 20.0f, 	&m_ageMax) );
-	m_properties.add( new classProperty_float("waveDirAmp", 		0.0f, 3.0f, 	&m_waveDirAmp) );
+	loadPropertiesDefinition();
+
+
+	m_properties.add( new classProperty_float("nbWavePoints", 		getPropDef("nbwavepoints:min", 3.0f), 		getPropDef("nbwavepoints:max", 20.0f), 		&m_nbWavePoints) );
+	m_properties.add( new classProperty_float("speed", 				getPropDef("speed:min", 20.0f), 			getPropDef("speed:max", 100.0f), 			&m_speed) );
+	m_properties.add( new classProperty_float("ageMax", 			getPropDef("agemax:min", 1.0f), 			getPropDef("agemax:max", 20.0f), 			&m_ageMax) );
+	m_properties.add( new classProperty_float("waveDirAmp", 		getPropDef("wavediramp:min", 0.0f), 		getPropDef("wavediramp:max", 3.0f), 		&m_waveDirAmp) );
 	m_properties.add( new classProperty_float("valueTriggerIn", 	0.0f, 1.0f, 	&m_valueTriggerIn) );
 	m_properties.add( new classProperty_float("valueTriggerOut", 	0.0f, 1.0f, 	&m_valueTriggerOut) );
-	m_properties.add( new classProperty_float("lineWidthWave", 		0.0f, 20.0f, 	&m_lineWidthWave) );
+	m_properties.add( new classProperty_float("lineWidthWave", 		getPropDef("linewidthwave:min", 0.0f), 		getPropDef("linewidthwave:max", 20.0f), 	&m_lineWidthWave) );
 	m_properties.add( new classProperty_bool("enableResetAccum", 					&m_enableTimeResetAccum) );
 	m_properties.add( new classProperty_float("timeResetAccum", 	0.1f, 1.0f,		&m_timeResetAccum) );
 

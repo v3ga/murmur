@@ -1,0 +1,22 @@
+<propertiesDef>
+    <dirspeed>
+        <min>100.0</min>
+        <max>1000.0</max>
+    </dirspeed>
+    <rotspeed>
+        <min>0.0</min>
+        <max>360.0</max>
+    </rotspeed>
+    <zmax>
+        <min>100.0</min>
+        <max>2000.0</max>
+    </zmax>
+    <radius>
+        <min>0.0</min>
+        <max>200.0</max>
+    </radius>
+    <rot>
+        <min>0.0</min>
+        <max>360.0</max>
+    </rot>
+</propertiesDef>

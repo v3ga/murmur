@@ -101,7 +101,7 @@ class AnimationWaves : public Animation
 		float			m_valueTriggerOut;
 		bool			m_enableTimeResetAccum;
 		float			m_timeResetAccum;
-		float			m_nbWavePoints;
+		float			m_nbWavePoints, m_nbWavePointsMin, m_nbWavePointsMax;
 		float			m_lineWidthWave;
 
 		ofxUISlider*	mp_sliderNbWavePoints;
