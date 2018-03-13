@@ -130,10 +130,16 @@ void DeviceNode::customDraw()
 			float size  = ofMap(spring->getStrength(), SPRING_MIN_STRENGTH, SPRING_MAX_STRENGTH, SPRING_MIN_WIDTH, SPRING_MAX_WIDTH);
 		 
 			DevicePacket* pPacket = mp_device->m_listPackets[nbPackets-1-i];
-			float volume = mp_device->m_isInvertPacketsVolume ? 1.0f-pPacket->m_volume: pPacket->m_volume;
+			DevicePacket* pPacketOpposite = mp_device->m_listPackets[i];
+			float volume = 0.0f;
+			if (mp_device->m_isReverseDirPackets)
+				volume = mp_device->m_isInvertPacketsVolume ? 1.0f-pPacketOpposite->m_volume: pPacketOpposite->m_volume;
+			else
+				volume = mp_device->m_isInvertPacketsVolume ? 1.0f-pPacket->m_volume: pPacket->m_volume;
 
 
         	boxSize = ofMap(volume,0.0f,1.0f, 0.0f*maxBoxSize, maxBoxSize);
+//        	ofSetColor(mp_device->m_isReverseDirPackets ? pPacketOpposite->m_color : pPacket->m_color,255);
         	ofSetColor(pPacket->m_color,255);
 
         	ofBox(boxSize);

@@ -44,6 +44,10 @@ Device* oscReceiver::discoverDevice(string id, int nbLeds)
 		   // Create a node in visualisation scene
 		   Globals::instance()->mp_app->createDeviceNodeInScene(pDeviceEcho);
 		
+		   // Select it
+		   Globals::instance()->mp_app->selectDevice(pDeviceEcho->m_id);
+
+		
 		   pDevice = (Device*) pDeviceEcho;
 		
 	   }

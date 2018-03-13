@@ -51,25 +51,25 @@
 <Widget>
     <Kind>2</Kind>
     <Name>syphon</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
     <Name>quad warping</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
     <Name>draw quad warping</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>quad warping handle shifting</Name>
-    <Value>4.318749905</Value>
+    <Value>3.812500000</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>device point shifting</Name>
-    <Value>6.765625000</Value>
+    <Value>6.371875286</Value>
 </Widget>

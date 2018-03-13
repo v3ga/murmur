@@ -86,11 +86,13 @@ AnimationShaderWave::AnimationShaderWave(string name) : Animation(name)
 	m_properties.add( new classProperty_float("ampSine", getPropDef("ampsine:min", 0.0f), getPropDef("ampsine:max", 100.0f), &m_waveAmpSine) );
 	m_properties.add( new classProperty_float("freqSine", getPropDef("freqsine:min", 1.0f), getPropDef("freqsine:max", 30.0f), &m_waveFreqSine) );
 	m_properties.add( new classProperty_float("freqCosine", getPropDef("freqcosine:min", 1.0f), getPropDef("freqcosine:max", 3.0f), &m_waveFreqCosine) );
+	m_properties.add( new classProperty_float("volRetainPitch", 0.0f, 1.0f, &m_volRetainPitch) );
+
 
 	m_time = 0.0f;
 	m_pitchCurrent = 0.0f;
 	m_pitchRelax = 0.5f;
-	
+	m_volRetainPitch = 0.3f;
 	mp_sliderAmpSine = 0;
 }
 
@@ -125,7 +127,9 @@ void AnimationShaderWave::VM_update(float dt)
 	updateUIVolume();
 	if (hasPitch())
 	{
-		m_pitchCurrent += (m_pitchLast - m_pitchCurrent)*m_pitchRelax*dt;
+		m_pitchRelax = 0.1;
+		m_pitchCurrent += (m_pitchLast - m_pitchCurrent)*m_pitchRelax;
+//		m_pitchCurrent = m_pitchLast;
 //		if (mp_sliderAmpSine) mp_sliderAmpSine->setValue( m_pitchCurrent*m_waveAmpSine );
 	}
 	else
@@ -148,6 +152,8 @@ void AnimationShaderWave::VM_draw(float w, float h)
 //    printf("(%.3f,%.3f)-",m_anchor.x,m_anchor.y);
     
 	drawBackground(0);
+//	ofSetColor(0,255,0);
+//	ofDrawBitmapString( ofToString(m_pitchCurrent) + " / "+ ofToString(m_pitchLast), 20,20 );
 
 	if (m_isBlend)
 	{
@@ -215,13 +221,18 @@ void AnimationShaderWave::onNewPacket(DevicePacket* pDevicePacket, string device
 	{
 //		accumulateVolume(pDevicePacket->m_volume, deviceId);
 		accumulateVolumeAndPitch(pDevicePacket->m_volume, pDevicePacket->m_pitch, deviceId);
+//		ofLog() << pDevicePacket->m_volume;
 
-		m_pitchLast = pDevicePacket->m_pitch;
+		if (pDevicePacket->m_volume > m_volRetainPitch)
+		{
+			m_pitchLast = pDevicePacket->m_pitch;
+		}
+/*			m_pitchLast = getVolumAccumForDevice(deviceId)->m_valuePitchMean;
 		if (m_pitchLast < 0.5f)
 			m_pitchRelax = 0.05;
 		else
 			m_pitchRelax = 0.99;
-
+*/
 		map<string,ShaderWave*>::iterator it = m_mapShaderWaves.find(deviceId);
 		ShaderWave* pShaderWave=0;
 
@@ -329,6 +340,8 @@ void AnimationShaderWave::createUICustom()
 		mp_sliderAmpSine =  addUISlider( m_properties.getFloat("ampSine") );
 		addUISlider( m_properties.getFloat("freqSine") );
 		addUISlider( m_properties.getFloat("freqCosine") );
+		addUISlider( m_properties.getFloat("volRetainPitch") );
+
 
         mp_UIcanvas->addToggle("debug enable blend", &m_isBlend);
         mp_UIcanvas->addToggle("colorFromDevice", &m_isColorFromDevice);

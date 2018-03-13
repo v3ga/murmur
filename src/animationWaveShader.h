@@ -59,6 +59,7 @@ class AnimationShaderWave : public Animation
 		int						m_waveVolumeTexture;
 		float					m_time;
 		float					m_pitchCurrent, m_pitchRelax;
+		float					m_volRetainPitch;
 	
 	private:
 		map<string, ShaderWave*>	m_mapShaderWaves;

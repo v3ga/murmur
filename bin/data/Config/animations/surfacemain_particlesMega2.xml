@@ -121,17 +121,17 @@
 <Widget>
     <Kind>4</Kind>
     <Name>amp. attraction</Name>
-    <Value>5.000000000</Value>
+    <Value>5.000005245</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>amp. repulsion</Name>
-    <Value>40.000000000</Value>
+    <Value>40.000007629</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>radius repulsion</Name>
-    <Value>140.000000000</Value>
+    <Value>140.000015259</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>

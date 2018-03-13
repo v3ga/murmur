@@ -23,6 +23,7 @@
     </color>
     <packets>
         <invert>0</invert>
+        <reverse>1</reverse>
     </packets>
     <ping>
         <value>0.740625024</value>

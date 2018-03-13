@@ -20,10 +20,12 @@ class DevicePacket
     public:
         DevicePacket         ();
 
-        void                  copy(DevicePacket* pPacket);
-		void				  computeColor(const ofColor& deviceColor, bool isColor, bool isInvert);
-		void				  computeColor(const float* deviceColor, bool isColor, bool isInvert);
-		void				  computeColor2(const float* deviceColor, const float* deviceColor2, float t, bool isColor, bool isInvert);
+        void                  copy							(DevicePacket* pPacket);
+		void				  computeColor					(const ofColor& deviceColor, bool isColor, bool isInvert);
+		void				  computeColor					(const float* deviceColor, bool isColor, bool isInvert);
+		void				  computeColor2					(const float* deviceColor, const float* deviceColor2, float t, bool isColor, bool isInvert);
+		void				  computeColorForVolume			(const float* deviceColor, bool isColor, bool isInvert, float volume);
+		void				  computeColor2ForVolume		(const float* deviceColor, const float* deviceColor2, float t, bool isColor, bool isInvert, float volume);
 	
         float                 m_volume;
 		float				  m_pitch;

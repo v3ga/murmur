@@ -71,6 +71,32 @@ void DevicePacket::computeColor2(const float* deviceColor, const float* deviceCo
 		m_color.set(volume*255.0f,volume*255.0f,volume*255.0f);
 }
 
+//--------------------------------------------------------------
+void DevicePacket::computeColorForVolume(const float* deviceColor,bool isColor, bool isInvert, float vol)
+{
+	float volume = isInvert ? 1.0f-vol : vol;
+
+	if (isColor)
+		m_color = ofColor::fromHsb(deviceColor[0],deviceColor[1],volume*255.0f);
+	else
+		m_color.set(volume*255.0f,volume*255.0f,volume*255.0f);
+//	m_color.setHsb(deviceColor[0],deviceColor[1],m_volume*255.0f);
+}
+
+//--------------------------------------------------------------
+void DevicePacket::computeColor2ForVolume(const float* deviceColor, const float* deviceColor2, float t, bool isColor, bool isInvert, float vol)
+{
+	float volume = isInvert ? 1.0f-vol : vol;
+
+	if (isColor)
+	{
+//		m_color = ofColor::fromHsb(ofLerp(deviceColor[0],deviceColor2[0],t),ofLerp(deviceColor[1],deviceColor2[1],t),volume*255.0f);
+		m_color = ofColor::fromHsb(deviceColor[0],deviceColor[1], volume*255).lerp(  ofColor::fromHsb(deviceColor2[0],deviceColor2[1], volume*255) ,t);
+	}
+	else
+		m_color.set(volume*255.0f,volume*255.0f,volume*255.0f);
+}
+
 
 //--------------------------------------------------------------
 Device::Device(string id, int nbLEDs, float distLEDs)
@@ -921,7 +947,7 @@ void Device::sampleSoundInput()
 {
     if (!mp_soundInput) return;
     if (m_listPackets.size()<=2) return;
-    
+ 
     int nbPackets = m_listPackets.size();
     int nbVolHistorySize = mp_soundInput->getVolHistory().size();
     float stepSample = float( mp_soundInput->getVolHistory().size() )/ float(nbPackets-1) ;
@@ -929,25 +955,55 @@ void Device::sampleSoundInput()
     float indexSample = 0.0f;
 	float pitch = 0.0f;
 	int indexPacket = 0;
+	int indexPacketColor = 0;
     for (int i=0;i<nbPackets;i++)
     {
         if (indexSample>nbVolHistorySize-1)
             indexSample = nbVolHistorySize-1;
 
-		indexPacket = m_isReverseDirPackets ? nbPackets-1-i : i;
+//		indexPacket = m_isReverseDirPackets ? nbPackets-1-i : i;
+		indexPacket = i;
 		pitch = mp_soundInput->getPitchHistory()[(int)indexSample];
 	 
 		m_listPackets[indexPacket]->m_volume = mp_soundInput->getVolHistory()[(int)indexSample]; // Nearest sampling
 		m_listPackets[indexPacket]->m_pitch = pitch;
 
-		if (m_bEnablePitch)
-			m_listPackets[indexPacket]->computeColor2(m_colorHsv, m_colorHsv2, pitch, m_isEnableColor, m_isInvertPacketsVolume);
-		else
-			m_listPackets[indexPacket]->computeColor(m_colorHsv, m_isEnableColor, m_isInvertPacketsVolume);
-
+		if (!m_isReverseDirPackets)
+		{
+			if (m_bEnablePitch)
+				m_listPackets[indexPacket]->computeColor2(m_colorHsv, m_colorHsv2, pitch, m_isEnableColor, m_isInvertPacketsVolume);
+			else
+				m_listPackets[indexPacket]->computeColor(m_colorHsv, m_isEnableColor, m_isInvertPacketsVolume);
+		}
 
         indexSample += stepSample;
     }
+
+
+    indexSample = 0.0f;
+	float volume = 0;
+	if (m_isReverseDirPackets)
+	{
+	    for (int i=0;i<nbPackets;i++)
+    	{
+        	if (indexSample>nbVolHistorySize-1)
+            	indexSample = nbVolHistorySize-1;
+
+			indexPacketColor = nbPackets-1-i;
+			pitch = m_listPackets[i]->m_pitch;
+			volume = m_listPackets[i]->m_volume;
+
+			if (m_bEnablePitch)
+				m_listPackets[indexPacketColor]->computeColor2ForVolume(m_colorHsv, m_colorHsv2, pitch, m_isEnableColor, m_isInvertPacketsVolume,volume);
+			else
+				m_listPackets[indexPacketColor]->computeColorForVolume(m_colorHsv, m_isEnableColor, m_isInvertPacketsVolume,volume);
+
+
+        	indexSample += stepSample;
+		}
+	}
+
+
 }
 
 //--------------------------------------------------------------
@@ -1359,7 +1415,7 @@ void Device::loadXMLColor(ofxXmlSettings& settings)
 void Device::loadXMLPackets(ofxXmlSettings& settings)
 {
    int invert 	= settings.getValue("device:packets:invert", 			0);
-   int reverse 	= settings.getValue("device:packets:reverseDir", 		0);
+   int reverse 	= settings.getValue("device:packets:reverse", 			0);
    invertPacketsVolume(invert>0?true:false);
    reversePacketsDir(reverse>0?true:false);
 }
@@ -1466,6 +1522,7 @@ void Device::saveXML(string dir)
         settings.addTag("packets");
         settings.pushTag("packets");
 		settings.addValue("invert", m_isInvertPacketsVolume ? 1 : 0);
+		settings.addValue("reverse", m_isReverseDirPackets ? 1 : 0);
         settings.popTag();
 
         settings.addTag("ping");
