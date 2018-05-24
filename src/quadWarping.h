@@ -60,11 +60,18 @@ class quadWarping
 		float*					findTransformMatrix			(const ofRectangle& src);
 		ofMatrix4x4				getTransformMatrix			(const ofRectangle& src, bool bInverse=false);
 		ofVec2f					getPointInSquareNormalized	(ofVec2f p);
+		ofVec2f					getPointInQuad				(ofVec2f pNormalized);
 
 		quadWarpingHandle		m_handles[4];
 
 	private:
 		quadWarpingHandle*		mp_handleSelected;
 		float					m_matrixTransform[16];
+ 
+		// used for quad <-> rect transformations
+		// https://www.particleincell.com/2012/quad-interpolation/
+		ofMatrix4x4				A;
+		ofVec4f					a,b;
+		void					computeCoeffQuadRect	();
 	
 };

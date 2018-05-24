@@ -47,10 +47,10 @@
 			
 		   <surface>
 			   <monitor>1</monitor>
-			   <x>10</x>
+			   <x>0</x>
 			   <y>0</y>
-			   <w>800</w>
-			   <h>600</h>
+			   <w>1280</w>
+			   <h>1024</h>
 		   </surface>
 	   </windows>
 
@@ -73,9 +73,7 @@
 
     <!-- Raspberry -->
     <launchDevices pathScriptRun="/home/pi/openFrameworks/apps/myApps/murmurRaspberry/bin/run_murmur.sh">
-    	<!--
-        <ip>192.168.1.25</ip>
-		-->
+        <ip>192.168.1.144</ip>
    </launchDevices>
 	
 

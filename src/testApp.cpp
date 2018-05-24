@@ -17,7 +17,6 @@
 //#include "toolALB.h"
 #include "toolTimeline.h"
 
-
 #if MURMUR_MULTI_WINDOWS
 #include "ofxMultiGLFWWindow.h"
 #endif
@@ -73,7 +72,8 @@ void testApp::setup()
 
     mp_glfw->setWindow(mp_windows->at(0));    // set window pointer
     mp_glfw->initializeWindow();       // initialize events (mouse, keyboard, etc) on window (optional)
-    ofSetWindowPosition(0, 0);    // business as usual...
+ 
+	ofSetWindowPosition(0, 0);    // business as usual...
     ofSetWindowShape(1024, 900);
     ofSetWindowTitle("Murmur");
 
@@ -90,7 +90,6 @@ void testApp::setup()
 	m_bTurnoffDevices = m_settings.getValue("murmur:turnoffDevices",0) > 0 ? true : false;
 	m_bRebootDevices = ofToInt(m_settings.getAttribute("murmur:turnoffDevices", "reboot", "0")) > 0 ? true : false;
 
-
 	OFAPPLOG->println(" - window surface ("+ofToString(xSurface)+","+ofToString(ySurface)+","+ofToString(wSurface)+","+ofToString(hSurface)+")");
 	OFAPPLOG->println(" - turnoff devices =  "+ofToString(m_bTurnoffDevices) + " (reboot = "+ofToString(m_bRebootDevices)+")");
 	OFAPPLOG->println(" - vsync = "+ofToString(bVsync));
@@ -98,20 +97,27 @@ void testApp::setup()
 	OFAPPLOG->println("    + value = "+ofToString(valueFramerate));
 	OFAPPLOG->println(" - bHideToolWindow = "+ofToString(bHideToolWindow));
 
-
     mp_glfw->setWindow(mp_windows->at(1));    // set window pointer
     mp_glfw->initializeWindow();       // initialize events (mouse, keyboard, etc) on window (optional)
 
+/*
 	int nbMonitors = mp_glfw->getMonitorCount();
+	OFAPPLOG->println(" - monitor = "+ofToString(monitor));
+	OFAPPLOG->println(" - nbMonitors = "+ofToString(nbMonitors));
+
 	ofRectangle monitorRect = mp_glfw->getMonitorRect(0);
+	OFAPPLOG->println(" - monitor[0] = ("+ofToString(monitorRect.x)+","+ofToString(monitorRect.y)+","+ofToString(monitorRect.width)+","+ofToString(monitorRect.height)+")");
 	if (monitor > 0 && monitor < nbMonitors)
 	{
 		monitorRect = mp_glfw->getMonitorRect(monitor);
+
+		OFAPPLOG->println(" - monitor["+ofToString(monitor)+"] = ("+ofToString(monitorRect.x)+","+ofToString(monitorRect.y)+","+ofToString(monitorRect.width)+","+ofToString(monitorRect.height)+")");
 	}
 
-    ofSetWindowPosition(monitorRect.x+xSurface, monitorRect.y+ySurface);    // business as usual...
     ofSetWindowShape(wSurface, hSurface);
+    ofSetWindowPosition(monitorRect.x+xSurface, monitorRect.y+ySurface);    // business as usual...
     ofSetWindowTitle("Surface");
+*/
 
     mp_glfw->setWindow(mp_windows->at(0));
 	#endif
@@ -604,8 +610,6 @@ void testApp::draw()
 		// Draw simulation ?
 		 toolScene* pToolScene = (toolScene*) toolManager.getTool("Scene");
 
-
-
 		 // Draw Scene
 		 if (mp_sceneVisualisation && pToolScene && pToolScene->isDrawScene())
 			 mp_sceneVisualisation->draw();
@@ -619,21 +623,18 @@ void testApp::draw()
 		 }
 
 	 }
-	 
-	 // DEPRECATED
 	 else
 	 {
-		 toolSurfaces* pToolSurfaces = (toolSurfaces*) toolManager.getTool("Surfaces");
-		 if (pToolSurfaces){
-			 pToolSurfaces->draw();
-		 }
+	 	ofPushStyle();
+		ofSetColor(255);
+		ofDrawBitmapString("Click on this window and press key 's' to show the interface again.", 5,20);
+		ofPopStyle();
 	 }
 
 	#if MURMUR_MULTI_WINDOWS
 	}
 	else if (m_windowIndex == 1)
 	{
-		//ofBackground(50);
 		 toolSurfaces* pToolSurfaces = (toolSurfaces*) toolManager.getTool("Surfaces");
 		 if (pToolSurfaces){
 			 pToolSurfaces->draw();
@@ -717,18 +718,27 @@ void testApp::setViewSimulation(bool is)
 {
 	OFAPPLOG->begin("testApp::setViewSimulation()");
 
-	toolSurfaces* pToolSurfaces = (toolSurfaces*) toolManager.getTool("Surfaces");
+	toolSurfaces* 		pToolSurfaces 		= (toolSurfaces*) 		toolManager.getTool("Surfaces");
+	toolConfiguration* 	pToolConfiguration 	= (toolConfiguration*) 	toolManager.getTool("Configuration");
 
 	OFAPPLOG->println("- isViewSimulation="+ofToString(is));
 	OFAPPLOG->println("- isShowDevicePointSurfaces="+ofToString(isShowDevicePointSurfaces));
 	OFAPPLOG->println("- pToolSurfaces="+ofToString(pToolSurfaces == 0 ? "NULL" : "valid pointer"));
+
+	isViewSimulation = is;
+
 	if (pToolSurfaces)
 		OFAPPLOG->println("- pToolSurfaces->m_isDrawHandles="+ofToString(pToolSurfaces->m_isDrawHandles));
 
-	isViewSimulation = is;
+	if (pToolConfiguration){
+ 		pToolConfiguration->isViewSimulation = is;
+		pToolConfiguration->updateUI();
+	}
+	
 	if (isViewSimulation)
 	{
 		ofShowCursor();
+		toolManager.showUI();
 		OFAPPLOG->println("- showing cursor");
 	}
 	else
@@ -741,15 +751,7 @@ void testApp::setViewSimulation(bool is)
 			ofHideCursor();
 			OFAPPLOG->println("- hiding cursor");
 		}
-	}
 
-//	toolManager.enableDrawCallback( isViewSimulation );
-	if (isViewSimulation)
-	{
-		toolManager.showUI();
-	}
-	else
-	{
 		toolManager.hideUI();
 	}
 	
@@ -770,6 +772,12 @@ void testApp::keyPressed(int key)
 	 
 	if (toolManager.keyPressed(key) == false && toolManager.hasKeyboardFocus() == false)
 	{
+	  if (key == 's')
+	  {
+		if (!isViewSimulation)
+			setViewSimulation(true);
+	  }
+	  else
 	  if (key == OF_KEY_LEFT)
 	  {
 		  if (pToolAnimations && !pToolAnimations->isSequenceActive()){
@@ -846,12 +854,6 @@ void testApp::mousePressed(int x, int y, int button)
     if (mp_glfw->getEventWindow() == mp_windows->at(0))
 	{
 
-		if (!init_mouseDragged)
-		{
-			init_mouseDragged = true;
-			return;
-		}
-
 	#endif
 
 		if (isViewSimulation)
@@ -867,7 +869,7 @@ void testApp::mousePressed(int x, int y, int button)
 		}
 		else
 		{
-			toolSurfaces* pToolSurfaces = (toolSurfaces*) toolManager.getTool("Surfaces");
+/*			toolSurfaces* pToolSurfaces = (toolSurfaces*) toolManager.getTool("Surfaces");
 			if (pToolSurfaces)
 			{
 			// BOF ...
@@ -879,12 +881,19 @@ void testApp::mousePressed(int x, int y, int button)
 				pToolSurfaces->mousePressed(x, y, button);
 				#endif
 			}
+*/
 		}
 
 	#if MURMUR_MULTI_WINDOWS
 	}
     else if (mp_glfw->getEventWindow() == mp_windows->at(1))
 	{
+		if (!init_mouseDragged)
+		{
+			init_mouseDragged = true;
+			return;
+		}
+
 		toolSurfaces* pToolSurfaces = (toolSurfaces*) toolManager.getTool("Surfaces");
 		if (pToolSurfaces)
 		{
@@ -918,19 +927,22 @@ void testApp::mouseReleased(int x, int y, int button)
 //--------------------------------------------------------------
 void testApp::windowResized(int w, int h)
 {
-	float wnew = (float)w;
-	float hnew = (float)h;
-	if (wnew != m_windowSize.x && hnew != m_windowSize.y)
+    if (mp_glfw->getEventWindow() == mp_windows->at(1))
 	{
-		int wold = (int) m_windowSize.x;
-		int hold = (int) m_windowSize.y;
+		float wnew = (float)w;
+		float hnew = (float)h;
+		if (wnew != m_windowSize.x && hnew != m_windowSize.y)
+		{
+			int wold = (int) m_windowSize.x;
+			int hold = (int) m_windowSize.y;
 
-		// toolManager.windowResized(w,h);
-		toolSurfaces* pToolSurfaces = (toolSurfaces*) toolManager.getTool("Surfaces");
-		if (pToolSurfaces)
-			pToolSurfaces->windowResized(wold, hold, w,h);
+			// toolManager.windowResized(w,h);
+			toolSurfaces* pToolSurfaces = (toolSurfaces*) toolManager.getTool("Surfaces");
+			if (pToolSurfaces)
+				pToolSurfaces->windowResized(wold, hold, w,h);
 
-		m_windowSize.set(w,h);
+			m_windowSize.set(w,h);
+		}
 	}
 }
 

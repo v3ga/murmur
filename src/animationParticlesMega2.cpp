@@ -242,13 +242,13 @@ void AnimationParticlesMega2::VM_draw(float w, float h)
 	
 		particleSystem.m_color = m_isColorFromDevice ? pParticleForce->m_color : ofColor(255);
 		particleSystem.addAttractionForce(pParticleForce->m_anchor.x, pParticleForce->m_anchor.y, w, centerAttraction*m_ampAttraction);
-    	particleSystem.addRepulsionForce(pParticleForce->m_anchor.x, pParticleForce->m_anchor.y, pParticleForce->m_volume*m_repulsionRadius, pParticleForce->m_volume*m_ampRepulsion, false);
-    	particleSystem.addRepulsionForce(pParticleForce->m_anchor.x, pParticleForce->m_anchor.y, pParticleForce->m_volume*m_repulsionRadius*m_colorRadiusFactor, 0, true);
+    	particleSystem.addRepulsionForce(pParticleForce->m_anchor.x, pParticleForce->m_anchor.y, pParticleForce->m_volume*m_repulsionRadius, pParticleForce->m_volume*m_ampRepulsion, true);
+//    	particleSystem.addRepulsionForce(pParticleForce->m_anchor.x, pParticleForce->m_anchor.y, pParticleForce->m_volume*m_repulsionRadius*m_colorRadiusFactor, 0, false);
 	}
 
         
     particleSystem.update();
-	ofSetColor(255, 255, 255, pointOpacity);
+//	ofSetColor(255, 255, 255, pointOpacity);
 	glPointSize(particleSystem.getParticleSize());
 	m_particlesVbo.draw(GL_POINTS,0,kParticles*1024);
 //	ofDisableAlphaBlending();
@@ -299,7 +299,8 @@ void AnimationParticlesMega2::onNewPacket(DevicePacket* pDevicePacket, string de
 		 Device* pDevice = GLOBALS->mp_deviceManager->getDeviceById( deviceId );
 
 //		 pParticleForce->m_color = pDevice->m_color;
-		 pParticleForce->m_color = pDevicePacket->m_color;
+		if (pDevicePacket->m_volume > 0.1f)
+			 pParticleForce->m_color = pDevicePacket->m_color;
 		// printf("pDevicePacket->m_volume = %.5f\n", pDevicePacket->m_volume);
 
 		if (hasPitch())

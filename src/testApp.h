@@ -75,6 +75,7 @@ class testApp : public ofBaseApp, public ofxMidiListener
  
         // Application settings
         ofxXmlSettings      m_settings;
+		ofxXmlSettings*		getSettings(){return &m_settings;}
     
         // Configuration
         bool                isShowDevicePointSurfaces;

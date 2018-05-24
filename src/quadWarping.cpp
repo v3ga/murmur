@@ -95,6 +95,15 @@ void quadWarpingHandle::onReleaseOutside(int x, int y, int button)
 quadWarping::quadWarping()
 {
 	mp_handleSelected = 0;
+
+	A.set
+	(
+		 1,	 0,  0,  0,
+		-1,	 1,  0,  0,
+		-1,  0,  0,  1,
+	 	1, -1,  1, -1
+	);
+
 }
 
 //--------------------------------------------------------------
@@ -342,14 +351,40 @@ ofVec2f quadWarping::getPointInSquareNormalized(ofVec2f p)
 {
 	ofVec2f result;
 
-	ofMatrix4x4 A(
-	 1,	 0,  0,  0,
-	-1,	 1,  0,  0,
-	-1,  0,  0,  1,
-	 1, -1,  1, -1
-	);
+	computeCoeffQuadRect();
 	
+	float aa = a[3]*b[2] - a[2]*b[3];
+	float bb = a[3]*b[0] - a[0]*b[3] + a[1]*b[2] - a[2]*b[1] + p.x*b[3] - p.y*a[3];
+	float cc = a[1]*b[0] - a[0]*b[1] + p.x*b[1] - p.y*a[1];
 
+	float det = sqrt( bb*bb - 4*aa*cc );
+	float mm = (-bb-det)/(2.0*aa);
+	float ll = (p.x-a[0]-a[2]*mm)/(a[1] + a[3]*mm);
+
+	result.set(ll,1.0f-mm);
+
+	return result;
+}
+
+//--------------------------------------------------------------
+ofVec2f quadWarping::getPointInQuad(ofVec2f pNormalized)
+{
+	ofVec2f result;
+
+	float ll = pNormalized.x;
+	float mm = 1.0f-pNormalized.y;
+
+	computeCoeffQuadRect();
+
+	result.x = a[0] + a[1]*ll + a[2]*mm + a[3]*ll*mm;
+	result.y = b[0] + b[1]*ll + b[2]*mm + b[3]*ll*mm;
+ 
+	return result;
+}
+
+//--------------------------------------------------------------
+void quadWarping::computeCoeffQuadRect()
+{
 	ofVec4f x(
 		m_handles[3].x,
 		m_handles[2].x,
@@ -364,41 +399,10 @@ ofVec2f quadWarping::getPointInSquareNormalized(ofVec2f p)
 		m_handles[1].y,
 		m_handles[0].y
 		);
-		ofVec4f a = A * x;
-		ofVec4f b = A * y;
 	
-		float aa = a[3]*b[2] - a[2]*b[3];
-		float bb = a[3]*b[0] - a[0]*b[3] + a[1]*b[2] - a[2]*b[1] + p.x*b[3] - p.y*a[3];
-		float cc = a[1]*b[0] - a[0]*b[1] + p.x*b[1] - p.y*a[1];
-
-		float det = sqrt( bb*bb - 4*aa*cc );
-		float mm = (-bb-det)/(2.0*aa);
-		float ll = (p.x-a[0]-a[2]*mm)/(a[1] + a[3]*mm);
-		
-
-		result.set(ll,mm);
-
-
-/*		m_ptClick.set(
-			a[0] + a[1]*ll + a[2]*mm + a[3]*ll*mm,
-			b[0] + b[1]*ll + b[2]*mm + b[3]*ll*mm
-		);
-
-		ofLog() << " -- ";
-		ofLog() << "l=" << ll << "; m="<< mm ;
-*/
-
-/*		ofLog() << "m_quadWarping.m_handles[0]=(" << m_quadWarping.m_handles[0].x << ","<< m_quadWarping.m_handles[0].y << ")";
-		ofLog() << "m_ptClickWarp=" << m_ptClickWarp;
-		ofLog() << "m_ptClick=" << m_ptClick;
-//		ofLog() << m_quadWarping.m_handles[0];
-*/
-
-
-		return result;
+	a = A * x;
+	b = A * y;
 }
-
-
 
 
 

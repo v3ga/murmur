@@ -956,31 +956,30 @@ void Device::sampleSoundInput()
 	float pitch = 0.0f;
 	int indexPacket = 0;
 	int indexPacketColor = 0;
+	
     for (int i=0;i<nbPackets;i++)
     {
         if (indexSample>nbVolHistorySize-1)
             indexSample = nbVolHistorySize-1;
 
-//		indexPacket = m_isReverseDirPackets ? nbPackets-1-i : i;
 		indexPacket = i;
+//		indexPacket = m_isReverseDirPackets ? nbPackets-1-i : i;
 		pitch = mp_soundInput->getPitchHistory()[(int)indexSample];
 	 
 		m_listPackets[indexPacket]->m_volume = mp_soundInput->getVolHistory()[(int)indexSample]; // Nearest sampling
 		m_listPackets[indexPacket]->m_pitch = pitch;
 
-		if (!m_isReverseDirPackets)
-		{
-			if (m_bEnablePitch)
-				m_listPackets[indexPacket]->computeColor2(m_colorHsv, m_colorHsv2, pitch, m_isEnableColor, m_isInvertPacketsVolume);
-			else
-				m_listPackets[indexPacket]->computeColor(m_colorHsv, m_isEnableColor, m_isInvertPacketsVolume);
-		}
+
+		if (m_bEnablePitch)
+			m_listPackets[indexPacket]->computeColor2(m_colorHsv, m_colorHsv2, pitch, m_isEnableColor, m_isInvertPacketsVolume);
+		else
+			m_listPackets[indexPacket]->computeColor(m_colorHsv, m_isEnableColor, m_isInvertPacketsVolume);
 
         indexSample += stepSample;
     }
 
 
-    indexSample = 0.0f;
+/*    indexSample = 0.0f;
 	float volume = 0;
 	if (m_isReverseDirPackets)
 	{
@@ -1002,6 +1001,7 @@ void Device::sampleSoundInput()
         	indexSample += stepSample;
 		}
 	}
+*/
 
 
 }

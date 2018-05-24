@@ -29,6 +29,8 @@ class toolTimeline : public tool, public midiInterface
 		void					handleEvents			(ofxUIEventArgs& e);
 		void					bangFired				(ofxTLBangEventArgs& args);
 		bool					keyPressed				(int key){return true;}
+		void					select					();
+		void					unselect				();
 
 		void					createTimeline			();
 

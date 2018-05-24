@@ -245,8 +245,9 @@ void toolSurfaces::draw()
 		
            if (GLOBALS->mp_app->isShowDevicePointSurfaces)
 		   {
-				ofMatrix4x4 m = m_quadWarping.getTransformMatrix(m_rectSurfaceOff);
-				mp_surfaceMain->drawDevicePointSurface(m_rectSurfaceOff, &m);
+				// ofMatrix4x4 m = m_quadWarping.getTransformMatrix(m_rectSurfaceOff);
+				// mp_surfaceMain->drawDevicePointSurface(m_rectSurfaceOff, &m);
+				mp_surfaceMain->drawDevicePointSurface(m_rectSurfaceOff,&m_quadWarping);
 			}
 		
 			if (m_isDrawHandles)
@@ -364,6 +365,8 @@ void toolSurfaces::handleEvents(ofxUIEventArgs& e)
 //--------------------------------------------------------------
 void toolSurfaces::mousePressed(int x, int y, int button)
 {
+	OFAPPLOG->begin("toolSurfaces::mousePressed("+ofToString(x)+","+ofToString(y)+","+ofToString(button)+")");
+	
 	toolDevices*	pToolDevices 	= (toolDevices*) mp_toolManager->getTool("Devices");
 	toolScene* 		pToolScene 		= (toolScene*)mp_toolManager->getTool("Scene");
 	
@@ -410,8 +413,17 @@ void toolSurfaces::mousePressed(int x, int y, int button)
 		{
 			m_quadWarping.unselectHandle();
 			
-//			m_ptClickWarp.set(x,y);
-//			m_ptClick = m_quadWarping.getPointInSquareNormalized( m_ptClickWarp );
+			if (pDeviceCurrent && GLOBALS->mp_app->isShowDevicePointSurfaces)
+			{
+				m_ptClickWarp.set(x,y);
+				m_ptClick = m_quadWarping.getPointInSquareNormalized( m_ptClickWarp );
+				
+				OFAPPLOG->println("m_ptClickWarp = "+ofToString(m_ptClickWarp));
+				OFAPPLOG->println("m_ptClick = "+ofToString(m_ptClick));
+
+				pDeviceCurrent->setPointSurface(m_ptClick.x, m_ptClick.y);
+				bUpdateScene = true;
+			}
 		}
 	}
 
@@ -419,6 +431,8 @@ void toolSurfaces::mousePressed(int x, int y, int button)
 	{
 		pToolScene->getScene()->updatePositionNodeSurface( pDeviceCurrent, pSurfaceCurrent );
 	}
+
+	OFAPPLOG->end();
 }
 
 //--------------------------------------------------------------

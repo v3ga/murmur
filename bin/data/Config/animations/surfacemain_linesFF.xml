@@ -36,7 +36,7 @@
 <Widget>
     <Kind>4</Kind>
     <Name>dirSpeed</Name>
-    <Value>100.001190186</Value>
+    <Value>799.999633789</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -61,5 +61,5 @@
 <Widget>
     <Kind>4</Kind>
     <Name>rotSpeed</Name>
-    <Value>359.999145508</Value>
+    <Value>0.000000000</Value>
 </Widget>

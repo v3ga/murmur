@@ -4,6 +4,11 @@
     <Value>0.045454547</Value>
 </Widget>
 <Widget>
+    <Kind>2</Kind>
+    <Name>pitch bound</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
     <Kind>12</Kind>
     <Name>teConfigName</Name>
     <Value>tombe.xml</Value>
@@ -96,17 +101,17 @@
 <Widget>
     <Kind>2</Kind>
     <Name>color</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
     <Name>colorFromDevice</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>gravity</Name>
-    <Value>-3.333333015</Value>
+    <Value>9.999908447</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -121,12 +126,12 @@
 <Widget>
     <Kind>4</Kind>
     <Name>obj. size max</Name>
-    <Value>49.743591309</Value>
+    <Value>20.000000000</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>obj. scale</Name>
-    <Value>0.779527545</Value>
+    <Value>0.779527605</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>

@@ -37,3 +37,7 @@ int main()
 	ofRunApp(new testApp());
 }
 
+
+
+// cd openFrameworks/apps/myApps/murmurRaspberry
+// 

@@ -534,6 +534,17 @@ void toolTimeline::loadScript(string name)
 	OFAPPLOG->end();
 }
 
+//--------------------------------------------------------------
+void toolTimeline::select()
+{
+	m_timeline.enableEvents();
+}
+
+//--------------------------------------------------------------
+void toolTimeline::unselect()
+{
+	m_timeline.disableEvents();
+}
 
 
 

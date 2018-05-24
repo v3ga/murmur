@@ -17,13 +17,13 @@
     <color>
         <enable>1</enable>
         <colorMode_manual_hsb>
-            <hue>0.000000000</hue>
-            <saturation>0.000000000</saturation>
+            <hue>158.743240356</hue>
+            <saturation>243.170104980</saturation>
         </colorMode_manual_hsb>
     </color>
     <packets>
         <invert>0</invert>
-        <reverse>1</reverse>
+        <reverse>0</reverse>
     </packets>
     <ping>
         <value>0.500000000</value>
@@ -38,7 +38,7 @@
     <sampleVolStandby>0.325806439</sampleVolStandby>
     <enableStandby>0</enableStandby>
     <surface id="main">
-        <xNorm>0.497500002</xNorm>
-        <yNorm>0.511458337</yNorm>
+        <xNorm>0.900977135</xNorm>
+        <yNorm>0.493906856</yNorm>
     </surface>
 </device>

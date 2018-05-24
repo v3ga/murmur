@@ -166,6 +166,8 @@ void toolConfiguration::launchMadMapper()
 //--------------------------------------------------------------
 void toolConfiguration::setFullscreen(bool is)
 {
+	OFAPPLOG->begin("toolConfiguration::setFullscreen("+ofToString(is)+")");
+
 	m_isFullscreen = is;
 
 	#if MURMUR_MULTI_WINDOWS
@@ -174,12 +176,50 @@ void toolConfiguration::setFullscreen(bool is)
 	{
 		glfw->setWindow(glfw->windows.at(1));
 		glfw->setFullscreen(m_isFullscreen);
+
+		ofxXmlSettings* pAppSettings = GLOBALS->mp_app->getSettings();
+		if (pAppSettings)
+		{
+			// ofLog() << "push level = " << pAppSettings->getPushLevel();
+			pAppSettings->pushTag("windows");
+		
+			int monitor =  pAppSettings->getValue("surface:monitor", 0);
+			int xSurface = pAppSettings->getValue("surface:x", 0);
+			int ySurface = pAppSettings->getValue("surface:y", 0);
+			int wSurface = pAppSettings->getValue("surface:w", 800);
+			int hSurface = pAppSettings->getValue("surface:h", 600);
+			
+			pAppSettings->popTag();
+
+
+			OFAPPLOG->println(" - window surface ("+ofToString(xSurface)+","+ofToString(ySurface)+","+ofToString(wSurface)+","+ofToString(hSurface)+")");
+
+			int nbMonitors = glfw->getMonitorCount();
+			OFAPPLOG->println(" - monitor = "+ofToString(monitor));
+			OFAPPLOG->println(" - nbMonitors = "+ofToString(nbMonitors));
+
+			ofRectangle monitorRect = glfw->getMonitorRect(0);
+			OFAPPLOG->println(" - monitor[0] = ("+ofToString(monitorRect.x)+","+ofToString(monitorRect.y)+","+ofToString(monitorRect.width)+","+ofToString(monitorRect.height)+")");
+			if (monitor > 0 && monitor < nbMonitors)
+			{
+				monitorRect = glfw->getMonitorRect(monitor);
+				OFAPPLOG->println(" - monitor["+ofToString(monitor)+"] = ("+ofToString(monitorRect.x)+","+ofToString(monitorRect.y)+","+ofToString(monitorRect.width)+","+ofToString(monitorRect.height)+")");
+			}
+
+		    ofSetWindowShape(wSurface, hSurface);
+    		ofSetWindowPosition(monitorRect.x+xSurface, monitorRect.y+ySurface);    // business as usual...
+    		ofSetWindowTitle("Surface");
+
+
+		}
 	}
 	#else
 	ofSetFullscreen(m_isFullscreen);
 	#endif
 	
 	updateUI();
+
+	OFAPPLOG->end();
 }
 
 //--------------------------------------------------------------

@@ -9,6 +9,7 @@
 
 #include "surface.h"
 #include "globals.h"
+#include "quadWarping.h"
 #include "ofxXmlSettings.h"
 #include "animationsFactory.h"
 
@@ -507,6 +508,7 @@ void Surface::publishSyphon()
 }
 
 //--------------------------------------------------------------
+/*
 void Surface::drawDevicePointSurface(ofRectangle& rect, ofMatrix4x4* mWarping)
 {
     ofPushStyle();
@@ -519,6 +521,7 @@ void Surface::drawDevicePointSurface(ofRectangle& rect, ofMatrix4x4* mWarping)
 	for (;itDevices!=m_listDevices.end();++itDevices)
     {
         pDevice = *itDevices;
+
 		if (mWarping == 0)
 		{
 			posSurface.set(rect.getX()+pDevice->m_pointSurface.x*rect.getWidth(), rect.getY()+pDevice->m_pointSurface.y*rect.getHeight());
@@ -530,19 +533,59 @@ void Surface::drawDevicePointSurface(ofRectangle& rect, ofMatrix4x4* mWarping)
 		}
 
 		if (GLOBALS->mp_deviceManager->getDeviceCurrent() == pDevice)
-		{
 			ofSetColor(255,255,255,255);
-    	}
 		else
 			ofSetColor(255,255,254,100);
 	 
-			ofLine(posSurface.x,posSurface.y-40, posSurface.x, posSurface.y+40);
-        	ofLine(posSurface.x-40,posSurface.y, posSurface.x+40,posSurface.y);
-			ofDrawBitmapString(pDevice->m_id, posSurface.x+4, posSurface.y-4);
+		ofLine(posSurface.x,posSurface.y-40, posSurface.x, posSurface.y+40);
+		ofLine(posSurface.x-40,posSurface.y, posSurface.x+40,posSurface.y);
+		ofDrawBitmapString(pDevice->m_id, posSurface.x+4, posSurface.y-4);
 	}
 
     ofPopStyle();
 }
+*/
+
+//--------------------------------------------------------------
+void Surface::drawDevicePointSurface(ofRectangle& rect, quadWarping* pWarping)
+{
+    ofPushStyle();
+    ofSetColor(255,255,255,255);
+	ofEnableAlphaBlending();
+
+    vector<Device*>::iterator itDevices = m_listDevices.begin();
+    ofVec2f posSurface;
+    Device* pDevice=0;
+	for (;itDevices!=m_listDevices.end();++itDevices)
+    {
+        pDevice = *itDevices;
+
+		if (pWarping == 0)
+		{
+			posSurface.set(rect.getX()+pDevice->m_pointSurface.x*rect.getWidth(), rect.getY()+pDevice->m_pointSurface.y*rect.getHeight());
+		}
+		else
+		{
+			posSurface = pWarping->getPointInQuad( pDevice->m_pointSurface );
+		}
+
+		if (GLOBALS->mp_deviceManager->getDeviceCurrent() == pDevice)
+			ofSetColor(255,255,255,255);
+		else
+			ofSetColor(255,255,254,100);
+
+
+		ofLine(posSurface.x,posSurface.y-40, posSurface.x, posSurface.y+40);
+		ofLine(posSurface.x-40,posSurface.y, posSurface.x+40,posSurface.y);
+		ofDrawBitmapString(pDevice->m_id, posSurface.x+4, posSurface.y-4);
+	}
+
+
+
+
+    ofPopStyle();
+}
+
 
 //--------------------------------------------------------------
 void Surface::drawCacheLEDs(float d)

@@ -132,9 +132,9 @@ void DeviceNode::customDraw()
 			DevicePacket* pPacket = mp_device->m_listPackets[nbPackets-1-i];
 			DevicePacket* pPacketOpposite = mp_device->m_listPackets[i];
 			float volume = 0.0f;
-			if (mp_device->m_isReverseDirPackets)
-				volume = mp_device->m_isInvertPacketsVolume ? 1.0f-pPacketOpposite->m_volume: pPacketOpposite->m_volume;
-			else
+//			if (mp_device->m_isReverseDirPackets)
+//				volume = mp_device->m_isInvertPacketsVolume ? 1.0f-pPacketOpposite->m_volume: pPacketOpposite->m_volume;
+//			else
 				volume = mp_device->m_isInvertPacketsVolume ? 1.0f-pPacket->m_volume: pPacket->m_volume;
 
 
