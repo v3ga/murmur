@@ -56,12 +56,20 @@ class toolSurfaces : public tool, public midiInterface
 		Surface*				mp_surfaceMain;
 		ofImage*				mp_mask;
 		ofImage*				mp_maskUI;
+		ofxUITextInput*			mp_teMonitorId;
+		ofxUILabel*				mp_lblMonitorInfos;
+	   	ofxUIToggle*			mp_tgFullscreen;
+ 
 		float					m_alpha;
 		float					m_quadWarpingHandleShifting;
 		float					m_devicePointShifting;
 
 		quadWarping				m_quadWarping;
 		ofRectangle			 	m_rectScreen, m_rectSurfaceOff;
+
+		bool					m_bSurfaceFullscreen;
+		bool					m_bUpdateSurfaceWindow;
+		int						m_monitorSurface; // index
 
 		int						m_view;
 		bool					m_isDrawHandles;

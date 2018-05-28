@@ -9,7 +9,7 @@
 
 	<simulator>
         <!-- Activate or not simulation -->
-        <enable>0</enable>
+        <enable>1</enable>
 
         <!-- Sound input for simulators -->
         <soundInput>
@@ -46,7 +46,7 @@
 			</tools>
 			
 		   <surface>
-			   <monitor>1</monitor>
+			   <monitor>1</monitor><!-- ne sert plus -->
 			   <x>0</x>
 			   <y>0</y>
 			   <w>1280</w>

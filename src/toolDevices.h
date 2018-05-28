@@ -58,6 +58,10 @@ class toolDevices : public tool, public midiInterface
         ofxUIDropDownList*		mp_ddlDevices;
 		ofxUICanvas*			mp_canvasDevice;
 		ofxUILabel*				mp_lblDeviceTitle;
+
+	    ofxUITextInput*			mp_teDeviceLedsLit;
+
+
 		ofxUIToggle*			mp_toggleDeviceGenerative;
 		ofxUIToggle*			mp_toggleDeviceUseRawVol;
 		ofxUIToggle*			mp_toggleDeviceMute;

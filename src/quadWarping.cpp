@@ -349,35 +349,75 @@ ofMatrix4x4 quadWarping::getTransformMatrix(const ofRectangle& rect, bool bInver
 
 ofVec2f quadWarping::getPointInSquareNormalized(ofVec2f p)
 {
+	OFAPPLOG->begin("quadWarping::getPointInSquareNormalized()");
+
 	ofVec2f result;
 
-	computeCoeffQuadRect();
+	if (isRectangle())
+	{
+		OFAPPLOG->println(" is rectangle");
+
+		float mm = (p.x - m_handles[0].x) / ( m_handles[1].x - m_handles[0].x );
+		float ll = (p.y - m_handles[0].y) / ( m_handles[3].y - m_handles[0].y );
+
+		result.set(mm, ll);
+	}
+	else
+	{
+	   computeCoeffQuadRect();
+	   
+	   float aa = a[3]*b[2] - a[2]*b[3];
+
+	   float bb = a[3]*b[0] - a[0]*b[3] + a[1]*b[2] - a[2]*b[1] + p.x*b[3] - p.y*a[3];
+	   float cc = a[1]*b[0] - a[0]*b[1] + p.x*b[1] - p.y*a[1];
+
+	   float det = sqrt( bb*bb - 4*aa*cc );
+	   float mm = (-bb-det)/(2.0*aa);
+	   float ll = (p.x-a[0]-a[2]*mm)/(a[1] + a[3]*mm);
+
+	   result.set(ll,1.0f-mm);
+
+	   OFAPPLOG->println("a = "+ofToString(a));
+	   OFAPPLOG->println("b = "+ofToString(b));
+
+	   OFAPPLOG->println("aa = "+ofToString(aa));
+	   OFAPPLOG->println("bb = "+ofToString(bb));
+	   OFAPPLOG->println("cc = "+ofToString(cc));
+	   OFAPPLOG->println("bb*bb - 4*aa*cc = "+ofToString(bb*bb - 4*aa*cc));
+	   OFAPPLOG->println("det = "+ofToString(det));
+	   OFAPPLOG->println("mm = "+ofToString(mm));
+	   OFAPPLOG->println("a[1] + a[3]*mm = "+ofToString(a[1] + a[3]*mm));
+	   OFAPPLOG->println("ll = "+ofToString(mm));
 	
-	float aa = a[3]*b[2] - a[2]*b[3];
-	float bb = a[3]*b[0] - a[0]*b[3] + a[1]*b[2] - a[2]*b[1] + p.x*b[3] - p.y*a[3];
-	float cc = a[1]*b[0] - a[0]*b[1] + p.x*b[1] - p.y*a[1];
+	}
 
-	float det = sqrt( bb*bb - 4*aa*cc );
-	float mm = (-bb-det)/(2.0*aa);
-	float ll = (p.x-a[0]-a[2]*mm)/(a[1] + a[3]*mm);
-
-	result.set(ll,1.0f-mm);
+	OFAPPLOG->end();
 
 	return result;
 }
+
 
 //--------------------------------------------------------------
 ofVec2f quadWarping::getPointInQuad(ofVec2f pNormalized)
 {
 	ofVec2f result;
 
-	float ll = pNormalized.x;
-	float mm = 1.0f-pNormalized.y;
+	if (isRectangle())
+	{
+		result.x = m_handles[0].x + pNormalized.x * (m_handles[1].x - m_handles[0].x);
+		result.y = m_handles[1].y + pNormalized.y * (m_handles[3].y - m_handles[0].y);
+	}
+	else
+	{
+		float ll = pNormalized.x;
+		float mm = 1.0f-pNormalized.y;
 
-	computeCoeffQuadRect();
+		computeCoeffQuadRect();
 
-	result.x = a[0] + a[1]*ll + a[2]*mm + a[3]*ll*mm;
-	result.y = b[0] + b[1]*ll + b[2]*mm + b[3]*ll*mm;
+		result.x = a[0] + a[1]*ll + a[2]*mm + a[3]*ll*mm;
+		result.y = b[0] + b[1]*ll + b[2]*mm + b[3]*ll*mm;
+	}
+
  
 	return result;
 }
@@ -385,6 +425,7 @@ ofVec2f quadWarping::getPointInQuad(ofVec2f pNormalized)
 //--------------------------------------------------------------
 void quadWarping::computeCoeffQuadRect()
 {
+//	OFAPPLOG->begin("quadWarping::computeCoeffQuadRect()");
 	ofVec4f x(
 		m_handles[3].x,
 		m_handles[2].x,
@@ -402,6 +443,23 @@ void quadWarping::computeCoeffQuadRect()
 	
 	a = A * x;
 	b = A * y;
+	
+//	OFAPPLOG->println("A ="+ofToString(A));
+//	OFAPPLOG->println("x ="+ofToString(x));
+//	OFAPPLOG->println("y ="+ofToString(y));
+//	OFAPPLOG->println("a = A * x = "+ofToString(a));
+//	OFAPPLOG->println("b = A * y = "+ofToString(b));
+
+//	OFAPPLOG->end();
+}
+
+//--------------------------------------------------------------
+bool quadWarping::isRectangle()
+{
+	bool okx = (abs(m_handles[0].x - m_handles[3].x) < 0.5f) && (abs(m_handles[1].x - m_handles[2].x) < 0.5f);
+	bool oky = (abs(m_handles[0].y - m_handles[1].y) < 0.5f) && (abs(m_handles[2].y - m_handles[3].y) < 0.5f);
+
+	return okx && oky;
 }
 
 

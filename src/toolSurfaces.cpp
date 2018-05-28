@@ -22,11 +22,16 @@ toolSurfaces::toolSurfaces(toolManager* parent, Surface* surface) : tool("Surfac
 	mp_surfaceMain			= surface;
 	mp_mask					= 0;
 	mp_maskUI 				= 0;
+	mp_teMonitorId			= 0;
+	mp_lblMonitorInfos		= 0;
+	mp_tgFullscreen			= 0;
 	m_isDrawHandles			= false;
 	mp_windowCurrent		= 0;
 	m_alpha					= 0.0f;
 	m_quadWarpingHandleShifting = 1.0f;
 	m_devicePointShifting	= 1.0f;
+	m_bSurfaceFullscreen	= false;
+	m_bUpdateSurfaceWindow	 = false;
 	
 	setView					(VIEW_NORMAL);
 	
@@ -75,7 +80,7 @@ void toolSurfaces::createControlsCustom()
 		float widthDefault = 320;
 		float dim = 16;
 	
-	    mp_canvas->addWidgetDown	( new ofxUILabel("Surfaces", OFX_UI_FONT_LARGE) );
+	    mp_canvas->addWidgetDown	( new ofxUILabel("Surface", OFX_UI_FONT_LARGE) );
     	mp_canvas->addWidgetDown	( new ofxUISpacer(widthDefault, 2));
 
 
@@ -120,6 +125,37 @@ void toolSurfaces::createControlsCustom()
 		ofxUITextInput* lblPathMask = new ofxUITextInput("pathMask", "", widthDefault);
     	mp_canvas->addWidgetDown	( lblPathMask );
 		lblPathMask->setVisible(false);
+
+	    mp_canvas->addWidgetDown	( new ofxUILabel("Monitors", OFX_UI_FONT_MEDIUM) );
+    	mp_canvas->addWidgetDown	( new ofxUISpacer(widthDefault, 2));
+
+		mp_teMonitorId = new ofxUITextInput("monitor", "0", 30);
+		mp_teMonitorId->setAutoClear(false);
+		mp_teMonitorId->setTriggerType(OFX_UI_TEXTINPUT_ON_ENTER);
+		mp_lblMonitorInfos = new ofxUILabel("monitor infos", OFX_UI_FONT_SMALL);
+		mp_tgFullscreen = new ofxUIToggle("fullscreen", false, dim, dim);
+
+	    mp_canvas->addWidgetDown	( mp_lblMonitorInfos );
+	    mp_canvas->addWidgetDown	( mp_teMonitorId );
+	    mp_canvas->addWidgetRight	( mp_tgFullscreen );
+
+	    ofxMultiGLFWWindow* pGLFW = (ofxMultiGLFWWindow*)ofGetWindowPtr();
+		if (pGLFW)
+		{
+			int numberOfMonitors;
+			GLFWmonitor** monitors = glfwGetMonitors(&numberOfMonitors);
+			string s = ofToString(numberOfMonitors) + " monitor(s) / ";
+			for (int i=0;i < numberOfMonitors;i++)
+			{
+				s += ofToString(i) + " - " + ofToString( glfwGetMonitorName(monitors[i]) ) + " / ";
+			}
+		
+			mp_lblMonitorInfos->setLabel( s );
+
+		}
+
+
+		
 
 	    mp_canvas->addWidgetDown	( new ofxUILabel("Mapping", OFX_UI_FONT_MEDIUM) );
     	mp_canvas->addWidgetDown	( new ofxUISpacer(widthDefault, 2));
@@ -180,6 +216,41 @@ void toolSurfaces::update()
 {
 	handleMidiMessages();
 	m_quadWarping.update();
+
+	if (m_bUpdateSurfaceWindow)
+	{
+		m_bUpdateSurfaceWindow = false;
+
+		ofxMultiGLFWWindow* glfw = (ofxMultiGLFWWindow*) ofGetWindowPtr();
+		int nbMonitors = glfw->getMonitorCount();
+
+		glfw->setWindow(glfw->windows.at(1));
+
+		// Monitor wanted
+		ofRectangle monitorRect;
+		if ( ! (m_monitorSurface >= 0 && m_monitorSurface < nbMonitors) )
+			m_monitorSurface = 0;
+		monitorRect = glfw->getMonitorRect(m_monitorSurface);
+
+		ofxXmlSettings* pAppSettings = GLOBALS->mp_app->getSettings();
+		pAppSettings->pushTag("windows");
+
+		int xSurface = m_bSurfaceFullscreen ? 0 : pAppSettings->getValue("surface:x", 0);
+		int ySurface = m_bSurfaceFullscreen ? 0 : pAppSettings->getValue("surface:y", 0);
+		int wSurface = m_bSurfaceFullscreen ? monitorRect.width : pAppSettings->getValue("surface:w", 800);
+		int hSurface = m_bSurfaceFullscreen ? monitorRect.height : pAppSettings->getValue("surface:h", 600);
+		
+		pAppSettings->popTag();
+
+
+		glfw->setFullscreen(m_bSurfaceFullscreen);
+		ofSetWindowShape(wSurface, hSurface);
+		ofSetWindowPosition(monitorRect.x+xSurface, monitorRect.y+ySurface);    // business as usual...
+
+		glfw->setWindow(glfw->windows.at(0));
+		
+	}
+
 
     if (mp_surfaceMain)
 	{
@@ -283,6 +354,7 @@ void toolSurfaces::handleEvents(ofxUIEventArgs& e)
 
     string name = e.widget->getName();
 	
+	
 	if (name == "wSurface")
     {
 		SurfaceNode * pSurfaceNodeCurrent = pToolScene->getSurfaceNode(pSurfaceCurrent);
@@ -301,7 +373,7 @@ void toolSurfaces::handleEvents(ofxUIEventArgs& e)
 	}
     else if (name == "wFboSurface")
     {
-		int wPixels = atoi( ((ofxUITextInput *) e.widget)->getTextString().c_str() );;
+		int wPixels = atoi( ((ofxUITextInput *) e.widget)->getTextString().c_str() );
 		pSurfaceCurrent->setDimensions(wPixels,pSurfaceCurrent->getHeightPixels(),pSurfaceCurrent->getQuality());
 	}
     else if (name == "hFboSurface")
@@ -315,6 +387,22 @@ void toolSurfaces::handleEvents(ofxUIEventArgs& e)
 		int quality = ((ofxUIIntSlider*)e.widget)->getScaledValue();
 		if (quality != fboQuality)
 			pSurfaceCurrent->setDimensions(pSurfaceCurrent->getWidthPixels(),pSurfaceCurrent->getHeightPixels(), quality);
+	}
+    else if (name == "monitor")
+	{
+		ofxMultiGLFWWindow* glfw = (ofxMultiGLFWWindow*) ofGetWindowPtr();
+		int nbMonitors = glfw->getMonitorCount();
+
+		int monitorWanted = atoi( ((ofxUITextInput *) e.widget)->getTextString().c_str() );
+		m_monitorSurface = monitorWanted;
+		m_bUpdateSurfaceWindow = true;
+	}
+    else if (name == "fullscreen")
+	{
+		ofxMultiGLFWWindow* glfw = (ofxMultiGLFWWindow*) ofGetWindowPtr();
+
+		m_bSurfaceFullscreen = ((ofxUIToggle*)e.widget)->getValue();
+		m_bUpdateSurfaceWindow = true;
 	}
     else if (name == "syphon")
 	{

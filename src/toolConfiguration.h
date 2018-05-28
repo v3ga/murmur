@@ -43,6 +43,6 @@ class toolConfiguration : public tool
         ofxUIToggle*        	mp_tgFullscreen;
         ofxUIToggle*        	mp_tgHideToolWindow;
 	
-		bool					m_isFullscreen;
+		// bool					m_isFullscreen;
 
 };

@@ -26,7 +26,7 @@ toolConfiguration::toolConfiguration(toolManager* parent) : tool("Configuration"
 	mp_tgFullscreen				= 0;
 	mp_tgHideToolWindow			= 0;
 
-	m_isFullscreen				= false;
+	// m_isFullscreen				= false;
 }
 
 //--------------------------------------------------------------
@@ -58,8 +58,8 @@ void toolConfiguration::createControlsCustom()
     	mp_canvas->addWidgetDown(new ofxUIToggle("Launch madmapper @ start", false, dim, dim));
     	mp_canvas->addWidgetDown(new ofxUIToggle("Launch murmur @ rasp", false, dim, dim));
 
-		mp_tgFullscreen = new ofxUIToggle("Fullscreen", false, dim, dim);
-    	mp_canvas->addWidgetDown( mp_tgFullscreen );
+//		mp_tgFullscreen = new ofxUIToggle("Fullscreen", false, dim, dim);
+//    	mp_canvas->addWidgetDown( mp_tgFullscreen );
 
 		mp_tgHideToolWindow = new ofxUIToggle("Hide tool window", false, dim, dim);
     	mp_canvas->addWidgetDown( mp_tgHideToolWindow );
@@ -168,13 +168,13 @@ void toolConfiguration::setFullscreen(bool is)
 {
 	OFAPPLOG->begin("toolConfiguration::setFullscreen("+ofToString(is)+")");
 
-	m_isFullscreen = is;
+//	m_isFullscreen = is;
 
 	#if MURMUR_MULTI_WINDOWS
 	ofxMultiGLFWWindow* glfw = (ofxMultiGLFWWindow*) ofGetWindowPtr();
 	if (glfw)
 	{
-		glfw->setWindow(glfw->windows.at(1));
+/*		glfw->setWindow(glfw->windows.at(1));
 		glfw->setFullscreen(m_isFullscreen);
 
 		ofxXmlSettings* pAppSettings = GLOBALS->mp_app->getSettings();
@@ -209,9 +209,9 @@ void toolConfiguration::setFullscreen(bool is)
 		    ofSetWindowShape(wSurface, hSurface);
     		ofSetWindowPosition(monitorRect.x+xSurface, monitorRect.y+ySurface);    // business as usual...
     		ofSetWindowTitle("Surface");
-
-
 		}
+
+*/
 	}
 	#else
 	ofSetFullscreen(m_isFullscreen);
@@ -240,7 +240,7 @@ void toolConfiguration::showToolWindow(bool is)
 //--------------------------------------------------------------
 void toolConfiguration::toggleFullscreen()
 {
-	setFullscreen(!m_isFullscreen);
+//xz	setFullscreen(!m_isFullscreen);
 }
 
 //--------------------------------------------------------------
@@ -261,8 +261,8 @@ void toolConfiguration::toggleViewSimulation()
 //--------------------------------------------------------------
 void toolConfiguration::updateUI()
 {
-	if (mp_tgFullscreen)
-		mp_tgFullscreen->setValue(m_isFullscreen);
+//	if (mp_tgFullscreen)
+//		mp_tgFullscreen->setValue(m_isFullscreen);
 	if (mp_tgViewSimu)
 		mp_tgViewSimu->setValue(isViewSimulation);
 }
@@ -295,10 +295,10 @@ void toolConfiguration::handleEvents(ofxUIEventArgs& e)
 	else
 	if (name == "Fullscreen")
 	{
-		m_isFullscreen = ((ofxUIToggle *) e.widget)->getValue();
+//		m_isFullscreen = ((ofxUIToggle *) e.widget)->getValue();
 		//ofSetFullscreen( m_isFullscreen );
-		setFullscreen(m_isFullscreen);
-		OFAPPLOG->println("setting fullscreen="+ofToString(m_isFullscreen));
+//		setFullscreen(m_isFullscreen);
+//		OFAPPLOG->println("setting fullscreen="+ofToString(m_isFullscreen));
 	}
 /*	else
 	if (name == "Hide tool window")

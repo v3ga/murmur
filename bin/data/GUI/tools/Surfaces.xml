@@ -49,6 +49,16 @@
     <Value>Images/Surfaces/degrade_0.1265.png</Value>
 </Widget>
 <Widget>
+    <Kind>12</Kind>
+    <Name>monitor</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>fullscreen</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
     <Kind>2</Kind>
     <Name>syphon</Name>
     <Value>0</Value>
@@ -66,10 +76,10 @@
 <Widget>
     <Kind>4</Kind>
     <Name>quad warping handle shifting</Name>
-    <Value>3.812500000</Value>
+    <Value>4.403125286</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>device point shifting</Name>
-    <Value>6.371875286</Value>
+    <Value>4.684375286</Value>
 </Widget>

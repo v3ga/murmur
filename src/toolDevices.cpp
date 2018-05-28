@@ -22,6 +22,8 @@ toolDevices::toolDevices(toolManager* parent, DeviceManager* manager) : tool("De
 	mp_canvasDevice = 0;
 	mp_lblDeviceTitle = 0;
 
+	mp_teDeviceLedsLit = 0;
+	
 	mp_toggleDeviceUseRawVol = 0;
 	mp_toggleDeviceMute = 0;
 	mp_sliderDeviceVolMax = 0;
@@ -181,6 +183,9 @@ void toolDevices::createControlsCustomFinalize()
 		// TODO : link with sound input buffer size
 		// mp_graphSoundValues = new ofxUIMovingGraphThreshold("soundInputValues", );
 	}
+
+	mp_teDeviceLedsLit = new ofxUITextInput("nb leds", "40", widthDefault);
+
  
 	mp_toggleDeviceUseRawVol = new ofxUIToggle("Use raw volume", false, dim,dim);
     mp_sliderDeviceVolMax = new ofxUISlider("Vol. max", 0.005f, volMaxMax, 0.02f, widthDefault-90, dim );
@@ -242,6 +247,10 @@ void toolDevices::createControlsCustomFinalize()
 	mp_canvasDevice->addWidgetDown( mp_toggleDeviceEnableStandup );
 	mp_canvasDevice->addWidgetDown( mp_sliderStandupVol );
 */
+
+    mp_canvasDevice->addWidgetDown(new ofxUILabel("LEDs", OFX_UI_FONT_MEDIUM));
+    mp_canvasDevice->addWidgetDown(new ofxUISpacer(widthDefault, 1));
+	mp_canvasDevice->addWidgetDown(mp_teDeviceLedsLit);
 
     mp_canvasDevice->addWidgetDown(new ofxUILabel("Generativity", OFX_UI_FONT_MEDIUM));
     mp_canvasDevice->addWidgetDown(new ofxUISpacer(widthDefault, 1));
@@ -512,6 +521,16 @@ void toolDevices::handleEvents(ofxUIEventArgs& e)
 /*		if (pDeviceCurrent)
 			pDeviceCurrent->mute( ((ofxUIToggle *) e.widget)->getValue() );
 */
+	}
+	else if (name == "nb leds")
+	{
+		int triggerType  = mp_teDeviceLedsLit->getInputTriggerType();
+		if (triggerType == OFX_UI_TEXTINPUT_ON_ENTER)
+		{
+			int nbLeds = ofToInt(mp_teDeviceLedsLit->getTextString());
+	        if (pDeviceCurrent)
+    	        pDeviceCurrent->setNbLeds( nbLeds );
+		}
 	}
     else if (name == "Use raw volume")
 	{

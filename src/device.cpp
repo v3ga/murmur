@@ -255,6 +255,30 @@ void Device::setColorSaturation(float s)
 	OFAPPLOG->end();
 }
 
+
+//--------------------------------------------------------------
+void Device::setNbLeds(int nb)
+{
+	m_nbLEDs = nb;
+	createPackets(m_nbLEDs);
+
+	if (m_isSendMessagesOSC == false) return;
+
+    ofxOscMessage m;
+	m.setAddress( OSC_ADDRESS_SET_DEVICE_PROP );
+    m.addStringArg(m_id);
+    m.addStringArg("setNbLeds");
+	m.addIntArg( m_nbLEDs );
+    m_oscSender.sendMessage(m);
+}
+
+//--------------------------------------------------------------
+void Device::setNbLedsOSC(int nb)
+{
+	m_nbLEDs = nb;
+	createPackets(m_nbLEDs);
+}
+
 //--------------------------------------------------------------
 void Device::enableColor(bool is)
 {

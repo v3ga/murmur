@@ -199,6 +199,11 @@ class Device
         // OSC
         oscSender           m_oscSender;
  
+ 		// number of LEDs
+		void				setNbLeds					(int nb);
+		void				setNbLedsOSC				(int nb);
+ 
+ 
 		// Color of LEDs
 		void				enableColor					(bool is=true);
 		void				enableColorOSC				(bool is);

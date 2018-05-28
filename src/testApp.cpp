@@ -796,12 +796,13 @@ void testApp::keyPressed(int key)
 	}
     else if (mp_glfw->getEventWindow() == mp_windows->at(1))
 	{
-		toolSurfaces* pToolSurfaces = (toolSurfaces*) toolManager.getTool("Surfaces");
+/*		toolSurfaces* pToolSurfaces = (toolSurfaces*) toolManager.getTool("Surfaces");
 		if (pToolSurfaces && !pToolSurfaces->keyPressed(key))
 		{
 			if (key == 'f' || key == 'F')
 				ofToggleFullscreen();
 		}
+*/
 	}
 	#endif
 
