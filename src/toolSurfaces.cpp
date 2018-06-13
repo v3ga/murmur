@@ -219,10 +219,14 @@ void toolSurfaces::update()
 
 	if (m_bUpdateSurfaceWindow)
 	{
+		OFAPPLOG->begin("toolSurfaces::update() - m_bUpdateSurfaceWindow = true");
+
 		m_bUpdateSurfaceWindow = false;
 
 		ofxMultiGLFWWindow* glfw = (ofxMultiGLFWWindow*) ofGetWindowPtr();
 		int nbMonitors = glfw->getMonitorCount();
+
+		OFAPPLOG->println("nbMonitors = "+ofToString(nbMonitors));
 
 		glfw->setWindow(glfw->windows.at(1));
 
@@ -231,6 +235,7 @@ void toolSurfaces::update()
 		if ( ! (m_monitorSurface >= 0 && m_monitorSurface < nbMonitors) )
 			m_monitorSurface = 0;
 		monitorRect = glfw->getMonitorRect(m_monitorSurface);
+		OFAPPLOG->println("m_monitorSurface = "+ofToString(m_monitorSurface));
 
 		ofxXmlSettings* pAppSettings = GLOBALS->mp_app->getSettings();
 		pAppSettings->pushTag("windows");
@@ -249,6 +254,8 @@ void toolSurfaces::update()
 
 		glfw->setWindow(glfw->windows.at(0));
 		
+
+		OFAPPLOG->end();
 	}
 
 
